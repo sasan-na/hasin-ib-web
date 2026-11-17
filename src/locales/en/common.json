@@ -718,6 +718,15 @@
                 "fix": "Some rows are not valid. Fix the file and choose it again.",
                 "cards": "Cards",
                 "total": "Total"
+            },
+            "groupCards": {
+                "connectOpen": "Connect many cards",
+                "disconnectOpen": "Disconnect many cards",
+                "hint": "A file with one card number on each row. Every row must be valid before anything is sent.",
+                "connectTitle": "Connect many cards",
+                "connectQuestion": "{{count}} cards are connected to this account in one batch.",
+                "disconnectTitle": "Disconnect many cards",
+                "disconnectQuestion": "{{count}} cards are disconnected from this account in one batch."
             }
         }
     },

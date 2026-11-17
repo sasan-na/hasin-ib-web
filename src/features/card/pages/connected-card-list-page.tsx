@@ -11,7 +11,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Skeleton} from "@/components/ui/skeleton"
 import {accountsOptions} from "@/features/account/api/account.queries"
 import {getConnectedCardCredit, getConnectedCards, type ConnectedCard} from "@/features/card/api/connected-card"
-import {ConnectDialog, CreditDialog, DisconnectDialog, GroupCreditDialog} from "@/features/card/components/connected-card-dialogs"
+import {ConnectDialog, CreditDialog, DisconnectDialog, GroupCardsDialog, GroupCreditDialog} from "@/features/card/components/connected-card-dialogs"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
@@ -28,6 +28,7 @@ export default function ConnectedCardListPage() {
 	const [credits, setCredits] = useState<Record<string, {value?: number; error?: boolean; loading?: boolean}>>({})
 	const [connecting, setConnecting] = useState(false)
 	const [grouping, setGrouping] = useState(false)
+	const [groupCards, setGroupCards] = useState<"connect" | "disconnect" | null>(null)
 	const [acting, setActing] = useState<{card: ConnectedCard; kind: "charge" | "discharge" | "disconnect"} | null>(null)
 
 	const account = accounts.data?.find((candidate) => String(candidate.id) === accountId)
@@ -93,6 +94,12 @@ export default function ConnectedCardListPage() {
 						</div>
 						<Button type="button" size="sm" onClick={() => setConnecting(true)}>
 							{t("card.connected.connect")}
+						</Button>
+						<Button type="button" size="sm" variant="outline" onClick={() => setGroupCards("connect")}>
+							{t("card.connected.groupCards.connectOpen")}
+						</Button>
+						<Button type="button" size="sm" variant="outline" onClick={() => setGroupCards("disconnect")}>
+							{t("card.connected.groupCards.disconnectOpen")}
 						</Button>
 						<Button type="button" size="sm" variant="outline" onClick={() => setGrouping(true)}>
 							{t("card.connected.group.open")}
@@ -163,6 +170,7 @@ export default function ConnectedCardListPage() {
 				</ul>
 			)}
 
+			{groupCards && account ? <GroupCardsDialog payer={{id: account.id, number: account.number}} kind={groupCards} onClose={() => setGroupCards(null)} /> : null}
 			{grouping && account ? <GroupCreditDialog payer={{id: account.id, number: account.number}} onClose={() => setGrouping(false)} /> : null}
 			{connecting && account ? <ConnectDialog payer={{id: account.id, number: account.number}} onClose={() => setConnecting(false)} /> : null}
 			{acting && account ? (

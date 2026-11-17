@@ -6,7 +6,7 @@ import {routeMap} from "@/app/routes"
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
-import {connectCard, disconnectCards, getCardToConnect, importCreditRows, moveCredit, moveCreditInBulk, type CardToConnect, type ConnectedCard, type CreditRow} from "@/features/card/api/connected-card"
+import {connectCard, connectCardsInBulk, disconnectCards, getCardToConnect, importCardRows, importCreditRows, moveCredit, moveCreditInBulk, type CardRow, type CardToConnect, type ConnectedCard, type CreditRow} from "@/features/card/api/connected-card"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
@@ -354,6 +354,101 @@ export function GroupCreditDialog({payer, onClose}: GroupProps) {
 				) : null}
 				{!clean && rows.length > 0 ? <p role="alert" className="text-sm text-destructive">{t("card.connected.group.fix")}</p> : null}
 				{clean ? <AccountPassword requirement={requirement} accountNumber={payer.number} codeServiceName={SERVICE} amount={total} value={password} onChange={setPassword} disabled={sending.pending} /> : null}
+			</div>
+		</ConfirmDialog>
+	)
+}
+
+interface GroupCardsProps {
+	payer: Payer
+	kind: "connect" | "disconnect"
+	onClose: () => void
+}
+
+/** Connects or disconnects many cards from an Excel file: read the file, check the rows, then confirm with the account password. Mount it only while open. */
+export function GroupCardsDialog({payer, kind, onClose}: GroupCardsProps) {
+	const {t} = useTranslation()
+	const queryClient = useQueryClient()
+	const [rows, setRows] = useState<CardRow[]>([])
+	const [password, setPassword] = useState("")
+	const connect = kind === "connect"
+	const read = useMutation({
+		mutationFn: (file: File) => importCardRows(file, kind),
+		onSuccess: (imported) => setRows(imported),
+	})
+	const ok = (row: CardRow): boolean => row.problem === "" && /^\d{16}$/.test(row.pan)
+	const clean = rows.length > 0 && rows.every(ok) && new Set(rows.map((row) => row.pan)).size === rows.length
+	const requirement = usePasswordRequirement({accountId: payer.id, limitServiceName: SERVICE, amount: 0})
+
+	const sending = useSubmitTransaction({
+		run: () => {
+			if (!clean || requirement.state !== "ready") throw new Error("form incomplete")
+			const request = {accountNumber: payer.number, password: requirement.needsPassword ? password : null, passwordType: requirement.info.type, cards: rows.map((row) => row.pan)}
+			return connect ? connectCardsInBulk(request) : disconnectCards(request)
+		},
+		again: {to: routeMap.cardConnected.path, label: t("card.connected.again")},
+		failedText: t("card.connected.failed"),
+		uncertainText: t("card.connected.uncertain"),
+		onDone: () => queryClient.invalidateQueries({queryKey: ["card", "connected"]}),
+	})
+
+	return (
+		<ConfirmDialog
+			open
+			onOpenChange={(open) => {
+				if (!open) onClose()
+			}}
+			title={connect ? t("card.connected.groupCards.connectTitle") : t("card.connected.groupCards.disconnectTitle")}
+			description={connect ? t("card.connected.groupCards.connectQuestion", {count: rows.length}) : t("card.connected.groupCards.disconnectQuestion", {count: rows.length})}
+			summary={[
+				{label: t("card.connected.account"), value: <span dir="ltr">{payer.number}</span>},
+				...(rows.length > 0 ? [{label: t("card.connected.group.cards"), value: String(rows.length)}] : []),
+			]}
+			confirmLabel={connect ? t("card.connected.connect") : t("card.connected.disconnect")}
+			pendingLabel={t("card.connected.sending")}
+			destructive={!connect}
+			canConfirm={clean && isPasswordComplete(requirement, password) && !sending.blocked}
+			pending={sending.pending}
+			error={sending.refusal}
+			onConfirm={sending.submit}
+		>
+			<div className="flex max-h-[45vh] flex-col gap-4 overflow-y-auto">
+				<div className="flex flex-col gap-2">
+					<Label htmlFor="gk-file">{t("card.connected.group.file")}</Label>
+					<input
+						id="gk-file"
+						type="file"
+						accept=".xlsx,.xls"
+						className="text-sm"
+						disabled={read.isPending || sending.pending}
+						onChange={(event) => {
+							const file = event.target.files?.[0]
+							event.target.value = ""
+							if (file) read.mutate(file)
+						}}
+					/>
+					<p className="text-xs text-muted-foreground">{read.isPending ? t("card.connected.group.reading") : t("card.connected.groupCards.hint")}</p>
+					{read.isError ? (
+						<p role="alert" className="text-sm text-destructive">
+							{read.error.message || t("card.connected.group.failed")}
+						</p>
+					) : null}
+					{read.isSuccess && rows.length === 0 ? <p className="text-sm text-muted-foreground">{t("card.connected.group.empty")}</p> : null}
+				</div>
+				{rows.length > 0 ? (
+					<ul className="flex flex-col divide-y rounded-md border text-sm">
+						{rows.map((row, index) => (
+							<li key={index} className="flex flex-wrap items-baseline justify-between gap-2 p-2">
+								<span dir="ltr" className="tabular-nums">
+									{formatCardNumber(row.pan)}
+								</span>
+								{ok(row) ? null : <span className="text-destructive">{row.problem || t("card.connected.group.badRow")}</span>}
+							</li>
+						))}
+					</ul>
+				) : null}
+				{rows.length > 0 && !clean ? <p role="alert" className="text-sm text-destructive">{t("card.connected.group.fix")}</p> : null}
+				{clean ? <AccountPassword requirement={requirement} accountNumber={payer.number} codeServiceName={SERVICE} amount={0} value={password} onChange={setPassword} disabled={sending.pending} /> : null}
 			</div>
 		</ConfirmDialog>
 	)

@@ -175,3 +175,29 @@ export const moveCreditInBulk = (request: Payer & {rows: Pick<CreditRow, "pan" |
 		method: "POST",
 		body: JSON.stringify({sourceAccountInfo: source(request), cards: request.rows.map((row) => ({pan: row.pan, amount: row.amount, description: row.description, discharge: request.discharge}))}),
 	}).then(toTransactionResult)
+
+const cardListSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	infoList: z.array(z.object({pan: z.string().nullish(), panNumberMessage: z.string().nullish()})).nullish(),
+})
+
+/** One card read from a connect or disconnect Excel file. */
+export interface CardRow {
+	pan: string
+	/** What the bank noted about the row (a card number it rejects), if anything. */
+	problem: string
+}
+
+/** Reads card numbers from an Excel file. Nothing is changed; the rows still need confirming. */
+export const importCardRows = async (file: File, kind: "connect" | "disconnect"): Promise<CardRow[]> => {
+	const body = new FormData()
+	body.append("file", file)
+	const data = cardListSchema.parse(camelKeys(await apiClient<unknown>(kind === "connect" ? "/MultiAccountCard/Batch/ImportLink" : "/MultiAccountCard/Batch/ImportUnlink", {method: "POST", body})))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "import failed")
+	return (data.infoList ?? []).map((row) => ({pan: (row.pan ?? "").replace(/\D/g, ""), problem: row.panNumberMessage ?? ""}))
+}
+
+/** Connects many cards to an account at once. A real change: send once per confirmation, never retry automatically. */
+export const connectCardsInBulk = (request: Payer & {cards: string[]}): Promise<TransactionResult> =>
+	apiClient<unknown>("/MultiAccountCard/LinkAccountToCardBulk", {method: "POST", body: JSON.stringify({sourceAccountInfo: source(request), cards: request.cards})}).then(toTransactionResult)
