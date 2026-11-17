@@ -31,7 +31,9 @@
         "cheques": "Cheques",
         "dashboard": "Approvals",
         "receipts": "Receipts",
-        "etc": "Toll tags"
+        "etc": "Toll tags",
+        "payments": "Payments",
+        "other": "Other services"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -1510,6 +1512,9 @@
             "title": "Drawer's standing",
             "intro": "Find out how much of a cheque drawer's money is tied up in cheques, and how their cheques have fared, from the Sayyad id of one of their cheques.",
             "empty": "The registry has no record for this drawer."
+        },
+        "landing": {
+            "title": "Cheques"
         }
     },
     "dashboard": {
@@ -1619,6 +1624,9 @@
             "removeDone": "The user was removed.",
             "blocked": "This person is part of the approval rules below. Change those rules first.",
             "checkFailed": "Their approval rules could not be checked."
+        },
+        "landing": {
+            "title": "Approvals"
         }
     },
     "receipt": {
@@ -1736,6 +1744,16 @@
                 "carType": "Choose the kind of car.",
                 "plate": "Enter the plate: two digits, a letter, three digits and a two-digit region code (no zeros in the first two groups)."
             }
+        }
+    },
+    "payment": {
+        "landing": {
+            "title": "Payments"
+        }
+    },
+    "other": {
+        "landing": {
+            "title": "Other services"
         }
     }
 }
