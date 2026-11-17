@@ -12,7 +12,7 @@ IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app.
 - Keep the project lean: no custom gate scripts or heavy hooks. `npm run lint`, `npm run build` and `tsc` are the gate.
 - No PR policy. Commit each slice separately: `type(scope): description`, header <= 96 characters.
 - Persian (`fa`, default, RTL) and English (`en`) are both supported. Every user-visible string goes through i18n; use logical CSS (`ps/pe/ms/me`, `start/end`) so RTL works.
-- Fonts: Dana (Persian glyphs, self-hosted in `public/fonts/dana`, proprietary) and Inter (Latin).
+- Fonts: Dana Pro FaNum (full family incl. italics; Persian digits; self-hosted in `public/fonts/dana`, proprietary) leads in Persian, Inter leads in English.
 
 ## Commands
 

@@ -6,34 +6,149 @@
 @custom-variant child (& > *);
 @custom-variant child-hover (& > *:hover);
 
-/* Dana (Persian/Arabic glyphs only, self-hosted); Latin and digits fall through to Inter. */
+/*
+ * Dana Pro "FaNum" family (self-hosted, proprietary): Persian/Arabic and Latin glyphs, with ASCII digits
+ * drawn as Persian numerals. Used first in Persian (see html:lang(fa) below); Inter leads in English.
+ */
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 100;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-thin.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 200;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-extralight.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-light.woff2") format("woff2");
+}
 @font-face {
 	font-family: Dana;
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("/fonts/dana/dana-noen-regular.woff2") format("woff2");
+	src: url("/fonts/dana/dana-fanum-regular.woff2") format("woff2");
 }
 @font-face {
 	font-family: Dana;
 	font-style: normal;
 	font-weight: 500;
 	font-display: swap;
-	src: url("/fonts/dana/dana-noen-medium.woff2") format("woff2");
+	src: url("/fonts/dana/dana-fanum-medium.woff2") format("woff2");
 }
 @font-face {
 	font-family: Dana;
 	font-style: normal;
 	font-weight: 600;
 	font-display: swap;
-	src: url("/fonts/dana/dana-noen-demibold.woff2") format("woff2");
+	src: url("/fonts/dana/dana-fanum-demibold.woff2") format("woff2");
 }
 @font-face {
 	font-family: Dana;
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url("/fonts/dana/dana-noen-bold.woff2") format("woff2");
+	src: url("/fonts/dana/dana-fanum-bold.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 750;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-ultrabold.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-extrabold.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: normal;
+	font-weight: 900;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-black.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 100;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-thinitalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 200;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-extralightitalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-lightitalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-regularitalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-mediumitalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 600;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-demibolditalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-bolditalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 750;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-ultrabolditalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 800;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-extrabolditalic.woff2") format("woff2");
+}
+@font-face {
+	font-family: Dana;
+	font-style: italic;
+	font-weight: 900;
+	font-display: swap;
+	src: url("/fonts/dana/dana-fanum-blackitalic.woff2") format("woff2");
 }
 
 :root {
@@ -161,6 +276,11 @@
 
 /* Tailwind v4 default border color changed to currentcolor — preserve v3 behavior. */
 @layer base {
+	/* Persian: Dana leads so digits render as Persian numerals. */
+	html:lang(fa) {
+		font-family: Dana, "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+	}
+
 	*,
 	::after,
 	::before,
