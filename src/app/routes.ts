@@ -48,6 +48,7 @@ export const routeMap = {
 	"roles": {breadcrumb: "dashboard.roles.title", path: "/dashboard/roles"},
 	"newSubUser": {breadcrumb: "dashboard.newUser.title", path: "/dashboard/users/new"},
 	"subUsers": {breadcrumb: "dashboard.users.title", path: "/dashboard/users"},
+	"newRule": {breadcrumb: "dashboard.newRule.title", path: "/dashboard/rules/new"},
 	"workflowRules": {breadcrumb: "dashboard.rules.title", path: "/dashboard/rules"},
 	"dashboardHome": {breadcrumb: "navigation.dashboard", path: "/dashboard"},
 	"dashboard": {breadcrumb: "dashboard.title", path: "/dashboard/list"},

@@ -44,6 +44,7 @@ const OldHistory = React.lazy(() => import("@/features/dashboard/pages/old-histo
 const Roles = React.lazy(() => import("@/features/dashboard/pages/roles-page.tsx"));
 const NewSubUser = React.lazy(() => import("@/features/dashboard/pages/new-sub-user-page.tsx"));
 const SubUsers = React.lazy(() => import("@/features/dashboard/pages/sub-users-page.tsx"));
+const NewRule = React.lazy(() => import("@/features/dashboard/pages/new-rule-page.tsx"));
 const WorkflowRules = React.lazy(() => import("@/features/dashboard/pages/workflow-rules-page.tsx"));
 const Dashboard = React.lazy(() => import("@/features/dashboard/pages/dashboard-page.tsx"));
 const ReceiptList = React.lazy(() => import("@/features/receipt/pages/receipt-list-page.tsx"));
@@ -168,6 +169,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.receiptView.path} element={<ReceiptView/>}/>
                     <Route path={routeMap.dashboard.path} element={<Dashboard/>}/>
                     <Route path={routeMap.workflowRules.path} element={<WorkflowRules/>}/>
+                    <Route path={routeMap.newRule.path} element={<NewRule/>}/>
                     <Route path={routeMap.subUsers.path} element={<SubUsers/>}/>
                     <Route path={routeMap.newSubUser.path} element={<NewSubUser/>}/>
                     <Route path={routeMap.roles.path} element={<Roles/>}/>
