@@ -21,6 +21,8 @@ const CardAccountList = React.lazy(() => import("@/features/card/pages/card-acco
 const CardConnectAccount = React.lazy(() => import("@/features/card/pages/card-connect-account-page.tsx"));
 const CardReplicaRenew = React.lazy(() => import("@/features/card/pages/card-replica-renew-page.tsx"));
 const CardGift = React.lazy(() => import("@/features/card/pages/card-gift-page.tsx"));
+const CardlessList = React.lazy(() => import("@/features/card/pages/cardless-list-page.tsx"));
+const CardlessNew = React.lazy(() => import("@/features/card/pages/cardless-new-page.tsx"));
 const TransferHome = React.lazy(() => import("@/features/transfer/pages/transfer-home-page.tsx"));
 const SmartTransfer = React.lazy(() => import("@/features/transfer/pages/smart-transfer-page.tsx"));
 const StandingOrderList = React.lazy(() => import("@/features/transfer/pages/standing-order-list-page.tsx"));
@@ -69,6 +71,8 @@ const router = createBrowserRouter(
                     <Route path={routeMap.cardConnectAccount.path} element={<CardConnectAccount/>}/>
                     <Route path={routeMap.cardReplicaRenew.path} element={<CardReplicaRenew/>}/>
                     <Route path={routeMap.cardGift.path} element={<CardGift/>}/>
+                    <Route path={routeMap.cardlessList.path} element={<CardlessList/>}/>
+                    <Route path={routeMap.cardlessNew.path} element={<CardlessNew/>}/>
                     <Route path={routeMap.transfer.path} element={<TransferHome/>}/>
                     <Route path={routeMap.transferSmart.path} element={<SmartTransfer/>}/>
                     <Route path={routeMap.transferStandingOrders.path} element={<StandingOrderList/>}/>

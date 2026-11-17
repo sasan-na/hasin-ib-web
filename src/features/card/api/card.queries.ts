@@ -6,6 +6,7 @@ import {getCardAccounts, getAddableAccounts} from "./card-account"
 import {getCardCredentialInfo} from "./card-credentials"
 import {getCardInfo, getCardOwner} from "./card-info"
 import {getCards} from "./card"
+import {getCardlessConfig, getCardlessTickets} from "./cardless"
 
 // Card names and types come from the server in the UI language, so the language is part of the key.
 export const cardKeys = {
@@ -18,6 +19,7 @@ export const cardKeys = {
 	credentials: (cardId: number, language: string) => [...cardKeys.all, "credentials", cardId, language] as const,
 	replicaForm: (language: string) => [...cardKeys.all, "replicaForm", language] as const,
 	giftConfig: () => [...cardKeys.all, "giftConfig"] as const,
+	cardless: ["card", "cardless"] as const,
 }
 
 export const cardsOptions = (language: string) => queryOptions({queryKey: cardKeys.list(language), queryFn: getCards, staleTime: 60_000, retry: false})
@@ -45,3 +47,8 @@ export const replicaFormOptions = (language: string) =>
 /** The bank's limits for gift cards (how many, how much, in what steps, and the fee). */
 export const giftCardConfigOptions = () =>
 	queryOptions({queryKey: cardKeys.giftConfig(), queryFn: getGiftCardConfig, staleTime: 5 * 60_000, retry: false})
+
+/** The card-less withdrawal tickets of every card; the bank asks its core system, so a minute of cache and a refresh button. */
+export const cardlessTicketsOptions = () => queryOptions({queryKey: [...cardKeys.cardless, "tickets"], queryFn: getCardlessTickets, staleTime: 60_000, retry: false})
+
+export const cardlessConfigOptions = () => queryOptions({queryKey: [...cardKeys.cardless, "config"], queryFn: getCardlessConfig, staleTime: 5 * 60_000, retry: false})

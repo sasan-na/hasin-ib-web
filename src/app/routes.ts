@@ -18,6 +18,8 @@ export const routeMap = {
 	"cardConnectAccount": {breadcrumb: "card.accounts.connectTitle", path: "/card/connect-account"},
 	"cardReplicaRenew": {breadcrumb: "card.replica.title", path: "/card/replica-renew"},
 	"cardGift": {breadcrumb: "card.gift.title", path: "/card/gift"},
+	"cardlessList": {breadcrumb: "card.cardless.title", path: "/card/card-less-cash"},
+	"cardlessNew": {breadcrumb: "card.cardless.newTitle", path: "/card/card-less-cash/new"},
 	"transfer": {breadcrumb: "navigation.transfers", path: "/transfer"},
 	"transferSmart": {breadcrumb: "transfer.smart.title", path: "/transfer/smart"},
 	"transferStandingOrders": {breadcrumb: "transfer.standing.title", path: "/transfer/standing-orders"},
