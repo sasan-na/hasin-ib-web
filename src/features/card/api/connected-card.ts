@@ -96,3 +96,43 @@ export const getCardToConnect = async (accountNumber: string, pan: string): Prom
 /** Connects a card to an account. A real change: send once per confirmation, never retry automatically. */
 export const connectCard = (request: Payer & {pan: string}): Promise<TransactionResult> =>
 	apiClient<unknown>("/MultiAccountCard/LinkAccountToCard", {method: "POST", body: JSON.stringify({sourceAccountInfo: source(request), pan: request.pan})}).then(toTransactionResult)
+
+const statementSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	result: z
+		.object({
+			transactionCount: z.number().nullish(),
+			transactions: z.array(z.object({transactionDate: z.union([z.string(), z.number()]).nullish(), transactionType: z.string().nullish(), transactionAmount: z.union([z.string(), z.number()]).nullish()})).nullish(),
+		})
+		.nullish(),
+})
+
+/** One movement of credit on a connected card. */
+export interface CardMovement {
+	/** When it happened. */
+	at: Date | null
+	/** DEBIT took credit off the card, CREDIT put credit on it. */
+	kind: "debit" | "credit" | "other"
+	/** In Rials. */
+	amount: number
+}
+
+export interface CardStatementPage {
+	movements: CardMovement[]
+	total: number
+}
+
+/** One page (1-based) of a connected card statement between two Persian dates ("YYYY/MM/DD"; the bank allows at most 30 days). */
+export const getConnectedCardStatement = async (request: {accountNumber: string; pan: string; from: string; to: string; page: number; pageSize: number}): Promise<CardStatementPage> => {
+	const data = statementSchema.parse(
+		camelKeys(await apiClient<unknown>("/MultiAccountCard/Statement", {method: "POST", body: JSON.stringify({accountNumber: request.accountNumber, pan: request.pan, startDate: request.from, endDate: request.to, pageNumber: request.page, pageSize: request.pageSize})})),
+	)
+	if (data.isSuccessful === false) throw new Error(data.message ?? "statement failed")
+	const movements = (data.result?.transactions ?? []).map((item): CardMovement => {
+		const time = Number(item.transactionDate)
+		const type = (item.transactionType ?? "").toUpperCase()
+		return {at: Number.isFinite(time) && time > 0 ? new Date(time) : null, kind: type === "DEBIT" ? "debit" : type === "CREDIT" ? "credit" : "other", amount: Number(String(item.transactionAmount ?? 0).replace(/,/g, "")) || 0}
+	})
+	return {movements, total: data.result?.transactionCount ?? movements.length}
+}

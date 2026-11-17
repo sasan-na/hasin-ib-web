@@ -1,7 +1,9 @@
 import {useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
+import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
@@ -132,6 +134,11 @@ export default function ConnectedCardListPage() {
 									<Button type="button" size="sm" variant="outline" disabled={credit?.loading} onClick={() => void loadCredit(card)}>
 										{t("card.connected.refreshCredit")}
 									</Button>
+									{account ? (
+										<Button asChild size="sm" variant="outline">
+											<Link to={`${routeMap.cardConnectedStatement.path}?${new URLSearchParams({account: account.number, card: card.number}).toString()}`}>{t("card.connected.statement.open")}</Link>
+										</Button>
+									) : null}
 									{card.status === "N" ? (
 										<>
 											<Button type="button" size="sm" onClick={() => setActing({card, kind: "charge"})}>

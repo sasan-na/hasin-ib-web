@@ -681,6 +681,27 @@
             "lookupFailed": "The card could not be checked.",
             "errors": {
                 "number": "Enter the 16-digit card number."
+            },
+            "statement": {
+                "open": "Statement",
+                "title": "Connected card statement",
+                "from": "From",
+                "to": "To",
+                "hint": "Up to {{days}} days at a time.",
+                "show": "Show",
+                "failed": "The statement could not be loaded.",
+                "empty": "There were no movements in this period.",
+                "date": "Date",
+                "kind": "Kind",
+                "debit": "Credit taken off",
+                "credit": "Credit added",
+                "count": "{{shown}} of {{total}}",
+                "more": "Show more",
+                "error": {
+                    "date": "Enter dates like 1405/01/01.",
+                    "order": "The start date cannot be after the end date.",
+                    "period": "The period cannot be longer than {{days}} days."
+                }
             }
         }
     },
