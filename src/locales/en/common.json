@@ -23,7 +23,8 @@
         "accounts": "Accounts",
         "cards": "Cards",
         "transfers": "Transfers",
-        "reports": "Reports"
+        "reports": "Reports",
+        "loans": "Loans"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -747,5 +748,25 @@
                 "latest": "Enter a number from 1 to {{max}}."
             }
         }
+    },
+    "loan": {
+        "title": "Loans",
+        "refresh": "Refresh",
+        "error": "The loans could not be loaded.",
+        "empty": "You have no loans to show.",
+        "fallbackTitle": "Loan",
+        "followed": "A loan you follow",
+        "account": "Account",
+        "card": "Card",
+        "holder": "Holder",
+        "nextDue": "Next due date",
+        "installment": "Installment",
+        "remaining": "Remaining",
+        "overdue": "Overdue",
+        "penalty": "Penalty",
+        "progress": "Installments paid",
+        "progressValue": "{{paid}} of {{total}}",
+        "firstDate": "First installment date",
+        "rial": "Rial"
     }
 }

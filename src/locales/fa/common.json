@@ -23,7 +23,8 @@
         "accounts": "حساب‌ها",
         "cards": "کارت",
         "transfers": "انتقال وجه",
-        "reports": "گزارش‌ها"
+        "reports": "گزارش‌ها",
+        "loans": "تسهیلات"
     },
     "home": {
         "welcome": "{{username}} عزیز، خوش آمدید!",
@@ -747,5 +748,25 @@
                 "latest": "عددی از ۱ تا {{max}} وارد کنید."
             }
         }
+    },
+    "loan": {
+        "title": "تسهیلات",
+        "refresh": "به‌روزرسانی",
+        "error": "بارگذاری تسهیلات انجام نشد.",
+        "empty": "تسهیلاتی برای نمایش ندارید.",
+        "fallbackTitle": "تسهیلات",
+        "followed": "تسهیلاتی که پیگیری می‌کنید",
+        "account": "حساب",
+        "card": "کارت",
+        "holder": "صاحب",
+        "nextDue": "سررسید بعدی",
+        "installment": "مبلغ قسط",
+        "remaining": "مانده",
+        "overdue": "معوقه",
+        "penalty": "جریمه",
+        "progress": "اقساط پرداخت‌شده",
+        "progressValue": "{{paid}} از {{total}}",
+        "firstDate": "تاریخ اولین قسط",
+        "rial": "ریال"
     }
 }
