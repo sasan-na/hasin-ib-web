@@ -34,7 +34,8 @@
         "etc": "Toll tags",
         "payments": "Payments",
         "other": "Other services",
-        "branch": "In-branch services"
+        "branch": "In-branch services",
+        "security": "Dynamic password"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -728,6 +729,28 @@
                 "connectQuestion": "{{count}} cards are connected to this account in one batch.",
                 "disconnectTitle": "Disconnect many cards",
                 "disconnectQuestion": "{{count}} cards are disconnected from this account in one batch."
+            }
+        },
+        "pin": {
+            "title": "Change card PIN",
+            "hint": "Choose a new PIN (second password) for one of your cards. The bank texts you a code to prove it is you.",
+            "card": "Card",
+            "chooseCard": "Choose a card",
+            "cardsError": "Your cards could not be loaded.",
+            "new": "New PIN",
+            "confirm": "Repeat the new PIN",
+            "review": "Review",
+            "confirmTitle": "Change this card's PIN",
+            "confirmQuestion": "The card's PIN changes to the one you typed. Use it from now on.",
+            "save": "Change PIN",
+            "sending": "Changing…",
+            "again": "Change another PIN",
+            "failed": "The PIN was not changed. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the PIN changed. Try your card with the new PIN before changing it again.",
+            "error": {
+                "card": "Choose a card and fill in its details.",
+                "length": "The PIN must be {{length}} digits.",
+                "mismatch": "The two PINs do not match."
             }
         }
     },
@@ -2030,6 +2053,11 @@
         "error": {
             "date": "Enter dates like 1405/01/01.",
             "order": "The start date cannot be after the end date."
+        }
+    },
+    "security": {
+        "landing": {
+            "title": "Dynamic password"
         }
     }
 }

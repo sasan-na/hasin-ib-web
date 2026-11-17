@@ -7,6 +7,7 @@ import {accountDestinations} from "@/features/account/lib/destinations"
 import {branchDestinations} from "@/features/branch/lib/destinations"
 import {paymentDestinations} from "@/features/bill/lib/destinations"
 import {cardDestinations} from "@/features/card/lib/destinations"
+import {securityDestinations} from "@/features/card/lib/security-destinations"
 import {chequeDestinations} from "@/features/cheque/lib/destinations"
 import {dashboardDestinations} from "@/features/dashboard/lib/destinations"
 import {loanDestinations} from "@/features/loan/lib/destinations"
@@ -29,6 +30,7 @@ const destinations: Record<string, Destination> = {
 	...dashboardDestinations,
 	...otherDestinations,
 	...branchDestinations,
+	...securityDestinations,
 }
 
 /** Finds the bank's services by what the user types, and opens the one they pick. */

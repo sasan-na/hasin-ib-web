@@ -64,6 +64,8 @@ const Settings = React.lazy(() => import("@/features/settings/pages/settings-pag
 const Search = React.lazy(() => import("@/app/pages/search-page.tsx"));
 const BranchHome = React.lazy(() => import("@/features/branch/pages/branch-home-page.tsx"));
 const BranchRequests = React.lazy(() => import("@/features/branch/pages/branch-requests-page.tsx"));
+const SecurityHome = React.lazy(() => import("@/features/card/pages/security-home-page.tsx"));
+const ChangeCardPin = React.lazy(() => import("@/features/card/pages/change-card-pin-page.tsx"));
 const Profile = React.lazy(() => import("@/features/profile/pages/profile-page.tsx"));
 const LoanHome = React.lazy(() => import("@/features/loan/pages/loan-home-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
@@ -131,6 +133,8 @@ const router = createBrowserRouter(
                     <Route path={routeMap.reportBalance.path} element={<Balance/>}/>
                     <Route path={routeMap.loan.path} element={<LoanHome/>}/>
                     <Route path={routeMap.profile.path} element={<Profile/>}/>
+                    <Route path={routeMap.security.path} element={<SecurityHome/>}/>
+                    <Route path={routeMap.cardChangePin.path} element={<ChangeCardPin/>}/>
                     <Route path={routeMap.branch.path} element={<BranchHome/>}/>
                     <Route path={routeMap.branchRequests.path} element={<BranchRequests/>}/>
                     <Route path={routeMap.search.path} element={<Search/>}/>

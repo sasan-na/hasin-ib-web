@@ -78,6 +78,8 @@ export const routeMap = {
 	"search": {breadcrumb: "search.title", path: "/search"},
 	"branch": {breadcrumb: "navigation.branch", path: "/branch"},
 	"branchRequests": {breadcrumb: "branch.requests.title", path: "/branch/requests"},
+	"security": {breadcrumb: "navigation.security", path: "/dynamic-password"},
+	"cardChangePin": {breadcrumb: "card.pin.title", path: "/dynamic-password/change-card-pin"},
 	"profile": {breadcrumb: "profile.title", path: "/profile"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

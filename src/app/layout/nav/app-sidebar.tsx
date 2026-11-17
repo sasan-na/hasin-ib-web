@@ -1,5 +1,5 @@
 import * as React from "react"
-import {ArrowLeftRight, ClipboardCheck, CreditCard, FileText, HandCoins, Home, Landmark, Building2, Receipt, ScrollText, Shapes} from "lucide-react"
+import {ArrowLeftRight, ClipboardCheck, CreditCard, FileText, HandCoins, Home, Landmark, Building2, ShieldCheck, Receipt, ScrollText, Shapes} from "lucide-react"
 import {useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
@@ -74,6 +74,12 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             url: routeMap.dashboardHome.path,
             icon: ClipboardCheck,
             isActive: pathname.startsWith(routeMap.dashboardHome.path),
+        },
+        {
+            title: t("navigation.security"),
+            url: routeMap.security.path,
+            icon: ShieldCheck,
+            isActive: pathname.startsWith(routeMap.security.path),
         },
         {
             title: t("navigation.other"),
