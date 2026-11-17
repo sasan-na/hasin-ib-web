@@ -16,6 +16,7 @@ const accountSchema = z.object({
 	// 1 one-time password, 2 no password, 3 regular password.
 	passwordType: z.number().nullish(),
 	hasAccessToGetBalance: z.boolean().nullish(),
+	category: z.object({key: z.string().nullish(), name: z.string().nullish()}).nullish(),
 	balance: amount,
 	totalBalance: amount,
 	blockedAmount: amount,
@@ -48,6 +49,9 @@ export interface Account {
 	number: string
 	iban: string
 	type: string
+	/** The group the bank files it under (current, savings, ...). Empty when the server sends none. */
+	categoryKey: string
+	categoryName: string
 	isJoint: boolean
 	passwordType: "otp" | "none" | "password" | null
 	canSeeBalance: boolean
@@ -67,6 +71,8 @@ export const getAccounts = async (): Promise<Account[]> => {
 		number: account.number ?? "",
 		iban: account.iban ?? "",
 		type: account.type ?? "",
+		categoryKey: account.category?.key ?? "",
+		categoryName: account.category?.name ?? "",
 		isJoint: account.isJointAccount === true,
 		passwordType: PASSWORD_TYPES[account.passwordType as keyof typeof PASSWORD_TYPES] ?? null,
 		canSeeBalance: account.hasAccessToGetBalance === true,
@@ -82,4 +88,20 @@ export const getBalance = async (accountId: number): Promise<Balances> => {
 	const data = balanceSchema.parse(await apiClient<unknown>(`/Account/GetBalance?userAccountId=${accountId}`))
 	if (!data.isSuccessful) throw new Error(data.message ?? "balance failed")
 	return {available: data.balance ?? null, total: data.totalBalance ?? null, blocked: data.blockedAmount ?? null}
+}
+
+const priorityResultSchema = z.object({isSuccessful: z.boolean(), message: z.string().nullish()})
+
+/**
+ * Moves the account `sourceId` to where `destinationId` is: above it when the source was below, below it
+ * when the source was above (the server's rule). Throws when the server refuses.
+ */
+export const moveAccount = async (sourceId: number, destinationId: number): Promise<void> => {
+	const data = priorityResultSchema.parse(
+		await apiClient<unknown>("/AccountList/UpdatePriority", {
+			method: "POST",
+			body: JSON.stringify({sourceUserAccountId: sourceId, destinationUserAccountId: destinationId}),
+		}),
+	)
+	if (!data.isSuccessful) throw new Error(data.message ?? "reorder failed")
 }

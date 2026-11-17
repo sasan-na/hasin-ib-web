@@ -1,39 +1,116 @@
-import {useQuery} from "@tanstack/react-query"
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
+import {useMemo, useState} from "react"
 import {useTranslation} from "react-i18next"
 
 import {Skeleton} from "@/components/ui/skeleton"
-import {accountsOptions} from "@/lib/api/account.queries"
+import {moveAccount, type Balances} from "@/lib/api/account"
+import {accountKeys, accountsOptions} from "@/lib/api/account.queries"
+import {formatAmount} from "@/lib/format"
 
+import {AccountFilters} from "./account-filters"
 import {AccountRow} from "./account-row"
+import {categoriesOf, EMPTY_FILTERS, filterAccounts, groupAccounts, groupTotal, hasActiveFilters, type Filters} from "./accountList"
 
-/** The user's accounts with their numbers and, on request, their balances. */
+/** The user's accounts, grouped by category, with search, on-request balances and reordering. */
 export default function AccountPage() {
 	const {t, i18n} = useTranslation()
+	const queryClient = useQueryClient()
 	const accounts = useQuery(accountsOptions(i18n.language))
+	const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS)
+	// Balances fetched during this visit, by account id; they also feed the group totals.
+	const [fresh, setFresh] = useState<Readonly<Record<number, Balances>>>({})
+	const [moveFailed, setMoveFailed] = useState(false)
+
+	const move = useMutation({
+		mutationFn: ({sourceId, destinationId}: {sourceId: number; destinationId: number}) => moveAccount(sourceId, destinationId),
+		onMutate: () => setMoveFailed(false),
+		onError: () => setMoveFailed(true),
+		// Success or not, the server's order is the truth.
+		onSettled: () => queryClient.invalidateQueries({queryKey: accountKeys.all}),
+	})
+
+	const filtering = hasActiveFilters(filters)
+	const all = accounts.data
+	const groups = useMemo(() => (all ? groupAccounts(filterAccounts(all, filters)) : []), [all, filters])
+	const categories = useMemo(() => (all ? categoriesOf(all) : []), [all])
+
+	const recordFresh = (accountId: number, balances: Balances): void => setFresh((current) => ({...current, [accountId]: balances}))
 
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("account.title")}</h1>
-			<section aria-label={t("account.title")} className="overflow-hidden rounded-lg border bg-card">
-				{accounts.isPending ? (
-					<div className="flex flex-col gap-3 p-5" aria-hidden="true">
-						<Skeleton className="h-16 w-full" />
-						<Skeleton className="h-16 w-full" />
-					</div>
-				) : accounts.isError ? (
-					<p role="alert" className="p-5 text-sm text-destructive">
-						{t("account.error")}
-					</p>
-				) : accounts.data.length === 0 ? (
-					<p className="p-5 text-sm text-muted-foreground">{t("account.empty")}</p>
-				) : (
-					<ul className="divide-y">
-						{accounts.data.map((account) => (
-							<AccountRow key={account.id} account={account} />
-						))}
-					</ul>
-				)}
-			</section>
+
+			{accounts.isPending ? (
+				<div className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-hidden="true">
+					<Skeleton className="h-16 w-full" />
+					<Skeleton className="h-16 w-full" />
+				</div>
+			) : accounts.isError ? (
+				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+					{t("account.error")}
+				</p>
+			) : accounts.data.length === 0 ? (
+				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("account.empty")}</p>
+			) : (
+				<>
+					<AccountFilters filters={filters} onChange={setFilters} onReset={() => setFilters(EMPTY_FILTERS)} categories={categories} />
+
+					{moveFailed ? (
+						<p role="alert" className="text-sm text-destructive">
+							{t("account.moveError")}
+						</p>
+					) : null}
+
+					{groups.length === 0 ? (
+						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("account.noResults")}</p>
+					) : (
+						groups.map((group) => {
+							const total = groupTotal(group.accounts, fresh)
+							const headingId = `account-group-${group.key || "none"}`
+							return (
+								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg border bg-card">
+									<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b bg-muted/60 px-5 py-3">
+										<h2 id={headingId} className="text-base font-semibold">
+											{group.name || t("account.title")}
+										</h2>
+										{total !== null ? (
+											<span className="text-sm text-muted-foreground">
+												{t("account.groupTotal")}{" "}
+												<span className="font-semibold text-foreground tabular-nums">
+													{formatAmount(total, i18n.language)} {t("account.rial")}
+												</span>
+											</span>
+										) : null}
+									</div>
+									<ul className="divide-y">
+										{group.accounts.map((account, index) => (
+											<AccountRow
+												key={account.id}
+												account={account}
+												fresh={fresh[account.id]}
+												onFresh={recordFresh}
+												move={
+													filtering
+														? undefined
+														: {
+																canMoveUp: index > 0,
+																canMoveDown: index < group.accounts.length - 1,
+																busy: move.isPending,
+																onMove: (direction) => {
+																	const target = group.accounts[direction === "up" ? index - 1 : index + 1]
+																	move.mutate({sourceId: account.id, destinationId: target.id})
+																},
+															}
+												}
+											/>
+										))}
+									</ul>
+								</section>
+							)
+						})
+					)}
+				</>
+			)}
 		</div>
 	)
 }

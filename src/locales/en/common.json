@@ -88,6 +88,19 @@
             "otp": "One-time password",
             "none": "No password",
             "password": "Regular password"
+        },
+        "groupTotal": "Total available",
+        "noResults": "No account matches your search.",
+        "moveUp": "Move {{name}} up",
+        "moveDown": "Move {{name}} down",
+        "moveError": "The order could not be changed. Please try again.",
+        "search": {
+            "title": "Search accounts",
+            "active": "A search is on",
+            "name": "Account name",
+            "category": "Category",
+            "allCategories": "All categories",
+            "reset": "Clear search"
         }
     }
 }
