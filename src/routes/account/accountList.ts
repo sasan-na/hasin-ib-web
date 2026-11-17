@@ -1,5 +1,5 @@
 import type {Account, Balances} from "@/lib/api/account"
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 import {normalizeIban} from "@/lib/format"
 
 export interface Filters {

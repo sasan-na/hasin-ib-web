@@ -5,7 +5,7 @@ import {Alert, AlertDescription} from "@/components/ui/alert"
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 import {routeMap} from "@/routing.tsx"
 import {useSession} from "@/store/session"
 

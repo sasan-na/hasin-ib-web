@@ -1,7 +1,10 @@
 import React from "react"
-import type {LogoComponentPropType} from "@/types"
+interface LogoProps {
+	className?: string
+	size?: number
+}
 
-export function Logo(props: LogoComponentPropType): React.ReactElement {
+export function Logo(props: LogoProps): React.ReactElement {
 	return (
 		<svg
 			className={props.className}

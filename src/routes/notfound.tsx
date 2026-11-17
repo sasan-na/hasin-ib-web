@@ -1,4 +1,4 @@
-import {Logo} from "@/components/ui/logo.tsx";
+import {Logo} from "@/components/logo.tsx";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";

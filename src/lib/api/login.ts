@@ -8,7 +8,7 @@
  *   `initializeLogin` again for a fresh guid and captcha.
  */
 import { encryptPassword, encryptUsername, hashCaptcha } from '@/lib/auth/loginCrypto';
-import { normalizeDigits } from '@/lib/auth/normalizeDigits';
+import { normalizeDigits } from '@/lib/normalize-digits';
 import {z} from '@/lib/zod';
 
 import { ApiError, apiClient } from './client';

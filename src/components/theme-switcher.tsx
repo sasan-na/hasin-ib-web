@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import {useIsDarkMode} from "@/hooks/useIsDarkMode"
+import {useIsDarkMode} from "@/hooks/use-is-dark-mode"
 import {useThemeStore, type Theme} from "@/store/theme"
 
 const OPTIONS: {value: Theme; icon: typeof Sun}[] = [

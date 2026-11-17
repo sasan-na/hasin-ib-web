@@ -17,7 +17,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {openAccount, type AccountProfile} from "@/lib/api/openAccount"
 import {accountProfilesOptions, branchesOptions, depositTypesOptions, personalInfoOptions} from "@/lib/api/openAccount.queries"
 import type {SourceAccount} from "@/lib/api/transaction"
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 import {formatAmount} from "@/lib/format"
 import {routeMap} from "@/routing.tsx"
 

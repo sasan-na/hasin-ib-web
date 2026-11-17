@@ -7,7 +7,7 @@ import {findRouteByPath} from "@/lib/utils.ts";
 import {useTranslation} from "react-i18next";
 import {LanguageSwitcher} from "@/components/language-switcher.tsx";
 import {ThemeSwitcher} from "@/components/theme-switcher.tsx";
-import {Logo} from "@/components/ui/logo.tsx";
+import {Logo} from "@/components/logo.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
 import {BreadcrumbItem, BreadcrumbResponsive} from "@/components/breadcrumbs"
 import {routeMap} from "@/routing.tsx";

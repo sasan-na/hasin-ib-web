@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { ApiError } from '@/lib/api/client';
 import { loginWithPassword, type LoginSession } from '@/lib/api/login';
 import { loginSessionOptions } from '@/lib/api/login.queries';
-import { normalizeDigits } from '@/lib/auth/normalizeDigits';
+import { normalizeDigits } from '@/lib/normalize-digits';
 import { logger } from '@/lib/logger';
 
 import type { OtpContext, SignedIn } from './loginFlow';

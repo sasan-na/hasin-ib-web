@@ -1,4 +1,4 @@
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 
 // The bank's core system takes dates in the Persian (Jalali) calendar as "YYYY/MM/DD", whatever the UI language.
 

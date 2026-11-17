@@ -8,7 +8,7 @@ import {Label} from "@/components/ui/label"
 import {Skeleton} from "@/components/ui/skeleton"
 import {requestAccountCode, type PasswordInfo} from "@/lib/api/transaction"
 import {passwordInfoOptions, transactionConfigOptions} from "@/lib/api/transaction.queries"
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 
 // Limits from the legacy field: digits only, 5 to 12 of them. The SMS code is requested at most once a minute.
 export const PASSWORD_MIN = 5

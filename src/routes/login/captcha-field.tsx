@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next"
 import {Button} from "@/components/ui/button"
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
-import {normalizeDigits} from "@/lib/auth/normalizeDigits"
+import {normalizeDigits} from "@/lib/normalize-digits"
 
 import {LOGIN_LIMITS, type LoginFormData} from "./loginSchema"
 import type {CaptchaStatus} from "./useLoginForm"
