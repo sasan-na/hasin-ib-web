@@ -1648,6 +1648,26 @@
                 "step": "The amount must be a multiple of {{amount}}.",
                 "card": "Choose a card."
             }
+        },
+        "activate": {
+            "action": "Activate",
+            "title": "Activate a toll tag",
+            "hint": "Register a tag for a car so it can be used: its serial, the kind of car and the plate.",
+            "carType": "Kind of car",
+            "chooseType": "Choose a kind",
+            "typesError": "The kinds of car could not be loaded.",
+            "plateLeft": "First two digits",
+            "plateLetter": "Letter",
+            "plateMiddle": "Three digits",
+            "plateRight": "Region code",
+            "plateHint": "Written as on the plate: two digits, a letter, three digits, and the region code.",
+            "confirmTitle": "Activate this tag",
+            "confirmQuestion": "The tag is registered for this car and activated.",
+            "confirm": "Activate",
+            "error": {
+                "carType": "Choose the kind of car.",
+                "plate": "Enter the plate: two digits, a letter, three digits and a two-digit region code (no zeros in the first two groups)."
+            }
         }
     }
 }

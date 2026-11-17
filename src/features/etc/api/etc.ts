@@ -161,3 +161,37 @@ export const blockEtc = (serial: string): Promise<TransactionResult> => operatio
 
 /** Deactivates a tag. A real change: send once per confirmation, never retry automatically. */
 export const deactivateEtc = (serial: string): Promise<TransactionResult> => operation("/ETCInactivation/DoTransaction", serial)
+
+const carTypesSchema = z.object({isSuccessful: z.boolean().nullish(), message: z.string().nullish(), carTypes: z.array(z.object({value: z.number(), title: z.string().nullish()})).nullish()})
+
+export interface CarType {
+	value: number
+	title: string
+}
+
+/** The kinds of car a tag can be registered for. */
+export const getCarTypes = async (): Promise<CarType[]> => {
+	const data = carTypesSchema.parse(camelKeys(await apiClient<unknown>("/ETCActivation/GetCarTypes")))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "car types failed")
+	return (data.carTypes ?? []).map((type) => ({value: type.value, title: type.title ?? String(type.value)}))
+}
+
+export interface ActivateRequest {
+	serial: string
+	carType: number
+	plate: Plate
+}
+
+/** Activates a tag for a car. A real change: send once per confirmation, never retry automatically. */
+export const activateEtc = (request: ActivateRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/Etc/ActivateEtc", {
+		method: "POST",
+		body: JSON.stringify({
+			etcSerial: request.serial,
+			carPlate: {leftPart: Number(request.plate.left), textPart: request.plate.letter, middlePart: Number(request.plate.middle), rightPart: Number(request.plate.right)},
+			carType: request.carType,
+			etcUserName: "",
+			etcPassword: "",
+			nationalCode: "",
+		}),
+	}).then(toTransactionResult)
