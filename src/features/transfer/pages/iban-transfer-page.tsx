@@ -17,7 +17,7 @@ import {SourceAccountSelect} from "@/features/transaction/components/source-acco
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {getIbanHolder, transferIban, type IbanNetwork} from "@/features/transfer/api/transfer"
 import {ibanLimitsOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
-import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib/iban"
+import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib/numbers"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 

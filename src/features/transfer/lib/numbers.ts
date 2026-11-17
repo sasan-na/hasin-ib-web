@@ -13,3 +13,18 @@ export const isValidIban = (iban: string): boolean => {
 	for (const digit of rearranged) remainder = (remainder * 10 + Number(digit)) % 97
 	return remainder === 1
 }
+
+/** Whether a card number passes the Luhn check. */
+export const isValidCardNumber = (number: string): boolean => {
+	if (!/^\d{16}$/.test(number)) return false
+	let sum = 0
+	for (let index = 0; index < 16; index++) {
+		let digit = Number(number[15 - index])
+		if (index % 2 === 1) {
+			digit *= 2
+			if (digit > 9) digit -= 9
+		}
+		sum += digit
+	}
+	return sum % 10 === 0
+}

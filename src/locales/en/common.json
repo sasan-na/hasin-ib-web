@@ -649,6 +649,22 @@
                 "min": "The amount is below the minimum of {{amount}}.",
                 "max": "The amount is above the maximum of {{amount}}."
             }
+        },
+        "card": {
+            "title": "Card to card",
+            "sourceCard": "Paying card",
+            "destinationCard": "Destination card number",
+            "chooseCard": "Choose a card",
+            "cardsError": "Your cards could not be loaded.",
+            "noCards": "You have no cards to pay from.",
+            "confirmQuestion": "The amount is taken from the paying card as soon as you confirm. Enter the card's details to approve it.",
+            "checkAgain": "Close this window and press Check again before trying once more.",
+            "error": {
+                "source": "Please choose the paying card.",
+                "format": "Enter a valid 16-digit card number.",
+                "same": "The destination is the same as the paying card.",
+                "notChecked": "Press Check to see who holds this card before sending."
+            }
         }
     }
 }
