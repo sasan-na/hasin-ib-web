@@ -1,7 +1,9 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
+import { routeMap } from "@/app/routes"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -112,7 +114,12 @@ export default function DashboardPage() {
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
+				<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+				<Button asChild variant="outline" size="sm">
+					<Link to={routeMap.oldHistory.path}>{t("dashboard.old.open")}</Link>
+				</Button>
+			</div>
 			</div>
 			<p className="text-muted-foreground text-sm">{t("dashboard.hint")}</p>
 

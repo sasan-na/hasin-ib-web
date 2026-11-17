@@ -1747,6 +1747,24 @@
         },
         "landing": {
             "title": "Approvals"
+        },
+        "old": {
+            "open": "Old internet bank archive",
+            "title": "Old internet bank archive",
+            "hint": "Approvals made in the internet bank this one replaced.",
+            "type": "Kind of request",
+            "allTypes": "All",
+            "startFrom": "Started from",
+            "startTo": "Started until",
+            "endFrom": "Ended from",
+            "endTo": "Ended until",
+            "loadError": "The archive could not be loaded.",
+            "empty": "There is nothing in the archive for this search.",
+            "detailsHint": "What the request asked for.",
+            "error": {
+                "date": "Enter dates like 1405/01/01.",
+                "state": "Choose successful, failed or both."
+            }
         }
     },
     "receipt": {

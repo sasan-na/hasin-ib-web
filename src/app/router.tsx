@@ -40,6 +40,7 @@ const PeriodicForm = React.lazy(() => import("@/features/report/pages/periodic-f
 const Balance = React.lazy(() => import("@/features/report/pages/balance-page.tsx"));
 const LoanInterest = React.lazy(() => import("@/features/loan/pages/loan-interest-page.tsx"));
 const LoanJunior = React.lazy(() => import("@/features/loan/pages/loan-junior-page.tsx"));
+const OldHistory = React.lazy(() => import("@/features/dashboard/pages/old-history-page.tsx"));
 const SubUsers = React.lazy(() => import("@/features/dashboard/pages/sub-users-page.tsx"));
 const WorkflowRules = React.lazy(() => import("@/features/dashboard/pages/workflow-rules-page.tsx"));
 const Dashboard = React.lazy(() => import("@/features/dashboard/pages/dashboard-page.tsx"));
@@ -166,6 +167,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.dashboard.path} element={<Dashboard/>}/>
                     <Route path={routeMap.workflowRules.path} element={<WorkflowRules/>}/>
                     <Route path={routeMap.subUsers.path} element={<SubUsers/>}/>
+                    <Route path={routeMap.oldHistory.path} element={<OldHistory/>}/>
                     <Route path={routeMap.loanInterest.path} element={<LoanInterest/>}/>
                     <Route path={routeMap.loanJunior.path} element={<LoanJunior/>}/>
                     <Route path={routeMap.messageList.path} element={<MessageList/>}/>
