@@ -4,7 +4,7 @@ Guidance for Claude Code (claude.ai/code) in this repository.
 
 ## Project
 
-IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Built so far: sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, recent events) and the account area (landing page, account list with balances, search, groups and reordering, account details with rename, open account, delegation request, facility credit calculator, account password), the card area, (list, details, accounts, actions, gift card), transfers (account, IBAN via Satna/Paya, card to card, group, standing orders), the account statement, the loan list, and a richer home page (wallet, quick transfer, most used services). Card-less cash, bills, cheques, messages, contacts and the rest of the legacy menu are still to come.
+IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Built so far: sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, wallet, quick transfer, most used services, recent events), the account area (landing, list, details, open account, delegation request, facility credit calculator, account password), the card area (list, details, actions, gift card, card-less cash), transfers (account, IBAN via Satna/Paya, card to card, group, standing orders with details and history), the account statement (with PDF and Excel export), bills (saved list, pay by account or card), cheques (list, book request, Pichak inquiry, register, confirm, transfer, transfers chain, owner inquiry), messages, contacts, loans (list, pay an installment from an account or a card, pay another loan by number, follow or stop following, batch payment, interest calculators), reports (landing, events, monthly, periodic invoices, balance diagram), approvals (the dashboard cartable: waiting, finished, accept or reject), receipts (search, view, print, PDF) and toll tags (ETC: list, balance, details, charge, activate, deactivate, block). Still to come: income and expenses (skipped on purpose), digital cheque issuing (needs the Hamoon signature flow), signing approvals, sub-user and workflow-rule management, buying a toll tag, bill and batch-loan Excel import, and the legacy menu landings for payments and other services.
 
 ## Standing rules
 
@@ -39,7 +39,7 @@ See `.env.example`:
 ```
 src/
   app/          router (router.tsx), route map (routes.ts), sign-in guard, shells + navigation (layout/), app-level pages (pages/)
-  features/     one folder per area of the bank: auth, home, menu, account, card, transfer, transaction, report, loan
+  features/     one folder per area of the bank: auth, home, menu, account, card, transfer, transaction, report, loan, bill, cheque, message, contact, dashboard, receipt, etc
     <feature>/api/         endpoint calls with their zod schemas (x.ts) and TanStack Query options (x.queries.ts)
     <feature>/pages/       route components, named <name>-page.tsx, default export (the router lazy-loads these)
     <feature>/components/  pieces used by that feature's pages
