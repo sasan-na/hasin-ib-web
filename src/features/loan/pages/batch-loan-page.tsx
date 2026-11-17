@@ -1,3 +1,4 @@
+import {OtherLoanTabs} from "@/features/loan/components/other-loan-tabs"
 import {useQuery} from "@tanstack/react-query"
 import {ArrowLeft, ArrowRight, Plus, Trash2} from "lucide-react"
 import {useRef, useState} from "react"
@@ -169,12 +170,13 @@ export default function BatchLoanPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.batch.title")}</h1>
 				<Button asChild variant="outline" size="sm">
-					<Link to={routeMap.loanList.path}>
+					<Link to={routeMap.loan.path}>
 						<BackIcon aria-hidden="true" />
 						{t("loan.interest.back")}
 					</Link>
 				</Button>
 			</div>
+			<OtherLoanTabs />
 			<p className="text-sm text-muted-foreground">{t("loan.batch.hint")}</p>
 
 			<section aria-labelledby="bl-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">

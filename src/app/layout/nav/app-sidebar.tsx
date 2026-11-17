@@ -59,9 +59,9 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         },
         {
             title: t("navigation.loans"),
-            url: routeMap.loanList.path,
+            url: routeMap.loan.path,
             icon: HandCoins,
-            isActive: pathname.startsWith(routeMap.loanList.path),
+            isActive: pathname.startsWith(routeMap.loan.path),
         },
         {
             title: t("navigation.reports"),

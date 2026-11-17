@@ -2,9 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { RefreshCw } from "lucide-react"
 import * as React from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 
-import { routeMap } from "@/app/routes"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PayInstallmentDialog } from "@/features/loan/components/pay-installment-dialog"
@@ -40,20 +38,6 @@ export default function LoanListPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.title")}</h1>
 				<div className="flex flex-wrap gap-2">
-					<Button asChild variant="outline" size="sm">
-						<Link to={routeMap.loanInterest.path}>
-							{t("loan.interest.open")}
-						</Link>
-					</Button>
-					<Button asChild variant="outline" size="sm">
-						<Link to={routeMap.loanBatch.path}>{t("loan.batch.open")}</Link>
-					</Button>
-					<Button asChild variant="outline" size="sm">
-						<Link to={routeMap.loanOther.path}>{t("loan.other.open")}</Link>
-					</Button>
-					<Button asChild variant="outline" size="sm">
-						<Link to={routeMap.loanJunior.path}>{t("loan.junior.open")}</Link>
-					</Button>
 					<Button
 						type="button"
 						variant="outline"

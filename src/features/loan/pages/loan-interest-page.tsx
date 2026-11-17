@@ -87,7 +87,7 @@ export default function LoanInterestPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.interest.title")}</h1>
 				<Button asChild variant="outline" size="sm">
-					<Link to={routeMap.loanList.path}>
+					<Link to={routeMap.loan.path}>
 						<BackIcon aria-hidden="true" />
 						{t("loan.interest.back")}
 					</Link>

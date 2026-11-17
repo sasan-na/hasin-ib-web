@@ -1,3 +1,4 @@
+import {OtherLoanTabs} from "@/features/loan/components/other-loan-tabs"
 import {useMutation} from "@tanstack/react-query"
 import {ArrowLeft, ArrowRight} from "lucide-react"
 import {useState} from "react"
@@ -49,12 +50,13 @@ export default function OtherLoanPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.other.title")}</h1>
 				<Button asChild variant="outline" size="sm">
-					<Link to={routeMap.loanList.path}>
+					<Link to={routeMap.loan.path}>
 						<BackIcon aria-hidden="true" />
 						{t("loan.interest.back")}
 					</Link>
 				</Button>
 			</div>
+			<OtherLoanTabs />
 			<p className="text-sm text-muted-foreground">{t("loan.other.hint")}</p>
 
 			<form

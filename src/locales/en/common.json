@@ -1070,7 +1070,9 @@
             "unfollowing": "Removing…",
             "unfollowTitle": "Remove this loan from your list",
             "unfollowQuestion": "The loan stays as it is; it just stops showing in your list.",
-            "unfollowFailed": "The loan could not be removed. Please try again."
+            "unfollowFailed": "The loan could not be removed. Please try again.",
+            "tabSingle": "One loan",
+            "tabBatch": "Several loans"
         },
         "batch": {
             "open": "Pay several loans",
@@ -1105,6 +1107,9 @@
             "importEmpty": "The file has no loans.",
             "importTooMany": "The list can hold at most {{count}} loans.",
             "importFailed": "The file could not be read. Use the template and try again."
+        },
+        "landing": {
+            "title": "Loans"
         }
     },
     "message": {
