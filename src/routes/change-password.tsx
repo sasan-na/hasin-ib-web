@@ -53,14 +53,14 @@ type FormValues = z.infer<ReturnType<typeof createSchema>>
 
 /** The page a user lands on when the server demands a new password (expired, or reset by the bank). */
 export default function ChangePassword() {
-	const {t} = useTranslation("auth")
+	const {t, i18n} = useTranslation("auth")
 	const navigate = useNavigate()
 	const signOut = useSignOut()
 	const username = useSession((s) => s.username) ?? ""
 	const mustChangePassword = useSession((s) => s.mustChangePassword)
 	const passwordChanged = useSession((s) => s.passwordChanged)
 	const expireLocally = useSession((s) => s.signOut)
-	const rules = useQuery(passwordRulesOptions())
+	const rules = useQuery(passwordRulesOptions(i18n.language))
 	// Rules the server says the new password breaks; null until it has been checked.
 	const [violations, setViolations] = useState<ReadonlySet<string> | null>(null)
 	const [checking, setChecking] = useState(false)

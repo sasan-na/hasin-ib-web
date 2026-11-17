@@ -1,3 +1,5 @@
+import i18n from "i18next"
+
 import {queryClient} from "@/lib/query-client"
 import {useSession} from "@/store/session"
 
@@ -45,10 +47,19 @@ const hasExpiredErrorCode = (data: unknown): boolean => {
 	return String(obj.errorCode ?? obj.ErrorCode ?? "") === "401"
 }
 
+/**
+ * The server writes its texts (dates, status titles, messages) in the language of the `lang` query
+ * parameter and falls back to Persian without it, so every call carries the current UI language.
+ */
+const withLang = (endpoint: string): string => {
+	const lang = i18n.language === "en" ? "en" : "fa"
+	return `${endpoint}${endpoint.includes("?") ? "&" : "?"}lang=${lang}`
+}
+
 export const apiClient = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
 	const token = useSession.getState().token
 	const xsrfToken = getXsrfToken()
-	const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+	const response = await fetch(`${API_BASE_URL}${withLang(endpoint)}`, {
 		// The server sets its XSRF cookie on login and reads it back later: cookies must be sent cross-origin.
 		credentials: "include",
 		...options,
