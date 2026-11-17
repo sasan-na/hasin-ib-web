@@ -26,7 +26,8 @@
         "reports": "Reports",
         "loans": "Loans",
         "messages": "Messages",
-        "contacts": "Contacts"
+        "contacts": "Contacts",
+        "bills": "Bills"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -856,6 +857,64 @@
             "duplicate": "This number is listed twice.",
             "mobile": "Enter a mobile number like 09121234567.",
             "email": "Enter a valid email address."
+        }
+    },
+    "bill": {
+        "title": "Bills",
+        "newTitle": "Pay a bill",
+        "search": "Search by title, bill id or phone number",
+        "empty": "You have no saved bills. Pay a bill and keep it to see it here.",
+        "noMatch": "No bill matches your search.",
+        "rial": "Rial",
+        "select": "Select {{bill}}",
+        "remove": "Remove",
+        "removing": "Removing…",
+        "removeTitle": "Remove this bill?",
+        "removeQuestion": "{{bill}} will be removed from your saved bills. Your past payments are not affected.",
+        "removed": "The bill was removed.",
+        "removeFailed": "The bill could not be removed.",
+        "cancel": "Cancel",
+        "billId": "Bill id",
+        "payId": "Payment id",
+        "mobile": "Mobile number",
+        "mobileHint": "The amount is asked from the mobile operator when you pay.",
+        "amountIs": "Amount: {{amount}}",
+        "preparing": "Checking…",
+        "paySelected": "Pay selected ({{count}})",
+        "review": "Review",
+        "mode": "How to find the bill",
+        "byIds": "Bill and payment id",
+        "byMobile": "Mobile number",
+        "titleField": "Title",
+        "optional": "optional",
+        "remember": "Keep this bill in my list",
+        "confirmTitle": "Pay bills",
+        "confirmQuestion": "You are about to pay {{count}} bill(s).",
+        "total": "Total",
+        "sourceAccount": "Pay from",
+        "pay": "Pay",
+        "paying": "Paying…",
+        "again": "Pay another bill",
+        "failed": "The payment was not made. Please check the details and try again.",
+        "uncertain": "We could not confirm whether the payment was made. Check your account statement before paying again.",
+        "kind": {
+            "water": "Water",
+            "electricity": "Electricity",
+            "gas": "Gas",
+            "phone": "Phone",
+            "mobile": "Mobile",
+            "municipality": "Municipality",
+            "other": "Other services",
+            "unknown": "Unknown type"
+        },
+        "error": {
+            "load": "The bills could not be loaded.",
+            "billId": "This bill id is not valid.",
+            "payId": "This payment id is not valid for the bill.",
+            "payIdFor": "Enter a valid payment id for {{bill}}.",
+            "mobile": "Enter a mobile number like 09121234567.",
+            "alreadyPaid": "The bill for {{bill}} is already paid.",
+            "lookup": "The bill could not be found."
         }
     }
 }

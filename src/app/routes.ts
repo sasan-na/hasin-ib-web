@@ -33,6 +33,8 @@ export const routeMap = {
 	"contactList": {breadcrumb: "contact.title", path: "/contact"},
 	"contactNew": {breadcrumb: "contact.newTitle", path: "/contact/new"},
 	"contactEdit": {breadcrumb: "contact.editTitle", path: "/contact/edit"},
+	"billList": {breadcrumb: "bill.title", path: "/bill"},
+	"billNew": {breadcrumb: "bill.newTitle", path: "/bill/new"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

@@ -36,6 +36,8 @@ const MessageDetail = React.lazy(() => import("@/features/message/pages/message-
 const NewMessage = React.lazy(() => import("@/features/message/pages/new-message-page.tsx"));
 const ContactList = React.lazy(() => import("@/features/contact/pages/contact-list-page.tsx"));
 const ContactForm = React.lazy(() => import("@/features/contact/pages/contact-form-page.tsx"));
+const BillList = React.lazy(() => import("@/features/bill/pages/bill-list-page.tsx"));
+const PayBill = React.lazy(() => import("@/features/bill/pages/pay-bill-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -83,6 +85,8 @@ const router = createBrowserRouter(
                     <Route path={routeMap.contactList.path} element={<ContactList/>}/>
                     <Route path={routeMap.contactNew.path} element={<ContactForm/>}/>
                     <Route path={routeMap.contactEdit.path} element={<ContactForm/>}/>
+                    <Route path={routeMap.billList.path} element={<BillList/>}/>
+                    <Route path={routeMap.billNew.path} element={<PayBill/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>
