@@ -65,5 +65,17 @@ export const handlers = [
         HttpResponse.json({ IsSuccessful: true, Message: '', ErrorCode: '0', LoginStatus: 0 })
     ),
 
+    // Home page data (camelCase). Sign in as the mock user to see a main user with a message.
+    http.get('**/api/Profile/GetUsername', () =>
+        HttpResponse.json({ isSuccessful: true, fullName: 'Sara Ahmadi', username: null, image: '' })
+    ),
+    http.get('**/api/NewService/GetList', () =>
+        HttpResponse.json({
+            isSuccessful: true,
+            newItems: [],
+            adminMessage: { message: 'Scheduled maintenance tonight from 01:00 to 03:00.', url: null, showInMainPage: true }
+        })
+    ),
+
     http.post('**/api/Login/Logout', () => HttpResponse.json({ isSuccessful: true }))
 ];

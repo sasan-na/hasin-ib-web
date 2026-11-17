@@ -22,7 +22,8 @@
         "general": "General"
     },
     "home": {
-        "welcome": "Welcome, {{username}}!"
+        "welcome": "Welcome, {{username}}!",
+        "adminMessage": "Message from the bank"
     },
     "theme": {
         "label": "Theme",

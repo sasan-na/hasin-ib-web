@@ -22,7 +22,8 @@
         "general": "عمومی"
     },
     "home": {
-        "welcome": "{{username}} عزیز، خوش آمدید!"
+        "welcome": "{{username}} عزیز، خوش آمدید!",
+        "adminMessage": "پیام بانک"
     },
     "theme": {
         "label": "پوسته",
