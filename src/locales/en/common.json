@@ -21,7 +21,8 @@
         "home": "Home",
         "general": "General",
         "accounts": "Accounts",
-        "cards": "Cards"
+        "cards": "Cards",
+        "transfers": "Transfers"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -520,6 +521,47 @@
                 "between": "The amount must be between {{min}} and {{max}} Rials.",
                 "ratio": "The amount must be a multiple of {{value}} Rials."
             }
+        }
+    },
+    "transfer": {
+        "landing": {
+            "title": "Transfers"
+        },
+        "smart": {
+            "title": "Transfer money"
+        },
+        "from": "From",
+        "sourceAccount": "Paying account",
+        "to": "To",
+        "destinationAccount": "Destination account number",
+        "check": "Check",
+        "checking": "Checking…",
+        "holder": "Account holder: {{name}}",
+        "holderLabel": "Account holder",
+        "lookupFailed": "The account could not be checked. Please try again.",
+        "details": "Details",
+        "amount": "Amount (Rials)",
+        "rial": "Rial",
+        "reason": "Reason",
+        "chooseReason": "Choose a reason",
+        "reasonsError": "The reasons could not be loaded. Please try again.",
+        "description": "Description",
+        "optional": "optional",
+        "review": "Review transfer",
+        "confirmTitle": "Send this money?",
+        "confirmQuestion": "The amount is taken from the paying account as soon as you confirm.",
+        "confirm": "Send money",
+        "sending": "Sending…",
+        "again": "Make another transfer",
+        "failed": "The bank did not accept the transfer. Please check the details and try again.",
+        "uncertain": "We could not tell whether the transfer went through. Check your account before trying again.",
+        "error": {
+            "source": "Please choose the paying account.",
+            "destinationFormat": "Enter the destination account number (digits only).",
+            "notChecked": "Press Check to see who holds this account before sending.",
+            "sameAccount": "The destination is the same as the paying account.",
+            "amount": "Please enter the amount.",
+            "reason": "Please choose a reason."
         }
     }
 }

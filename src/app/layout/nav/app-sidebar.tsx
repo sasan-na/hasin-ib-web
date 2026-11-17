@@ -1,5 +1,5 @@
 import * as React from "react"
-import {CreditCard, Home, Landmark} from "lucide-react"
+import {ArrowLeftRight, CreditCard, Home, Landmark} from "lucide-react"
 import {useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
@@ -32,6 +32,12 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             url: routeMap.card.path,
             icon: CreditCard,
             isActive: pathname.startsWith(routeMap.card.path),
+        },
+        {
+            title: t("navigation.transfers"),
+            url: routeMap.transfer.path,
+            icon: ArrowLeftRight,
+            isActive: pathname.startsWith(routeMap.transfer.path),
         },
     ]
 
