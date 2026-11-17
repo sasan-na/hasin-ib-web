@@ -4,7 +4,7 @@ Guidance for Claude Code (claude.ai/code) in this repository.
 
 ## Project
 
-IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Built so far: sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, recent events) and the account area (landing page, account list with balances, search, groups and reordering, account details with rename, open account, delegation request, facility credit calculator). Account password, cards, cheques, transfers and the rest of the legacy menu are still to come.
+IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Built so far: sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, recent events) and the account area (landing page, account list with balances, search, groups and reordering, account details with rename, open account, delegation request, facility credit calculator, account password), the card area, (list, details, accounts, actions, gift card), transfers (account, IBAN via Satna/Paya, card to card, group, standing orders), the account statement, the loan list, and a richer home page (wallet, quick transfer, most used services). Card-less cash, bills, cheques, messages, contacts and the rest of the legacy menu are still to come.
 
 ## Standing rules
 
@@ -39,7 +39,7 @@ See `.env.example`:
 ```
 src/
   app/          router (router.tsx), route map (routes.ts), sign-in guard, shells + navigation (layout/), app-level pages (pages/)
-  features/     one folder per area of the bank: auth, home, menu, account, transaction
+  features/     one folder per area of the bank: auth, home, menu, account, card, transfer, transaction, report, loan
     <feature>/api/         endpoint calls with their zod schemas (x.ts) and TanStack Query options (x.queries.ts)
     <feature>/pages/       route components, named <name>-page.tsx, default export (the router lazy-loads these)
     <feature>/components/  pieces used by that feature's pages
