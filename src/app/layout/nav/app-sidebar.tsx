@@ -1,5 +1,5 @@
 import * as React from "react"
-import {ArrowLeftRight, ClipboardCheck, CreditCard, FileText, HandCoins, Home, Landmark, MessageSquare, Printer, Receipt, ScrollText, Users} from "lucide-react"
+import {ArrowLeftRight, ClipboardCheck, Car, CreditCard, FileText, HandCoins, Home, Landmark, MessageSquare, Printer, Receipt, ScrollText, Users} from "lucide-react"
 import {useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
@@ -50,6 +50,12 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             url: routeMap.billList.path,
             icon: Receipt,
             isActive: pathname.startsWith(routeMap.billList.path),
+        },
+        {
+            title: t("navigation.etc"),
+            url: routeMap.etcList.path,
+            icon: Car,
+            isActive: pathname.startsWith(routeMap.etcList.path),
         },
         {
             title: t("navigation.loans"),

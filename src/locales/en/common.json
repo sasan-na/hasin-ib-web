@@ -30,7 +30,8 @@
         "bills": "Bills",
         "cheques": "Cheques",
         "dashboard": "Approvals",
-        "receipts": "Receipts"
+        "receipts": "Receipts",
+        "etc": "Toll tags"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -1581,5 +1582,42 @@
         "pdf": "Save as PDF",
         "pdfing": "Preparing…",
         "pdfFailed": "The PDF could not be created."
+    },
+    "etc": {
+        "title": "Toll tags",
+        "hint": "Your electronic toll collection (ETC) tags: see a tag's balance and details, or deactivate or block it.",
+        "refresh": "Refresh",
+        "searchSerial": "Search by serial",
+        "error": "The tags could not be loaded.",
+        "empty": "No tags to show.",
+        "rial": "Rials",
+        "car": "Car",
+        "plate": "Plate",
+        "balance": "Balance",
+        "loading": "Loading…",
+        "balanceError": "The balance could not be read.",
+        "showBalance": "Update balance",
+        "info": "Details",
+        "deactivate": "Deactivate",
+        "block": "Block",
+        "again": "Back to tags",
+        "infoTitle": "Tag details",
+        "infoError": "The details could not be loaded.",
+        "owner": "Owner",
+        "nationalCode": "National code",
+        "mobile": "Mobile",
+        "postalCode": "Postal code",
+        "address": "Address",
+        "type": "Type",
+        "status": "Status",
+        "serial": "Serial",
+        "close": "Close",
+        "sending": "Sending…",
+        "failed": "The request was not accepted. Please try again.",
+        "uncertain": "We could not confirm whether the request went through. Check the tag's status before trying again.",
+        "deactivateTitle": "Deactivate this tag",
+        "deactivateQuestion": "The tag stops working until it is activated again.",
+        "blockTitle": "Block this tag",
+        "blockQuestion": "A blocked tag cannot be used again. This cannot be undone here."
     }
 }
