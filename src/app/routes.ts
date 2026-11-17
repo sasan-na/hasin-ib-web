@@ -36,6 +36,7 @@ export const routeMap = {
 	"reportPeriodicEdit": {breadcrumb: "report.periodic.editTitle", path: "/report/periodic/edit"},
 	"reportBalance": {breadcrumb: "report.balance.title", path: "/report/balance"},
 	"loanList": {breadcrumb: "loan.title", path: "/loan"},
+	"loanInterest": {breadcrumb: "loan.interest.title", path: "/loan/interest"},
 	"messageList": {breadcrumb: "message.title", path: "/message"},
 	"messageNew": {breadcrumb: "message.newTitle", path: "/message/new"},
 	"messageDetail": {breadcrumb: "message.detailTitle", path: "/message/detail"},

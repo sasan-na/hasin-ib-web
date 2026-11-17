@@ -954,6 +954,36 @@
             "again": "Back to loans",
             "failed": "The payment was not made. Please check the details and try again.",
             "uncertain": "We could not confirm whether the payment was made. Check your account statement and the loan before paying again."
+        },
+        "interest": {
+            "open": "Loan interest calculator",
+            "title": "Loan interest calculator",
+            "back": "Back to loans",
+            "hint": "Choose a kind of loan, an amount and the number of installments to see what it would cost. This only calculates; nothing is requested from the bank.",
+            "loadError": "The loan kinds could not be loaded.",
+            "offers": "Kinds of loan",
+            "noOffers": "The bank offers no loan kinds right now.",
+            "maxAmount": "Largest loan",
+            "rate": "Yearly rate",
+            "stepped": "Stepped installments",
+            "amount": "Loan amount",
+            "installments": "Number of installments",
+            "kind": "Repayment kind",
+            "chooseKind": "Choose a kind",
+            "lifeInsurance": "Life insurance",
+            "mehr": "Mehr loan",
+            "calculate": "Calculate",
+            "calculating": "Calculating…",
+            "failed": "The calculation failed. Please check the details and try again.",
+            "result": "Result",
+            "profit": "Total profit",
+            "error": {
+                "offer": "Choose a kind of loan.",
+                "amount": "Enter a loan amount greater than zero.",
+                "max": "The amount cannot be more than {{amount}}.",
+                "count": "Enter the number of installments.",
+                "kind": "Choose a repayment kind."
+            }
         }
     },
     "message": {
