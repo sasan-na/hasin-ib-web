@@ -1618,6 +1618,36 @@
         "deactivateTitle": "Deactivate this tag",
         "deactivateQuestion": "The tag stops working until it is activated again.",
         "blockTitle": "Block this tag",
-        "blockQuestion": "A blocked tag cannot be used again. This cannot be undone here."
+        "blockQuestion": "A blocked tag cannot be used again. This cannot be undone here.",
+        "charge": {
+            "open": "Charge a tag",
+            "action": "Charge",
+            "title": "Charge a toll tag",
+            "hint": "Add credit to a toll tag, yours or someone else's, from one of your cards. Check the serial first.",
+            "check": "Check",
+            "checking": "Checking…",
+            "found": "Tag of {{owner}} ({{car}})",
+            "lookupFailed": "The tag could not be found.",
+            "amount": "Amount",
+            "limits": "From {{min}} to {{max}}.",
+            "card": "Card to pay from",
+            "chooseCard": "Choose a card",
+            "cardsError": "Your cards could not be loaded.",
+            "noCards": "You have no cards to pay from.",
+            "review": "Review",
+            "confirmTitle": "Confirm the charge",
+            "confirmQuestion": "The amount is paid from your card to this tag.",
+            "confirm": "Charge",
+            "uncertain": "We could not confirm whether the charge went through. Check the tag's balance and your card before trying again.",
+            "error": {
+                "serial": "Enter the tag's serial number.",
+                "notChecked": "Check the serial number first.",
+                "amount": "Enter an amount greater than zero.",
+                "min": "The amount cannot be less than {{amount}}.",
+                "max": "The amount cannot be more than {{amount}}.",
+                "step": "The amount must be a multiple of {{amount}}.",
+                "card": "Choose a card."
+            }
+        }
     }
 }

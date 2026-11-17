@@ -2,6 +2,7 @@ import {useQuery} from "@tanstack/react-query"
 import {RefreshCw} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
@@ -43,10 +44,15 @@ export default function EtcListPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("etc.title")}</h1>
+				<div className="flex flex-wrap gap-2">
+				<Button asChild variant="outline" size="sm">
+					<Link to={routeMap.etcCharge.path}>{t("etc.charge.open")}</Link>
+				</Button>
 				<Button type="button" variant="outline" size="sm" disabled={tags.isFetching} onClick={() => void tags.refetch()}>
 					<RefreshCw aria-hidden="true" className={tags.isFetching ? "animate-spin" : undefined} />
 					{t("etc.refresh")}
 				</Button>
+				</div>
 			</div>
 			<p className="text-sm text-muted-foreground">{t("etc.hint")}</p>
 
@@ -95,6 +101,11 @@ export default function EtcListPage() {
 									{tag.operations.includes("EtcBalance") ? (
 										<Button type="button" size="sm" variant="outline" disabled={balance?.loading} onClick={() => void loadBalance(tag.serial)}>
 											{t("etc.showBalance")}
+										</Button>
+									) : null}
+									{tag.operations.includes("EtcCharge") ? (
+										<Button asChild size="sm">
+											<Link to={`${routeMap.etcCharge.path}?serial=${encodeURIComponent(tag.serial)}`}>{t("etc.charge.action")}</Link>
 										</Button>
 									) : null}
 									{tag.operations.includes("EtcInfo") ? (

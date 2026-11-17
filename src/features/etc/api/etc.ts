@@ -2,6 +2,7 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
+import {toCardInfoBody, type CardCredentials} from "@/features/card/api/card-credentials"
 import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
 
 const text = z.union([z.string(), z.number()]).nullish()
@@ -99,9 +100,8 @@ export interface EtcInfo {
 	plate: Plate | null
 }
 
-/** The registered details of a tag. */
-export const getEtcInfo = async (serial: string): Promise<EtcInfo> => {
-	const data = infoSchema.parse(camelKeys(await apiClient<unknown>(`/Etc/GetEtcInfo?serial=${encodeURIComponent(serial)}`)))
+const readInfo = async (path: string, serial: string): Promise<EtcInfo> => {
+	const data = infoSchema.parse(camelKeys(await apiClient<unknown>(`${path}?serial=${encodeURIComponent(serial)}`)))
 	if (data.isSuccessful === false || !data.info) throw new Error(data.message ?? "etc info failed")
 	const info = data.info
 	return {
@@ -117,6 +117,41 @@ export const getEtcInfo = async (serial: string): Promise<EtcInfo> => {
 		plate: toPlate(info.carPlate),
 	}
 }
+
+/** The registered details of one of the user's tags. */
+export const getEtcInfo = (serial: string): Promise<EtcInfo> => readInfo("/Etc/GetEtcInfo", serial)
+
+/** The details of any tag (to be charged): who it belongs to and which car. */
+export const getDestEtcInfo = (serial: string): Promise<EtcInfo> => readInfo("/Etc/GetDestEtcInfo", serial)
+
+const configSchema = z.object({isSuccessful: z.boolean().nullish(), message: z.string().nullish(), coefficientAmount: z.number().nullish(), minAmount: z.number().nullish(), maxAmount: z.number().nullish()})
+
+export interface ChargeConfig {
+	/** A charge must be a multiple of this (Rials). */
+	step: number
+	min: number
+	max: number
+}
+
+export const getChargeConfig = async (): Promise<ChargeConfig> => {
+	const data = configSchema.parse(camelKeys(await apiClient<unknown>("/Etc/GetChargeAmountConfigs")))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "etc config failed")
+	return {step: data.coefficientAmount ?? 1, min: data.minAmount ?? 0, max: data.maxAmount ?? 0}
+}
+
+export interface ChargeRequest {
+	credentials: CardCredentials
+	tag: Pick<EtcInfo, "serial" | "nationalCode">
+	/** In Rials. */
+	amount: number
+}
+
+/** Charges a tag from one of the user's cards. A real transaction: send once per confirmation, never retry automatically. */
+export const chargeEtc = (request: ChargeRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/ETCCharge/ChargeEtc", {
+		method: "POST",
+		body: JSON.stringify({etcSerial: request.tag.serial, nationalCode: request.tag.nationalCode, amount: request.amount, cardInfo: toCardInfoBody(request.credentials), isRepetitive: false}),
+	}).then(toTransactionResult)
 
 const operation = (path: string, serial: string): Promise<TransactionResult> =>
 	apiClient<unknown>(path, {method: "POST", body: JSON.stringify({etcSerial: serial, etcUserName: "", etcPassword: "", nationalCode: ""})}).then(toTransactionResult)

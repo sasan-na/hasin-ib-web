@@ -44,6 +44,7 @@ export const routeMap = {
 	"dashboard": {breadcrumb: "dashboard.title", path: "/dashboard"},
 	"receiptList": {breadcrumb: "receipt.title", path: "/receipt"},
 	"receiptView": {breadcrumb: "receipt.viewTitle", path: "/receipt/view"},
+	"etcCharge": {breadcrumb: "etc.charge.title", path: "/etc/charge"},
 	"etcList": {breadcrumb: "etc.title", path: "/etc"},
 	"messageList": {breadcrumb: "message.title", path: "/message"},
 	"messageNew": {breadcrumb: "message.newTitle", path: "/message/new"},
