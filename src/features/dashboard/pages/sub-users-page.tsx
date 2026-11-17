@@ -37,6 +37,9 @@ export default function SubUsersPage() {
 					<Button asChild size="sm">
 						<Link to={routeMap.newSubUser.path}>{t("dashboard.newUser.open")}</Link>
 					</Button>
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.roles.path}>{t("dashboard.roles.open")}</Link>
+					</Button>
 				<Button asChild variant="outline" size="sm">
 					<Link to={routeMap.dashboard.path}>
 						<BackIcon aria-hidden="true" />

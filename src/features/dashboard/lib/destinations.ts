@@ -1,4 +1,4 @@
-import {ClipboardCheck, ListChecks, UserCog} from "lucide-react"
+import {ClipboardCheck, ListChecks, ShieldCheck, UserCog} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -7,5 +7,6 @@ import {TONES, type Destination} from "@/features/menu/components/service-cards"
 export const dashboardDestinations: Record<string, Destination> = {
 	Dashboard: {to: routeMap.dashboard.path, icon: ClipboardCheck, ...TONES.primary},
 	Workflow: {to: routeMap.workflowRules.path, icon: ListChecks, ...TONES.info},
+	RoleManagement: {to: routeMap.roles.path, icon: ShieldCheck, ...TONES.warning},
 	UserManagement: {to: routeMap.subUsers.path, icon: UserCog, ...TONES.success},
 }

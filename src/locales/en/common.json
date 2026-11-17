@@ -1805,6 +1805,27 @@
                 "grant": "For account {{account}}, choose a role and fill in both passwords (5 to 12 digits).",
                 "existing": "That person cannot be added."
             }
+        },
+        "roles": {
+            "open": "Roles",
+            "title": "Roles",
+            "hint": "A role says what a person may do on an account. Make your own, then give them to people when you add them.",
+            "new": "New role",
+            "error": "The roles could not be loaded.",
+            "empty": "There are no roles yet.",
+            "admin": "The bank's administrator role",
+            "noServices": "Allows nothing yet.",
+            "edit": "Edit",
+            "delete": "Delete",
+            "deleteTitle": "Delete this role",
+            "deleteQuestion": "People using this role lose what it allowed.",
+            "name": "Name",
+            "newTitle": "New role",
+            "editTitle": "Edit the role",
+            "editHint": "Choose what the role allows. Ticking a group ticks everything in it.",
+            "save": "Save",
+            "duplicate": "You already have a role with this name.",
+            "failed": "The change was not accepted. A role that people use cannot be deleted; please try again or remove it from them first."
         }
     },
     "receipt": {

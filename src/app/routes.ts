@@ -45,6 +45,7 @@ export const routeMap = {
 	"loanInterest": {breadcrumb: "loan.interest.title", path: "/loan/interest"},
 	"loanJunior": {breadcrumb: "loan.junior.title", path: "/loan/junior-interest"},
 	"oldHistory": {breadcrumb: "dashboard.old.title", path: "/dashboard/history"},
+	"roles": {breadcrumb: "dashboard.roles.title", path: "/dashboard/roles"},
 	"newSubUser": {breadcrumb: "dashboard.newUser.title", path: "/dashboard/users/new"},
 	"subUsers": {breadcrumb: "dashboard.users.title", path: "/dashboard/users"},
 	"workflowRules": {breadcrumb: "dashboard.rules.title", path: "/dashboard/rules"},
