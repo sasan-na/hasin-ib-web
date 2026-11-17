@@ -337,7 +337,20 @@
             "nameRequired": "Please enter a card name.",
             "renameError": "The name could not be changed. Please try again.",
             "holder": "Card holder",
-            "holderUnknown": "The card holder could not be loaded."
+            "holderUnknown": "The card holder could not be loaded.",
+            "saveTitle": "Save the card's CVV2 and expiry",
+            "saveNote": "The bank can keep your CVV2 and expiry so card requests start pre-filled. The card password and one-time password are only used to check it is you and are not saved.",
+            "saved": "Your CVV2 and expiry are saved.",
+            "saveCard": "Save",
+            "update": "Update saved details",
+            "saving": "Saving…",
+            "saveSuccess": "The card details were saved.",
+            "saveError": "The card details could not be saved. Check them and try again.",
+            "deleteSaved": "Delete saved details",
+            "deleting": "Deleting…",
+            "deleteTitle": "Delete the saved details?",
+            "deleteQuestion": "The bank will forget the CVV2 and expiry it saved for this card. You can save them again later.",
+            "deleteError": "The saved details could not be deleted. Please try again."
         },
         "requests": {
             "title": "Card requests",
@@ -423,6 +436,47 @@
             "needDate": "Enter the CVV2 and expiry first, so the bank can send the code.",
             "codeSent": "The code was sent to your phone.",
             "codeError": "The code could not be sent. Please try again."
+        },
+        "blockButton": "Block",
+        "blockFor": "Block {{name}}",
+        "replicaButton": "Renew or replace",
+        "replicaFor": "Renew or replace {{name}}",
+        "block": {
+            "title": "Block this card?",
+            "card": "Card",
+            "warning": "In case of a stolen or lost card, or any other reason, you can block it to prevent misuse. A blocked card cannot be used again, and this cannot be undone here.",
+            "agree": "I agree to block the card {{number}}.",
+            "confirm": "Block card",
+            "sending": "Blocking…",
+            "failed": "The bank did not block the card. Please try again or contact the bank.",
+            "uncertain": "We could not tell whether the card was blocked. Check the card's status before trying again.",
+            "backToCards": "Back to cards"
+        },
+        "replica": {
+            "title": "Renew or replace a card",
+            "backToCards": "Back to cards",
+            "note1": "If you renew the card, your current card stops working and you collect the new one at the branch you choose.",
+            "note2": "When you ask for a replacement, choosing \"lost\" as the reason gives the new card a different number.",
+            "requestType": "Request type",
+            "renew": "Renew",
+            "reissue": "Replace (reissue)",
+            "reason": "Reason",
+            "chooseReason": "Choose a reason",
+            "branch": "Branch to collect the card",
+            "branchHint": "The branch where you will pick up the new card.",
+            "mobile": "Mobile number",
+            "review": "Review request",
+            "confirmTitle": "Confirm the card request",
+            "confirmWarning": "Go ahead only if the details are right. Enter the card's details to confirm.",
+            "confirm": "Send request",
+            "sending": "Sending…",
+            "failed": "The bank did not accept the request. Check the card details and try again.",
+            "uncertain": "We could not tell whether the request went through. Check with the bank before trying again.",
+            "error": {
+                "branch": "Please choose a branch.",
+                "mobile": "Enter a mobile number like 09123456789.",
+                "reason": "Please choose a reason."
+            }
         }
     }
 }

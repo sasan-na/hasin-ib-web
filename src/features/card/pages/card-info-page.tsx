@@ -11,6 +11,7 @@ import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
 import {renameCard} from "@/features/card/api/card-info"
 import {cardInfoOptions, cardKeys, cardOwnerOptions} from "@/features/card/api/card.queries"
+import {SaveCardInfoSection} from "@/features/card/components/save-card-info-section"
 import {formatCardNumber} from "@/lib/format"
 
 /** One card in detail: its number, its name (editable) and its holder. */
@@ -98,6 +99,7 @@ export default function CardInfoPage() {
 								</div>
 							)}
 						</div>
+						<SaveCardInfoSection cardId={cardId} cardNumber={info.data.number} />
 					</>
 				)}
 			</section>

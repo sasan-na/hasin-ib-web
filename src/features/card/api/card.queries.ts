@@ -1,5 +1,6 @@
 import {queryOptions} from "@tanstack/react-query"
 
+import {getReplicaForm} from "./card-actions"
 import {getCardAccounts, getAddableAccounts} from "./card-account"
 import {getCardCredentialInfo} from "./card-credentials"
 import {getCardInfo, getCardOwner} from "./card-info"
@@ -14,6 +15,7 @@ export const cardKeys = {
 	accounts: (cardId: number) => [...cardKeys.all, "accounts", cardId] as const,
 	addable: (cardId: number, linked: string) => [...cardKeys.all, "addable", cardId, linked] as const,
 	credentials: (cardId: number, language: string) => [...cardKeys.all, "credentials", cardId, language] as const,
+	replicaForm: (language: string) => [...cardKeys.all, "replicaForm", language] as const,
 }
 
 export const cardsOptions = (language: string) => queryOptions({queryKey: cardKeys.list(language), queryFn: getCards, staleTime: 60_000, retry: false})
@@ -33,3 +35,7 @@ export const addableAccountsOptions = (cardId: number, linked: string[]) =>
 /** Whether the card needs a token's password, and the CVV2/expiry the user saved, if any. */
 export const cardCredentialInfoOptions = (cardId: number, language: string) =>
 	queryOptions({queryKey: cardKeys.credentials(cardId, language), queryFn: () => getCardCredentialInfo(cardId), staleTime: 0, retry: false})
+
+/** The mobile number the bank has and the reasons a card may be reissued. */
+export const replicaFormOptions = (language: string) =>
+	queryOptions({queryKey: cardKeys.replicaForm(language), queryFn: getReplicaForm, staleTime: 5 * 60_000, retry: false})

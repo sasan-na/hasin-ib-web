@@ -19,6 +19,7 @@ const CardInfo = React.lazy(() => import("@/features/card/pages/card-info-page.t
 const CardRequestList = React.lazy(() => import("@/features/card/pages/card-request-list-page.tsx"));
 const CardAccountList = React.lazy(() => import("@/features/card/pages/card-account-list-page.tsx"));
 const CardConnectAccount = React.lazy(() => import("@/features/card/pages/card-connect-account-page.tsx"));
+const CardReplicaRenew = React.lazy(() => import("@/features/card/pages/card-replica-renew-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.cardRequestList.path} element={<CardRequestList/>}/>
                     <Route path={routeMap.cardAccountList.path} element={<CardAccountList/>}/>
                     <Route path={routeMap.cardConnectAccount.path} element={<CardConnectAccount/>}/>
+                    <Route path={routeMap.cardReplicaRenew.path} element={<CardReplicaRenew/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>

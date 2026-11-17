@@ -1,11 +1,13 @@
 import {useMutation} from "@tanstack/react-query"
-import {ChevronDown, ChevronUp, Info, Link2, RefreshCw} from "lucide-react"
+import {Ban, ChevronDown, ChevronUp, Info, Link2, RefreshCw, Repeat} from "lucide-react"
+import {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {CopyButton} from "@/components/copy-button"
+import {CardBlockDialog} from "@/features/card/components/card-block-dialog"
 import {getCardBalance, type Card, type CardBalances} from "@/features/card/api/card"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 
@@ -40,6 +42,7 @@ interface CardRowProps {
 /** One card: who it is, its number (with copy), its default account, its balance on request, and where it sits in the list. */
 export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 	const {t, i18n} = useTranslation()
+	const [blocking, setBlocking] = useState(false)
 	const refresh = useMutation({
 		mutationFn: () => getCardBalance(card.id),
 		onSuccess: (balances) => onFresh(card.id, balances),
@@ -137,6 +140,20 @@ export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 								</Link>
 							</Button>
 						) : null}
+						{card.services.has("Replica") ? (
+							<Button asChild variant="outline" size="sm">
+								<Link to={`${routeMap.cardReplicaRenew.path}?cardId=${card.id}`} aria-label={t("card.replicaFor", {name})}>
+									<Repeat aria-hidden="true" />
+									{t("card.replicaButton")}
+								</Link>
+							</Button>
+						) : null}
+						{card.services.has("Block") ? (
+							<Button type="button" variant="outline" size="sm" className="text-destructive" aria-label={t("card.blockFor", {name})} onClick={() => setBlocking(true)}>
+								<Ban aria-hidden="true" />
+								{t("card.blockButton")}
+							</Button>
+						) : null}
 						{card.services.has("Info") ? (
 							<Button asChild variant="outline" size="sm">
 								<Link to={`${routeMap.cardInfo.path}?cardId=${card.id}`} aria-label={t("card.infoFor", {name})}>
@@ -148,6 +165,7 @@ export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 					</div>
 				</div>
 			</div>
+			{blocking ? <CardBlockDialog cardNumber={card.number} cardName={name} onClose={() => setBlocking(false)} /> : null}
 		</li>
 	)
 }

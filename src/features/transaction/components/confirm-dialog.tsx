@@ -22,6 +22,8 @@ interface ConfirmDialogProps {
 	pendingLabel: string
 	/** False until everything the service needs (for example the password) is in. */
 	canConfirm: boolean
+	/** Draws the confirm button as dangerous: for something that cannot be undone. */
+	destructive?: boolean
 	pending: boolean
 	/** The bank's refusal or a network problem from the last try; the dialog stays open so the user can fix it. */
 	error?: string | null
@@ -42,6 +44,7 @@ export function ConfirmDialog({
 	confirmLabel,
 	pendingLabel,
 	canConfirm,
+	destructive = false,
 	pending,
 	error,
 	onConfirm,
@@ -73,7 +76,7 @@ export function ConfirmDialog({
 					<Button type="button" variant="outline" disabled={pending} onClick={() => onOpenChange(false)}>
 						{t("transaction.cancel")}
 					</Button>
-					<Button type="button" disabled={!canConfirm || pending} onClick={onConfirm}>
+					<Button type="button" variant={destructive ? "destructive" : "default"} disabled={!canConfirm || pending} onClick={onConfirm}>
 						{pending ? pendingLabel : confirmLabel}
 					</Button>
 				</AlertDialogFooter>
