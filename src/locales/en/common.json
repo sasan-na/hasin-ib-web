@@ -1121,7 +1121,25 @@
             "backToInquiry": "Back to cheque inquiry",
             "acceptFailed": "The cheque was not accepted. Please try again.",
             "rejectFailed": "The cheque was not rejected. Please try again.",
-            "confirmUncertain": "We could not confirm whether your answer was received. Ask the registry about the cheque again before answering twice."
+            "confirmUncertain": "We could not confirm whether your answer was received. Ask the registry about the cheque again before answering twice.",
+            "transferCodes": {
+                "0": "No action yet",
+                "1": "Rejected the transfer",
+                "2": "Accepted the transfer",
+                "3": "Accepting the transfer is in progress"
+            },
+            "transferStatus": "Transfer status",
+            "checkTransfer": "Check receivers' answers",
+            "noTransfer": "This cheque is not being passed on right now.",
+            "transferTitle": "Pass this cheque on",
+            "transferIntro": "Name who the cheque goes to next. They are asked to accept it.",
+            "newReceivers": "New receivers",
+            "transferReview": "Review",
+            "transferConfirmTitle": "Pass cheque on",
+            "transferConfirmQuestion": "The cheque is passed on to the receivers below and they are asked to accept it.",
+            "transferConfirm": "Pass cheque on",
+            "transferFailed": "The cheque was not passed on. Please check the details and try again.",
+            "transferUncertain": "We could not confirm whether the cheque was passed on. Check the receivers' answers before trying again."
         },
         "register": {
             "action": "Register",

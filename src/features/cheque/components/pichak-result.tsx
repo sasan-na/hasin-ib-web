@@ -1,12 +1,12 @@
 import {useTranslation} from "react-i18next"
 
-import type {PichakInquiry, PichakPerson} from "@/features/cheque/api/pichak-inquiry"
+import type {PichakInquiry, PichakPerson, TransferReceiver} from "@/features/cheque/api/pichak-inquiry"
 import {formatAmount} from "@/lib/format"
 
 /** A registry code shown as words when the code is known, and as it came when it is not. */
 const useWords = () => {
 	const {t} = useTranslation()
-	return (group: "chequeType" | "media" | "status" | "guarantee" | "block" | "customerType", code: string): string => {
+	return (group: "chequeType" | "media" | "status" | "guarantee" | "block" | "customerType" | "transfer", code: string): string => {
 		if (code === "") return ""
 		// A code the table does not know is shown as the registry sent it.
 		return t(`cheque.pichak.${group}Codes.${code}`, {defaultValue: code})
@@ -43,6 +43,33 @@ function People({title, list}: {title: string; list: PichakPerson[]}) {
 				))}
 			</ul>
 		</section>
+	)
+}
+
+/** Each new receiver of a cheque being passed on, with whether they have accepted it. */
+export function TransferReceivers({receivers}: {receivers: TransferReceiver[]}) {
+	const {t} = useTranslation()
+	const words = useWords()
+	if (receivers.length === 0) return <p className="text-sm text-muted-foreground">{t("cheque.pichak.noTransfer")}</p>
+	return (
+		<ul className="flex flex-col gap-2">
+			{receivers.map((receiver, index) => (
+				<li key={index} className="flex flex-col gap-1 rounded-md border p-3 text-sm">
+					<div className="flex flex-wrap justify-between gap-2">
+						<span className="font-medium">{receiver.name}</span>
+						<span dir="ltr" className="text-muted-foreground">
+							{receiver.idCode}
+						</span>
+					</div>
+					<span>{words("transfer", receiver.accepted)}</span>
+					{receiver.lastAction ? (
+						<span dir="ltr" className="text-xs text-muted-foreground">
+							{receiver.lastAction}
+						</span>
+					) : null}
+				</li>
+			))}
+		</ul>
 	)
 }
 

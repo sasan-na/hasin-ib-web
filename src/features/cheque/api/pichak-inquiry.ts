@@ -3,6 +3,7 @@ import {z} from "@/lib/zod"
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
 import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
+import type {Recipient} from "@/features/cheque/api/pichak-register"
 
 // The bank forwards the central registry's answer as it is, so every field may be a string or a number.
 const text = z.union([z.string(), z.number()]).nullish()
@@ -36,6 +37,7 @@ const detailSchema = z.object({
 	reasonCodeStr: text,
 	wsrecieverInquiryType: z.array(personSchema).nullish(),
 	wssignerInquiryType: z.array(personSchema).nullish(),
+	transferRecieverInquiryType: z.array(z.object({name: text, idType: text, idCode: text, acceptTransfer: text, lastActionDateStr: text})).nullish(),
 })
 
 const ownerSchema = z.object({
@@ -96,8 +98,19 @@ export interface OwnerRecord {
 	cleared: string
 }
 
+/** Where a cheque being passed on stands with one of its new receivers. */
+export interface TransferReceiver {
+	name: string
+	idType: string
+	idCode: string
+	/** 0 no action yet, 1 rejected, 2 accepted, 3 in progress. */
+	accepted: string
+	lastAction: string
+}
+
 export interface PichakInquiry {
 	cheque: PichakCheque | null
+	transferReceivers: TransferReceiver[]
 	ongoing: string
 	blocked: string
 	owners: OwnerRecord[]
@@ -108,14 +121,7 @@ export type InquiryRole = "issuer" | "holder"
 const people = (list: {name?: string | number | null; idType?: string | number | null; idCode?: string | number | null}[] | null | undefined): PichakPerson[] =>
 	(list ?? []).map((person) => ({name: str(person.name), idType: str(person.idType), idCode: str(person.idCode)}))
 
-/**
- * Asks the central cheque registry (through the bank) about a cheque by its 16-digit Sayyad id. As the drawer
- * ("issuer") you see your own cheque; as the holder you see one you were given. With `ownerCheck` the holder
- * inquiry also returns how many cheques the drawer has bounced and cleared. Throws with the bank's text on a refusal.
- */
-export const inquirePichak = async (sayyadId: string, role: InquiryRole, ownerCheck: boolean): Promise<PichakInquiry> => {
-	const body = role === "issuer" ? {sayyadId} : {sayyadId, needOwnerInquiry: ownerCheck}
-	const data = responseSchema.parse(camelKeys(await apiClient<unknown>(role === "issuer" ? "/Pichak/IssuerInquiry" : "/Pichak/HolderInquiry", {method: "POST", body: JSON.stringify(body)})))
+const toInquiry = (data: z.infer<typeof responseSchema>): PichakInquiry => {
 	if (data.isSuccessful === false || !data.response) throw new Error(typeof data.message === "string" ? data.message : "")
 	const detail = data.response
 	const owner = data.ownerInquiryResult?.result?.data
@@ -139,11 +145,32 @@ export const inquirePichak = async (sayyadId: string, role: InquiryRole, ownerCh
 			receivers: people(detail.wsrecieverInquiryType),
 			signers: people(detail.wssignerInquiryType),
 		},
+		transferReceivers: (detail.transferRecieverInquiryType ?? []).map((receiver) => ({
+			name: str(receiver.name),
+			idType: str(receiver.idType),
+			idCode: str(receiver.idCode),
+			accepted: str(receiver.acceptTransfer),
+			lastAction: str(receiver.lastActionDateStr),
+		})),
 		ongoing: str(owner?.onGoing),
 		blocked: str(owner?.blocked),
 		owners: (owner?.ownersInfo ?? []).map((info) => ({idCode: str(info.idCode), idType: str(info.idType), bounced: str(info.bounced), cleared: str(info.cleared)})),
 	}
 }
+
+/**
+ * Asks the central cheque registry (through the bank) about a cheque by its 16-digit Sayyad id. As the drawer
+ * ("issuer") you see your own cheque; as the holder you see one you were given. With `ownerCheck` the holder
+ * inquiry also returns how many cheques the drawer has bounced and cleared. Throws with the bank's text on a refusal.
+ */
+export const inquirePichak = async (sayyadId: string, role: InquiryRole, ownerCheck: boolean): Promise<PichakInquiry> => {
+	const body = role === "issuer" ? {sayyadId} : {sayyadId, needOwnerInquiry: ownerCheck}
+	return toInquiry(responseSchema.parse(camelKeys(await apiClient<unknown>(role === "issuer" ? "/Pichak/IssuerInquiry" : "/Pichak/HolderInquiry", {method: "POST", body: JSON.stringify(body)}))))
+}
+
+/** Where a cheque that is being passed on stands with each of its new receivers. */
+export const inquireTransfer = async (sayyadId: string): Promise<PichakInquiry> =>
+	toInquiry(responseSchema.parse(camelKeys(await apiClient<unknown>("/Pichak/TransferInquiry", {method: "POST", body: JSON.stringify({sayyadId})}))))
 
 /** The registry's status of a cheque that waits for the receiver to accept it (written, or being passed on to them). */
 export const WAITING_FOR_RECEIVER = ["7", "8"]
@@ -159,6 +186,25 @@ export const confirmPichakCheque = (params: {sayyadId: string; accept: boolean; 
 			seriesNo: params.series,
 			serialNo: params.serial,
 			// Back to the registry's own YYYYMMDD form.
+			dueDate: params.dueDate.replace(/\D/g, ""),
+			amount: params.amount,
+		}),
+	}).then(toTransactionResult)
+
+/** The registry's status of a cheque that its holder may pass on: registered and accepted. */
+export const TRANSFERABLE = ["1"]
+
+/** Passes a cheque you hold on to other people. A real transaction: send once per confirmation, never retry automatically. */
+export const transferPichakCheque = (params: {sayyadId: string; description: string; iban: string; recipients: Recipient[]; series: string; serial: string; dueDate: string; amount: number}): Promise<TransactionResult> =>
+	apiClient<unknown>("/Pichak/TransferCheque", {
+		method: "POST",
+		body: JSON.stringify({
+			sayyadId: params.sayyadId,
+			description: params.description,
+			toIban: params.iban === "" ? "" : `IR${params.iban}`,
+			persons: params.recipients.map((person) => ({name: person.name, idType: String(person.idType), idCode: person.idCode})),
+			seriesNo: params.series,
+			serialNo: params.serial,
 			dueDate: params.dueDate.replace(/\D/g, ""),
 			amount: params.amount,
 		}),

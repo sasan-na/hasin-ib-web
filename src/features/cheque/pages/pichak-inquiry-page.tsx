@@ -6,9 +6,10 @@ import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {inquirePichak, WAITING_FOR_RECEIVER, type InquiryRole} from "@/features/cheque/api/pichak-inquiry"
+import {inquirePichak, inquireTransfer, TRANSFERABLE, WAITING_FOR_RECEIVER, type InquiryRole} from "@/features/cheque/api/pichak-inquiry"
 import {PichakConfirmDialog} from "@/features/cheque/components/pichak-confirm-dialog"
-import {PichakResult} from "@/features/cheque/components/pichak-result"
+import {PichakTransferSection} from "@/features/cheque/components/pichak-transfer-section"
+import {PichakResult, TransferReceivers} from "@/features/cheque/components/pichak-result"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
 const SAYYAD_LENGTH = 16
@@ -24,6 +25,8 @@ export default function PichakInquiryPage() {
 	const inquiry = useMutation({mutationFn: (asked: InquiryRole) => inquirePichak(sayyadId, asked, asked === "holder" && ownerCheck)})
 	// Only a holder who has just looked the cheque up can answer for it, and only while it waits for them.
 	const canAnswer = inquiry.variables === "holder" && inquiry.data?.cheque != null && WAITING_FOR_RECEIVER.includes(inquiry.data.cheque.status)
+	const canTransfer = inquiry.variables === "holder" && inquiry.data?.cheque != null && TRANSFERABLE.includes(inquiry.data.cheque.status)
+	const transferStatus = useMutation({mutationFn: () => inquireTransfer(sayyadId)})
 	const valid = sayyadId.length === SAYYAD_LENGTH
 
 	return (
@@ -51,6 +54,7 @@ export default function PichakInquiryPage() {
 						onChange={(event) => {
 							setSayyadId(normalizeDigits(event.target.value).replace(/\D/g, ""))
 							inquiry.reset()
+							transferStatus.reset()
 						}}
 					/>
 					{sayyadId !== "" && !valid ? <p className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
@@ -105,6 +109,23 @@ export default function PichakInquiryPage() {
 					</div>
 				</section>
 			) : null}
+			{inquiry.variables === "holder" && inquiry.data?.cheque ? (
+				<section aria-label={t("cheque.pichak.transferStatus")} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+					<div className="flex flex-wrap items-center justify-between gap-2">
+						<h2 className="text-base font-semibold">{t("cheque.pichak.transferStatus")}</h2>
+						<Button type="button" variant="outline" size="sm" disabled={transferStatus.isPending} onClick={() => transferStatus.mutate()}>
+							{transferStatus.isPending ? t("cheque.pichak.inquiring") : t("cheque.pichak.checkTransfer")}
+						</Button>
+					</div>
+					{transferStatus.isError ? (
+						<p role="alert" className="text-sm text-destructive">
+							{transferStatus.error.message || t("cheque.pichak.failed")}
+						</p>
+					) : null}
+					{transferStatus.data ? <TransferReceivers receivers={transferStatus.data.transferReceivers} /> : null}
+				</section>
+			) : null}
+			{canTransfer && inquiry.data?.cheque ? <PichakTransferSection key={sayyadId} sayyadId={sayyadId} cheque={inquiry.data.cheque} /> : null}
 			{answering !== null && inquiry.data?.cheque ? <PichakConfirmDialog sayyadId={sayyadId} cheque={inquiry.data.cheque} accept={answering} onClose={() => setAnswering(null)} /> : null}
 		</div>
 	)

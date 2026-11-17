@@ -1,5 +1,4 @@
 import {useQuery} from "@tanstack/react-query"
-import {Plus, Trash2} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Link, useSearchParams} from "react-router-dom"
@@ -11,7 +10,8 @@ import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
 import {Textarea} from "@/components/ui/textarea"
-import {getRecipientName, registerCheque, type PersonType} from "@/features/cheque/api/pichak-register"
+import {registerCheque} from "@/features/cheque/api/pichak-register"
+import {checkRecipients, newRecipientRow, RecipientsEditor, toRecipients, type RecipientRow} from "@/features/cheque/components/recipients-editor"
 import {sourceAccountsOptions} from "@/features/transaction/api/transaction.queries"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
@@ -24,22 +24,8 @@ import {normalizeDigits} from "@/lib/normalize-digits"
 
 // The bank's name for registering a cheque: which accounts may do it, the limit and the SMS code.
 const SERVICE = "PichakRegisterCheque"
-const TYPES: PersonType[] = [1, 2, 3, 4]
-// How long the id of each kind is: a national id has exactly 10 digits, a foreigner's 12, a company's 1 to 20.
-const ID_LENGTH: Record<PersonType, {min: number; max: number}> = {1: {min: 10, max: 10}, 2: {min: 1, max: 20}, 3: {min: 12, max: 12}, 4: {min: 1, max: 20}}
-
-interface Row {
-	key: number
-	idType: PersonType
-	idCode: string
-	/** Filled from the registry; empty until the lookup has answered for this id. */
-	name: string
-	checking: boolean
-	problem: string | null
-}
 
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
-const newRow = (key: number): Row => ({key, idType: 1, idCode: "", name: "", checking: false, problem: null})
 
 /** Register a cheque of yours in the central registry: when it falls due, for how much, and who it is payable to. */
 export default function PichakRegisterPage() {
@@ -61,8 +47,7 @@ export default function PichakRegisterPage() {
 	const [description, setDescription] = useState("")
 	const [iban, setIban] = useState("")
 	const [reasonCode, setReasonCode] = useState("")
-	const [rows, setRows] = useState<Row[]>(() => [newRow(1)])
-	const [nextKey, setNextKey] = useState(2)
+	const [rows, setRows] = useState<RecipientRow[]>(() => [newRecipientRow(1)])
 	const [errors, setErrors] = useState<Partial<Record<"dueDate" | "amount" | "description" | "iban" | "reason" | "recipients", string>>>({})
 	const [confirming, setConfirming] = useState(false)
 	const [password, setPassword] = useState("")
@@ -90,32 +75,13 @@ export default function PichakRegisterPage() {
 				description: description.trim(),
 				iban,
 				reasonCode,
-				recipients: rows.map((row) => ({name: row.name, idType: row.idType, idCode: row.idCode})),
+				recipients: toRecipients(rows),
 			})
 		},
 		again: {to: routeMap.chequeList.path, label: t("cheque.block.backToList")},
 		failedText: t("cheque.register.failed"),
 		uncertainText: t("cheque.register.uncertain"),
 	})
-
-	const update = (key: number, change: Partial<Row>): void => setRows((current) => current.map((row) => (row.key === key ? {...row, ...change} : row)))
-
-	const lookup = async (row: Row): Promise<void> => {
-		const {min, max} = ID_LENGTH[row.idType]
-		if (row.idCode.length < min || row.idCode.length > max) {
-			update(row.key, {problem: t("cheque.register.error.idLength", {min, max})})
-			return
-		}
-		update(row.key, {checking: true, problem: null, name: ""})
-		try {
-			const name = await getRecipientName({sayyadId, idType: row.idType, idCode: row.idCode})
-			// Ignore the answer when the id was edited meanwhile.
-			setRows((current) => current.map((candidate) => (candidate.key === row.key && candidate.idCode === row.idCode && candidate.idType === row.idType ? {...candidate, name, checking: false} : candidate)))
-		} catch (error) {
-			const message = error instanceof Error && error.message ? error.message : t("cheque.register.error.lookup")
-			setRows((current) => current.map((candidate) => (candidate.key === row.key ? {...candidate, checking: false, problem: message} : candidate)))
-		}
-	}
 
 	const review = (): void => {
 		const found: typeof errors = {}
@@ -125,18 +91,9 @@ export default function PichakRegisterPage() {
 		if (description.trim() === "") found.description = t("cheque.register.error.description")
 		if (iban !== "" && !isValidIban(iban)) found.iban = t("cheque.register.error.iban")
 		if ((reasons.data?.length ?? 0) > 0 && !reason) found.reason = t("cheque.register.error.reason")
-		const seen = new Set<string>()
-		let rowsOk = true
-		const checked = rows.map((row) => {
-			let problem: string | null = null
-			if (row.name === "") problem = t("cheque.register.error.notChecked")
-			else if (seen.has(`${row.idType}-${row.idCode}`)) problem = t("cheque.register.error.duplicate")
-			seen.add(`${row.idType}-${row.idCode}`)
-			if (problem) rowsOk = false
-			return problem === row.problem ? row : {...row, problem}
-		})
-		setRows(checked)
-		if (!rowsOk) found.recipients = t("cheque.register.error.fixRecipients")
+		const checked = checkRecipients(rows, {notChecked: t("cheque.register.error.notChecked"), duplicate: t("cheque.register.error.duplicate")})
+		setRows(checked.rows)
+		if (!checked.ok) found.recipients = t("cheque.register.error.fixRecipients")
 		setErrors(found)
 		if (Object.keys(found).length > 0) return
 		setPassword("")
@@ -257,85 +214,8 @@ export default function PichakRegisterPage() {
 					{error(errors.iban)}
 				</div>
 
-				<section aria-labelledby="pr-recipients" className="flex flex-col gap-3">
-					<h2 id="pr-recipients" className="text-base font-semibold">
-						{t("cheque.pichak.receivers")}
-					</h2>
-					<ul className="flex flex-col gap-3">
-						{rows.map((row, index) => (
-							<li key={row.key} className="flex flex-col gap-3 rounded-md border p-4">
-								<div className="flex items-center justify-between">
-									<span className="text-sm font-medium text-muted-foreground">{t("cheque.register.recipient", {number: index + 1})}</span>
-									{rows.length > 1 ? (
-										<Button type="button" variant="ghost" size="icon" aria-label={t("cheque.register.remove", {number: index + 1})} onClick={() => setRows((current) => current.filter((candidate) => candidate.key !== row.key))}>
-											<Trash2 aria-hidden="true" />
-										</Button>
-									) : null}
-								</div>
-								<div className="grid gap-3 sm:grid-cols-[12rem_1fr_auto] sm:items-end">
-									<div className="flex flex-col gap-2">
-										<Label htmlFor={`pr-type-${row.key}`}>{t("cheque.register.personType")}</Label>
-										<Select value={String(row.idType)} onValueChange={(value) => update(row.key, {idType: Number(value) as PersonType, name: "", problem: null})}>
-											<SelectTrigger id={`pr-type-${row.key}`} className="w-full">
-												<SelectValue />
-											</SelectTrigger>
-											<SelectContent>
-												{TYPES.map((type) => (
-													<SelectItem key={type} value={String(type)}>
-														{t(`cheque.pichak.customerTypeCodes.${type}`)}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-									<div className="flex flex-col gap-2">
-										<Label htmlFor={`pr-code-${row.key}`}>{t("cheque.register.idCode")}</Label>
-										<Input
-											id={`pr-code-${row.key}`}
-											dir="ltr"
-											inputMode="numeric"
-											autoComplete="off"
-											maxLength={ID_LENGTH[row.idType].max}
-											value={row.idCode}
-											aria-invalid={row.problem !== null}
-											onChange={(event) => update(row.key, {idCode: digits(event.target.value), name: "", problem: null})}
-											onKeyDown={(event) => {
-												if (event.key === "Enter") {
-													event.preventDefault()
-													void lookup(row)
-												}
-											}}
-										/>
-									</div>
-									<Button type="button" variant="outline" disabled={row.checking || row.idCode === ""} onClick={() => void lookup(row)}>
-										{row.checking ? t("cheque.register.checking") : t("cheque.register.check")}
-									</Button>
-								</div>
-								{row.name ? (
-									<p role="status" className="text-sm font-medium text-success">
-										{t("cheque.register.registeredName", {name: row.name})}
-									</p>
-								) : null}
-								{error(row.problem ?? undefined)}
-							</li>
-						))}
-					</ul>
-					<div>
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => {
-								setRows((current) => [...current, newRow(nextKey)])
-								setNextKey((key) => key + 1)
-							}}
-						>
-							<Plus aria-hidden="true" />
-							{t("cheque.register.addRecipient")}
-						</Button>
-					</div>
-					{error(errors.recipients)}
-				</section>
+				<RecipientsEditor sayyadId={sayyadId} rows={rows} setRows={setRows} title={t("cheque.pichak.receivers")} />
+				{error(errors.recipients)}
 
 				<div className="flex justify-end gap-2">
 					<Button asChild variant="outline">
