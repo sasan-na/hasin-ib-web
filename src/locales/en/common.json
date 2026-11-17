@@ -20,7 +20,8 @@
     "navigation": {
         "home": "Home",
         "general": "General",
-        "accounts": "Accounts"
+        "accounts": "Accounts",
+        "cards": "Cards"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -285,5 +286,43 @@
         "favoriteError": "The favorites could not be changed. Please try again.",
         "error": "The account services could not be loaded. Please try again.",
         "empty": "No account service is available for you right now."
+    },
+    "card": {
+        "landing": {
+            "title": "Cards"
+        },
+        "listTitle": "Card list",
+        "number": "Card number",
+        "owner": "Card holder",
+        "defaultAccount": "Default account",
+        "copyNumber": "Copy card number",
+        "rial": "Rial",
+        "balance": "Available balance",
+        "totalBalance": "Total balance",
+        "blockedAmount": "Blocked amount",
+        "showBalance": "Show balance",
+        "refreshBalance": "Refresh balance",
+        "loadingBalance": "Getting balance…",
+        "balanceError": "The balance could not be retrieved. Please try again.",
+        "moveUp": "Move {{name}} up",
+        "moveDown": "Move {{name}} down",
+        "moveError": "The order could not be changed. Please try again.",
+        "noResults": "No card matches your search.",
+        "groupTotal": "Total available",
+        "empty": "You have no cards yet.",
+        "error": "Your cards could not be loaded. Please try again.",
+        "search": {
+            "title": "Search cards",
+            "active": "A search is on",
+            "name": "Card name",
+            "category": "Category",
+            "allCategories": "All categories",
+            "reset": "Clear search"
+        },
+        "sync": "Refresh card list",
+        "syncing": "Refreshing…",
+        "syncChanged": "Your card list has been updated.",
+        "syncUnchanged": "Your card list is already up to date.",
+        "syncError": "The card list could not be refreshed. Please try again later."
     }
 }

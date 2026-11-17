@@ -13,6 +13,8 @@ const TransactionResult = React.lazy(() => import("@/features/transaction/pages/
 const AccountNew = React.lazy(() => import("@/features/account/pages/open-account-page.tsx"));
 const AccountDelegate = React.lazy(() => import("@/features/account/pages/delegate-request-page.tsx"));
 const AccountCredit = React.lazy(() => import("@/features/account/pages/credit-calculate-page.tsx"));
+const CardHome = React.lazy(() => import("@/features/card/pages/card-home-page.tsx"));
+const CardList = React.lazy(() => import("@/features/card/pages/card-list-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
                     <Route path={routeMap.accountNew.path} element={<AccountNew/>}/>
                     <Route path={routeMap.accountDelegate.path} element={<AccountDelegate/>}/>
                     <Route path={routeMap.accountCreditCalculate.path} element={<AccountCredit/>}/>
+                    <Route path={routeMap.card.path} element={<CardHome/>}/>
+                    <Route path={routeMap.cardList.path} element={<CardList/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>

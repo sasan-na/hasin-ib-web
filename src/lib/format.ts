@@ -12,3 +12,6 @@ export const normalizeIban = (iban: string): string => {
 
 /** The IBAN in groups of four characters. */
 export const formatIban = (iban: string): string => normalizeIban(iban).replace(/(.{4})/g, "$1 ").trim()
+
+/** A card number in groups of four digits. */
+export const formatCardNumber = (number: string): string => number.replace(/\s+/g, "").replace(/(.{4})/g, "$1 ").trim()

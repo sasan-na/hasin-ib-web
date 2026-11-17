@@ -9,6 +9,8 @@ export const routeMap = {
 	"accountNew": {breadcrumb: "account.new.title", path: "/account/new"},
 	"accountDelegate": {breadcrumb: "account.delegate.title", path: "/account/delegate-request"},
 	"accountCreditCalculate": {breadcrumb: "account.credit.title", path: "/account/credit-calculate"},
+	"card": {breadcrumb: "navigation.cards", path: "/card"},
+	"cardList": {breadcrumb: "card.listTitle", path: "/card/list"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},
