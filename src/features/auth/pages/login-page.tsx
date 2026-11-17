@@ -9,13 +9,13 @@ import {normalizeDigits} from "@/lib/normalize-digits"
 import {routeMap} from "@/app/routes"
 import {useSession} from "@/store/session"
 
-import {CaptchaField} from "./captcha-field"
-import {ForgotPasswordLink} from "./forgot-password-link"
-import {LOGIN_LIMITS} from "./loginSchema"
-import {OtpStep} from "./otp-step"
-import {PasswordField} from "./password-field"
-import {SecurityTips} from "./security-tips"
-import {useLoginFlow} from "./useLoginFlow"
+import {CaptchaField} from "../components/captcha-field"
+import {ForgotPasswordLink} from "../components/forgot-password-link"
+import {LOGIN_LIMITS} from "../lib/login-schema"
+import {OtpStep} from "../components/otp-step"
+import {PasswordField} from "../components/password-field"
+import {SecurityTips} from "../components/security-tips"
+import {useLoginFlow} from "../hooks/use-login-flow"
 
 export default function LoginPage() {
 	const {t} = useTranslation("auth")

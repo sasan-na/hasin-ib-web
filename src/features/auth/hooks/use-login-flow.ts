@@ -3,8 +3,8 @@ import {useState} from "react"
 import {routeMap} from "@/app/routes"
 import {useSession} from "@/store/session"
 
-import type {OtpContext, SignedIn} from "./loginFlow"
-import {useLoginForm} from "./useLoginForm"
+import type {OtpContext, SignedIn} from "../lib/login-flow"
+import {useLoginForm} from "./use-login-form"
 
 /** The sign-in flow: credentials, then (when the server asks) a one-time code, then the session. */
 export const useLoginFlow = () => {

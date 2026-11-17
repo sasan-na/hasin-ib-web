@@ -1,7 +1,7 @@
 import {Check, Circle, X} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
-import type {PasswordRule} from "@/lib/api/password"
+import type {PasswordRule} from "@/features/auth/api/password"
 import {cn} from "@/lib/utils"
 
 interface PasswordRulesProps {

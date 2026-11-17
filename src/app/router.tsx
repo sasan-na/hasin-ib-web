@@ -13,8 +13,8 @@ const TransactionResult = React.lazy(() => import("@/routes/transaction-result.t
 const AccountNew = React.lazy(() => import("@/routes/account/new-page.tsx"));
 const AccountDelegate = React.lazy(() => import("@/routes/account/delegate-page.tsx"));
 const AccountCredit = React.lazy(() => import("@/routes/account/credit-page.tsx"));
-const Login = React.lazy(() => import("@/routes/login/page.tsx"));
-const ChangePassword = React.lazy(() => import("@/routes/change-password.tsx"));
+const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
+const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
 
 const router = createBrowserRouter(

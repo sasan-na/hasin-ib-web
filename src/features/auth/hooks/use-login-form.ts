@@ -5,14 +5,14 @@ import { useForm, type UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { ApiError } from '@/lib/api/client';
-import { loginWithPassword, type LoginSession } from '@/lib/api/login';
-import { loginSessionOptions } from '@/lib/api/login.queries';
+import { loginWithPassword, type LoginSession } from '@/features/auth/api/login';
+import { loginSessionOptions } from '@/features/auth/api/login.queries';
 import { normalizeDigits } from '@/lib/normalize-digits';
 import { logger } from '@/lib/logger';
 
-import type { OtpContext, SignedIn } from './loginFlow';
-import { classifyLogin, type LoginOutcome } from './loginOutcome';
-import { createLoginSchema, type LoginFormData } from './loginSchema';
+import type { OtpContext, SignedIn } from '../lib/login-flow';
+import { classifyLogin, type LoginOutcome } from '../lib/login-outcome';
+import { createLoginSchema, type LoginFormData } from '../lib/login-schema';
 
 export type CaptchaStatus = 'loading' | 'ready' | 'error';
 

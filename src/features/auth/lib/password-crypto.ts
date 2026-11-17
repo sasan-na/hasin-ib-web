@@ -8,7 +8,7 @@
  *
  * Like the login, this is obfuscation on top of HTTPS, not secrecy: the mask ships in every legacy bundle.
  */
-import {encryptWithKey} from "./loginCrypto"
+import {encryptWithKey} from "./login-crypto"
 
 const SERVER_MASK = "1954DCDF58454D5C94846A3ED24DCB6C"
 const KEY_LENGTH = 32

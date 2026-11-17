@@ -7,8 +7,8 @@ import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/compon
 import {Input} from "@/components/ui/input"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
-import {LOGIN_LIMITS, type LoginFormData} from "./loginSchema"
-import type {CaptchaStatus} from "./useLoginForm"
+import {LOGIN_LIMITS, type LoginFormData} from "../lib/login-schema"
+import type {CaptchaStatus} from "../hooks/use-login-form"
 
 interface CaptchaFieldProps {
 	control: Control<LoginFormData>

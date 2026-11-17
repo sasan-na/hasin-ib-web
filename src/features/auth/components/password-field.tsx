@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button"
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 
-import {LOGIN_LIMITS, type LoginFormData} from "./loginSchema"
+import {LOGIN_LIMITS, type LoginFormData} from "../lib/login-schema"
 
 /** The password input with a button that shows or hides what was typed. */
 export function PasswordField({control}: {control: Control<LoginFormData>}) {

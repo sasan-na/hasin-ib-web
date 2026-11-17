@@ -1,4 +1,4 @@
-import { LOGIN_STATUS, type LoginResult } from '@/lib/api/login';
+import { LOGIN_STATUS, type LoginResult } from '@/features/auth/api/login';
 
 /** What the page should do with a login answer, decided apart from any React state. */
 export type LoginOutcome =

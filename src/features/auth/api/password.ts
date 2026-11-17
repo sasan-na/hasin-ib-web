@@ -1,7 +1,7 @@
-import {protectPasswords} from "@/lib/auth/passwordCrypto"
+import {protectPasswords} from "@/features/auth/lib/password-crypto"
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
+import {apiClient} from "@/lib/api/client"
 
 // These endpoints answer camelCase. A failure comes back as HTTP 200 with `isSuccessful: false`.
 const resultSchema = z.object({

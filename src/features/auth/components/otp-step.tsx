@@ -6,9 +6,9 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
-import type {OtpContext, SignedIn} from "./loginFlow"
-import {LOGIN_LIMITS} from "./loginSchema"
-import {useOtpForm} from "./useOtpForm"
+import type {OtpContext, SignedIn} from "../lib/login-flow"
+import {LOGIN_LIMITS} from "../lib/login-schema"
+import {useOtpForm} from "../hooks/use-otp-form"
 
 interface OtpStepProps {
 	context: OtpContext

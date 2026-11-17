@@ -2,7 +2,7 @@ import {LogOut} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
-import {useSignOut} from "@/hooks/use-sign-out"
+import {useSignOut} from "@/features/auth/hooks/use-sign-out"
 import {useSession} from "@/store/session"
 
 export function NavUser() {

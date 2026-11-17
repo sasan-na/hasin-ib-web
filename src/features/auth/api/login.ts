@@ -7,11 +7,11 @@
  * - A `guid` is single-use: every Login2 attempt consumes it, so after ANY failure the page must call
  *   `initializeLogin` again for a fresh guid and captcha.
  */
-import { encryptPassword, encryptUsername, hashCaptcha } from '@/lib/auth/loginCrypto';
+import { encryptPassword, encryptUsername, hashCaptcha } from '@/features/auth/lib/login-crypto';
 import { normalizeDigits } from '@/lib/normalize-digits';
 import {z} from '@/lib/zod';
 
-import { ApiError, apiClient } from './client';
+import { ApiError, apiClient } from '@/lib/api/client';
 
 export const LOGIN_ENDPOINTS = {
     INITIALIZE: '/Login/Initialize',

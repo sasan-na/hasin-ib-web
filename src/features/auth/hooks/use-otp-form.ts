@@ -3,14 +3,14 @@ import { useMemo, useState, type BaseSyntheticEvent } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { useCountdown } from '@/hooks/use-countdown';
+import { useCountdown } from '@/features/auth/hooks/use-countdown';
 import { ApiError } from '@/lib/api/client';
-import { loginWithOtp, retryOtp } from '@/lib/api/login';
+import { loginWithOtp, retryOtp } from '@/features/auth/api/login';
 import { logger } from '@/lib/logger';
 
-import { SESSION_EXPIRED_ERROR_CODE, type OtpContext, type SignedIn } from './loginFlow';
-import { classifyLogin, type LoginOutcome } from './loginOutcome';
-import { createOtpSchema, type OtpFormData } from './loginSchema';
+import { SESSION_EXPIRED_ERROR_CODE, type OtpContext, type SignedIn } from '../lib/login-flow';
+import { classifyLogin, type LoginOutcome } from '../lib/login-outcome';
+import { createOtpSchema, type OtpFormData } from '../lib/login-schema';
 
 interface OtpFormOptions {
     context: OtpContext;
