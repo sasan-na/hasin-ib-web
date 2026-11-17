@@ -1,9 +1,15 @@
 import path from "path"
 import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+import { defineConfig, loadEnv } from "vite"
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+	// Dev only: forward same-origin /api calls to a real server (it sends no CORS headers).
+	const proxyTarget = loadEnv(mode, process.cwd(), "VITE_").VITE_DEV_PROXY_TARGET
+	return {
 	plugins: [react()],
+	server: proxyTarget
+		? { proxy: { "/api": { target: proxyTarget, changeOrigin: true, secure: true, cookieDomainRewrite: "localhost" } } }
+		: undefined,
 	build: {
 		chunkSizeWarningLimit: 650,
 		rollupOptions: {
@@ -24,4 +30,5 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},
+}
 })
