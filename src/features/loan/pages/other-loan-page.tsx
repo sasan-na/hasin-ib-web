@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {isLoanNumber, lookupLoan} from "@/features/loan/api/other-loan"
+import {PayInstallmentCardDialog} from "@/features/loan/components/pay-installment-card-dialog"
 import {PayInstallmentDialog} from "@/features/loan/components/pay-installment-dialog"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -21,6 +22,7 @@ export default function OtherLoanPage() {
 	const [number, setNumber] = useState("")
 	const [error, setError] = useState("")
 	const [paying, setPaying] = useState(false)
+	const [payingByCard, setPayingByCard] = useState(false)
 	const lookup = useMutation({mutationFn: lookupLoan})
 	const loan = lookup.data
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
@@ -114,15 +116,19 @@ export default function OtherLoanPage() {
 						{row(t("loan.penalty"), loan.penalty ? money(loan.penalty) : null)}
 						{row(t("loan.progress"), loan.totalCount !== null && loan.paidCount !== null ? t("loan.progressValue", {paid: loan.paidCount, total: loan.totalCount}) : null)}
 					</dl>
-					<div>
+					<div className="flex flex-wrap gap-2">
 						<Button type="button" onClick={() => setPaying(true)}>
 							{t("loan.pay.action")}
+						</Button>
+						<Button type="button" variant="outline" onClick={() => setPayingByCard(true)}>
+							{t("loan.pay.cardAction")}
 						</Button>
 					</div>
 				</section>
 			) : null}
 
 			{paying && loan ? <PayInstallmentDialog loan={loan} offerFollow={loan.isOther} onClose={() => setPaying(false)} /> : null}
+			{payingByCard && loan ? <PayInstallmentCardDialog loan={loan} offerFollow={loan.isOther} onClose={() => setPayingByCard(false)} /> : null}
 		</div>
 	)
 }

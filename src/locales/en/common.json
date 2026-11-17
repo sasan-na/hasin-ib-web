@@ -956,7 +956,14 @@
             "again": "Back to loans",
             "failed": "The payment was not made. Please check the details and try again.",
             "uncertain": "We could not confirm whether the payment was made. Check your account statement and the loan before paying again.",
-            "follow": "Add this loan to my list"
+            "follow": "Add this loan to my list",
+            "cardAction": "Pay from card",
+            "cardTitle": "Pay a loan installment from a card",
+            "cardQuestion": "The amount is paid from your card towards this loan.",
+            "fromCard": "Pay from card",
+            "chooseCard": "Choose a card",
+            "cardsError": "Your cards could not be loaded.",
+            "noCards": "You have no cards to pay from."
         },
         "interest": {
             "open": "Loan interest calculator",

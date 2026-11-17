@@ -2,6 +2,7 @@ import { z } from "@/lib/zod"
 
 import { apiClient } from "@/lib/api/client"
 import { camelKeys } from "@/lib/api/camel"
+import { toCardInfoBody, type CardCredentials } from "@/features/card/api/card-credentials"
 import {
 	toTransactionResult,
 	type PasswordType,
@@ -136,5 +137,32 @@ export const payInstallment = (
 			installmentAmount: request.loan.installment ?? 0,
 			addToInstallmentList: request.follow === true,
 			reasonCode: request.reasonCode,
+		}),
+	}).then(toTransactionResult)
+
+export interface PayInstallmentFromCardRequest {
+	credentials: CardCredentials
+	loan: Loan
+	/** In Rials. */
+	amount: number
+	/** Also add the loan to the user's list of loans they follow. */
+	follow?: boolean
+}
+
+/**
+ * Pays towards a loan from one of the user's cards. Like paying from an account, the money goes to the loan's
+ * card number when it is kept on a card and to its account number otherwise. A real transaction: send once per
+ * confirmation, never retry automatically.
+ */
+export const payInstallmentFromCard = (request: PayInstallmentFromCardRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/CardInstallment/PayLoan", {
+		method: "POST",
+		body: JSON.stringify({
+			cardInfo: toCardInfoBody(request.credentials),
+			destinationCardPan: request.loan.cardNumber,
+			destinationAccountNumber: request.loan.accountNumber,
+			amount: request.amount,
+			installmentAmount: request.loan.installment ?? 0,
+			addToInstallmentList: request.follow === true,
 		}),
 	}).then(toTransactionResult)

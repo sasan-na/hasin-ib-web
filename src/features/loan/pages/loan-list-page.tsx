@@ -8,6 +8,7 @@ import { routeMap } from "@/app/routes"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PayInstallmentDialog } from "@/features/loan/components/pay-installment-dialog"
+import { PayInstallmentCardDialog } from "@/features/loan/components/pay-installment-card-dialog"
 import { UnfollowDialog } from "@/features/loan/components/unfollow-dialog"
 import type { Loan } from "@/features/loan/api/loan"
 import { loansOptions } from "@/features/loan/api/loan.queries"
@@ -19,6 +20,7 @@ export default function LoanListPage() {
 	const language = i18n.language
 	const loans = useQuery(loansOptions(language))
 	const [paying, setPaying] = React.useState<Loan | null>(null)
+	const [payingByCard, setPayingByCard] = React.useState<Loan | null>(null)
 	const [unfollowing, setUnfollowing] = React.useState<Loan | null>(null)
 
 	const money = (value: number): string =>
@@ -158,6 +160,11 @@ export default function LoanListPage() {
 									{t("loan.pay.action")}
 								</Button>
 							) : null}
+							{!loan.error && loan.payable ? (
+								<Button type="button" size="sm" variant="outline" className="self-start" onClick={() => setPayingByCard(loan)}>
+									{t("loan.pay.cardAction")}
+								</Button>
+							) : null}
 							{loan.isOther ? (
 								<Button type="button" size="sm" variant="outline" className="self-start" onClick={() => setUnfollowing(loan)}>
 									{t("loan.other.unfollow")}
@@ -170,6 +177,7 @@ export default function LoanListPage() {
 			{paying ? (
 				<PayInstallmentDialog loan={paying} onClose={() => setPaying(null)} />
 			) : null}
+			{payingByCard ? <PayInstallmentCardDialog loan={payingByCard} onClose={() => setPayingByCard(null)} /> : null}
 			{unfollowing ? <UnfollowDialog loan={unfollowing} onClose={() => setUnfollowing(null)} /> : null}
 		</div>
 	)
