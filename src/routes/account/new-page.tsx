@@ -1,12 +1,12 @@
-import {useMutation, useQuery} from "@tanstack/react-query"
+import {useQuery} from "@tanstack/react-query"
 import {useEffect, useMemo, useState} from "react"
 import {useTranslation} from "react-i18next"
-import {useNavigate} from "react-router-dom"
 
 import {BranchSelect} from "@/components/transaction/branch-select"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/components/transaction/account-password"
 import {ConfirmDialog} from "@/components/transaction/confirm-dialog"
 import {SourceAccountSelect} from "@/components/transaction/source-account-select"
+import {useSubmitTransaction} from "@/components/transaction/use-submit-transaction"
 import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
@@ -21,7 +21,6 @@ import {normalizeDigits} from "@/lib/auth/normalizeDigits"
 import {formatAmount} from "@/lib/format"
 import {routeMap} from "@/routing.tsx"
 
-import type {TransactionResultState} from "../transaction-result"
 
 // The bank's service names for this flow: which accounts may pay, which limits apply, and what it calls the SMS code.
 const SOURCE_SERVICE = "OpenAccount"
@@ -79,14 +78,10 @@ function Field({id, label, error, children}: {id: string; label: string; error?:
 /** Open a new account: pick the kind, fund it from one of your accounts, confirm with that account's password. */
 export default function OpenAccountPage() {
 	const {t, i18n} = useTranslation()
-	const navigate = useNavigate()
 	const [form, setForm] = useState<FormState>(EMPTY)
 	const [errors, setErrors] = useState<Errors>({})
 	const [confirming, setConfirming] = useState(false)
 	const [password, setPassword] = useState("")
-	const [refusal, setRefusal] = useState<string | null>(null)
-	// After a network failure the request may have reached the bank: no second confirm until the user has looked.
-	const [uncertain, setUncertain] = useState(false)
 
 	const types = useQuery(depositTypesOptions(i18n.language))
 	const profiles = useQuery({...accountProfilesOptions(form.depositType ?? 0, i18n.language), enabled: form.depositType !== null})
@@ -110,8 +105,8 @@ export default function OpenAccountPage() {
 		setErrors({})
 	}
 
-	const send = useMutation({
-		mutationFn: () => {
+	const send = useSubmitTransaction({
+		run: () => {
 			if (!profile || !form.source || requirement.state !== "ready") throw new Error("form incomplete")
 			return openAccount({
 				sourceAccountNumber: form.source.number,
@@ -127,21 +122,9 @@ export default function OpenAccountPage() {
 				stampFee: profile.stampFee,
 			})
 		},
-		onSuccess: (result) => {
-			// A refusal before anything was recorded stays in the dialog so it can be fixed; anything with a
-			// reference number, or a success, is a real outcome and goes to the result page.
-			if (!result.ok && result.transactionId === null) {
-				setRefusal(result.message || t("account.new.failed"))
-				return
-			}
-			const state: TransactionResultState = {result, again: {to: routeMap.accountNew.path, label: t("account.new.openAnother")}}
-			void navigate(routeMap.transactionResult.path, {state, replace: true})
-		},
-		// The request may have reached the bank, so the user is told to look before trying again.
-		onError: () => {
-			setRefusal(t("account.new.uncertain"))
-			setUncertain(true)
-		},
+		again: {to: routeMap.accountNew.path, label: t("account.new.openAnother")},
+		failedText: t("account.new.failed"),
+		uncertainText: t("account.new.uncertain"),
 	})
 
 	const validate = (): Errors => {
@@ -163,8 +146,7 @@ export default function OpenAccountPage() {
 		setErrors(found)
 		if (Object.keys(found).length > 0) return
 		setPassword("")
-		setRefusal(null)
-		setUncertain(false)
+		send.reset()
 		setConfirming(true)
 	}
 
@@ -365,10 +347,10 @@ export default function OpenAccountPage() {
 				]}
 				confirmLabel={t("account.new.confirm")}
 				pendingLabel={t("account.new.opening")}
-				canConfirm={isPasswordComplete(requirement, password) && !uncertain}
-				pending={send.isPending}
-				error={refusal}
-				onConfirm={() => send.mutate()}
+				canConfirm={isPasswordComplete(requirement, password) && !send.blocked}
+				pending={send.pending}
+				error={send.refusal}
+				onConfirm={send.submit}
 			>
 				<AccountPassword
 					requirement={requirement}
@@ -377,7 +359,7 @@ export default function OpenAccountPage() {
 					amount={amount}
 					value={password}
 					onChange={setPassword}
-					disabled={send.isPending}
+					disabled={send.pending}
 				/>
 			</ConfirmDialog>
 		</div>
