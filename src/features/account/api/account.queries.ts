@@ -1,4 +1,5 @@
 import {queryOptions} from "@tanstack/react-query"
+import {getAccountPasswordDetails, getGateways} from "./account-password"
 
 import {getAccountInfo, getAccounts, getWithdrawRules} from "./account"
 
@@ -8,6 +9,7 @@ export const accountKeys = {
 	list: (language: string) => [...accountKeys.all, "list", language] as const,
 	info: (accountId: number, language: string) => [...accountKeys.all, "info", accountId, language] as const,
 	withdrawRules: (accountId: number, language: string) => [...accountKeys.all, "withdrawRules", accountId, language] as const,
+	password: (accountId: number) => [...accountKeys.all, "password", accountId] as const,
 }
 
 export const accountsOptions = (language: string) =>
@@ -32,3 +34,9 @@ export const withdrawRulesOptions = (accountId: number, language: string) =>
 		staleTime: 5 * 60_000,
 		retry: false,
 	})
+
+export const accountPasswordDetailsOptions = (accountId: number) =>
+	queryOptions({queryKey: accountKeys.password(accountId), queryFn: () => getAccountPasswordDetails(accountId), retry: false})
+
+export const gatewaysOptions = (accountId: number) =>
+	queryOptions({queryKey: [...accountKeys.password(accountId), "gateways"], queryFn: () => getGateways(accountId), retry: false})

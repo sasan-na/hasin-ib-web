@@ -269,6 +269,35 @@
         "listTitle": "Account list",
         "landing": {
             "title": "Accounts"
+        },
+        "passwordButton": "Password",
+        "passwordFor": "Password of {{name}}",
+        "password": {
+            "title": "Account password",
+            "changeTab": "Change password",
+            "askTab": "Ask for the password",
+            "gateways": "Where to change it",
+            "noGateways": "None of the ways into this account has a password you can change here.",
+            "tokenInfo": "Some ways into this account use a token, so they have no password to change here.",
+            "current": "Current password",
+            "new": "New password",
+            "repeat": "New password again",
+            "rules": "Between {{min}} and {{max}} characters.",
+            "change": "Change password",
+            "changing": "Changing…",
+            "changed": "Password changed.",
+            "failed": "The bank did not accept this.",
+            "uncertain": "We could not tell whether the change went through. Try signing in with the new password before trying again.",
+            "ask": "Ask for the account password when I make a transaction",
+            "save": "Save",
+            "saved": "Saved.",
+            "loadFailed": "The account's password settings could not be loaded.",
+            "error": {
+                "gateway": "Choose where to change the password.",
+                "length": "The password must be {{min}} to {{max}} characters.",
+                "same": "The new password must differ from the current one.",
+                "mismatch": "The two new passwords do not match."
+            }
         }
     },
     "transaction": {

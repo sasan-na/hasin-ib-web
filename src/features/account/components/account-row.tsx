@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query"
-import {Calculator, ChevronDown, ChevronUp, Info, RefreshCw, Users} from "lucide-react"
+import {Calculator, ChevronDown, ChevronUp, Info, KeyRound, RefreshCw, Users} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -148,6 +148,12 @@ export function AccountRow({account, fresh, onFresh, move}: AccountRowProps) {
 								</Link>
 							</Button>
 						) : null}
+						<Button asChild variant="outline" size="sm">
+							<Link to={`${routeMap.accountPassword.path}?accountId=${account.id}`} aria-label={t("account.passwordFor", {name})}>
+								<KeyRound aria-hidden="true" />
+								{t("account.passwordButton")}
+							</Link>
+						</Button>
 						<Button asChild variant="outline" size="sm">
 							<Link to={`${routeMap.accountInfo.path}?accountId=${account.id}`} aria-label={t("account.infoFor", {name})}>
 								<Info aria-hidden="true" />

@@ -1,4 +1,4 @@
-import {Landmark, PiggyBank, ScrollText} from "lucide-react"
+import {KeyRound, Landmark, PiggyBank, ScrollText} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -7,5 +7,6 @@ import {TONES, type Destination} from "@/features/menu/components/service-cards"
 export const accountDestinations: Record<string, Destination> = {
 	DepositAccountsList: {to: routeMap.accountList.path, icon: Landmark, ...TONES.primary},
 	OpenAccount: {to: routeMap.accountNew.path, icon: PiggyBank, ...TONES.success},
+	AccountPassword: {to: routeMap.accountList.path, icon: KeyRound, ...TONES.warning},
 	DelegatingAccount: {to: routeMap.accountDelegate.path, icon: ScrollText, ...TONES.info},
 }
