@@ -6,9 +6,10 @@ import {RefreshCw} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
-import {moveAccount, syncAccounts, type Balances} from "@/features/account/api/account"
-import {accountKeys, accountsOptions, syncAllowedOptions} from "@/features/account/api/account.queries"
+import {moveAccount, type Balances} from "@/features/account/api/account"
+import {accountKeys, accountsOptions} from "@/features/account/api/account.queries"
 import {formatAmount} from "@/lib/format"
+import {syncAllowedOptions, syncUserInfo} from "@/lib/api/sync-user-info"
 
 import {AccountFilters} from "../components/account-filters"
 import {AccountRow} from "../components/account-row"
@@ -34,7 +35,7 @@ export default function AccountPage() {
 
 	const syncAllowed = useQuery(syncAllowedOptions())
 	const sync = useMutation({
-		mutationFn: syncAccounts,
+		mutationFn: syncUserInfo,
 		// A changed list means the old one (and its order) is stale.
 		onSuccess: (result) => (result.hasChanged ? queryClient.invalidateQueries({queryKey: accountKeys.all}) : undefined),
 	})

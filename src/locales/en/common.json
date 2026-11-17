@@ -244,12 +244,7 @@
         },
         "listTitle": "Account list",
         "landing": {
-            "title": "Accounts",
-            "addFavorite": "Add to favorites",
-            "removeFavorite": "Remove from favorites",
-            "favoriteError": "The favorites could not be changed. Please try again.",
-            "error": "The account services could not be loaded. Please try again.",
-            "empty": "No account service is available for you right now."
+            "title": "Accounts"
         }
     },
     "transaction": {
@@ -283,5 +278,12 @@
         "chooseBranch": "Choose a branch",
         "searchBranch": "Search by name or code",
         "noBranch": "No branch found."
+    },
+    "landing": {
+        "addFavorite": "Add to favorites",
+        "removeFavorite": "Remove from favorites",
+        "favoriteError": "The favorites could not be changed. Please try again.",
+        "error": "The account services could not be loaded. Please try again.",
+        "empty": "No account service is available for you right now."
     }
 }

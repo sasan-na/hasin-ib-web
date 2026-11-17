@@ -204,24 +204,3 @@ export const renameAccount = async (accountId: number, newName: string): Promise
 	)
 	if (!data.isSuccessful) throw new Error(data.message ?? "rename failed")
 }
-
-const syncAllowedSchema = z.object({isSuccessful: z.boolean()})
-const syncResultSchema = z.object({isSuccessful: z.boolean(), message: z.string().nullish(), extendedMessage: z.string().nullish(), hasChanged: z.boolean().nullish()})
-
-/** Whether this user may refresh their account list from the bank (main users only). */
-export const canSyncAccounts = async (): Promise<boolean> =>
-	syncAllowedSchema.parse(await apiClient<unknown>("/SyncUserInfo/Allow")).isSuccessful
-
-export interface SyncResult {
-	hasChanged: boolean
-	/** The bank's own wording of the outcome, in the UI language; may be empty. */
-	message: string
-}
-
-/** Asks the bank to re-read the user's accounts. Throws with the bank's message when it refuses. */
-export const syncAccounts = async (): Promise<SyncResult> => {
-	const data = syncResultSchema.parse(await apiClient<unknown>("/SyncUserInfo", {method: "POST"}))
-	const message = data.extendedMessage ?? data.message ?? ""
-	if (!data.isSuccessful) throw new Error(message)
-	return {hasChanged: data.hasChanged === true, message}
-}
