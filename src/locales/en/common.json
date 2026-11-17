@@ -128,6 +128,55 @@
             "atLeast": "At least {{count}} of these people",
             "and": "and",
             "or": "or"
+        },
+        "openNew": "Open new account",
+        "new": {
+            "title": "Open a new account",
+            "stepType": "Account type",
+            "stepDetails": "Account details",
+            "stepContact": "Contact details",
+            "stepPay": "Pay the first deposit from",
+            "typesError": "The account types could not be loaded. Please try again.",
+            "loading": "Loading…",
+            "profile": "Account profile",
+            "chooseProfile": "Choose a profile",
+            "usage": "Purpose of the account",
+            "chooseUsage": "Choose a purpose",
+            "amount": "First deposit",
+            "profileDetails": "About this profile",
+            "minAmountLabel": "Minimum first deposit",
+            "stampFee": "Stamp fee",
+            "ownerMinAge": "Minimum age of the owner",
+            "years": "years",
+            "interestRate": "Interest rate",
+            "interestTiers": "Interest by time held",
+            "fromMonth": "From month",
+            "toMonth": "To month",
+            "mobile": "Mobile number",
+            "email": "Email",
+            "optional": "optional",
+            "cardExport": "Also issue a card for this account",
+            "source": "Account to pay from",
+            "branch": "Branch",
+            "review": "Review and open",
+            "confirmTitle": "Open this account?",
+            "confirmDescription": "The first deposit and the stamp fee are taken from the account you chose as soon as you confirm.",
+            "confirm": "Open account",
+            "opening": "Opening…",
+            "failed": "The bank did not open the account. Please try again.",
+            "uncertain": "We could not tell whether the account was opened. Check your accounts before trying again.",
+            "openAnother": "Open another account",
+            "error": {
+                "depositType": "Please choose an account type.",
+                "profile": "Please choose a profile.",
+                "usage": "Please choose a purpose.",
+                "amount": "Please enter the first deposit.",
+                "minAmount": "The first deposit must be at least {{min}} Rials.",
+                "mobile": "Enter a mobile number like 09123456789.",
+                "email": "Enter a valid email address.",
+                "source": "Please choose the account to pay from.",
+                "branch": "Please choose a branch."
+            }
         }
     },
     "transaction": {
@@ -156,6 +205,10 @@
             "errorCode": "Error code",
             "pendingNote": "Other signatories must approve this before the bank carries it out.",
             "toAccounts": "Back to accounts"
-        }
+        },
+        "branchesError": "The branches could not be loaded. Please try again.",
+        "chooseBranch": "Choose a branch",
+        "searchBranch": "Search by name or code",
+        "noBranch": "No branch found."
     }
 }
