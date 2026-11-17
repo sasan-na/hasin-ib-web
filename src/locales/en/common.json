@@ -1024,6 +1024,17 @@
                 "type": "Choose a kind of cheque book.",
                 "branch": "Choose a branch."
             }
+        },
+        "rial": "Rial",
+        "confirmAmount": {
+            "action": "Confirm amount",
+            "title": "Confirm cheque amount",
+            "question": "You are telling the bank the amount this cheque was written for.",
+            "amount": "Amount",
+            "confirm": "Confirm amount",
+            "sending": "Sending…",
+            "failed": "The amount was not confirmed. Please check it and try again.",
+            "uncertain": "We could not confirm whether the amount was received. Refresh the list before trying again."
         }
     }
 }

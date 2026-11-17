@@ -13,7 +13,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Skeleton} from "@/components/ui/skeleton"
 import type {Cheque, ChequeFilter} from "@/features/cheque/api/cheque"
 import {chequeSeriesOptions, chequeStatusesOptions, chequesOptions} from "@/features/cheque/api/cheque.queries"
-import {BlockChequeDialog, ChequeHistoryDialog} from "@/features/cheque/components/cheque-dialogs"
+import {BlockChequeDialog, ChequeHistoryDialog, ConfirmChequeAmountDialog} from "@/features/cheque/components/cheque-dialogs"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -34,6 +34,7 @@ export default function ChequeListPage() {
 	const [serialInput, setSerialInput] = React.useState("")
 	const [history, setHistory] = React.useState<Cheque | null>(null)
 	const [blocking, setBlocking] = React.useState<Cheque | null>(null)
+	const [confirmingAmount, setConfirmingAmount] = React.useState<Cheque | null>(null)
 
 	const filter: ChequeFilter = {accountNumber: account?.number ?? "", media, statusKey, series, serial}
 	const list = useInfiniteQuery(chequesOptions(filter, account !== null))
@@ -179,6 +180,11 @@ export default function ChequeListPage() {
 												{t("cheque.history.action")}
 											</Button>
 										) : null}
+										{cheque.canConfirmAmount ? (
+											<Button type="button" variant="ghost" size="sm" onClick={() => setConfirmingAmount(cheque)}>
+												{t("cheque.confirmAmount.action")}
+											</Button>
+										) : null}
 										{cheque.canBlock ? (
 											<Button type="button" variant="ghost" size="sm" className="text-destructive" onClick={() => setBlocking(cheque)}>
 												<ShieldBan aria-hidden="true" />
@@ -201,6 +207,7 @@ export default function ChequeListPage() {
 			)}
 
 			{account && history ? <ChequeHistoryDialog account={account} cheque={history} onClose={() => setHistory(null)} /> : null}
+			{account && confirmingAmount ? <ConfirmChequeAmountDialog account={account} cheque={confirmingAmount} onClose={() => setConfirmingAmount(null)} /> : null}
 			{account && blocking ? <BlockChequeDialog account={account} cheque={blocking} onClose={() => setBlocking(null)} /> : null}
 		</div>
 	)

@@ -4,17 +4,22 @@ import {useTranslation} from "react-i18next"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog"
-import {blockCheque, getChequeHistory, type Cheque, type ChequeHistoryEntry} from "@/features/cheque/api/cheque"
+import {blockCheque, confirmChequeAmount, getChequeHistory, type Cheque, type ChequeHistoryEntry} from "@/features/cheque/api/cheque"
 import {chequeKeys} from "@/features/cheque/api/cheque.queries"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
+import {formatAmount} from "@/lib/format"
+import {normalizeDigits} from "@/lib/normalize-digits"
 
 // The bank's names for these services: the SMS code and the no-password limit.
 const HISTORY_SERVICE = "ChequeStatusHistory"
 const BLOCK_SERVICE = "BlockCheque"
+const CONFIRM_SERVICE = "ChequeAmountConfirm"
 
 interface Props {
 	account: SourceAccount
@@ -133,6 +138,73 @@ export function BlockChequeDialog({account, cheque, onClose}: Props) {
 			destructive
 		>
 			<AccountPassword requirement={requirement} accountNumber={account.number} codeServiceName={BLOCK_SERVICE} amount={0} value={password} onChange={setPassword} disabled={sending.pending} />
+		</ConfirmDialog>
+	)
+}
+
+/** Asks for the amount a cheque was written for and the account's password, then tells the bank. Mount it only while open. */
+export function ConfirmChequeAmountDialog({account, cheque, onClose}: Props) {
+	const {t, i18n} = useTranslation()
+	const queryClient = useQueryClient()
+	const [amount, setAmount] = useState("")
+	const [password, setPassword] = useState("")
+	const value = amount === "" ? 0 : Number(amount)
+	const requirement = usePasswordRequirement({accountId: account.id, limitServiceName: CONFIRM_SERVICE, amount: value})
+
+	const sending = useSubmitTransaction({
+		run: () => {
+			if (requirement.state !== "ready" || value <= 0) throw new Error("form incomplete")
+			return confirmChequeAmount({
+				accountNumber: account.number,
+				password: requirement.needsPassword ? password : null,
+				passwordType: requirement.info.type,
+				series: cheque.series,
+				serial: cheque.serial,
+				amount: value,
+			})
+		},
+		again: {to: routeMap.chequeList.path, label: t("cheque.block.backToList")},
+		failedText: t("cheque.confirmAmount.failed"),
+		uncertainText: t("cheque.confirmAmount.uncertain"),
+		onDone: () => queryClient.invalidateQueries({queryKey: chequeKeys.all}),
+	})
+
+	return (
+		<ConfirmDialog
+			open
+			onOpenChange={(open) => {
+				if (!open) onClose()
+			}}
+			title={t("cheque.confirmAmount.title")}
+			description={t("cheque.confirmAmount.question")}
+			summary={[
+				{label: t("cheque.account"), value: <span dir="ltr">{account.number}</span>},
+				{label: t("cheque.series"), value: <span dir="ltr">{cheque.series}</span>},
+				{label: t("cheque.serial"), value: <span dir="ltr">{cheque.serial}</span>},
+				...(value > 0 ? [{label: t("cheque.confirmAmount.amount"), value: <strong>{`${formatAmount(value, i18n.language)} ${t("cheque.rial")}`}</strong>}] : []),
+			]}
+			confirmLabel={t("cheque.confirmAmount.confirm")}
+			pendingLabel={t("cheque.confirmAmount.sending")}
+			canConfirm={value > 0 && isPasswordComplete(requirement, password) && !sending.blocked}
+			pending={sending.pending}
+			error={sending.refusal}
+			onConfirm={sending.submit}
+		>
+			<div className="flex flex-col gap-2">
+				<Label htmlFor="cheque-amount">{t("cheque.confirmAmount.amount")}</Label>
+				<Input
+					id="cheque-amount"
+					dir="ltr"
+					inputMode="numeric"
+					autoComplete="off"
+					maxLength={15}
+					value={amount}
+					disabled={sending.pending}
+					onChange={(event) => setAmount(normalizeDigits(event.target.value).replace(/\D/g, "").replace(/^0+/, ""))}
+				/>
+				{value > 0 ? <p className="text-sm text-muted-foreground">{`${formatAmount(value, i18n.language)} ${t("cheque.rial")}`}</p> : null}
+			</div>
+			<AccountPassword requirement={requirement} accountNumber={account.number} codeServiceName={CONFIRM_SERVICE} amount={value} value={password} onChange={setPassword} disabled={sending.pending} />
 		</ConfirmDialog>
 	)
 }

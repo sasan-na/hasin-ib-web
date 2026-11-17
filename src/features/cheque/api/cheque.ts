@@ -47,6 +47,7 @@ const chequeSchema = z.object({
 	checkMedia: text,
 	hasBlockPermission: z.boolean().nullish(),
 	hasHistoryPermission: z.boolean().nullish(),
+	hasConfirmPermission: z.boolean().nullish(),
 })
 
 const listSchema = z.object({isSuccessful: z.boolean().nullish(), message: text, showMore: z.boolean().nullish(), cheques: z.array(chequeSchema).nullish()})
@@ -63,6 +64,8 @@ export interface Cheque {
 	digital: boolean
 	canBlock: boolean
 	canSeeHistory: boolean
+	/** The bank lets the user confirm the amount of this cheque (the owner telling the bank what it was written for). */
+	canConfirmAmount: boolean
 }
 
 export interface ChequeFilter {
@@ -111,6 +114,7 @@ export const getCheques = async (filter: ChequeFilter, startIndex: number, count
 			digital: cheque.checkMedia === "2",
 			canBlock: cheque.hasBlockPermission === true,
 			canSeeHistory: cheque.hasHistoryPermission === true,
+			canConfirmAmount: cheque.hasConfirmPermission === true,
 		})),
 	}
 }
@@ -157,6 +161,20 @@ export const blockCheque = (params: {accountNumber: string; password: string | n
 		body: JSON.stringify({
 			series: params.series,
 			serial: params.serial,
+			sourceAccountInfo: {accountNumber: params.accountNumber, ...(params.password ? {accountPin: params.password} : {}), passwordType: params.passwordType},
+		}),
+	}).then(toTransactionResult)
+
+// ---- Confirming the amount -------------------------------------------------------------------
+
+/** Tells the bank the amount a cheque was written for. A real transaction: send once per confirmation, never retry automatically. */
+export const confirmChequeAmount = (params: {accountNumber: string; password: string | null; passwordType: PasswordType; series: string; serial: string; amount: number}): Promise<TransactionResult> =>
+	apiClient<unknown>("/ChequeAmountConfirm/DoTransaction", {
+		method: "POST",
+		body: JSON.stringify({
+			series: params.series,
+			serial: params.serial,
+			amount: params.amount,
 			sourceAccountInfo: {accountNumber: params.accountNumber, ...(params.password ? {accountPin: params.password} : {}), passwordType: params.passwordType},
 		}),
 	}).then(toTransactionResult)
