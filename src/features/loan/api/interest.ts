@@ -1,7 +1,7 @@
-import {z} from "@/lib/zod"
+import { z } from "@/lib/zod"
 
-import {apiClient} from "@/lib/api/client"
-import {camelKeys} from "@/lib/api/camel"
+import { apiClient } from "@/lib/api/client"
+import { camelKeys } from "@/lib/api/camel"
 
 const text = z.union([z.string(), z.number()]).nullish()
 
@@ -9,15 +9,26 @@ const typesSchema = z.object({
 	isSuccessful: z.boolean().nullish(),
 	message: z.string().nullish(),
 	tableItems: z
-		.array(z.object({description: z.string().nullish(), installmentAmount: text, installmentRate: text, isStep: z.boolean().nullish()}))
+		.array(
+			z.object({
+				description: z.string().nullish(),
+				installmentAmount: text,
+				installmentRate: text,
+				isStep: z.boolean().nullish(),
+			}),
+		)
 		.nullish(),
 })
 
 const kindsSchema = z.object({
 	isSuccessful: z.boolean().nullish(),
 	message: z.string().nullish(),
-	isNotStepdList: z.array(z.object({id: z.number(), name: z.string().nullish()})).nullish(),
-	isStepedList: z.array(z.object({id: z.number(), name: z.string().nullish()})).nullish(),
+	isNotStepdList: z
+		.array(z.object({ id: z.number(), name: z.string().nullish() }))
+		.nullish(),
+	isStepedList: z
+		.array(z.object({ id: z.number(), name: z.string().nullish() }))
+		.nullish(),
 })
 
 const num = (value: string | number | null | undefined): number | null => {
@@ -50,15 +61,27 @@ export interface InterestOptions {
 	steppedKinds: InstallmentKind[]
 }
 
-const kinds = (list: {id: number; name?: string | null}[] | null | undefined): InstallmentKind[] => (list ?? []).map((item) => ({id: item.id, name: item.name ?? String(item.id)}))
+const kinds = (
+	list: { id: number; name?: string | null }[] | null | undefined,
+): InstallmentKind[] =>
+	(list ?? []).map((item) => ({
+		id: item.id,
+		name: item.name ?? String(item.id),
+	}))
 
 export const getInterestOptions = async (): Promise<InterestOptions> => {
 	const [types, dropdown] = await Promise.all([
-		apiClient<unknown>("/Installment/GetType").then((raw) => typesSchema.parse(camelKeys(raw))),
-		apiClient<unknown>("/Installment/DropDownTypes").then((raw) => kindsSchema.parse(camelKeys(raw))),
+		apiClient<unknown>("/Installment/GetType").then((raw) =>
+			typesSchema.parse(camelKeys(raw)),
+		),
+		apiClient<unknown>("/Installment/DropDownTypes").then((raw) =>
+			kindsSchema.parse(camelKeys(raw)),
+		),
 	])
-	if (types.isSuccessful === false) throw new Error(types.message ?? "loan types failed")
-	if (dropdown.isSuccessful === false) throw new Error(dropdown.message ?? "loan kinds failed")
+	if (types.isSuccessful === false)
+		throw new Error(types.message ?? "loan types failed")
+	if (dropdown.isSuccessful === false)
+		throw new Error(dropdown.message ?? "loan kinds failed")
 	return {
 		offers: (types.tableItems ?? []).map((item) => ({
 			title: item.description ?? "",
@@ -88,7 +111,18 @@ const resultSchema = z.object({
 	installmentNumber: text,
 	installmentType: z.string().nullish(),
 	accountProfitAmount: text,
-	infoItems: z.object({loanPeriods: z.array(z.object({paymentDescription: z.string().nullish(), paymentRound: text})).nullish()}).nullish(),
+	infoItems: z
+		.object({
+			loanPeriods: z
+				.array(
+					z.object({
+						paymentDescription: z.string().nullish(),
+						paymentRound: text,
+					}),
+				)
+				.nullish(),
+		})
+		.nullish(),
 })
 
 export interface InterestResult {
@@ -98,11 +132,13 @@ export interface InterestResult {
 	/** The profit the loan costs in total, in Rials. */
 	profit: number | null
 	/** What is paid each period; a plain loan has one row, a stepped loan one per step. */
-	periods: {label: string; amount: number | null}[]
+	periods: { label: string; amount: number | null }[]
 }
 
 /** Works out what a loan would cost. Nothing is requested from or paid to the bank. */
-export const calculateInterest = async (request: InterestRequest): Promise<InterestResult> => {
+export const calculateInterest = async (
+	request: InterestRequest,
+): Promise<InterestResult> => {
 	const data = resultSchema.parse(
 		camelKeys(
 			await apiClient<unknown>("/Installment/GetInterest", {
@@ -120,12 +156,16 @@ export const calculateInterest = async (request: InterestRequest): Promise<Inter
 			}),
 		),
 	)
-	if (data.isSuccessful === false) throw new Error(data.message ?? "interest failed")
+	if (data.isSuccessful === false)
+		throw new Error(data.message ?? "interest failed")
 	return {
 		amount: num(data.installmentAmount),
 		installments: num(data.installmentNumber),
 		kind: data.installmentType ?? "",
 		profit: num(data.accountProfitAmount),
-		periods: (data.infoItems?.loanPeriods ?? []).map((period) => ({label: period.paymentDescription ?? "", amount: num(period.paymentRound)})),
+		periods: (data.infoItems?.loanPeriods ?? []).map((period) => ({
+			label: period.paymentDescription ?? "",
+			amount: num(period.paymentRound),
+		})),
 	}
 }

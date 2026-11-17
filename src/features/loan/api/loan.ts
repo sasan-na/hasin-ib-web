@@ -1,8 +1,12 @@
-import {z} from "@/lib/zod"
+import { z } from "@/lib/zod"
 
-import {apiClient} from "@/lib/api/client"
-import {camelKeys} from "@/lib/api/camel"
-import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
+import { apiClient } from "@/lib/api/client"
+import { camelKeys } from "@/lib/api/camel"
+import {
+	toTransactionResult,
+	type PasswordType,
+	type TransactionResult,
+} from "@/features/transaction/api/transaction"
 
 const text = z.union([z.string(), z.number()]).nullish()
 
@@ -67,8 +71,11 @@ const num = (value: string | number | null | undefined): number | null => {
 
 /** The status of every loan on the user's accounts and cards, and the ones they follow for others. */
 export const getLoans = async (): Promise<Loan[]> => {
-	const data = listSchema.parse(camelKeys(await apiClient<unknown>("/BatchLoanStatus/GetList")))
-	if (data.isSuccessful === false) throw new Error(data.message ?? "loans failed")
+	const data = listSchema.parse(
+		camelKeys(await apiClient<unknown>("/BatchLoanStatus/GetList")),
+	)
+	if (data.isSuccessful === false)
+		throw new Error(data.message ?? "loans failed")
 	return (data.statusList ?? []).map((item) => ({
 		accountNumber: item.accountNumber ?? "",
 		cardNumber: item.cardNumber ?? "",
@@ -85,7 +92,10 @@ export const getLoans = async (): Promise<Loan[]> => {
 		firstDate: item.firstLoanDate ?? "",
 		isOther: item.isOtherLoan === true,
 		onCard: item.loanIdType === "MyCard" || item.loanIdType === "OthersCard",
-		payable: item.loanIdType !== undefined && item.loanIdType !== null && item.loanIdType !== "Unknown",
+		payable:
+			item.loanIdType !== undefined &&
+			item.loanIdType !== null &&
+			item.loanIdType !== "Unknown",
 		error: item.hasError === true ? (item.errorDescription ?? "") : "",
 	}))
 }
@@ -104,13 +114,17 @@ export interface PayInstallmentRequest {
  * Pays towards a loan from one of the user's accounts. The money goes to the loan's card number when the loan is kept
  * on a card and to its account number otherwise. A real transaction: send once per confirmation, never retry automatically.
  */
-export const payInstallment = (request: PayInstallmentRequest): Promise<TransactionResult> =>
+export const payInstallment = (
+	request: PayInstallmentRequest,
+): Promise<TransactionResult> =>
 	apiClient<unknown>("/AccountInstallment/PayLoan", {
 		method: "POST",
 		body: JSON.stringify({
 			sourceAccountInfo: {
 				accountNumber: request.sourceAccountNumber,
-				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
+				...(request.sourcePassword
+					? { accountPin: request.sourcePassword }
+					: {}),
 				passwordType: request.sourcePasswordType,
 			},
 			destinationCardPan: request.loan.cardNumber,

@@ -41,6 +41,9 @@ export default function LoanListPage() {
 							{t("loan.interest.open")}
 						</Link>
 					</Button>
+					<Button asChild variant="outline" size="sm">
+						<Link to={routeMap.loanJunior.path}>{t("loan.junior.open")}</Link>
+					</Button>
 					<Button
 						type="button"
 						variant="outline"

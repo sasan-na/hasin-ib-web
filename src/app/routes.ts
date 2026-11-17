@@ -37,6 +37,7 @@ export const routeMap = {
 	"reportBalance": {breadcrumb: "report.balance.title", path: "/report/balance"},
 	"loanList": {breadcrumb: "loan.title", path: "/loan"},
 	"loanInterest": {breadcrumb: "loan.interest.title", path: "/loan/interest"},
+	"loanJunior": {breadcrumb: "loan.junior.title", path: "/loan/junior-interest"},
 	"messageList": {breadcrumb: "message.title", path: "/message"},
 	"messageNew": {breadcrumb: "message.newTitle", path: "/message/new"},
 	"messageDetail": {breadcrumb: "message.detailTitle", path: "/message/detail"},
