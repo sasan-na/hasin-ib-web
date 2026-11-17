@@ -13,6 +13,8 @@ const transactionResultSchema = z.object({
 	errorCode: z.string().nullish(),
 	transactionId: z.number().nullish(),
 	transactionTypeString: z.string().nullish(),
+	batchId: z.string().nullish(),
+	isBatch: z.boolean().nullish(),
 	executionDate: z.string().nullish(),
 	hasWorkflow: z.boolean().nullish(),
 	workflowShouldBeEdited: z.boolean().nullish(),
@@ -24,8 +26,11 @@ export interface TransactionResult {
 	message: string
 	errorCode: string
 	transactionId: number | null
-	/** What was done, as the bank names it ("Open account"). */
+	/** The bank's key for what was done ("AccountBillPayment"); it names the service that can show the receipt. */
 	type: string
+	/** Set when the transaction was a group of transfers. */
+	batchId: string
+	isBatch: boolean
 	executedAt: string
 	/** The bank is waiting for other signatories before it goes through. */
 	needsApproval: boolean
@@ -40,6 +45,8 @@ export const toTransactionResult = (raw: unknown): TransactionResult => {
 		errorCode: data.errorCode ?? "",
 		transactionId: data.transactionId ?? null,
 		type: data.transactionTypeString ?? "",
+		batchId: data.batchId ?? "",
+		isBatch: data.isBatch === true,
 		executedAt: data.executionDate ?? "",
 		needsApproval: data.hasWorkflow === true,
 	}

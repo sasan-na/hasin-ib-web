@@ -334,7 +334,8 @@
             "reference": "Reference number",
             "errorCode": "Error code",
             "pendingNote": "Other signatories must approve this before the bank carries it out.",
-            "toAccounts": "Back to accounts"
+            "toAccounts": "Back to accounts",
+            "receipt": "View receipt"
         },
         "branchesError": "The branches could not be loaded. Please try again.",
         "chooseBranch": "Choose a branch",

@@ -40,12 +40,6 @@ export default function TransactionResultPage() {
 			</div>
 
 			<dl className="flex flex-col gap-2 text-sm">
-				{result.type ? (
-					<div className="flex flex-wrap gap-x-3">
-						<dt className="w-32 shrink-0 text-muted-foreground">{t("transaction.result.type")}</dt>
-						<dd>{result.type}</dd>
-					</div>
-				) : null}
 				{result.transactionId !== null ? (
 					<div className="flex flex-wrap gap-x-3">
 						<dt className="w-32 shrink-0 text-muted-foreground">{t("transaction.result.reference")}</dt>
@@ -70,6 +64,11 @@ export default function TransactionResultPage() {
 				<Button asChild>
 					<Link to={routeMap.accountList.path}>{t("transaction.result.toAccounts")}</Link>
 				</Button>
+				{tone === "success" && result.transactionId !== null && result.type !== "" ? (
+					<Button asChild variant="outline">
+						<Link to={`${routeMap.receiptView.path}?${new URLSearchParams({id: String(result.transactionId), type: result.type, batch: result.batchId, isBatch: result.isBatch ? "1" : "0"}).toString()}`}>{t("transaction.result.receipt")}</Link>
+					</Button>
+				) : null}
 				{again ? (
 					<Button asChild variant="outline">
 						<Link to={again.to}>{again.label}</Link>
