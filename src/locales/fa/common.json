@@ -24,7 +24,8 @@
         "cards": "کارت",
         "transfers": "انتقال وجه",
         "reports": "گزارش‌ها",
-        "loans": "تسهیلات"
+        "loans": "تسهیلات",
+        "messages": "پیام‌ها"
     },
     "home": {
         "welcome": "{{username}} عزیز، خوش آمدید!",
@@ -768,5 +769,40 @@
         "progressValue": "{{paid}} از {{total}}",
         "firstDate": "تاریخ اولین قسط",
         "rial": "ریال"
+    },
+    "message": {
+        "title": "پیام‌ها",
+        "detailTitle": "پیام",
+        "newTitle": "پیام جدید",
+        "refresh": "به‌روزرسانی",
+        "error": "بارگذاری پیام‌ها انجام نشد.",
+        "empty": "پیامی ندارید.",
+        "noSubject": "(بدون موضوع)",
+        "unread": "{{count}} جدید",
+        "old": "اینترنت بانک قدیم",
+        "delete": "حذف",
+        "deleting": "در حال حذف…",
+        "deleteTitle": "این پیام حذف شود؟",
+        "deleteQuestion": "«{{subject}}» از صندوق پیام شما حذف می‌شود.",
+        "cancel": "انصراف",
+        "deleted": "پیام حذف شد.",
+        "deleteFailed": "حذف پیام انجام نشد.",
+        "back": "بازگشت به پیام‌ها",
+        "notFound": "این پیام پیدا نشد.",
+        "reply": "پاسخ شما",
+        "send": "ارسال",
+        "sending": "در حال ارسال…",
+        "replySent": "پاسخ شما ارسال شد.",
+        "replyFailed": "ارسال پاسخ انجام نشد.",
+        "replyUncertain": "ارسال پاسخ تأیید نشد. پیش از ارسال دوباره، گفتگو را بارگذاری کنید و بررسی کنید.",
+        "fromBank": "بانک",
+        "fromYou": "شما",
+        "department": "ارسال به",
+        "chooseDepartment": "واحد را انتخاب کنید",
+        "departmentsError": "بارگذاری واحدها انجام نشد.",
+        "subject": "موضوع",
+        "body": "متن پیام",
+        "sendFailed": "ارسال پیام انجام نشد.",
+        "sendUncertain": "ارسال پیام تأیید نشد. پیش از ارسال دوباره، پیام‌های خود را بررسی کنید."
     }
 }

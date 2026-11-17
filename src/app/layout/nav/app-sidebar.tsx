@@ -1,5 +1,5 @@
 import * as React from "react"
-import {ArrowLeftRight, CreditCard, HandCoins, Home, Landmark, ScrollText} from "lucide-react"
+import {ArrowLeftRight, CreditCard, HandCoins, Home, Landmark, MessageSquare, ScrollText} from "lucide-react"
 import {useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
@@ -50,6 +50,12 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             url: routeMap.reportStatement.path,
             icon: ScrollText,
             isActive: pathname.startsWith("/report"),
+        },
+        {
+            title: t("navigation.messages"),
+            url: routeMap.messageList.path,
+            icon: MessageSquare,
+            isActive: pathname.startsWith(routeMap.messageList.path),
         },
     ]
 

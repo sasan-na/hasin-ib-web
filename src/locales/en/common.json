@@ -24,7 +24,8 @@
         "cards": "Cards",
         "transfers": "Transfers",
         "reports": "Reports",
-        "loans": "Loans"
+        "loans": "Loans",
+        "messages": "Messages"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -768,5 +769,40 @@
         "progressValue": "{{paid}} of {{total}}",
         "firstDate": "First installment date",
         "rial": "Rial"
+    },
+    "message": {
+        "title": "Messages",
+        "detailTitle": "Message",
+        "newTitle": "New message",
+        "refresh": "Refresh",
+        "error": "The messages could not be loaded.",
+        "empty": "You have no messages.",
+        "noSubject": "(No subject)",
+        "unread": "{{count}} new",
+        "old": "Old internet bank",
+        "delete": "Delete",
+        "deleting": "Deleting…",
+        "deleteTitle": "Delete this message?",
+        "deleteQuestion": "“{{subject}}” will be removed from your inbox.",
+        "cancel": "Cancel",
+        "deleted": "The message was deleted.",
+        "deleteFailed": "The message could not be deleted.",
+        "back": "Back to messages",
+        "notFound": "This message could not be found.",
+        "reply": "Your reply",
+        "send": "Send",
+        "sending": "Sending…",
+        "replySent": "Your reply was sent.",
+        "replyFailed": "Your reply could not be sent.",
+        "replyUncertain": "We could not confirm that the reply was sent. Reload the conversation to check before sending again.",
+        "fromBank": "Bank",
+        "fromYou": "You",
+        "department": "Send to",
+        "chooseDepartment": "Choose a department",
+        "departmentsError": "The departments could not be loaded.",
+        "subject": "Subject",
+        "body": "Message",
+        "sendFailed": "The message could not be sent.",
+        "sendUncertain": "We could not confirm that the message was sent. Check your messages before sending it again."
     }
 }
