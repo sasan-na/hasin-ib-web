@@ -671,7 +671,17 @@
             "sending": "Sending…",
             "again": "Back to connected cards",
             "failed": "The request was not accepted. Please check the details and try again.",
-            "uncertain": "We could not confirm whether the request went through. Check the card's credit and your account before trying again."
+            "uncertain": "We could not confirm whether the request went through. Check the card's credit and your account before trying again.",
+            "connect": "Connect a card",
+            "connectTitle": "Connect a card to this account",
+            "connectQuestion": "The card is connected to the account and can spend from credit kept on it.",
+            "holder": "Holder",
+            "check": "Check",
+            "checking": "Checking…",
+            "lookupFailed": "The card could not be checked.",
+            "errors": {
+                "number": "Enter the 16-digit card number."
+            }
         }
     },
     "transfer": {

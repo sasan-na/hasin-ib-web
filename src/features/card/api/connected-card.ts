@@ -64,3 +64,35 @@ export const moveCredit = (request: CreditRequest): Promise<TransactionResult> =
 /** Disconnects cards from an account. A real change: send once per confirmation, never retry automatically. */
 export const disconnectCards = (request: Payer & {cards: string[]}): Promise<TransactionResult> =>
 	apiClient<unknown>("/MultiAccountCard/Unlink", {method: "POST", body: JSON.stringify({sourceAccountInfo: source(request), cards: request.cards})}).then(toTransactionResult)
+
+const infoSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	result: z
+		.object({
+			succeed: z.boolean().nullish(),
+			errorDescription: z.unknown().nullish(),
+			outData: z.object({expiryDate: z.string().nullish(), status: z.string().nullish(), holderName: z.string().nullish(), balance: z.number().nullish()}).nullish(),
+		})
+		.nullish(),
+})
+
+/** What the bank says about a card that could be connected. */
+export interface CardToConnect {
+	number: string
+	holder: string
+	expiryDate: string
+	status: string
+}
+
+/** Looks up a card before connecting it. Nothing is changed. Throws with the bank text when the card cannot be connected. */
+export const getCardToConnect = async (accountNumber: string, pan: string): Promise<CardToConnect> => {
+	const data = infoSchema.parse(camelKeys(await apiClient<unknown>("/MultiAccountCard/GetCardInfo", {method: "POST", body: JSON.stringify({accountNumber, pan})})))
+	const out = data.result?.outData
+	if (data.isSuccessful === false || data.result?.succeed === false || !out) throw new Error(data.message ?? (typeof data.result?.errorDescription === "string" ? data.result.errorDescription : "card lookup failed"))
+	return {number: pan, holder: out.holderName ?? "", expiryDate: out.expiryDate ?? "", status: out.status ?? ""}
+}
+
+/** Connects a card to an account. A real change: send once per confirmation, never retry automatically. */
+export const connectCard = (request: Payer & {pan: string}): Promise<TransactionResult> =>
+	apiClient<unknown>("/MultiAccountCard/LinkAccountToCard", {method: "POST", body: JSON.stringify({sourceAccountInfo: source(request), pan: request.pan})}).then(toTransactionResult)
