@@ -23,6 +23,7 @@ export const routeMap = {
 	"transferStandingOrderNew": {breadcrumb: "transfer.standing.registerTitle", path: "/transfer/standing-orders/new"},
 	"transferIban": {breadcrumb: "transfer.iban.title", path: "/transfer/iban"},
 	"transferCard": {breadcrumb: "transfer.card.title", path: "/transfer/card"},
+	"transferGroup": {breadcrumb: "transfer.group.title", path: "/transfer/group"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

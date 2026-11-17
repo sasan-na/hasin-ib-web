@@ -665,6 +665,23 @@
                 "same": "The destination is the same as the paying card.",
                 "notChecked": "Press Check to see who holds this card before sending."
             }
+        },
+        "group": {
+            "title": "Group transfer",
+            "recipients": "Recipients",
+            "recipient": "Recipient {{number}}",
+            "remove": "Remove recipient {{number}}",
+            "add": "Add a recipient",
+            "note": "Note for the whole batch",
+            "total": "Total: {{amount}}",
+            "totalLabel": "Total",
+            "confirmTitle": "Send to all recipients?",
+            "confirmQuestion": "{{count}} transfers will be made from the paying account as soon as you confirm.",
+            "again": "Make another group transfer",
+            "error": {
+                "fix": "Please fix the recipients marked above.",
+                "duplicate": "This account appears more than once."
+            }
         }
     }
 }

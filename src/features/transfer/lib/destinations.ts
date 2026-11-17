@@ -1,4 +1,4 @@
-import {ArrowLeftRight, CalendarClock, CreditCard, Landmark, Zap} from "lucide-react"
+import {ArrowLeftRight, CalendarClock, CreditCard, Landmark, Users, Zap} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -10,5 +10,6 @@ export const transferDestinations: Record<string, Destination> = {
 	SatnaTransferMoney: {to: `${routeMap.transferIban.path}?type=satna`, icon: Zap, ...TONES.primary},
 	PayaTransferMoney: {to: `${routeMap.transferIban.path}?type=paya`, icon: Landmark, ...TONES.success},
 	CardTransferMoney: {to: routeMap.transferCard.path, icon: CreditCard, ...TONES.info},
+	GroupTransferMoney: {to: routeMap.transferGroup.path, icon: Users, ...TONES.primary},
 	StandingOrder: {to: routeMap.transferStandingOrders.path, icon: CalendarClock, ...TONES.warning},
 }

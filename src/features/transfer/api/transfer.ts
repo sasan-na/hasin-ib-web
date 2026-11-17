@@ -198,3 +198,42 @@ export const transferIban = (request: IbanTransferRequest): Promise<TransactionR
 			isWithoutInquiry: request.holder.withoutInquiry,
 		}),
 	}).then(toTransactionResult)
+
+// ---- Group transfer to accounts at this bank --------------------------------------------------
+
+export interface GroupTransferItem {
+	destinationAccountNumber: string
+	/** In Rials. */
+	amount: number
+	description: string
+}
+
+export interface GroupTransferRequest {
+	sourceAccountNumber: string
+	sourcePassword: string | null
+	sourcePasswordType: PasswordType
+	items: GroupTransferItem[]
+	/** A note for the whole batch. */
+	documentDescription: string
+}
+
+/** Pays several accounts from one in a single batch. A real transaction: send once per confirmation, never retry automatically. */
+export const transferGroup = (request: GroupTransferRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/TransferMoney/InternalBatch/DoTransfer", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceAccountInfo: {
+				accountNumber: request.sourceAccountNumber,
+				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
+				passwordType: request.sourcePasswordType,
+			},
+			items: request.items.map((item) => ({
+				destinationAccountNumber: item.destinationAccountNumber,
+				amount: item.amount,
+				description: item.description,
+				paymentId: "",
+			})),
+			documentDescription: request.documentDescription,
+			isRepetitive: false,
+		}),
+	}).then(toTransactionResult)

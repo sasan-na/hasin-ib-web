@@ -27,6 +27,7 @@ const StandingOrderList = React.lazy(() => import("@/features/transfer/pages/sta
 const RegisterStandingOrder = React.lazy(() => import("@/features/transfer/pages/register-standing-order-page.tsx"));
 const IbanTransfer = React.lazy(() => import("@/features/transfer/pages/iban-transfer-page.tsx"));
 const CardTransfer = React.lazy(() => import("@/features/transfer/pages/card-transfer-page.tsx"));
+const GroupTransfer = React.lazy(() => import("@/features/transfer/pages/group-transfer-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -64,6 +65,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.transferStandingOrderNew.path} element={<RegisterStandingOrder/>}/>
                     <Route path={routeMap.transferIban.path} element={<IbanTransfer/>}/>
                     <Route path={routeMap.transferCard.path} element={<CardTransfer/>}/>
+                    <Route path={routeMap.transferGroup.path} element={<GroupTransfer/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>
