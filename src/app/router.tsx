@@ -44,6 +44,7 @@ const ChequeList = React.lazy(() => import("@/features/cheque/pages/cheque-list-
 const ChequeBook = React.lazy(() => import("@/features/cheque/pages/cheque-book-page.tsx"));
 const PichakInquiry = React.lazy(() => import("@/features/cheque/pages/pichak-inquiry-page.tsx"));
 const PichakRegister = React.lazy(() => import("@/features/cheque/pages/pichak-register-page.tsx"));
+const PichakChain = React.lazy(() => import("@/features/cheque/pages/pichak-chain-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -99,6 +100,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.chequeBook.path} element={<ChequeBook/>}/>
                     <Route path={routeMap.pichakInquiry.path} element={<PichakInquiry/>}/>
                     <Route path={routeMap.pichakRegister.path} element={<PichakRegister/>}/>
+                    <Route path={routeMap.pichakChain.path} element={<PichakChain/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>

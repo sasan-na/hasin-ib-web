@@ -57,6 +57,9 @@ export default function ChequeListPage() {
 				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
 				<div className="flex flex-wrap gap-2">
 					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.pichakChain.path}>{t("cheque.chain.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
 						<Link to={routeMap.pichakInquiry.path}>{t("cheque.pichak.title")}</Link>
 					</Button>
 					<Button asChild size="sm" variant="outline">

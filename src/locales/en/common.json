@@ -1180,6 +1180,24 @@
                 "duplicate": "This recipient is listed twice.",
                 "fixRecipients": "Fix the recipients marked above."
             }
+        },
+        "chain": {
+            "title": "Cheque transfers chain",
+            "intro": "See everyone a cheque has passed through, from the person who wrote it to those it was passed on to.",
+            "chooseType": "Choose the cheque type",
+            "empty": "The registry has no chain for this cheque.",
+            "result": "Transfers chain",
+            "chequeTypes": {
+                "1": "Ordinary",
+                "2": "Bank cheque",
+                "3": "With password",
+                "4": "Type 4 (other)"
+            },
+            "roles": {
+                "1": "Drawer of the cheque",
+                "2": "Receiver of the cheque",
+                "3": "Receiver of a transfer"
+            }
         }
     }
 }
