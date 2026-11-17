@@ -3,7 +3,6 @@ import {Navigate} from "react-router-dom"
 
 import {Alert, AlertDescription} from "@/components/ui/alert"
 import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import {normalizeDigits} from "@/lib/auth/normalizeDigits"
@@ -28,12 +27,12 @@ export default function LoginPage() {
 	if (isSignedIn) return <Navigate to={redirectTo ?? routeMap.home.path} replace />
 
 	return (
-		<Card className="mx-auto w-full max-w-sm">
-			<CardHeader className="text-center">
-				<CardTitle className="text-2xl">{t("login.title")}</CardTitle>
-				<CardDescription>{t("login.subtitle")}</CardDescription>
-			</CardHeader>
-			<CardContent>
+		<div className="mx-auto grid w-full max-w-3xl overflow-hidden rounded-lg border bg-card md:grid-cols-[minmax(0,1fr)_17rem]">
+			<div className="flex flex-col gap-6 p-6 md:p-8">
+				<div className="flex flex-col gap-1">
+					<h1 className="text-2xl font-bold">{t("login.title")}</h1>
+					<p className="text-sm text-muted-foreground">{t("login.subtitle")}</p>
+				</div>
 				{sessionExpired ? (
 					<Alert className="mb-4" role="status">
 						<AlertDescription>{t("login.sessionExpired")}</AlertDescription>
@@ -80,11 +79,13 @@ export default function LoginPage() {
 								{form.formState.isSubmitting ? t("login.submitting") : t("login.submit")}
 							</Button>
 							<ForgotPasswordLink href={import.meta.env.VITE_PASSWORD_RECOVERY_URL} />
-							<SecurityTips />
 						</form>
 					</Form>
 				)}
-			</CardContent>
-		</Card>
+			</div>
+			<aside className="border-t bg-muted/60 p-6 md:border-t-0 md:border-s md:p-8">
+				<SecurityTips />
+			</aside>
+		</div>
 	)
 }

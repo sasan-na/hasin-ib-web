@@ -7,6 +7,7 @@ import {findRouteByPath} from "@/lib/utils.ts";
 import {useTranslation} from "react-i18next";
 import {LanguageSwitcher} from "@/components/language-switcher.tsx";
 import {ThemeSwitcher} from "@/components/theme-switcher.tsx";
+import {Logo} from "@/components/ui/logo.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
 import {BreadcrumbItem, BreadcrumbResponsive} from "@/components/breadcrumbs"
 import {routeMap} from "@/routing.tsx";
@@ -76,12 +77,19 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
 }
 
 export function PublicShell({children}: {children?: React.ReactNode}): React.ReactElement {
+    const {t} = useTranslation();
     return (
         <div id={"public"}>
             <div className="flex min-h-screen w-full flex-col">
-                <header className="flex items-center justify-end gap-1 p-4">
-                    <ThemeSwitcher/>
-                    <LanguageSwitcher/>
+                <header className="flex items-center justify-between gap-2 p-4">
+                    <div className="flex items-center gap-2">
+                        <Logo size={20} className="fill-primary"/>
+                        <span className="text-base font-semibold">{t("appName")}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <ThemeSwitcher/>
+                        <LanguageSwitcher/>
+                    </div>
                 </header>
                 <main className="flex flex-1 items-start justify-center px-4 pb-8 sm:items-center">
                     <RouteFrame>{children}</RouteFrame>
