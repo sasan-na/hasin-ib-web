@@ -2,10 +2,17 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
+import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
 
 // The bank forwards the central registry's answer as it is, so every field may be a string or a number.
 const text = z.union([z.string(), z.number()]).nullish()
 const str = (value: string | number | null | undefined): string => (value === null || value === undefined ? "" : String(value))
+
+/** The registry writes dates as YYYYMMDD; people read YYYY/MM/DD. Anything else is shown as it came. */
+const date = (value: string | number | null | undefined): string => {
+	const text = str(value)
+	return /^\d{8}$/.test(text) ? `${text.slice(0, 4)}/${text.slice(4, 6)}/${text.slice(6)}` : text
+}
 
 const personSchema = z.object({name: text, idType: text, idCode: text})
 
@@ -118,8 +125,8 @@ export const inquirePichak = async (sayyadId: string, role: InquiryRole, ownerCh
 			serial: str(detail.serialNo),
 			iban: str(detail.iban),
 			amount: str(detail.amount),
-			dueDate: str(detail.dueDate),
-			issueDate: str(detail.issueDate),
+			dueDate: date(detail.dueDate),
+			issueDate: date(detail.issueDate),
 			description: str(detail.description),
 			bank: [str(detail.bankName), str(detail.bankCode)].filter(Boolean).join(" · "),
 			branch: [str(detail.branchName), str(detail.branchCode)].filter(Boolean).join(" · "),
@@ -137,3 +144,22 @@ export const inquirePichak = async (sayyadId: string, role: InquiryRole, ownerCh
 		owners: (owner?.ownersInfo ?? []).map((info) => ({idCode: str(info.idCode), idType: str(info.idType), bounced: str(info.bounced), cleared: str(info.cleared)})),
 	}
 }
+
+/** The registry's status of a cheque that waits for the receiver to accept it (written, or being passed on to them). */
+export const WAITING_FOR_RECEIVER = ["7", "8"]
+
+/** Accepts or rejects a cheque waiting for you. A real transaction: send once per confirmation, never retry automatically. */
+export const confirmPichakCheque = (params: {sayyadId: string; accept: boolean; description: string; series: string; serial: string; dueDate: string; amount: number}): Promise<TransactionResult> =>
+	apiClient<unknown>("/Pichak/ConfirmCheque", {
+		method: "POST",
+		body: JSON.stringify({
+			sayyadId: params.sayyadId,
+			requestType: params.accept ? 1 : 0,
+			description: params.description,
+			seriesNo: params.series,
+			serialNo: params.serial,
+			// Back to the registry's own YYYYMMDD form.
+			dueDate: params.dueDate.replace(/\D/g, ""),
+			amount: params.amount,
+		}),
+	}).then(toTransactionResult)

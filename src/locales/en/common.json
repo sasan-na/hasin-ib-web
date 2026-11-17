@@ -1107,7 +1107,21 @@
                 "2": "Legal customer",
                 "3": "Real foreigner",
                 "4": "Legal foreigner"
-            }
+            },
+            "answer": "Your answer",
+            "waiting": "This cheque is waiting for you to accept or reject it.",
+            "accept": "Accept cheque",
+            "reject": "Reject cheque",
+            "note": "Note",
+            "acceptTitle": "Accept cheque",
+            "acceptQuestion": "You tell the registry that you accept this cheque.",
+            "rejectTitle": "Reject cheque",
+            "rejectQuestion": "You tell the registry that you reject this cheque.",
+            "sending": "Sending…",
+            "backToInquiry": "Back to cheque inquiry",
+            "acceptFailed": "The cheque was not accepted. Please try again.",
+            "rejectFailed": "The cheque was not rejected. Please try again.",
+            "confirmUncertain": "We could not confirm whether your answer was received. Ask the registry about the cheque again before answering twice."
         },
         "register": {
             "action": "Register",

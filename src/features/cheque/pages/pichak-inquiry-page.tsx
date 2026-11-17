@@ -6,7 +6,8 @@ import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {inquirePichak, type InquiryRole} from "@/features/cheque/api/pichak-inquiry"
+import {inquirePichak, WAITING_FOR_RECEIVER, type InquiryRole} from "@/features/cheque/api/pichak-inquiry"
+import {PichakConfirmDialog} from "@/features/cheque/components/pichak-confirm-dialog"
 import {PichakResult} from "@/features/cheque/components/pichak-result"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
@@ -19,7 +20,10 @@ export default function PichakInquiryPage() {
 	const [role, setRole] = useState<InquiryRole>("holder")
 	const [ownerCheck, setOwnerCheck] = useState(false)
 
-	const inquiry = useMutation({mutationFn: () => inquirePichak(sayyadId, role, role === "holder" && ownerCheck)})
+	const [answering, setAnswering] = useState<boolean | null>(null)
+	const inquiry = useMutation({mutationFn: (asked: InquiryRole) => inquirePichak(sayyadId, asked, asked === "holder" && ownerCheck)})
+	// Only a holder who has just looked the cheque up can answer for it, and only while it waits for them.
+	const canAnswer = inquiry.variables === "holder" && inquiry.data?.cheque != null && WAITING_FOR_RECEIVER.includes(inquiry.data.cheque.status)
 	const valid = sayyadId.length === SAYYAD_LENGTH
 
 	return (
@@ -31,7 +35,7 @@ export default function PichakInquiryPage() {
 				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
 				onSubmit={(event) => {
 					event.preventDefault()
-					if (valid && !inquiry.isPending) inquiry.mutate()
+					if (valid && !inquiry.isPending) inquiry.mutate(role)
 				}}
 			>
 				<div className="flex flex-col gap-2">
@@ -88,6 +92,20 @@ export default function PichakInquiryPage() {
 					<PichakResult inquiry={inquiry.data} />
 				</section>
 			) : null}
+			{canAnswer && inquiry.data?.cheque ? (
+				<section aria-label={t("cheque.pichak.answer")} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+					<p className="text-sm">{t("cheque.pichak.waiting")}</p>
+					<div className="flex flex-wrap gap-2">
+						<Button type="button" onClick={() => setAnswering(true)}>
+							{t("cheque.pichak.accept")}
+						</Button>
+						<Button type="button" variant="outline" className="text-destructive" onClick={() => setAnswering(false)}>
+							{t("cheque.pichak.reject")}
+						</Button>
+					</div>
+				</section>
+			) : null}
+			{answering !== null && inquiry.data?.cheque ? <PichakConfirmDialog sayyadId={sayyadId} cheque={inquiry.data.cheque} accept={answering} onClose={() => setAnswering(null)} /> : null}
 		</div>
 	)
 }
