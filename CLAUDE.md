@@ -8,7 +8,7 @@ IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app.
 
 ## Standing rules
 
-- **No tests, no TDD, no test tooling.** Check behaviour by running the app in Chrome (dev server + mocks).
+- **No tests, no TDD, no test tooling.** Check behaviour by running the app in Chrome (dev server against the real server).
 - Keep the project lean: no custom gate scripts or heavy hooks. `npm run lint`, `npm run build` and `tsc` are the gate.
 - No PR policy. Commit each slice separately: `type(scope): description`, header <= 96 characters.
 - Persian (`fa`, default, RTL) and English (`en`) are both supported. Every user-visible string goes through i18n; use logical CSS (`ps/pe/ms/me`, `start/end`) so RTL works.
@@ -17,7 +17,7 @@ IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app.
 ## Commands
 
 ```bash
-npm run dev      # vite dev server (also: npm start); API calls are mocked (MSW)
+npm run dev      # vite dev server (also: npm start); /api is proxied to VITE_DEV_PROXY_TARGET
 npm run build    # tsc type-check, then vite build
 npm run lint     # eslint, --max-warnings 0 - must pass with zero warnings
 npm run preview  # serve the production build
@@ -31,12 +31,8 @@ See `.env.example`:
 
 - `VITE_API_URL` - legacy server API root (e.g. `https://ib.radin.tech/api`); defaults to same-origin `/api`.
 - `VITE_PASSWORD_RECOVERY_URL` - target of the "forgot password" link; the link is hidden while unset.
-- `VITE_ENABLE_MSW` - `false` turns the dev-only mock server off to use a real backend.
+- `VITE_DEV_PROXY_TARGET` - dev only: the dev server proxies same-origin `/api` here (the real server sends no CORS headers); leave `VITE_API_URL` unset when using it.
 - `VITE_LOG_LEVEL` - `debug` | `info` | `warn` | `error` | `silent` (`src/lib/logger.ts`).
-
-## Dev mock scenarios
-
-In dev, MSW (`src/mocks/handlers.ts`) answers the login API. The scenario is keyed on the captcha answer: `0000` asks for a one-time code, `1111` password expired (lands on `/change-password`), `9999` refused, anything else signs in. Mocks never run in production builds.
 
 ## Architecture
 

@@ -3,7 +3,7 @@ import {useSession} from "@/store/session"
 
 import {getXsrfToken, XSRF_HEADER_NAME} from "./xsrf"
 
-// Legacy server API root, e.g. https://ib.radin.tech/api. Defaults to same-origin /api (dev mocks).
+// Legacy server API root, e.g. https://ib.radin.tech/api. Defaults to same-origin /api (proxied to the real server in dev).
 export const API_BASE_URL: string = import.meta.env.VITE_API_URL ?? "/api"
 
 export class ApiError extends Error {

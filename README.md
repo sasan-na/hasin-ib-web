@@ -9,20 +9,11 @@ The new web client for Hasin internet banking, replacing the legacy AngularJS ap
 ```bash
 nvm use            # Node 24, see .nvmrc
 npm install
-cp .env.example .env.local   # optional
+cp .env.example .env.local   # sets VITE_DEV_PROXY_TARGET, the real server for dev
 npm run dev
 ```
 
-In dev the legacy API is mocked. Type one of these as the security code to pick a scenario:
-
-| Captcha | Result |
-| ------- | ------ |
-| `0000`  | one-time-code step |
-| `1111`  | password expired, goes to `/change-password` |
-| `9999`  | sign-in refused |
-| other   | signed in |
-
-Set `VITE_ENABLE_MSW=false` and `VITE_API_URL` to talk to a real server instead.
+The app talks to the real legacy server. `npm run dev` forwards `/api` to `VITE_DEV_PROXY_TARGET` (the server sends no CORS headers), so the copy of `.env.example` is needed to sign in.
 
 ## Checks
 
