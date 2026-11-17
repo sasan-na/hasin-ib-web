@@ -1,6 +1,6 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "@/lib/api/client"
+import {apiBlob, apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
 
 const amount = z.union([z.number(), z.string()]).nullish()
@@ -123,4 +123,41 @@ export const getStatement = async (query: StatementQuery, startIndex: number, pa
 		references: [item.transactionIdentity, item.referenceNumber, item.chequeNo].filter((value): value is string => !!value),
 	}))
 	return {rows, total: data.invoiceCount ?? rows.length, totalDebit: money(data.totalDebitAmount), totalCredit: money(data.totalCreditAmount)}
+}
+
+export type StatementExportFormat = "pdf" | "excel"
+
+/**
+ * The statement as a file, with the same filter as the one on screen. The bank builds it from the search it has
+ * just cached, so export after searching. Returns the file and a name for it.
+ */
+export const exportStatement = async (query: StatementQuery, format: StatementExportFormat, total: number): Promise<{blob: Blob; fileName: string}> => {
+	const period = query.period
+	const range = "from" in period ? period : null
+	const latest = "latest" in period ? period.latest : null
+	const base = range ? `${query.accountNumber}_${range.fromJalali.replace(/\//g, "-")}_${range.toJalali.replace(/\//g, "-")}` : `${query.accountNumber}_last-${String(latest)}`
+	const blob = await apiBlob(format === "pdf" ? "/Statement/ExportToPdf" : "/Statement/ExportToExcel", {
+		method: "POST",
+		body: JSON.stringify({
+			clearCache: false,
+			isAccountInvoice: true,
+			startIndex: 0,
+			pageCount: total,
+			pan: query.accountNumber,
+			count: latest,
+			startDate: range?.from ?? null,
+			endDate: range?.to ?? null,
+			shamsiStartDate: range?.fromJalali ?? null,
+			shamsiEndDate: range?.toJalali ?? null,
+			transactionType: query.typeKey,
+			showDebit: query.showDebit,
+			showCredit: query.showCredit,
+			stateId: 0,
+			orderType: 0,
+			bankId: 0,
+			isExport: true,
+			reportFileName: base,
+		}),
+	})
+	return {blob, fileName: `${base}.${format === "pdf" ? "pdf" : "xlsx"}`}
 }

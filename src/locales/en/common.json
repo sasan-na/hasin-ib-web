@@ -800,7 +800,9 @@
                 "date": "Enter a date like 1405/01/01.",
                 "order": "The end date is before the start date.",
                 "latest": "Enter a number from 1 to {{max}}."
-            }
+            },
+            "export": "Save as",
+            "exportFailed": "The file could not be created. Search again and retry."
         },
         "events": {
             "title": "Events",
@@ -1564,6 +1566,9 @@
         "error": {
             "date": "Enter dates like 1405/01/01.",
             "order": "The start date cannot be after the end date."
-        }
+        },
+        "pdf": "Save as PDF",
+        "pdfing": "Preparing…",
+        "pdfFailed": "The PDF could not be created."
     }
 }

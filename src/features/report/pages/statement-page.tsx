@@ -12,8 +12,9 @@ import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
 import {accountsOptions} from "@/features/account/api/account.queries"
-import {getStatement, type StatementPage, type StatementQuery, type StatementRow} from "@/features/report/api/statement"
+import {exportStatement, getStatement, type StatementExportFormat, type StatementPage, type StatementQuery, type StatementRow} from "@/features/report/api/statement"
 import {statementTypesOptions} from "@/features/report/api/report.queries"
+import {saveFile} from "@/lib/save-file"
 import {formatAmount} from "@/lib/format"
 import {daysAgoJalali, jalaliToIso, parseJalali, todayJalali} from "@/lib/jalali"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -63,6 +64,13 @@ export default function StatementPage() {
 	const more = useMutation({
 		mutationFn: (current: Result): Promise<StatementPage> => getStatement(current.query, current.rows.length, PAGE_SIZE),
 		onSuccess: (page, current) => setResult({...current, rows: [...current.rows, ...page.rows], total: page.total}),
+	})
+
+	const exporting = useMutation({
+		mutationFn: async (input: {current: Result; format: StatementExportFormat}): Promise<void> => {
+			const file = await exportStatement(input.current.query, input.format, input.current.total)
+			saveFile(file.blob, file.fileName)
+		},
 	})
 
 	const run = (): void => {
@@ -299,6 +307,20 @@ export default function StatementPage() {
 								<Button type="button" variant="outline" disabled={more.isPending} onClick={() => more.mutate(result)}>
 									{more.isPending ? t("report.statement.loading") : t("report.statement.more")}
 								</Button>
+							) : null}
+						</div>
+						<div className="flex flex-wrap items-center gap-2 border-t p-4">
+							<span className="text-sm text-muted-foreground">{t("report.statement.export")}</span>
+							<Button type="button" size="sm" variant="outline" disabled={exporting.isPending} onClick={() => exporting.mutate({current: result, format: "pdf"})}>
+								PDF
+							</Button>
+							<Button type="button" size="sm" variant="outline" disabled={exporting.isPending} onClick={() => exporting.mutate({current: result, format: "excel"})}>
+								Excel
+							</Button>
+							{exporting.isError ? (
+								<span role="alert" className="text-sm text-destructive">
+									{t("report.statement.exportFailed")}
+								</span>
 							) : null}
 						</div>
 						{more.isError ? (

@@ -56,7 +56,8 @@ const withLang = (endpoint: string): string => {
 	return `${endpoint}${endpoint.includes("?") ? "&" : "?"}lang=${lang}`
 }
 
-export const apiClient = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
+/** Sends a request with the session's credentials and turns the failures every call shares (expired session, HTTP errors) into exceptions. */
+const send = async (endpoint: string, options?: RequestInit): Promise<Response> => {
 	const token = useSession.getState().token
 	const xsrfToken = getXsrfToken()
 	const response = await fetch(`${API_BASE_URL}${withLang(endpoint)}`, {
@@ -84,7 +85,11 @@ export const apiClient = async <T>(endpoint: string, options?: RequestInit): Pro
 		}
 		throw new ApiError(response.status, message || `HTTP ${String(response.status)}`)
 	}
+	return response
+}
 
+export const apiClient = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
+	const response = await send(endpoint, options)
 	const data: unknown = await response.json()
 	if (hasExpiredErrorCode(data)) {
 		expireSession()
@@ -92,6 +97,9 @@ export const apiClient = async <T>(endpoint: string, options?: RequestInit): Pro
 	}
 	return data as T
 }
+
+/** Like `apiClient`, for answers that are a file (a PDF, a spreadsheet) rather than JSON. */
+export const apiBlob = async (endpoint: string, options?: RequestInit): Promise<Blob> => (await send(endpoint, options)).blob()
 
 /** Ends the server session (`api/Login/Logout`). */
 export const logoutRequest = () => apiClient<unknown>("/Login/Logout", {method: "POST"})

@@ -1,6 +1,6 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "@/lib/api/client"
+import {apiBlob, apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
 
 const text = z.union([z.string(), z.number()]).nullish()
@@ -154,3 +154,10 @@ export const getReceipt = async (row: Pick<ReceiptRow, "id" | "typeKey" | "batch
 			: null,
 	}
 }
+
+/** The receipt as a PDF made by the bank. */
+export const getReceiptPdf = (row: Pick<ReceiptRow, "id" | "typeKey" | "batchId" | "isBatch">): Promise<Blob> =>
+	apiBlob(`/${encodeURIComponent(row.typeKey)}/CreateReceiptPdf`, {
+		method: "POST",
+		body: JSON.stringify({transactionId: row.id, isBatch: row.isBatch, shouldBeSuccessful: false, batchId: row.batchId === "" ? null : row.batchId}),
+	})

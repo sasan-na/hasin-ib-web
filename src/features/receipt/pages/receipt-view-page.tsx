@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query"
+import {useMutation, useQuery} from "@tanstack/react-query"
 import {ArrowLeft, ArrowRight, Printer} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link, Navigate, useSearchParams} from "react-router-dom"
@@ -7,8 +7,9 @@ import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
 import {DetailValue} from "@/features/dashboard/components/workflow-dialogs"
-import {getReceipt} from "@/features/receipt/api/receipt"
+import {getReceipt, getReceiptPdf} from "@/features/receipt/api/receipt"
 import {formatAmount, formatCardNumber} from "@/lib/format"
+import {saveFile} from "@/lib/save-file"
 
 /** One receipt, laid out to be read or printed (the browser's print dialog can also save it as a PDF). */
 export default function ReceiptViewPage() {
@@ -21,6 +22,9 @@ export default function ReceiptViewPage() {
 	const valid = Number.isInteger(id) && id > 0 && /^\w{2,80}$/.test(typeKey)
 
 	const receipt = useQuery({queryKey: ["receipt", "view", id, typeKey, batchId, isBatch], queryFn: () => getReceipt({id, typeKey, batchId, isBatch}), enabled: valid, staleTime: 60_000, retry: false})
+	const pdf = useMutation({
+		mutationFn: async (): Promise<void> => saveFile(await getReceiptPdf({id, typeKey, batchId, isBatch}), `Receipt-${String(id)}.pdf`),
+	})
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
 
 	if (!valid) return <Navigate to={routeMap.receiptList.path} replace />
@@ -36,12 +40,21 @@ export default function ReceiptViewPage() {
 							{t("receipt.back")}
 						</Link>
 					</Button>
+					<Button type="button" size="sm" variant="outline" disabled={!receipt.isSuccess || pdf.isPending} onClick={() => pdf.mutate()}>
+						{pdf.isPending ? t("receipt.pdfing") : t("receipt.pdf")}
+					</Button>
 					<Button type="button" size="sm" disabled={!receipt.isSuccess} onClick={() => window.print()}>
 						<Printer aria-hidden="true" />
 						{t("receipt.print")}
 					</Button>
 				</div>
 			</div>
+
+			{pdf.isError ? (
+				<p role="alert" className="text-sm text-destructive print:hidden">
+					{t("receipt.pdfFailed")}
+				</p>
+			) : null}
 
 			{receipt.isPending ? (
 				<Skeleton className="h-48 w-full" />
