@@ -1229,7 +1229,14 @@
             "mobile": "Enter a mobile number like 09121234567.",
             "alreadyPaid": "The bill for {{bill}} is already paid.",
             "lookup": "The bill could not be found."
-        }
+        },
+        "payWith": "Pay with",
+        "fromAccount": "Account",
+        "fromCard": "Card",
+        "sourceCard": "Card to pay from",
+        "chooseCard": "Choose a card",
+        "cardsError": "Your cards could not be loaded.",
+        "noCards": "You have no cards to pay from."
     },
     "cheque": {
         "title": "Cheques",

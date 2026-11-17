@@ -1,6 +1,7 @@
 import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
+import {toCardInfoBody, type CardCredentials} from "@/features/card/api/card-credentials"
 import {camelKeys} from "@/lib/api/camel"
 import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 
@@ -82,6 +83,17 @@ export const payBills = (request: PayBillsRequest): Promise<TransactionResult> =
 				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
 				passwordType: request.sourcePasswordType,
 			},
+			bills: request.bills.map((bill) => ({billId: bill.billId, payId: bill.payId, mobile: bill.mobile, amount: bill.amount, title: bill.title})),
+		}),
+	}).then(toTransactionResult)
+
+/** Pays one or more bills from a card. A real transaction: send once per confirmation, never retry automatically. */
+export const payBillsFromCard = (request: {credentials: CardCredentials; bills: PayableBill[]; remember: boolean}): Promise<TransactionResult> =>
+	apiClient<unknown>("/Bill/PayCardBills", {
+		method: "POST",
+		body: JSON.stringify({
+			isShown: request.remember,
+			cardInfo: toCardInfoBody(request.credentials),
 			bills: request.bills.map((bill) => ({billId: bill.billId, payId: bill.payId, mobile: bill.mobile, amount: bill.amount, title: bill.title})),
 		}),
 	}).then(toTransactionResult)
