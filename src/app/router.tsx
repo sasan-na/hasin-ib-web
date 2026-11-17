@@ -34,6 +34,8 @@ const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.t
 const MessageList = React.lazy(() => import("@/features/message/pages/message-list-page.tsx"));
 const MessageDetail = React.lazy(() => import("@/features/message/pages/message-detail-page.tsx"));
 const NewMessage = React.lazy(() => import("@/features/message/pages/new-message-page.tsx"));
+const ContactList = React.lazy(() => import("@/features/contact/pages/contact-list-page.tsx"));
+const ContactForm = React.lazy(() => import("@/features/contact/pages/contact-form-page.tsx"));
 const Login = React.lazy(() => import("@/features/auth/pages/login-page.tsx"));
 const ChangePassword = React.lazy(() => import("@/features/auth/pages/change-password-page.tsx"));
 const NotFound = React.lazy(() => import("@/app/pages/not-found"));
@@ -78,6 +80,9 @@ const router = createBrowserRouter(
                     <Route path={routeMap.messageList.path} element={<MessageList/>}/>
                     <Route path={routeMap.messageNew.path} element={<NewMessage/>}/>
                     <Route path={routeMap.messageDetail.path} element={<MessageDetail/>}/>
+                    <Route path={routeMap.contactList.path} element={<ContactList/>}/>
+                    <Route path={routeMap.contactNew.path} element={<ContactForm/>}/>
+                    <Route path={routeMap.contactEdit.path} element={<ContactForm/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>
