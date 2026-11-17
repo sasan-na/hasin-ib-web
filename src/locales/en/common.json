@@ -32,7 +32,8 @@
     },
     "auth": {
         "signIn": "Sign in",
-        "signOut": "Sign out"
+        "signOut": "Sign out",
+        "changePassword": "Change password"
     },
     "language": {
         "label": "Language"

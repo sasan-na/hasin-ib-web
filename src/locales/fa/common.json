@@ -32,7 +32,8 @@
     },
     "auth": {
         "signIn": "ورود",
-        "signOut": "خروج"
+        "signOut": "خروج",
+        "changePassword": "تغییر رمز عبور"
     },
     "language": {
         "label": "زبان"

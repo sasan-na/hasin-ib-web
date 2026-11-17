@@ -5,7 +5,8 @@ import {useTranslation} from "react-i18next"
 
 import {NavMain} from "@/components/nav/nav-main"
 import SidebarLogo from "@/components/nav/nav-logo.tsx"
-import {Sidebar, SidebarContent, SidebarRail} from "@/components/ui/sidebar"
+import {NavUser} from "@/components/nav/nav-user"
+import {Sidebar, SidebarContent, SidebarFooter, SidebarRail} from "@/components/ui/sidebar"
 import {Separator} from "@/components/ui/separator.tsx"
 import {routeMap} from "@/routing.tsx"
 
@@ -29,6 +30,10 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 <NavMain items={navMain}/>
             </SidebarContent>
+            <Separator orientation="horizontal"/>
+            <SidebarFooter>
+                <NavUser/>
+            </SidebarFooter>
             <SidebarRail/>
         </Sidebar>
     )

@@ -75,7 +75,12 @@ export function PublicShell({children}: {children?: React.ReactNode}): React.Rea
     return (
         <div id={"public"}>
             <div className="flex min-h-screen w-full flex-col">
-                <RouteFrame>{children}</RouteFrame>
+                <header className="flex justify-end p-4">
+                    <LanguageSwitcher/>
+                </header>
+                <main className="flex flex-1 items-start justify-center px-4 pb-8 sm:items-center">
+                    <RouteFrame>{children}</RouteFrame>
+                </main>
             </div>
         </div>
     );

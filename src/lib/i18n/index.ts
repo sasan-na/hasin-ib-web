@@ -1,8 +1,10 @@
 import i18next from "i18next"
 import {initReactI18next} from "react-i18next"
 
+import enAuth from "@/locales/en/auth.json"
 import enCommon from "@/locales/en/common.json"
 import enErrors from "@/locales/en/errors.json"
+import faAuth from "@/locales/fa/auth.json"
 import faCommon from "@/locales/fa/common.json"
 import faErrors from "@/locales/fa/errors.json"
 
@@ -18,8 +20,8 @@ export const LANGUAGE_DIRECTIONS: Record<SupportedLanguage, "rtl" | "ltr"> = {fa
 export const LANGUAGE_NATIVE_NAMES: Record<SupportedLanguage, string> = {fa: "فارسی", en: "English"}
 
 export const resources = {
-	fa: {common: faCommon, errors: faErrors},
-	en: {common: enCommon, errors: enErrors},
+	fa: {common: faCommon, errors: faErrors, auth: faAuth},
+	en: {common: enCommon, errors: enErrors, auth: enAuth},
 } as const
 
 const toSupported = (lng: string | null | undefined): SupportedLanguage => {
@@ -48,7 +50,7 @@ void i18next.use(initReactI18next).init({
 	fallbackLng: {default: [DEFAULT_LANGUAGE], fa: ["en"]},
 	supportedLngs: SUPPORTED_LANGUAGES,
 	defaultNS: "common",
-	ns: ["common", "errors"],
+	ns: ["common", "errors", "auth"],
 	interpolation: {escapeValue: false},
 	react: {useSuspense: false},
 })
