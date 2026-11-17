@@ -17,7 +17,7 @@ function RuleLine({message, state}: {message: string; state: "unknown" | "broken
 		<li className="flex items-start gap-2">
 			<Icon
 				aria-hidden="true"
-				className={cn("mt-0.5 size-4 shrink-0", state === "met" && "text-green-600", state === "broken" && "text-destructive", state === "unknown" && "text-muted-foreground")}
+				className={cn("mt-0.5 size-4 shrink-0", state === "met" && "text-success", state === "broken" && "text-destructive", state === "unknown" && "text-muted-foreground")}
 			/>
 			<span className={cn("wrap-break-word", state === "unknown" && "text-muted-foreground")}>{message}</span>
 			<span className="sr-only">{t(`password.ruleState.${state}`)}</span>

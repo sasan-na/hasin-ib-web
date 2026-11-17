@@ -10,10 +10,10 @@ import {cn} from "@/lib/utils"
 
 // The server's status codes: 0 done, 1 in progress, 2 failed, 3 needs reversing.
 const STATUS_STYLES: Record<number, string> = {
-	0: "border-transparent bg-green-600/15 text-green-700 dark:text-green-400",
-	1: "border-transparent bg-blue-600/15 text-blue-700 dark:text-blue-400",
+	0: "border-transparent bg-success/15 text-success",
+	1: "border-transparent bg-info/15 text-info",
 	2: "border-transparent bg-destructive/15 text-destructive",
-	3: "border-transparent bg-amber-500/15 text-amber-700 dark:text-amber-400",
+	3: "border-transparent bg-warning/15 text-warning",
 }
 
 /** The user's latest transactions with their outcome. */
