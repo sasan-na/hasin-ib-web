@@ -2059,5 +2059,40 @@
         "landing": {
             "title": "Dynamic password"
         }
+    },
+    "dynamicPassword": {
+        "title": "Dynamic password management",
+        "hint": "Cards and the one-time-password token each one uses for its second password. Give a card a token, or block its second password.",
+        "search": "Search by card number",
+        "error": "The cards could not be loaded.",
+        "empty": "There are no cards to show.",
+        "token": "Token",
+        "noToken": "None",
+        "type": "Kind",
+        "sms": "Code by text message",
+        "app": "Code from the bank's app",
+        "allocate": "Give a token",
+        "block": "Block second password",
+        "blocked": "This card's second password has been blocked.",
+        "visitBranch": "To use it again, visit a branch.",
+        "card": "Card",
+        "mobile": "Mobile number",
+        "again": "Back to cards",
+        "sending": "Sending…",
+        "failed": "The request was not accepted. Please try again.",
+        "uncertain": "We could not confirm whether the request went through. Check the card before trying again.",
+        "blockTitle": "Block the second password",
+        "blockQuestion": "The card's second password is blocked for good; only a branch can restore it.",
+        "allocateTitle": "Give the card a token",
+        "allocateQuestion": "Verify your mobile number, choose how codes reach you, and the card's old token is replaced.",
+        "sendCode": "Send code",
+        "sendingCode": "Sending…",
+        "resendIn": "Resend in {{seconds}}s",
+        "code": "Code from the text message",
+        "verify": "Verify",
+        "verifying": "Checking…",
+        "verified": "The mobile number is verified.",
+        "codeFailed": "The code could not be sent. Please try again.",
+        "verifyFailed": "The code was not accepted. Please check it and try again."
     }
 }
