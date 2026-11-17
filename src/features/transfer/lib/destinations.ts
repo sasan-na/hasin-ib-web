@@ -1,4 +1,4 @@
-import {ArrowLeftRight, CalendarClock} from "lucide-react"
+import {ArrowLeftRight, CalendarClock, Landmark, Zap} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -7,5 +7,7 @@ import {TONES, type Destination} from "@/features/menu/components/service-cards"
 // have a page yet are added here as they are built.
 export const transferDestinations: Record<string, Destination> = {
 	SingleTransferMoney: {to: routeMap.transferSmart.path, icon: ArrowLeftRight, ...TONES.info},
+	SatnaTransferMoney: {to: `${routeMap.transferIban.path}?type=satna`, icon: Zap, ...TONES.primary},
+	PayaTransferMoney: {to: `${routeMap.transferIban.path}?type=paya`, icon: Landmark, ...TONES.success},
 	StandingOrder: {to: routeMap.transferStandingOrders.path, icon: CalendarClock, ...TONES.warning},
 }

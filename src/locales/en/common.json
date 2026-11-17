@@ -626,6 +626,29 @@
                 "frequency": "Choose day, week, month or year.",
                 "repeat": "Enter a number of payments from 1 to {{max}}."
             }
+        },
+        "iban": {
+            "title": "Transfer to another bank",
+            "network": "Transfer type",
+            "satna": "Satna",
+            "satnaHint": "Same-day transfer, for large amounts.",
+            "paya": "Paya",
+            "payaHint": "Settled the next working day.",
+            "number": "IBAN",
+            "firstName": "Holder's first name",
+            "lastName": "Holder's last name",
+            "withoutInquiry": "The holder could not be checked. Enter the name yourself.",
+            "paymentId": "Payment ID",
+            "minNote": "At least {{amount}}",
+            "maxNote": "At most {{amount}}",
+            "error": {
+                "format": "Enter a valid IBAN of 24 digits (after IR).",
+                "ownBank": "This account is at our bank. Use the account transfer instead.",
+                "notChecked": "Press Check to see who holds this IBAN before sending.",
+                "name": "Enter the holder's first and last name.",
+                "min": "The amount is below the minimum of {{amount}}.",
+                "max": "The amount is above the maximum of {{amount}}."
+            }
         }
     }
 }

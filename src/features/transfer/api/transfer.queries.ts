@@ -1,7 +1,7 @@
 import {queryOptions} from "@tanstack/react-query"
 
 import {getFrequencies, getStandingOrders} from "./standing-order"
-import {getReasonCodes} from "./transfer"
+import {getIbanLimits, getReasonCodes, type IbanNetwork} from "./transfer"
 
 // Reason names come from the bank in the UI language, so it is part of the key.
 export const transferKeys = {
@@ -19,3 +19,6 @@ export const standingOrdersOptions = (count: number) =>
 // The unit names come from the bank in the UI language.
 export const frequenciesOptions = (language: string) =>
 	queryOptions({queryKey: [...transferKeys.standingOrders, "frequencies", language], queryFn: getFrequencies, staleTime: 10 * 60_000, retry: false})
+
+export const ibanLimitsOptions = (network: IbanNetwork) =>
+	queryOptions({queryKey: [...transferKeys.all, "iban-limits", network], queryFn: () => getIbanLimits(network), staleTime: 10 * 60_000, retry: false})
