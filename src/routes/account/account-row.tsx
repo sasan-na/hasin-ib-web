@@ -1,11 +1,13 @@
 import {useMutation} from "@tanstack/react-query"
-import {ChevronDown, ChevronUp, RefreshCw, Users} from "lucide-react"
+import {ChevronDown, ChevronUp, Info, RefreshCw, Users} from "lucide-react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
 import {CopyButton} from "@/components/copy-button"
 import {Button} from "@/components/ui/button"
 import {getBalance, type Account, type Balances} from "@/lib/api/account"
 import {formatAmount, formatIban, normalizeIban} from "@/lib/format"
+import {routeMap} from "@/routing.tsx"
 
 function Amount({label, value, language, large = false}: {label: string; value: number; language: string; large?: boolean}) {
 	const {t} = useTranslation()
@@ -113,28 +115,36 @@ export function AccountRow({account, fresh, onFresh, move}: AccountRowProps) {
 					</dl>
 				</div>
 
-				{account.canSeeBalance ? (
-					<div className="flex flex-col gap-3 md:items-end">
-						{hasBalance ? (
-							<div className="flex flex-col gap-2">
-								{balances.available !== null ? (
-									<Amount label={t("account.balance")} value={balances.available} language={i18n.language} large />
-								) : null}
-								{balances.total !== null ? <Amount label={t("account.totalBalance")} value={balances.total} language={i18n.language} /> : null}
-								{balances.blocked !== null ? <Amount label={t("account.blockedAmount")} value={balances.blocked} language={i18n.language} /> : null}
-							</div>
+				<div className="flex flex-col gap-3 md:items-end">
+					{account.canSeeBalance && hasBalance ? (
+						<div className="flex flex-col gap-2">
+							{balances.available !== null ? (
+								<Amount label={t("account.balance")} value={balances.available} language={i18n.language} large />
+							) : null}
+							{balances.total !== null ? <Amount label={t("account.totalBalance")} value={balances.total} language={i18n.language} /> : null}
+							{balances.blocked !== null ? <Amount label={t("account.blockedAmount")} value={balances.blocked} language={i18n.language} /> : null}
+						</div>
+					) : null}
+					{refresh.isError ? (
+						<p role="alert" className="text-sm text-destructive">
+							{t("account.balanceError")}
+						</p>
+					) : null}
+					<div className="flex flex-wrap gap-2">
+						{account.canSeeBalance ? (
+							<Button type="button" variant="outline" size="sm" disabled={refresh.isPending} onClick={() => refresh.mutate()}>
+								<RefreshCw aria-hidden="true" className={refresh.isPending ? "animate-spin" : undefined} />
+								{refresh.isPending ? t("account.loadingBalance") : hasBalance ? t("account.refreshBalance") : t("account.showBalance")}
+							</Button>
 						) : null}
-						{refresh.isError ? (
-							<p role="alert" className="text-sm text-destructive">
-								{t("account.balanceError")}
-							</p>
-						) : null}
-						<Button type="button" variant="outline" size="sm" disabled={refresh.isPending} onClick={() => refresh.mutate()}>
-							<RefreshCw aria-hidden="true" className={refresh.isPending ? "animate-spin" : undefined} />
-							{refresh.isPending ? t("account.loadingBalance") : hasBalance ? t("account.refreshBalance") : t("account.showBalance")}
+						<Button asChild variant="outline" size="sm">
+							<Link to={`${routeMap.accountInfo.path}?accountId=${account.id}`} aria-label={t("account.infoFor", {name})}>
+								<Info aria-hidden="true" />
+								{t("account.infoButton")}
+							</Link>
 						</Button>
 					</div>
-				) : null}
+				</div>
 			</div>
 		</li>
 	)

@@ -105,3 +105,117 @@ export const moveAccount = async (sourceId: number, destinationId: number): Prom
 	)
 	if (!data.isSuccessful) throw new Error(data.message ?? "reorder failed")
 }
+
+const ownerSchema = z.object({id: z.number().nullish(), fullName: z.string().nullish(), image: z.string().nullish()})
+
+const accountInfoSchema = z.object({
+	isSuccessful: z.boolean(),
+	message: z.string().nullish(),
+	id: z.number(),
+	name: z.string().nullish(),
+	number: z.string().nullish(),
+	accountType: z.string().nullish(),
+	ibanNumber: z.string().nullish(),
+	accountOwners: z.array(ownerSchema).nullish(),
+})
+
+export interface AccountOwner {
+	name: string
+	/** A photo URL; empty when there is none or the bank hides photos. */
+	image: string
+}
+
+export interface AccountInfo {
+	id: number
+	name: string
+	number: string
+	type: string
+	iban: string
+	owners: AccountOwner[]
+}
+
+/** The details of one of the user's accounts (`userAccountId` is the id from the account list). */
+export const getAccountInfo = async (accountId: number): Promise<AccountInfo> => {
+	const data = accountInfoSchema.parse(await apiClient<unknown>(`/AccountInfo/GetAccountInfo?userAccountId=${accountId}`))
+	if (!data.isSuccessful) throw new Error(data.message ?? "account info failed")
+	return {
+		id: data.id,
+		name: data.name ?? "",
+		number: data.number ?? "",
+		type: data.accountType ?? "",
+		iban: data.ibanNumber ?? "",
+		owners: (data.accountOwners ?? []).map((owner) => ({name: owner.fullName ?? "", image: owner.image ?? ""})),
+	}
+}
+
+const withdrawMemberSchema = z.object({username: z.string().nullish(), name: z.string().nullish(), image: z.string().nullish()})
+const withdrawRulesSchema = z.object({
+	isSuccessful: z.boolean(),
+	message: z.string().nullish(),
+	withdrawRules: z
+		.array(
+			z.object({
+				withdrawGroups: z
+					.array(z.object({count: z.number().nullish(), withdrawGroupMembers: z.array(withdrawMemberSchema).nullish()}))
+					.nullish(),
+			}),
+		)
+		.nullish(),
+})
+
+export interface WithdrawMember {
+	name: string
+	image: string
+}
+
+export interface WithdrawGroup {
+	/** How many of `members` must sign; 0 (or all of them) means everyone. */
+	required: number
+	members: WithdrawMember[]
+}
+
+/** Who has to sign to withdraw: any one of the rules; within a rule, every group; within a group, `required` people. */
+export type WithdrawRule = WithdrawGroup[]
+
+export const getWithdrawRules = async (accountId: number): Promise<WithdrawRule[]> => {
+	const data = withdrawRulesSchema.parse(await apiClient<unknown>(`/AccountInfo/GetWithdrawRule?userAccountId=${accountId}`))
+	if (!data.isSuccessful) throw new Error(data.message ?? "withdraw rules failed")
+	return (data.withdrawRules ?? []).map((rule) =>
+		(rule.withdrawGroups ?? []).map((group) => ({
+			required: group.count ?? 0,
+			members: (group.withdrawGroupMembers ?? []).map((member) => ({name: member.name ?? member.username ?? "", image: member.image ?? ""})),
+		})),
+	)
+}
+
+/** Renames the account for this user only (the name is a personal label, not the bank's record). */
+export const renameAccount = async (accountId: number, newName: string): Promise<void> => {
+	const data = priorityResultSchema.parse(
+		await apiClient<unknown>("/AccountInfo/ChangeAccountName", {
+			method: "POST",
+			body: JSON.stringify({userAccountId: accountId, newName}),
+		}),
+	)
+	if (!data.isSuccessful) throw new Error(data.message ?? "rename failed")
+}
+
+const syncAllowedSchema = z.object({isSuccessful: z.boolean()})
+const syncResultSchema = z.object({isSuccessful: z.boolean(), message: z.string().nullish(), extendedMessage: z.string().nullish(), hasChanged: z.boolean().nullish()})
+
+/** Whether this user may refresh their account list from the bank (main users only). */
+export const canSyncAccounts = async (): Promise<boolean> =>
+	syncAllowedSchema.parse(await apiClient<unknown>("/SyncUserInfo/Allow")).isSuccessful
+
+export interface SyncResult {
+	hasChanged: boolean
+	/** The bank's own wording of the outcome, in the UI language; may be empty. */
+	message: string
+}
+
+/** Asks the bank to re-read the user's accounts. Throws with the bank's message when it refuses. */
+export const syncAccounts = async (): Promise<SyncResult> => {
+	const data = syncResultSchema.parse(await apiClient<unknown>("/SyncUserInfo", {method: "POST"}))
+	const message = data.extendedMessage ?? data.message ?? ""
+	if (!data.isSuccessful) throw new Error(message)
+	return {hasChanged: data.hasChanged === true, message}
+}

@@ -2,9 +2,12 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
 import {useMemo, useState} from "react"
 import {useTranslation} from "react-i18next"
 
+import {RefreshCw} from "lucide-react"
+
+import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
-import {moveAccount, type Balances} from "@/lib/api/account"
-import {accountKeys, accountsOptions} from "@/lib/api/account.queries"
+import {moveAccount, syncAccounts, type Balances} from "@/lib/api/account"
+import {accountKeys, accountsOptions, syncAllowedOptions} from "@/lib/api/account.queries"
 import {formatAmount} from "@/lib/format"
 
 import {AccountFilters} from "./account-filters"
@@ -29,6 +32,13 @@ export default function AccountPage() {
 		onSettled: () => queryClient.invalidateQueries({queryKey: accountKeys.all}),
 	})
 
+	const syncAllowed = useQuery(syncAllowedOptions())
+	const sync = useMutation({
+		mutationFn: syncAccounts,
+		// A changed list means the old one (and its order) is stale.
+		onSuccess: (result) => (result.hasChanged ? queryClient.invalidateQueries({queryKey: accountKeys.all}) : undefined),
+	})
+
 	const filtering = hasActiveFilters(filters)
 	const all = accounts.data
 	const groups = useMemo(() => (all ? groupAccounts(filterAccounts(all, filters)) : []), [all, filters])
@@ -38,7 +48,25 @@ export default function AccountPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("account.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<h1 className="text-2xl font-bold">{t("account.title")}</h1>
+				{syncAllowed.data ? (
+					<Button type="button" variant="outline" size="sm" disabled={sync.isPending} onClick={() => sync.mutate()}>
+						<RefreshCw aria-hidden="true" className={sync.isPending ? "animate-spin" : undefined} />
+						{sync.isPending ? t("account.syncing") : t("account.sync")}
+					</Button>
+				) : null}
+			</div>
+			{sync.isSuccess ? (
+				<p role="status" className="text-sm text-muted-foreground">
+					{sync.data.message || (sync.data.hasChanged ? t("account.syncChanged") : t("account.syncUnchanged"))}
+				</p>
+			) : null}
+			{sync.isError ? (
+				<p role="alert" className="text-sm text-destructive">
+					{sync.error.message || t("account.syncError")}
+				</p>
+			) : null}
 
 			{accounts.isPending ? (
 				<div className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-hidden="true">

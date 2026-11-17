@@ -101,6 +101,33 @@
             "category": "Category",
             "allCategories": "All categories",
             "reset": "Clear search"
+        },
+        "infoButton": "Details",
+        "infoFor": "Details of {{name}}",
+        "sync": "Refresh account list",
+        "syncing": "Refreshing…",
+        "syncChanged": "Your account list has been updated.",
+        "syncUnchanged": "Your account list is already up to date.",
+        "syncError": "The account list could not be refreshed. Please try again later.",
+        "info": {
+            "title": "Account details",
+            "back": "Back to accounts",
+            "error": "The account details could not be loaded. Please try again.",
+            "name": "Account name",
+            "type": "Account type",
+            "owner": "Account owner",
+            "owners": "Account owners",
+            "rename": "Rename account",
+            "save": "Save name",
+            "cancel": "Cancel",
+            "nameRequired": "Please enter an account name.",
+            "renameError": "The name could not be changed. Please try again.",
+            "withdrawRules": "Withdrawal rules",
+            "withdrawNote": "These people must sign a transaction to withdraw from this account. Withdrawal rules can only be changed in a bank branch, with all signatories present.",
+            "allOfThese": "All of these people",
+            "atLeast": "At least {{count}} of these people",
+            "and": "and",
+            "or": "or"
         }
     }
 }

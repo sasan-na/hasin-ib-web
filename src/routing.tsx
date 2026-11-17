@@ -6,6 +6,7 @@ import {useSession} from "@/store/session";
 
 const Home = React.lazy(() => import("@/routes/home.tsx"));
 const Account = React.lazy(() => import("@/routes/account/page.tsx"));
+const AccountInfo = React.lazy(() => import("@/routes/account/info-page.tsx"));
 const Login = React.lazy(() => import("@/routes/login/page.tsx"));
 const ChangePassword = React.lazy(() => import("@/routes/change-password.tsx"));
 const NotFound = React.lazy(() => import("@/routes/notfound"));
@@ -15,6 +16,7 @@ const NotFound = React.lazy(() => import("@/routes/notfound"));
 export const routeMap = {
     "home": {breadcrumb: "navigation.home", path: "/"},
     "account": {breadcrumb: "navigation.accounts", path: "/account"},
+    "accountInfo": {breadcrumb: "account.info.title", path: "/account/info"},
     "login": {breadcrumb: "auth.signIn", path: "/login"},
     "changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
     "notFound": {breadcrumb: "notFound.title", path: "/404"},
@@ -46,6 +48,7 @@ const router = createBrowserRouter(
                 <Route element={<AuthShell/>}>
                     <Route path={routeMap.home.path} element={<Home/>} index={true}/>
                     <Route path={routeMap.account.path} element={<Account/>}/>
+                    <Route path={routeMap.accountInfo.path} element={<AccountInfo/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
                     <Route path="*" element={<Navigate to={routeMap.notFound.path}/>}/>
                 </Route>
