@@ -1,4 +1,4 @@
-import {CreditCard} from "lucide-react"
+import {ClipboardList, CreditCard} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
 import {routeMap} from "@/app/routes"
@@ -8,6 +8,7 @@ import {ServiceCards, TONES, type Destination} from "@/features/menu/components/
 // page yet are added here as they are built.
 const DESTINATIONS: Record<string, Destination> = {
 	CardsList: {to: routeMap.cardList.path, icon: CreditCard, ...TONES.primary},
+	ListOfCardRequests: {to: routeMap.cardRequestList.path, icon: ClipboardList, ...TONES.warning},
 }
 
 /** The card section's front page. */

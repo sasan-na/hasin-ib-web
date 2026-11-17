@@ -323,6 +323,54 @@
         "syncing": "Refreshing…",
         "syncChanged": "Your card list has been updated.",
         "syncUnchanged": "Your card list is already up to date.",
-        "syncError": "The card list could not be refreshed. Please try again later."
+        "syncError": "The card list could not be refreshed. Please try again later.",
+        "infoButton": "Details",
+        "infoFor": "Details of {{name}}",
+        "info": {
+            "title": "Card details",
+            "back": "Back to cards",
+            "error": "The card details could not be loaded. Please try again.",
+            "name": "Card name",
+            "rename": "Rename card",
+            "save": "Save name",
+            "cancel": "Cancel",
+            "nameRequired": "Please enter a card name.",
+            "renameError": "The name could not be changed. Please try again.",
+            "holder": "Card holder",
+            "holderUnknown": "The card holder could not be loaded."
+        },
+        "requests": {
+            "title": "Card requests",
+            "account": "Account",
+            "searchBy": "Search by",
+            "byDate": "By date",
+            "byNumber": "By request number",
+            "from": "From",
+            "to": "To",
+            "dateNote": "Dates use the Persian calendar, for example 1404/05/20.",
+            "number": "Request number",
+            "show": "Show requests",
+            "searching": "Searching…",
+            "reset": "Clear",
+            "failed": "The card requests could not be loaded. Please try again.",
+            "noResult": "No requests to show.",
+            "list": "Requests",
+            "reference": "Request number",
+            "branch": "Branch",
+            "issuing": "Issuing status",
+            "printing": "Printing status",
+            "details": "Details",
+            "giftTitle": "Gift card request {{number}}",
+            "giftSummary": "{{amount}} Rials were taken from account {{account}} for {{count}} gift card(s).",
+            "count": "Quantity",
+            "amount": "Amount (Rials)",
+            "total": "Total (Rials)",
+            "error": {
+                "source": "Please choose an account.",
+                "number": "Please enter the request number.",
+                "date": "Enter a date like 1404/05/20.",
+                "order": "The end date must not be before the start date."
+            }
+        }
     }
 }
