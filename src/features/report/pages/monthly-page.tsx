@@ -2,7 +2,9 @@ import {useMutation} from "@tanstack/react-query"
 import {Printer} from "lucide-react"
 import * as React from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
+import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog"
 import {Label} from "@/components/ui/label"
@@ -76,7 +78,12 @@ export default function MonthlyPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("report.monthly.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
+				<h1 className="text-2xl font-bold">{t("report.monthly.title")}</h1>
+				<Button asChild size="sm" variant="outline">
+					<Link to={routeMap.reportPeriodic.path}>{t("report.periodic.title")}</Link>
+				</Button>
+			</div>
 
 			<form
 				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-3 print:hidden"

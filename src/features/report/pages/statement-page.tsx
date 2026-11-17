@@ -111,6 +111,9 @@ export default function StatementPage() {
 						<Link to={routeMap.reportMonthly.path}>{t("report.monthly.title")}</Link>
 					</Button>
 					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.reportPeriodic.path}>{t("report.periodic.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
 						<Link to={routeMap.reportEvents.path}>{t("report.events.title")}</Link>
 					</Button>
 				</div>

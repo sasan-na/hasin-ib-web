@@ -34,6 +34,8 @@ const AccountPassword = React.lazy(() => import("@/features/account/pages/accoun
 const Statement = React.lazy(() => import("@/features/report/pages/statement-page.tsx"));
 const Events = React.lazy(() => import("@/features/report/pages/events-page.tsx"));
 const Monthly = React.lazy(() => import("@/features/report/pages/monthly-page.tsx"));
+const PeriodicList = React.lazy(() => import("@/features/report/pages/periodic-list-page.tsx"));
+const PeriodicForm = React.lazy(() => import("@/features/report/pages/periodic-form-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
 const MessageList = React.lazy(() => import("@/features/message/pages/message-list-page.tsx"));
 const MessageDetail = React.lazy(() => import("@/features/message/pages/message-detail-page.tsx"));
@@ -92,6 +94,9 @@ const router = createBrowserRouter(
                     <Route path={routeMap.reportStatement.path} element={<Statement/>}/>
                     <Route path={routeMap.reportEvents.path} element={<Events/>}/>
                     <Route path={routeMap.reportMonthly.path} element={<Monthly/>}/>
+                    <Route path={routeMap.reportPeriodic.path} element={<PeriodicList/>}/>
+                    <Route path={routeMap.reportPeriodicNew.path} element={<PeriodicForm/>}/>
+                    <Route path={routeMap.reportPeriodicEdit.path} element={<PeriodicForm/>}/>
                     <Route path={routeMap.loanList.path} element={<LoanList/>}/>
                     <Route path={routeMap.messageList.path} element={<MessageList/>}/>
                     <Route path={routeMap.messageNew.path} element={<NewMessage/>}/>
