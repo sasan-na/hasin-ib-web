@@ -1,5 +1,5 @@
 import React from "react";
-import {createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route, RouterProvider,} from "react-router-dom";
+import {createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route, RouterProvider, useLocation,} from "react-router-dom";
 import {AuthShell, PublicShell} from "@/components/shell.tsx";
 import useSelectTheme from "@/hooks/useSelectTheme.ts";
 import {useSession} from "@/store/session";
@@ -21,7 +21,14 @@ export const routeMap = {
 // The session lives in memory only, so a refresh lands here and sends the user to login.
 function RequireAuth() {
     const signedIn = useSession((s) => s.token !== null)
-    return signedIn ? <Outlet/> : <Navigate to={routeMap.login.path} replace/>
+    const mustChangePassword = useSession((s) => s.mustChangePassword)
+    const {pathname} = useLocation()
+    if (!signedIn) return <Navigate to={routeMap.login.path} replace/>
+    // A user whose password must change can reach nothing but the change-password page.
+    if (mustChangePassword && pathname !== routeMap.changePassword.path) {
+        return <Navigate to={routeMap.changePassword.path} replace/>
+    }
+    return <Outlet/>
 }
 
 const router = createBrowserRouter(

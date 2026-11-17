@@ -7,17 +7,22 @@ interface SessionState {
 	token: string | null
 	/** True when the server ended the session (as opposed to the user signing out): the login page says so. */
 	expired: boolean
-	signIn: (username: string, token: string) => void
+	/** True while the server requires a new password: the route guard keeps the user on the change-password page. */
+	mustChangePassword: boolean
+	signIn: (username: string, token: string, mustChangePassword?: boolean) => void
 	signOut: () => void
 	expireSession: () => void
+	requirePasswordChange: () => void
 }
 
 export const useSession = create<SessionState>()((set) => ({
 	username: null,
 	token: null,
 	expired: false,
-	signIn: (username, token) => set({username, token, expired: false}),
-	signOut: () => set({username: null, token: null, expired: false}),
-	expireSession: () => set({username: null, token: null, expired: true}),
+	mustChangePassword: false,
+	signIn: (username, token, mustChangePassword = false) => set({username, token, expired: false, mustChangePassword}),
+	signOut: () => set({username: null, token: null, expired: false, mustChangePassword: false}),
+	expireSession: () => set({username: null, token: null, expired: true, mustChangePassword: false}),
+	requirePasswordChange: () => set({mustChangePassword: true}),
 }))
 

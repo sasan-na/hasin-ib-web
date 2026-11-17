@@ -33,6 +33,12 @@ const expireSession = (): void => {
 	queryClient.clear()
 }
 
+/** HTTP 403 while signed in: the server wants a new password before it serves anything else. */
+const requirePasswordChange = (): void => {
+	if (useSession.getState().token === null) return
+	useSession.getState().requirePasswordChange()
+}
+
 const hasExpiredErrorCode = (data: unknown): boolean => {
 	if (data === null || typeof data !== "object") return false
 	const obj = data as Record<string, unknown>
@@ -56,6 +62,7 @@ export const apiClient = async <T>(endpoint: string, options?: RequestInit): Pro
 	})
 
 	if (response.status === 401) expireSession()
+	if (response.status === 403) requirePasswordChange()
 
 	if (!response.ok) {
 		let message: string

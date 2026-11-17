@@ -13,7 +13,7 @@ export const useLoginFlow = () => {
 	const [redirectTo, setRedirectTo] = useState<string | null>(null)
 
 	const onSignedIn = ({username, token, mustChangePassword}: SignedIn): void => {
-		signIn(username, token)
+		signIn(username, token, mustChangePassword)
 		// One redirect, performed by the page: calling navigate here would race the page's own
 		// "already signed in" redirect and could lose to it.
 		setRedirectTo(mustChangePassword ? routeMap.changePassword.path : routeMap.home.path)
