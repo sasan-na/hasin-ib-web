@@ -17,7 +17,7 @@ import {useSignOut} from "@/hooks/use-sign-out"
 import {logger} from "@/lib/logger"
 import {cn} from "@/lib/utils"
 import {z} from "@/lib/zod"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 import {useSession} from "@/store/session"
 
 // Limits carried over from the legacy form.

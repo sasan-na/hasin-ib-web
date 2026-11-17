@@ -1,6 +1,6 @@
 import {useState} from "react"
 
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 import {useSession} from "@/store/session"
 
 import type {OtpContext, SignedIn} from "./loginFlow"

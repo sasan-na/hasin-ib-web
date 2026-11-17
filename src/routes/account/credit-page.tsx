@@ -14,7 +14,7 @@ import {calculateCredit, type CreditResult} from "@/lib/api/creditCalculate"
 import {loanOptionsOptions} from "@/lib/api/creditCalculate.queries"
 import {formatAmount} from "@/lib/format"
 import {parseJalali, todayJalali} from "@/lib/jalali"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 type Errors = Partial<Record<"profit" | "period" | "start" | "end", string>>
 

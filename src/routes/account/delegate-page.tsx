@@ -14,7 +14,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {requestDelegation} from "@/lib/api/delegation"
 import {organsOptions} from "@/lib/api/delegation.queries"
 import type {SourceAccount} from "@/lib/api/transaction"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 // Any of the user's accounts may be delegated, so no service filter applies to the account list. The bank's
 // SMS code and no-password rules for this request are the ones it keeps under the cheque-book service name

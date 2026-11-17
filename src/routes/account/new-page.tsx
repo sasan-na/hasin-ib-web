@@ -19,7 +19,7 @@ import {accountProfilesOptions, branchesOptions, depositTypesOptions, personalIn
 import type {SourceAccount} from "@/lib/api/transaction"
 import {normalizeDigits} from "@/lib/normalize-digits"
 import {formatAmount} from "@/lib/format"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 
 // The bank's service names for this flow: which accounts may pay, which limits apply, and what it calls the SMS code.

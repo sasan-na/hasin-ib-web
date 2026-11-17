@@ -1,6 +1,6 @@
 import React from "react";
 import {Outlet, useLocation} from "react-router-dom";
-import {AppSidebar} from "@/components/nav/app-sidebar"
+import {AppSidebar} from "@/app/layout/nav/app-sidebar"
 import {Separator} from "@/components/ui/separator"
 import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar"
 import {findRouteByPath} from "@/lib/utils.ts";
@@ -9,10 +9,10 @@ import {LanguageSwitcher} from "@/components/language-switcher.tsx";
 import {ThemeSwitcher} from "@/components/theme-switcher.tsx";
 import {Logo} from "@/components/logo.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
-import {BreadcrumbItem, BreadcrumbResponsive} from "@/components/breadcrumbs"
-import {routeMap} from "@/routing.tsx";
+import {BreadcrumbItem, BreadcrumbResponsive} from "@/app/layout/breadcrumbs"
+import {routeMap} from "@/app/routes";
 import {ErrorBoundary} from "@/components/error-boundary.tsx";
-import Loading from "@/routes/loading.tsx";
+import Loading from "@/app/pages/loading.tsx";
 
 const RouteFrame = ({children}: {children?: React.ReactNode}) => (
     <ErrorBoundary>

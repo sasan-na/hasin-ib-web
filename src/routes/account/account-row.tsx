@@ -7,7 +7,7 @@ import {CopyButton} from "@/components/copy-button"
 import {Button} from "@/components/ui/button"
 import {getBalance, type Account, type Balances} from "@/lib/api/account"
 import {formatAmount, formatIban, normalizeIban} from "@/lib/format"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 function Amount({label, value, language, large = false}: {label: string; value: number; language: string; large?: boolean}) {
 	const {t} = useTranslation()

@@ -8,7 +8,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {setFavorite, type MenuItem} from "@/lib/api/menu"
 import {menuKeys, menuSectionOptions} from "@/lib/api/menu.queries"
 import {cn} from "@/lib/utils"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 /** The bank's menu section these cards belong to. */
 const SECTION = "Accounts"

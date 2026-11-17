@@ -9,7 +9,7 @@ import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
 import {accountInfoOptions, withdrawRulesOptions} from "@/lib/api/account.queries"
 import {formatIban, normalizeIban} from "@/lib/format"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 import {RenameField} from "./rename-field"
 import {WithdrawRules} from "./withdraw-rules"

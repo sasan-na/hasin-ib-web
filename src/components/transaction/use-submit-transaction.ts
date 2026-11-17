@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useNavigate} from "react-router-dom"
 
 import type {TransactionResult} from "@/lib/api/transaction"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 import type {TransactionResultState} from "@/routes/transaction-result"
 
 interface Options {

@@ -1,8 +1,9 @@
 import React from "react";
-import {createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route, RouterProvider, useLocation,} from "react-router-dom";
-import {AuthShell, PublicShell} from "@/components/shell.tsx";
-import useSelectTheme from "@/hooks/useSelectTheme.ts";
-import {useSession} from "@/store/session";
+import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
+import {AuthShell, PublicShell} from "@/app/layout/shell.tsx";
+import useSelectTheme from "@/app/use-select-theme.ts";
+import {RequireAuth} from "@/app/guards";
+import {routeMap} from "@/app/routes";
 
 const Home = React.lazy(() => import("@/routes/home.tsx"));
 const AccountHome = React.lazy(() => import("@/routes/account/home-page.tsx"));
@@ -14,36 +15,7 @@ const AccountDelegate = React.lazy(() => import("@/routes/account/delegate-page.
 const AccountCredit = React.lazy(() => import("@/routes/account/credit-page.tsx"));
 const Login = React.lazy(() => import("@/routes/login/page.tsx"));
 const ChangePassword = React.lazy(() => import("@/routes/change-password.tsx"));
-const NotFound = React.lazy(() => import("@/routes/notfound"));
-
-// Canonical map of paths and breadcrumb i18n keys. Reference `routeMap.x.path`
-// instead of hardcoding path strings.
-export const routeMap = {
-    "home": {breadcrumb: "navigation.home", path: "/"},
-    "account": {breadcrumb: "navigation.accounts", path: "/account"},
-    "accountList": {breadcrumb: "account.listTitle", path: "/account/list"},
-    "accountInfo": {breadcrumb: "account.info.title", path: "/account/info"},
-    "transactionResult": {breadcrumb: "transaction.result.title", path: "/transaction-result"},
-    "accountNew": {breadcrumb: "account.new.title", path: "/account/new"},
-    "accountDelegate": {breadcrumb: "account.delegate.title", path: "/account/delegate-request"},
-    "accountCreditCalculate": {breadcrumb: "account.credit.title", path: "/account/credit-calculate"},
-    "login": {breadcrumb: "auth.signIn", path: "/login"},
-    "changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
-    "notFound": {breadcrumb: "notFound.title", path: "/404"},
-}
-
-// The session lives in memory only, so a refresh lands here and sends the user to login.
-function RequireAuth() {
-    const signedIn = useSession((s) => s.token !== null)
-    const mustChangePassword = useSession((s) => s.mustChangePassword)
-    const {pathname} = useLocation()
-    if (!signedIn) return <Navigate to={routeMap.login.path} replace/>
-    // A user whose password must change can reach nothing but the change-password page.
-    if (mustChangePassword && pathname !== routeMap.changePassword.path) {
-        return <Navigate to={routeMap.changePassword.path} replace/>
-    }
-    return <Outlet/>
-}
+const NotFound = React.lazy(() => import("@/app/pages/not-found"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(

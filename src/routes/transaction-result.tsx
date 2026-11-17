@@ -5,7 +5,7 @@ import {Link, Navigate, useLocation} from "react-router-dom"
 import {Button} from "@/components/ui/button"
 import type {TransactionResult} from "@/lib/api/transaction"
 import {cn} from "@/lib/utils"
-import {routeMap} from "@/routing.tsx"
+import {routeMap} from "@/app/routes"
 
 /** What a flow hands to this page through the router: the outcome, and where "do it again" should go. */
 export interface TransactionResultState {
