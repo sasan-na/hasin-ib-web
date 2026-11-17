@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button"
 import {Command, CommandEmpty, CommandInput, CommandItem, CommandList} from "@/components/ui/command"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Skeleton} from "@/components/ui/skeleton"
-import {branchesOptions} from "@/features/account/api/open-account.queries"
+import {branchesOptions} from "@/features/transaction/api/branch.queries"
 import {cn} from "@/lib/utils"
 
 interface BranchSelectProps {
