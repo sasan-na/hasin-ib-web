@@ -1108,6 +1108,46 @@
                 "3": "Real foreigner",
                 "4": "Legal foreigner"
             }
+        },
+        "register": {
+            "action": "Register",
+            "title": "Register a cheque",
+            "noCheque": "Open this page from a cheque in your cheque list.",
+            "noAccount": "This account cannot register cheques right now.",
+            "dueDate": "Due date (Persian calendar)",
+            "reason": "Reason for payment",
+            "chooseReason": "Choose a reason",
+            "iban": "Account IBAN (without IR)",
+            "optional": "optional",
+            "recipient": "Recipient {{number}}",
+            "remove": "Remove recipient {{number}}",
+            "personType": "Kind",
+            "idCode": "National or company id",
+            "check": "Find name",
+            "checking": "Checking…",
+            "registeredName": "Registered name: {{name}}",
+            "addRecipient": "Add a recipient",
+            "cancel": "Cancel",
+            "review": "Review",
+            "confirmTitle": "Register cheque",
+            "confirmQuestion": "The cheque will be recorded in the central registry and the recipients asked to accept it.",
+            "confirm": "Register cheque",
+            "sending": "Registering…",
+            "failed": "The cheque was not registered. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the cheque was registered. Check the cheque list before trying again.",
+            "error": {
+                "date": "Enter a date like 1405/01/01.",
+                "future": "The due date must be after today.",
+                "amount": "Enter the amount.",
+                "description": "Enter a description.",
+                "iban": "This IBAN is not valid.",
+                "reason": "Choose a reason.",
+                "idLength": "The id must have {{min}} to {{max}} digits.",
+                "lookup": "The name could not be found for this id.",
+                "notChecked": "Find the registered name for this id first.",
+                "duplicate": "This recipient is listed twice.",
+                "fixRecipients": "Fix the recipients marked above."
+            }
         }
     }
 }

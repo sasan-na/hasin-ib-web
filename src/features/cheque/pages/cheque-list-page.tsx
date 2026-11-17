@@ -186,6 +186,11 @@ export default function ChequeListPage() {
 												{t("cheque.history.action")}
 											</Button>
 										) : null}
+										{cheque.canRegister && account ? (
+											<Button asChild variant="ghost" size="sm">
+												<Link to={`${routeMap.pichakRegister.path}?account=${String(account.id)}&series=${encodeURIComponent(cheque.series)}&serial=${encodeURIComponent(cheque.serial)}&sayyad=${encodeURIComponent(cheque.sayyadId)}`}>{t("cheque.register.action")}</Link>
+											</Button>
+										) : null}
 										{cheque.canInquire ? (
 											<Button type="button" variant="ghost" size="sm" onClick={() => setInquiring(cheque)}>
 												{t("cheque.pichak.action")}

@@ -49,6 +49,7 @@ const chequeSchema = z.object({
 	hasHistoryPermission: z.boolean().nullish(),
 	hasConfirmPermission: z.boolean().nullish(),
 	hasInquiryPermission: z.boolean().nullish(),
+	hasRegisterPermission: z.boolean().nullish(),
 })
 
 const listSchema = z.object({isSuccessful: z.boolean().nullish(), message: text, showMore: z.boolean().nullish(), cheques: z.array(chequeSchema).nullish()})
@@ -69,6 +70,8 @@ export interface Cheque {
 	canConfirmAmount: boolean
 	/** The registry can be asked about this cheque (it has a Sayyad id and is in a status that allows it). */
 	canInquire: boolean
+	/** The cheque is in a status where its drawer may register it in the registry. */
+	canRegister: boolean
 }
 
 export interface ChequeFilter {
@@ -118,6 +121,7 @@ export const getCheques = async (filter: ChequeFilter, startIndex: number, count
 			canBlock: cheque.hasBlockPermission === true,
 			canSeeHistory: cheque.hasHistoryPermission === true,
 			canConfirmAmount: cheque.hasConfirmPermission === true,
+			canRegister: cheque.hasRegisterPermission === true && (cheque.sayyadId ?? "") !== "",
 			canInquire: cheque.hasInquiryPermission === true && (cheque.sayyadId ?? "") !== "",
 		})),
 	}
