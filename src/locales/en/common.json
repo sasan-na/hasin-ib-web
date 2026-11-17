@@ -1035,6 +1035,79 @@
             "sending": "Sending…",
             "failed": "The amount was not confirmed. Please check it and try again.",
             "uncertain": "We could not confirm whether the amount was received. Refresh the list before trying again."
+        },
+        "pichak": {
+            "title": "Cheque inquiry",
+            "action": "Inquiry",
+            "intro": "Look a cheque up in the central cheque registry by its 16-digit Sayyad id.",
+            "role": "Who is asking",
+            "asHolder": "I hold this cheque",
+            "asIssuer": "I issued this cheque",
+            "holderHint": "Shows a cheque somebody gave you: who it is payable to, its amount and its status.",
+            "issuerHint": "Shows a cheque you wrote, as the registry has it.",
+            "ownerCheck": "Also show the drawer's record of bounced and cleared cheques",
+            "inquire": "Inquire",
+            "inquiring": "Asking the registry…",
+            "result": "Registry answer",
+            "failed": "The registry could not answer. Please check the Sayyad id and try again.",
+            "sayyadLength": "The Sayyad id has {{count}} digits.",
+            "unknownType": "Unknown type",
+            "amount": "Amount",
+            "dueDate": "Due date",
+            "issueDate": "Issue date",
+            "iban": "Drawer IBAN",
+            "bank": "Bank",
+            "branch": "Branch",
+            "description": "Description",
+            "type": "Cheque type",
+            "media": "Cheque media",
+            "guarantee": "Guarantee",
+            "block": "Block status",
+            "reason": "Reason",
+            "receivers": "Payable to",
+            "signers": "Guarantors",
+            "ownerRecord": "Drawer's record",
+            "ongoing": "Cheques in progress",
+            "blockedCount": "Blocked cheques",
+            "counts": "{{bounced}} bounced · {{cleared}} cleared",
+            "chequeTypeCodes": {
+                "1": "Ordinary",
+                "2": "Bank cheque",
+                "3": "With password"
+            },
+            "mediaCodes": {
+                "1": "Paper cheque",
+                "2": "Digital cheque"
+            },
+            "statusCodes": {
+                "1": "Registered, accepted by the receiver",
+                "2": "Cashed",
+                "3": "Cancelled",
+                "4": "Bounced",
+                "5": "Partly bounced",
+                "6": "Waiting for a guarantor's signature",
+                "7": "Waiting for the receiver to accept the cheque",
+                "8": "Waiting for the receiver to accept the transfer"
+            },
+            "guaranteeCodes": {
+                "1": "No guarantee",
+                "2": "Guarantee in progress",
+                "3": "Guarantee ended incomplete",
+                "4": "Guarantee complete, all guarantors signed",
+                "5": "Guarantee complete, some guarantors refused"
+            },
+            "blockCodes": {
+                "0": "Not blocked",
+                "1": "Blocked for a short time",
+                "2": "Blocked permanently",
+                "3": "Unblocked"
+            },
+            "customerTypeCodes": {
+                "1": "Real customer",
+                "2": "Legal customer",
+                "3": "Real foreigner",
+                "4": "Legal foreigner"
+            }
         }
     }
 }

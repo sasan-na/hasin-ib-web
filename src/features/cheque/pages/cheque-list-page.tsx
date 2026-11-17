@@ -13,7 +13,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Skeleton} from "@/components/ui/skeleton"
 import type {Cheque, ChequeFilter} from "@/features/cheque/api/cheque"
 import {chequeSeriesOptions, chequeStatusesOptions, chequesOptions} from "@/features/cheque/api/cheque.queries"
-import {BlockChequeDialog, ChequeHistoryDialog, ConfirmChequeAmountDialog} from "@/features/cheque/components/cheque-dialogs"
+import {BlockChequeDialog, ChequeHistoryDialog, ConfirmChequeAmountDialog, PichakInquiryDialog} from "@/features/cheque/components/cheque-dialogs"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -34,6 +34,7 @@ export default function ChequeListPage() {
 	const [serialInput, setSerialInput] = React.useState("")
 	const [history, setHistory] = React.useState<Cheque | null>(null)
 	const [blocking, setBlocking] = React.useState<Cheque | null>(null)
+	const [inquiring, setInquiring] = React.useState<Cheque | null>(null)
 	const [confirmingAmount, setConfirmingAmount] = React.useState<Cheque | null>(null)
 
 	const filter: ChequeFilter = {accountNumber: account?.number ?? "", media, statusKey, series, serial}
@@ -54,9 +55,14 @@ export default function ChequeListPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
-				<Button asChild size="sm" variant="outline">
-					<Link to={routeMap.chequeBook.path}>{t("cheque.book.title")}</Link>
-				</Button>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.pichakInquiry.path}>{t("cheque.pichak.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.chequeBook.path}>{t("cheque.book.title")}</Link>
+					</Button>
+				</div>
 			</div>
 
 			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
@@ -180,6 +186,11 @@ export default function ChequeListPage() {
 												{t("cheque.history.action")}
 											</Button>
 										) : null}
+										{cheque.canInquire ? (
+											<Button type="button" variant="ghost" size="sm" onClick={() => setInquiring(cheque)}>
+												{t("cheque.pichak.action")}
+											</Button>
+										) : null}
 										{cheque.canConfirmAmount ? (
 											<Button type="button" variant="ghost" size="sm" onClick={() => setConfirmingAmount(cheque)}>
 												{t("cheque.confirmAmount.action")}
@@ -207,6 +218,7 @@ export default function ChequeListPage() {
 			)}
 
 			{account && history ? <ChequeHistoryDialog account={account} cheque={history} onClose={() => setHistory(null)} /> : null}
+			{inquiring ? <PichakInquiryDialog cheque={inquiring} onClose={() => setInquiring(null)} /> : null}
 			{account && confirmingAmount ? <ConfirmChequeAmountDialog account={account} cheque={confirmingAmount} onClose={() => setConfirmingAmount(null)} /> : null}
 			{account && blocking ? <BlockChequeDialog account={account} cheque={blocking} onClose={() => setBlocking(null)} /> : null}
 		</div>

@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query"
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 
@@ -9,6 +9,9 @@ import {Label} from "@/components/ui/label"
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog"
 import {blockCheque, confirmChequeAmount, getChequeHistory, type Cheque, type ChequeHistoryEntry} from "@/features/cheque/api/cheque"
 import {chequeKeys} from "@/features/cheque/api/cheque.queries"
+import {inquirePichak} from "@/features/cheque/api/pichak-inquiry"
+import {PichakResult} from "@/features/cheque/components/pichak-result"
+import {Skeleton} from "@/components/ui/skeleton"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
@@ -206,5 +209,33 @@ export function ConfirmChequeAmountDialog({account, cheque, onClose}: Props) {
 			</div>
 			<AccountPassword requirement={requirement} accountNumber={account.number} codeServiceName={CONFIRM_SERVICE} amount={value} value={password} onChange={setPassword} disabled={sending.pending} />
 		</ConfirmDialog>
+	)
+}
+
+/** What the registry says about a cheque of yours, asked as its drawer. Mount it only while open. */
+export function PichakInquiryDialog({cheque, onClose}: {cheque: Cheque; onClose: () => void}) {
+	const {t} = useTranslation()
+	const inquiry = useQuery({queryKey: ["cheque", "pichak", cheque.sayyadId], queryFn: () => inquirePichak(cheque.sayyadId, "issuer", false), staleTime: 0, gcTime: 0, retry: false})
+
+	return (
+		<Dialog open onOpenChange={(open) => !open && onClose()}>
+			<DialogContent className="max-h-[90vh] overflow-auto">
+				<DialogHeader>
+					<DialogTitle>{t("cheque.pichak.title")}</DialogTitle>
+					<DialogDescription>
+						<span dir="ltr">{cheque.sayyadId}</span>
+					</DialogDescription>
+				</DialogHeader>
+				{inquiry.isPending ? (
+					<Skeleton className="h-40 w-full" />
+				) : inquiry.isError ? (
+					<p role="alert" className="text-sm text-destructive">
+						{inquiry.error.message || t("cheque.pichak.failed")}
+					</p>
+				) : (
+					<PichakResult inquiry={inquiry.data} />
+				)}
+			</DialogContent>
+		</Dialog>
 	)
 }
