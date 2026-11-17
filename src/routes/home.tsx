@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next"
 
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import {Card, CardContent} from "@/components/ui/card"
 import {RecentTransactions} from "@/components/recent-transactions"
 import {Skeleton} from "@/components/ui/skeleton"
 import {adminMessageOptions, profileOptions} from "@/lib/api/home.queries"
@@ -23,22 +22,20 @@ export default function Home() {
 	const image = profile.data?.image || undefined
 
 	return (
-		<div className="flex flex-col gap-4">
-			<Card>
-				<CardContent className="flex items-center gap-4">
-					<Avatar size="lg" className="size-14">
-						{image ? <AvatarImage src={image} alt="" /> : null}
-						<AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
-					</Avatar>
-					{profile.isPending ? (
-						<Skeleton className="h-6 w-48" />
-					) : (
-						<h1 className="text-xl font-semibold wrap-break-word">
-							{t("home.welcome", {username: `⁨${name}⁩`})}
-						</h1>
-					)}
-				</CardContent>
-			</Card>
+		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+			<header className="flex items-center gap-4">
+				<Avatar size="lg" className="size-14">
+					{image ? <AvatarImage src={image} alt="" /> : null}
+					<AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
+				</Avatar>
+				{profile.isPending ? (
+					<Skeleton className="h-8 w-56" />
+				) : (
+					<h1 className="text-2xl font-bold wrap-break-word">
+						{t("home.welcome", {username: `⁨${name}⁩`})}
+					</h1>
+				)}
+			</header>
 
 			{adminMessage.data ? (
 				<Alert>
