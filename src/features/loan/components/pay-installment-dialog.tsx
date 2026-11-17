@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { routeMap } from "@/app/routes"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -33,11 +34,13 @@ const SERVICE = "AccountInstallment"
 
 interface Props {
 	loan: Loan
+	/** Offer to add the loan to the user's list (for a loan of someone else that is not in it yet). */
+	offerFollow?: boolean
 	onClose: () => void
 }
 
 /** Pays towards a loan from one of the user's accounts: which account, how much (the installment is offered) and why. Mount it only while open. */
-export function PayInstallmentDialog({ loan, onClose }: Props) {
+export function PayInstallmentDialog({ loan, offerFollow = false, onClose }: Props) {
 	const { t, i18n } = useTranslation()
 	const queryClient = useQueryClient()
 	const reasons = useQuery(reasonCodesOptions(i18n.language))
@@ -49,6 +52,7 @@ export function PayInstallmentDialog({ loan, onClose }: Props) {
 	)
 	const [reasonCode, setReasonCode] = useState("")
 	const [password, setPassword] = useState("")
+	const [follow, setFollow] = useState(false)
 
 	const value = amount === "" ? 0 : Number(amount)
 	const reason = reasons.data?.find(
@@ -74,6 +78,7 @@ export function PayInstallmentDialog({ loan, onClose }: Props) {
 				loan,
 				amount: value,
 				reasonCode,
+				follow: offerFollow && follow,
 			})
 		},
 		again: { to: routeMap.loanList.path, label: t("loan.pay.again") },
@@ -183,6 +188,12 @@ export function PayInstallmentDialog({ loan, onClose }: Props) {
 						</p>
 					) : null}
 				</div>
+				{offerFollow ? (
+					<div className="flex items-center gap-2">
+						<Checkbox id="pay-follow" checked={follow} disabled={sending.pending} onCheckedChange={(checked) => setFollow(checked === true)} />
+						<Label htmlFor="pay-follow">{t("loan.pay.follow")}</Label>
+					</div>
+				) : null}
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="pay-reason">{t("loan.pay.reason")}</Label>
 					{reasons.isPending ? (

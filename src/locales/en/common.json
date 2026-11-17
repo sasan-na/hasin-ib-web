@@ -955,7 +955,8 @@
             "sending": "Paying…",
             "again": "Back to loans",
             "failed": "The payment was not made. Please check the details and try again.",
-            "uncertain": "We could not confirm whether the payment was made. Check your account statement and the loan before paying again."
+            "uncertain": "We could not confirm whether the payment was made. Check your account statement and the loan before paying again.",
+            "follow": "Add this loan to my list"
         },
         "interest": {
             "open": "Loan interest calculator",
@@ -1031,6 +1032,23 @@
             "error": {
                 "city": "Choose a city type."
             }
+        },
+        "other": {
+            "open": "Pay another loan",
+            "title": "Pay a loan by its number",
+            "hint": "Enter the account or card number of a loan, yours or someone else's, to see it and pay an installment towards it.",
+            "number": "Loan account or card number",
+            "look": "Show loan",
+            "looking": "Looking…",
+            "failed": "The loan could not be found. Check the number and try again.",
+            "error": {
+                "number": "Enter a loan account number (10 to 22 digits) or a 16-digit card number."
+            },
+            "unfollow": "Remove from my list",
+            "unfollowing": "Removing…",
+            "unfollowTitle": "Remove this loan from your list",
+            "unfollowQuestion": "The loan stays as it is; it just stops showing in your list.",
+            "unfollowFailed": "The loan could not be removed. Please try again."
         }
     },
     "message": {

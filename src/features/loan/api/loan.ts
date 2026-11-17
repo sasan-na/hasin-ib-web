@@ -108,6 +108,8 @@ export interface PayInstallmentRequest {
 	/** In Rials. */
 	amount: number
 	reasonCode: string
+	/** Also add the loan to the user's list of loans they follow. */
+	follow?: boolean
 }
 
 /**
@@ -132,7 +134,7 @@ export const payInstallment = (
 			isDestinationCard: request.loan.onCard,
 			amount: request.amount,
 			installmentAmount: request.loan.installment ?? 0,
-			addToInstallmentList: false,
+			addToInstallmentList: request.follow === true,
 			reasonCode: request.reasonCode,
 		}),
 	}).then(toTransactionResult)
