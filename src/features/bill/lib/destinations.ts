@@ -1,4 +1,4 @@
-import {Car, Receipt} from "lucide-react"
+import {Car, KeyRound, Receipt} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -8,4 +8,5 @@ import {TONES, type Destination} from "@/features/menu/components/service-cards"
 export const paymentDestinations: Record<string, Destination> = {
 	BillPayment: {to: routeMap.billList.path, icon: Receipt, ...TONES.primary},
 	ETC: {to: routeMap.etcList.path, icon: Car, ...TONES.info},
+	PayUSSDFee: {to: routeMap.ussd.path, icon: KeyRound, ...TONES.warning},
 }

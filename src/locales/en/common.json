@@ -1755,5 +1755,25 @@
         "landing": {
             "title": "Other services"
         }
+    },
+    "ussd": {
+        "title": "USSD subscription",
+        "hint": "Your USSD one-time-password tokens and when each expires. A token that can be extended is renewed by paying its fee.",
+        "error": "The tokens could not be loaded.",
+        "empty": "There are no USSD tokens to show.",
+        "serial": "Serial number",
+        "expiry": "Expires",
+        "newExpiry": "Expires after extending",
+        "cost": "Fee",
+        "rial": "Rials",
+        "renew": "Extend",
+        "renewTitle": "Pay the USSD subscription fee",
+        "renewQuestion": "The fee is paid from your account and the token's expiry date moves on.",
+        "from": "Pay from",
+        "pay": "Pay",
+        "sending": "Paying…",
+        "again": "Back to tokens",
+        "failed": "The payment was not made. Please try again.",
+        "uncertain": "We could not confirm whether the payment was made. Check your account statement and the token before paying again."
     }
 }
