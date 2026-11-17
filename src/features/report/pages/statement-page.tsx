@@ -106,9 +106,14 @@ export default function StatementPage() {
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("report.statement.title")}</h1>
-				<Button asChild size="sm" variant="outline">
-					<Link to={routeMap.reportEvents.path}>{t("report.events.title")}</Link>
-				</Button>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.reportMonthly.path}>{t("report.monthly.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.reportEvents.path}>{t("report.events.title")}</Link>
+					</Button>
+				</div>
 			</div>
 
 			<form

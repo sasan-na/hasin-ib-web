@@ -824,6 +824,28 @@
                 "order": "The end date is before the start date.",
                 "ip": "Enter an address like 192.168.0.1."
             }
+        },
+        "monthly": {
+            "title": "Monthly report",
+            "month": "Month",
+            "year": "Year",
+            "show": "Show report",
+            "loading": "Loading…",
+            "failed": "The report could not be loaded.",
+            "result": "Monthly report",
+            "calendar": "Calendar of the month",
+            "print": "Print",
+            "totalDeposit": "Total deposits",
+            "totalWithdrawal": "Total withdrawals",
+            "count": "{{count}} transactions",
+            "withdrawal": "Withdrawals",
+            "deposit": "Deposits",
+            "balance": "Balance",
+            "rial": "Rial",
+            "withdrawalsOf": "Withdrawals on {{date}}",
+            "depositsOf": "Deposits on {{date}}",
+            "detailsHint": "Every transaction of that day.",
+            "reference": "Reference"
         }
     },
     "loan": {
