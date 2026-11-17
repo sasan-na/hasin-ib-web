@@ -2102,5 +2102,36 @@
         "confirmTitle": "Register this mobile number",
         "confirmQuestion": "The bank records this number as yours.",
         "again": "Register another number"
+    },
+    "topup": {
+        "title": "Mobile top-up",
+        "hint": "Add credit to a mobile number from one of your cards.",
+        "operator": "Operator",
+        "chooseOperator": "Choose an operator",
+        "operatorsError": "The operators could not be loaded.",
+        "mobile": "Mobile number",
+        "amount": "Amount",
+        "rial": "Rials",
+        "limits": "From {{min}} to {{max}}, in steps of {{step}}.",
+        "card": "Card to pay from",
+        "chooseCard": "Choose a card",
+        "cardsError": "Your cards could not be loaded.",
+        "review": "Review",
+        "confirmTitle": "Confirm the top-up",
+        "confirmQuestion": "The amount is paid from your card and added to the number's credit.",
+        "pay": "Pay",
+        "sending": "Paying…",
+        "again": "Top up another number",
+        "failed": "The top-up was not made. Please check the details and try again.",
+        "uncertain": "We could not confirm whether the top-up was made. Check your card's statement before trying again.",
+        "error": {
+            "operator": "Choose an operator.",
+            "mobile": "Enter a mobile number like 09123456789.",
+            "amount": "Enter an amount greater than zero.",
+            "min": "The amount cannot be less than {{amount}}.",
+            "max": "The amount cannot be more than {{amount}}.",
+            "step": "The amount must be a multiple of {{amount}}.",
+            "card": "Choose a card and fill in its details."
+        }
     }
 }
