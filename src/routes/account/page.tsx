@@ -2,15 +2,13 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
 import {useMemo, useState} from "react"
 import {useTranslation} from "react-i18next"
 
-import {Plus, RefreshCw} from "lucide-react"
-import {Link} from "react-router-dom"
+import {RefreshCw} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
 import {moveAccount, syncAccounts, type Balances} from "@/lib/api/account"
 import {accountKeys, accountsOptions, syncAllowedOptions} from "@/lib/api/account.queries"
 import {formatAmount} from "@/lib/format"
-import {routeMap} from "@/routing.tsx"
 
 import {AccountFilters} from "./account-filters"
 import {AccountRow} from "./account-row"
@@ -52,23 +50,12 @@ export default function AccountPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("account.listTitle")}</h1>
-				<div className="flex flex-wrap gap-2">
-					<Button asChild size="sm">
-						<Link to={routeMap.accountNew.path}>
-							<Plus aria-hidden="true" />
-							{t("account.openNew")}
-						</Link>
-					</Button>
-					<Button asChild variant="outline" size="sm">
-						<Link to={routeMap.accountDelegate.path}>{t("account.delegateRequest")}</Link>
-					</Button>
 				{syncAllowed.data ? (
 					<Button type="button" variant="outline" size="sm" disabled={sync.isPending} onClick={() => sync.mutate()}>
 						<RefreshCw aria-hidden="true" className={sync.isPending ? "animate-spin" : undefined} />
 						{sync.isPending ? t("account.syncing") : t("account.sync")}
 					</Button>
 				) : null}
-				</div>
 			</div>
 			{sync.isSuccess ? (
 				<p role="status" className="text-sm text-muted-foreground">

@@ -129,7 +129,6 @@
             "and": "and",
             "or": "or"
         },
-        "openNew": "Open new account",
         "new": {
             "title": "Open a new account",
             "stepType": "Account type",
@@ -178,7 +177,6 @@
                 "branch": "Please choose a branch."
             }
         },
-        "delegateRequest": "Delegation request",
         "delegate": {
             "title": "Delegate an account",
             "intro": "Make one of your accounts available for delegation to an organ the bank works with.",
