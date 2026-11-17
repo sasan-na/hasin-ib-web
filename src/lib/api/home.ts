@@ -17,6 +17,21 @@ const adminMessageSchema = z.object({
 	showInMainPage: z.boolean().nullish(),
 })
 
+const recentTransactionsSchema = z.object({
+	eventList: z
+		.array(
+			z.object({
+				date: z.string().nullish(),
+				time: z.string().nullish(),
+				transactionType: z.string().nullish(),
+				statusTitle: z.string().nullish(),
+				// 0 done, 1 in progress, 2 failed, 3 needs reversing (the server folds the rest into 3).
+				status: z.number(),
+			}),
+		)
+		.nullish(),
+})
+
 const newServiceListSchema = z.object({
 	adminMessage: adminMessageSchema.nullish(),
 })
@@ -36,4 +51,24 @@ export const getAdminMessage = async (): Promise<AdminMessage | null> => {
 	const {adminMessage} = newServiceListSchema.parse(await apiClient<unknown>("/NewService/GetList"))
 	if (!adminMessage?.message || adminMessage.showInMainPage === false) return null
 	return {message: adminMessage.message, url: adminMessage.url || null}
+}
+
+export interface RecentTransaction {
+	type: string
+	date: string
+	time: string
+	statusTitle: string
+	status: number
+}
+
+/** The user's latest transactions, newest first; how many is a bank setting. Dates are in the UI language. */
+export const getRecentTransactions = async (): Promise<RecentTransaction[]> => {
+	const {eventList} = recentTransactionsSchema.parse(await apiClient<unknown>("/event/GetRecentTransactions"))
+	return (eventList ?? []).map((event) => ({
+		type: event.transactionType ?? "",
+		date: event.date ?? "",
+		time: event.time ?? "",
+		statusTitle: event.statusTitle ?? "",
+		status: event.status,
+	}))
 }

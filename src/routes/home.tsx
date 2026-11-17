@@ -5,15 +5,16 @@ import {useTranslation} from "react-i18next"
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Card, CardContent} from "@/components/ui/card"
+import {RecentTransactions} from "@/components/recent-transactions"
 import {Skeleton} from "@/components/ui/skeleton"
 import {adminMessageOptions, profileOptions} from "@/lib/api/home.queries"
 import {useSession} from "@/store/session"
 
 export default function Home() {
-	const {t} = useTranslation()
+	const {t, i18n} = useTranslation()
 	const sessionUsername = useSession((s) => s.username)
 	const profile = useQuery(profileOptions())
-	const adminMessage = useQuery(adminMessageOptions())
+	const adminMessage = useQuery(adminMessageOptions(i18n.language))
 
 	// A main user has a full name; a sub-user only a username. The bidi isolation marks keep a Latin
 	// username from reordering the surrounding Persian sentence.
@@ -54,6 +55,8 @@ export default function Home() {
 					</AlertDescription>
 				</Alert>
 			) : null}
+
+			<RecentTransactions />
 		</div>
 	)
 }

@@ -23,7 +23,15 @@
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
-        "adminMessage": "Message from the bank"
+        "adminMessage": "Message from the bank",
+        "recentTransactions": {
+            "title": "Recent events",
+            "empty": "No transactions yet.",
+            "error": "The recent events could not be loaded.",
+            "type": "Transaction",
+            "dateTime": "Date and time",
+            "status": "Status"
+        }
     },
     "theme": {
         "label": "Theme",

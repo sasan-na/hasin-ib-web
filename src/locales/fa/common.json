@@ -23,7 +23,15 @@
     },
     "home": {
         "welcome": "{{username}} عزیز، خوش آمدید!",
-        "adminMessage": "پیام بانک"
+        "adminMessage": "پیام بانک",
+        "recentTransactions": {
+            "title": "آخرین رویدادها",
+            "empty": "هنوز تراکنشی انجام نشده است.",
+            "error": "بارگذاری آخرین رویدادها انجام نشد.",
+            "type": "نوع تراکنش",
+            "dateTime": "تاریخ و ساعت",
+            "status": "وضعیت"
+        }
     },
     "theme": {
         "label": "پوسته",
