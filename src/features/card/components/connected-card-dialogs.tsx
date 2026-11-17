@@ -6,7 +6,7 @@ import {routeMap} from "@/app/routes"
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
-import {connectCard, disconnectCards, getCardToConnect, moveCredit, type CardToConnect, type ConnectedCard} from "@/features/card/api/connected-card"
+import {connectCard, disconnectCards, getCardToConnect, importCreditRows, moveCredit, moveCreditInBulk, type CardToConnect, type ConnectedCard, type CreditRow} from "@/features/card/api/connected-card"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
@@ -229,6 +229,131 @@ export function ConnectDialog({payer, onClose}: ConnectProps) {
 					) : null}
 				</div>
 				{card ? <AccountPassword requirement={requirement} accountNumber={payer.number} codeServiceName={SERVICE} amount={0} value={password} onChange={setPassword} disabled={sending.pending} /> : null}
+			</div>
+		</ConfirmDialog>
+	)
+}
+
+interface GroupProps {
+	payer: Payer
+	onClose: () => void
+}
+
+/** Moves credit for many connected cards from an Excel file: read the file, check the rows, then confirm with the account password. Mount it only while open. */
+export function GroupCreditDialog({payer, onClose}: GroupProps) {
+	const {t, i18n} = useTranslation()
+	const queryClient = useQueryClient()
+	const [discharge, setDischarge] = useState(false)
+	const [rows, setRows] = useState<CreditRow[]>([])
+	const [password, setPassword] = useState("")
+	const read = useMutation({
+		mutationFn: (file: File) => importCreditRows(file, discharge),
+		onSuccess: (imported) => setRows(imported),
+	})
+	const good = rows.filter((row) => row.problem === "" && /^\d{16}$/.test(row.pan) && row.amount > 0)
+	const clean = rows.length > 0 && good.length === rows.length
+	const total = good.reduce((sum, row) => sum + row.amount, 0)
+	const requirement = usePasswordRequirement({accountId: payer.id, limitServiceName: SERVICE, amount: total})
+	const money = (number: number): string => `${formatAmount(number, i18n.language)} ${t("card.connected.rial")}`
+
+	const sending = useSubmitTransaction({
+		run: () => {
+			if (!clean || requirement.state !== "ready") throw new Error("form incomplete")
+			return moveCreditInBulk({accountNumber: payer.number, password: requirement.needsPassword ? password : null, passwordType: requirement.info.type, rows, discharge})
+		},
+		again: {to: routeMap.cardConnected.path, label: t("card.connected.again")},
+		failedText: t("card.connected.failed"),
+		uncertainText: t("card.connected.uncertain"),
+		onDone: () => queryClient.invalidateQueries({queryKey: ["card", "connected"]}),
+	})
+
+	return (
+		<ConfirmDialog
+			open
+			onOpenChange={(open) => {
+				if (!open) onClose()
+			}}
+			title={discharge ? t("card.connected.group.dischargeTitle") : t("card.connected.group.chargeTitle")}
+			description={t("card.connected.group.question", {count: rows.length})}
+			summary={[
+				{label: t("card.connected.account"), value: <span dir="ltr">{payer.number}</span>},
+				...(rows.length > 0 ? [{label: t("card.connected.group.cards"), value: String(rows.length)}, {label: t("card.connected.group.total"), value: <strong>{money(total)}</strong>}] : []),
+			]}
+			confirmLabel={discharge ? t("card.connected.discharge") : t("card.connected.charge")}
+			pendingLabel={t("card.connected.sending")}
+			canConfirm={clean && isPasswordComplete(requirement, password) && !sending.blocked}
+			pending={sending.pending}
+			error={sending.refusal}
+			onConfirm={sending.submit}
+		>
+			<div className="flex max-h-[45vh] flex-col gap-4 overflow-y-auto">
+				<div className="flex gap-2" role="group" aria-label={t("card.connected.group.mode")}>
+					<Button
+						type="button"
+						size="sm"
+						variant={!discharge ? "default" : "outline"}
+						aria-pressed={!discharge}
+						disabled={sending.pending}
+						onClick={() => {
+							setDischarge(false)
+							setRows([])
+						}}
+					>
+						{t("card.connected.charge")}
+					</Button>
+					<Button
+						type="button"
+						size="sm"
+						variant={discharge ? "default" : "outline"}
+						aria-pressed={discharge}
+						disabled={sending.pending}
+						onClick={() => {
+							setDischarge(true)
+							setRows([])
+						}}
+					>
+						{t("card.connected.discharge")}
+					</Button>
+				</div>
+				<div className="flex flex-col gap-2">
+					<Label htmlFor="gc-file">{t("card.connected.group.file")}</Label>
+					<input
+						id="gc-file"
+						type="file"
+						accept=".xlsx,.xls"
+						className="text-sm"
+						disabled={read.isPending || sending.pending}
+						onChange={(event) => {
+							const file = event.target.files?.[0]
+							event.target.value = ""
+							if (file) read.mutate(file)
+						}}
+					/>
+					<p className="text-xs text-muted-foreground">{read.isPending ? t("card.connected.group.reading") : t("card.connected.group.hint")}</p>
+					{read.isError ? (
+						<p role="alert" className="text-sm text-destructive">
+							{read.error.message || t("card.connected.group.failed")}
+						</p>
+					) : null}
+					{read.isSuccess && rows.length === 0 ? <p className="text-sm text-muted-foreground">{t("card.connected.group.empty")}</p> : null}
+				</div>
+				{rows.length > 0 ? (
+					<ul className="flex flex-col divide-y rounded-md border text-sm">
+						{rows.map((row, index) => {
+							const ok = row.problem === "" && /^\d{16}$/.test(row.pan) && row.amount > 0
+							return (
+								<li key={index} className="flex flex-wrap items-baseline justify-between gap-2 p-2">
+									<span dir="ltr" className="tabular-nums">
+										{formatCardNumber(row.pan)}
+									</span>
+									{ok ? <span className="font-medium">{money(row.amount)}</span> : <span className="text-destructive">{row.problem || t("card.connected.group.badRow")}</span>}
+								</li>
+							)
+						})}
+					</ul>
+				) : null}
+				{!clean && rows.length > 0 ? <p role="alert" className="text-sm text-destructive">{t("card.connected.group.fix")}</p> : null}
+				{clean ? <AccountPassword requirement={requirement} accountNumber={payer.number} codeServiceName={SERVICE} amount={total} value={password} onChange={setPassword} disabled={sending.pending} /> : null}
 			</div>
 		</ConfirmDialog>
 	)

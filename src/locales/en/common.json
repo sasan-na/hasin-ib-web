@@ -702,6 +702,22 @@
                     "order": "The start date cannot be after the end date.",
                     "period": "The period cannot be longer than {{days}} days."
                 }
+            },
+            "group": {
+                "open": "Group credit",
+                "chargeTitle": "Add credit to many cards",
+                "dischargeTitle": "Take credit back from many cards",
+                "question": "{{count}} cards are changed in one batch from your account.",
+                "mode": "What to do",
+                "file": "Excel file",
+                "hint": "A file with a card number, an amount and a description on each row. Every row must be valid before anything is sent.",
+                "reading": "Reading the file…",
+                "failed": "The file could not be read.",
+                "empty": "The file has no cards.",
+                "badRow": "This row is not valid.",
+                "fix": "Some rows are not valid. Fix the file and choose it again.",
+                "cards": "Cards",
+                "total": "Total"
             }
         }
     },

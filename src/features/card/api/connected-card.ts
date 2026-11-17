@@ -136,3 +136,42 @@ export const getConnectedCardStatement = async (request: {accountNumber: string;
 	})
 	return {movements, total: data.result?.transactionCount ?? movements.length}
 }
+
+const importSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	infoList: z
+		.array(z.object({pan: z.string().nullish(), amount: z.union([z.string(), z.number()]).nullish(), description: z.string().nullish(), panNumberMessage: z.string().nullish(), amountMessage: z.string().nullish()}))
+		.nullish(),
+})
+
+/** One row read from the group credit Excel file. */
+export interface CreditRow {
+	pan: string
+	/** In Rials. */
+	amount: number
+	description: string
+	/** What the bank noted about the row (a card number or amount it rejects), if anything. */
+	problem: string
+}
+
+/** Reads cards, amounts and descriptions from an Excel file. Nothing is changed; the rows still need confirming. */
+export const importCreditRows = async (file: File, discharge: boolean): Promise<CreditRow[]> => {
+	const body = new FormData()
+	body.append("file", file)
+	const data = importSchema.parse(camelKeys(await apiClient<unknown>(`/MultiAccountCard/Batch/ImportChargeDischarge?isCharge=${String(!discharge)}`, {method: "POST", body})))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "import failed")
+	return (data.infoList ?? []).map((row) => ({
+		pan: (row.pan ?? "").replace(/\D/g, ""),
+		amount: Number(String(row.amount ?? 0).replace(/\D/g, "")) || 0,
+		description: row.description ?? "",
+		problem: [row.panNumberMessage, row.amountMessage].filter(Boolean).join(" "),
+	}))
+}
+
+/** Moves credit for many connected cards at once, all on (or all off). A real transaction: send once per confirmation, never retry automatically. */
+export const moveCreditInBulk = (request: Payer & {rows: Pick<CreditRow, "pan" | "amount" | "description">[]; discharge: boolean}): Promise<TransactionResult> =>
+	apiClient<unknown>("/MultiAccountCard/ChargeCreditBulk", {
+		method: "POST",
+		body: JSON.stringify({sourceAccountInfo: source(request), cards: request.rows.map((row) => ({pan: row.pan, amount: row.amount, description: row.description, discharge: request.discharge}))}),
+	}).then(toTransactionResult)
