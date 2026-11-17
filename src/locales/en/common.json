@@ -603,7 +603,29 @@
             "cancelling": "Cancelling…",
             "cancelFailed": "The bank did not cancel the order. Please try again.",
             "cancelUncertain": "We could not tell whether the order was cancelled. Check the list before trying again.",
-            "backToList": "Back to standing orders"
+            "backToList": "Back to standing orders",
+            "new": "New standing order",
+            "registerTitle": "New standing order",
+            "startDate": "First payment date (Persian calendar)",
+            "startDateHint": "Format 1405/01/01. It must be after today.",
+            "repeatEvery": "Repeat every",
+            "repeatCount": "Number of payments",
+            "chooseFrequency": "Choose a unit",
+            "frequenciesError": "The units could not be loaded.",
+            "review": "Review standing order",
+            "confirmTitle": "Set up this standing order?",
+            "confirmQuestion": "The bank will pay this amount from the paying account on each date.",
+            "registerConfirm": "Set up order",
+            "registering": "Setting up…",
+            "every": "Every {{count}} {{unit}}",
+            "registerFailed": "The bank did not accept the standing order. Please check the details and try again.",
+            "registerUncertain": "We could not tell whether the order was set up. Check the standing orders list before trying again.",
+            "error": {
+                "date": "Enter a date after today, like 1405/01/01.",
+                "every": "Enter how often the payment repeats.",
+                "frequency": "Choose day, week, month or year.",
+                "repeat": "Enter a number of payments from 1 to {{max}}."
+            }
         }
     }
 }

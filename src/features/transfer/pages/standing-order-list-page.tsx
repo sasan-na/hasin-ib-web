@@ -1,7 +1,9 @@
 import {useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
+import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
 import {standingOrdersOptions} from "@/features/transfer/api/transfer.queries"
@@ -29,7 +31,12 @@ export default function StandingOrderListPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("transfer.standing.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<h1 className="text-2xl font-bold">{t("transfer.standing.title")}</h1>
+				<Button asChild>
+					<Link to={routeMap.transferStandingOrderNew.path}>{t("transfer.standing.new")}</Link>
+				</Button>
+			</div>
 
 			{orders.isPending ? (
 				<div className="flex flex-col gap-3">

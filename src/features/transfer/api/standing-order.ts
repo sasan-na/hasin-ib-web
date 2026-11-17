@@ -2,7 +2,7 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
-import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
+import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 
 const orderSchema = z.object({
 	accountNumber: z.string().nullish(),
@@ -71,5 +71,67 @@ export const cancelStandingOrder = (order: StandingOrder): Promise<TransactionRe
 			sourceAccountNumber: order.sourceAccountNumber,
 			standingOrderCode: order.code,
 			destinationAccountNumber: order.destinationNumber,
+		}),
+	}).then(toTransactionResult)
+
+// ---- Registering one ---------------------------------------------------------------------------
+
+const frequenciesSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	frequencyItems: z.array(z.object({value: z.number(), title: z.string().nullish()})).nullish(),
+})
+
+export interface Frequency {
+	/** The bank's code: 1 day, 2 week, 3 month, 4 year. */
+	value: number
+	title: string
+}
+
+/** The repeat units a standing order can use ("every N days/weeks/months/years"). */
+export const getFrequencies = async (): Promise<Frequency[]> => {
+	const data = frequenciesSchema.parse(camelKeys(await apiClient<unknown>("/RegisterStandingOrder/GetFrequencyTypes")))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "frequencies failed")
+	return (data.frequencyItems ?? []).map((item) => ({value: item.value, title: item.title ?? String(item.value)}))
+}
+
+export interface RegisterStandingOrderRequest {
+	sourceAccountNumber: string
+	sourcePassword: string | null
+	sourcePasswordType: PasswordType
+	destinationAccountNumber: string
+	destinationOwner: string
+	/** "YYYY-MM-DD". */
+	startDate: string
+	frequencyNo: number
+	frequencyType: number
+	repeatNo: number
+	/** In Rials. */
+	amount: number
+	description: string
+	reasonCode: string
+}
+
+/** Sets up a standing order from one of the user's accounts to a Maskan account. A real change: send once per confirmation. */
+export const registerStandingOrder = (request: RegisterStandingOrderRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/RegisterStandingOrder/Register", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceAccountInfo: {
+				accountNumber: request.sourceAccountNumber,
+				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
+				passwordType: request.sourcePasswordType,
+			},
+			// 1: a deposit account at this bank.
+			destinationType: 1,
+			destinationPan: request.destinationAccountNumber,
+			destinationOwner: request.destinationOwner,
+			startDate: request.startDate,
+			description: request.description,
+			frequencyNo: request.frequencyNo,
+			frequencyType: request.frequencyType,
+			repeatNo: request.repeatNo,
+			amount: request.amount,
+			reasonCode: request.reasonCode,
 		}),
 	}).then(toTransactionResult)
