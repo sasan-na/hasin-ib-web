@@ -6,6 +6,7 @@ import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/si
 import {findRouteByPath} from "@/lib/utils.ts";
 import {useTranslation} from "react-i18next";
 import {LanguageSwitcher} from "@/components/language-switcher.tsx";
+import {ThemeSwitcher} from "@/components/theme-switcher.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
 import {BreadcrumbItem, BreadcrumbResponsive} from "@/components/breadcrumbs"
 import {routeMap} from "@/routing.tsx";
@@ -58,7 +59,10 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
                                     <Separator orientation="vertical" className="me-2 h-4"/>
                                     <BreadcrumbResponsive items={breadcrumbItems}/>
                                 </div>
-                                <LanguageSwitcher className="ms-auto"/>
+                                <div className="ms-auto flex items-center gap-1">
+                                    <ThemeSwitcher/>
+                                    <LanguageSwitcher/>
+                                </div>
                             </header>
                             <RouteFrame>{children}</RouteFrame>
                         </div>
@@ -75,7 +79,8 @@ export function PublicShell({children}: {children?: React.ReactNode}): React.Rea
     return (
         <div id={"public"}>
             <div className="flex min-h-screen w-full flex-col">
-                <header className="flex justify-end p-4">
+                <header className="flex items-center justify-end gap-1 p-4">
+                    <ThemeSwitcher/>
                     <LanguageSwitcher/>
                 </header>
                 <main className="flex flex-1 items-start justify-center px-4 pb-8 sm:items-center">

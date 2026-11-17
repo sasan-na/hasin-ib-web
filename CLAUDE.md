@@ -57,7 +57,7 @@ The session (`src/store/session.ts`, Zustand) is **memory-only**: a refresh sign
 ### Logging, theme, UI
 
 - All logging goes through `src/lib/logger.ts`; `no-console` is on (only `warn`/`error` allowed).
-- Theme: `useSelectTheme()` applies `localStorage["vite-ui-theme"]`.
+- Theme: light / dark / system, chosen with `ThemeSwitcher`; the choice lives in `src/store/theme.ts` (`localStorage["vite-ui-theme"]`) and `useSelectTheme()` applies it to `<html class="dark">`.
 - shadcn/ui (`new-york`, Tailwind v4, no JS config): primitives live in `src/components/ui/`; theme tokens are in `src/index.css`. Radix imports use the unified `radix-ui` package; toasts go through `sonner`; icons from `lucide-react`; path alias `@/` -> `src/`.
 
 ## Lint/format gotchas
