@@ -13,6 +13,8 @@ export const routeMap = {
 	"cardList": {breadcrumb: "card.listTitle", path: "/card/list"},
 	"cardInfo": {breadcrumb: "card.info.title", path: "/card/info"},
 	"cardRequestList": {breadcrumb: "card.requests.title", path: "/card/request-list"},
+	"cardAccountList": {breadcrumb: "card.accounts.title", path: "/card/account-list"},
+	"cardConnectAccount": {breadcrumb: "card.accounts.connectTitle", path: "/card/connect-account"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

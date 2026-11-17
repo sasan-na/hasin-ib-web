@@ -15,6 +15,8 @@ interface Options {
 	failedText: string
 	/** Shown when the request failed on the way, so nobody knows whether the bank acted. */
 	uncertainText: string
+	/** Runs when the bank gave an outcome (success, or a refusal with a reference), before the result page opens. */
+	onDone?: () => unknown
 }
 
 /**
@@ -25,7 +27,7 @@ interface Options {
  * - a network failure may have reached the bank, so `blocked` stays true until `reset()` (a fresh review),
  *   which stops a second request from doing the same thing twice.
  */
-export function useSubmitTransaction({run, again, failedText, uncertainText}: Options) {
+export function useSubmitTransaction({run, again, failedText, uncertainText, onDone}: Options) {
 	const navigate = useNavigate()
 	const [refusal, setRefusal] = useState<string | null>(null)
 	const [blocked, setBlocked] = useState(false)
@@ -37,6 +39,7 @@ export function useSubmitTransaction({run, again, failedText, uncertainText}: Op
 				setRefusal(result.message || failedText)
 				return
 			}
+			void onDone?.()
 			const state: TransactionResultState = {result, again}
 			void navigate(routeMap.transactionResult.path, {state, replace: true})
 		},

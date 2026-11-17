@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query"
-import {ChevronDown, ChevronUp, Info, RefreshCw} from "lucide-react"
+import {ChevronDown, ChevronUp, Info, Link2, RefreshCw} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -127,6 +127,14 @@ export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 							<Button type="button" variant="outline" size="sm" disabled={refresh.isPending} onClick={() => refresh.mutate()}>
 								<RefreshCw aria-hidden="true" className={refresh.isPending ? "animate-spin" : undefined} />
 								{refresh.isPending ? t("card.loadingBalance") : hasBalance ? t("card.refreshBalance") : t("card.showBalance")}
+							</Button>
+						) : null}
+						{card.services.has("ConnectedAccounts") ? (
+							<Button asChild variant="outline" size="sm">
+								<Link to={`${routeMap.cardAccountList.path}?cardId=${card.id}`} aria-label={t("card.accountsFor", {name})}>
+									<Link2 aria-hidden="true" />
+									{t("card.accountsButton")}
+								</Link>
 							</Button>
 						) : null}
 						{card.services.has("Info") ? (
