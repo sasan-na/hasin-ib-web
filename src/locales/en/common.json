@@ -19,7 +19,8 @@
     "success": "Success",
     "navigation": {
         "home": "Home",
-        "general": "General"
+        "general": "General",
+        "accounts": "Accounts"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -62,6 +63,31 @@
             "unknown": "not checked yet",
             "broken": "not met",
             "met": "met"
+        }
+    },
+    "copied": "Copied",
+    "account": {
+        "title": "Accounts",
+        "number": "Account number",
+        "iban": "IBAN",
+        "joint": "Joint account",
+        "copyNumber": "Copy account number",
+        "copyIban": "Copy IBAN",
+        "balance": "Available balance",
+        "totalBalance": "Total balance",
+        "blockedAmount": "Blocked amount",
+        "rial": "Rial",
+        "showBalance": "Show balance",
+        "refreshBalance": "Refresh balance",
+        "loadingBalance": "Getting balance…",
+        "balanceError": "The balance could not be retrieved. Please try again.",
+        "empty": "You have no accounts yet.",
+        "error": "Your accounts could not be loaded. Please try again.",
+        "passwordType": {
+            "label": "Password",
+            "otp": "One-time password",
+            "none": "No password",
+            "password": "Regular password"
         }
     }
 }

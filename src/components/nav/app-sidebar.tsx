@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Home} from "lucide-react"
+import {Home, Landmark} from "lucide-react"
 import {useLocation} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
@@ -20,6 +20,12 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             url: routeMap.home.path,
             icon: Home,
             isActive: pathname === routeMap.home.path,
+        },
+        {
+            title: t("navigation.accounts"),
+            url: routeMap.account.path,
+            icon: Landmark,
+            isActive: pathname.startsWith(routeMap.account.path),
         },
     ]
 
