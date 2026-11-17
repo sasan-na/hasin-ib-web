@@ -28,6 +28,7 @@ export const routeMap = {
 	"transferCard": {breadcrumb: "transfer.card.title", path: "/transfer/card"},
 	"transferGroup": {breadcrumb: "transfer.group.title", path: "/transfer/group"},
 	"reportStatement": {breadcrumb: "report.statement.title", path: "/report/statement"},
+	"reportEvents": {breadcrumb: "report.events.title", path: "/report/events"},
 	"loanList": {breadcrumb: "loan.title", path: "/loan"},
 	"messageList": {breadcrumb: "message.title", path: "/message"},
 	"messageNew": {breadcrumb: "message.newTitle", path: "/message/new"},

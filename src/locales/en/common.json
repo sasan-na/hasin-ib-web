@@ -799,6 +799,31 @@
                 "order": "The end date is before the start date.",
                 "latest": "Enter a number from 1 to {{max}}."
             }
+        },
+        "events": {
+            "title": "Events",
+            "source": "Which record",
+            "current": "This bank",
+            "archive": "Old internet bank",
+            "type": "Kind of event",
+            "allTypes": "All kinds",
+            "typeWord": "A word in the title",
+            "description": "Description",
+            "from": "From date (Persian calendar)",
+            "to": "To date (Persian calendar)",
+            "ip": "IP address",
+            "search": "Search",
+            "clear": "Clear",
+            "empty": "No events match.",
+            "failed": "The events could not be loaded.",
+            "count": "Showing {{shown}} of {{total}}",
+            "more": "Show more",
+            "loading": "Loading…",
+            "error": {
+                "date": "Enter a date like 1405/01/01.",
+                "order": "The end date is before the start date.",
+                "ip": "Enter an address like 192.168.0.1."
+            }
         }
     },
     "loan": {

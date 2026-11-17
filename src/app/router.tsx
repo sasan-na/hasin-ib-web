@@ -32,6 +32,7 @@ const CardTransfer = React.lazy(() => import("@/features/transfer/pages/card-tra
 const GroupTransfer = React.lazy(() => import("@/features/transfer/pages/group-transfer-page.tsx"));
 const AccountPassword = React.lazy(() => import("@/features/account/pages/account-password-page.tsx"));
 const Statement = React.lazy(() => import("@/features/report/pages/statement-page.tsx"));
+const Events = React.lazy(() => import("@/features/report/pages/events-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
 const MessageList = React.lazy(() => import("@/features/message/pages/message-list-page.tsx"));
 const MessageDetail = React.lazy(() => import("@/features/message/pages/message-detail-page.tsx"));
@@ -88,6 +89,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.transferGroup.path} element={<GroupTransfer/>}/>
                     <Route path={routeMap.accountPassword.path} element={<AccountPassword/>}/>
                     <Route path={routeMap.reportStatement.path} element={<Statement/>}/>
+                    <Route path={routeMap.reportEvents.path} element={<Events/>}/>
                     <Route path={routeMap.loanList.path} element={<LoanList/>}/>
                     <Route path={routeMap.messageList.path} element={<MessageList/>}/>
                     <Route path={routeMap.messageNew.path} element={<NewMessage/>}/>

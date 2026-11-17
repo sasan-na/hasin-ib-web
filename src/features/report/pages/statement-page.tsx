@@ -1,7 +1,9 @@
 import {useMutation, useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
+import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
@@ -102,7 +104,12 @@ export default function StatementPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("report.statement.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<h1 className="text-2xl font-bold">{t("report.statement.title")}</h1>
+				<Button asChild size="sm" variant="outline">
+					<Link to={routeMap.reportEvents.path}>{t("report.events.title")}</Link>
+				</Button>
+			</div>
 
 			<form
 				noValidate
