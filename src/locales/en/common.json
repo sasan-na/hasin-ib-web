@@ -177,6 +177,32 @@
                 "source": "Please choose the account to pay from.",
                 "branch": "Please choose a branch."
             }
+        },
+        "delegateRequest": "Delegation request",
+        "delegate": {
+            "title": "Delegate an account",
+            "intro": "Make one of your accounts available for delegation to an organ the bank works with.",
+            "sourceTitle": "Account to delegate",
+            "organTitle": "Attorney",
+            "organ": "Organization",
+            "chooseOrgan": "Choose an organization",
+            "organsError": "The organizations could not be loaded. Please try again.",
+            "noOrgans": "No organization is available right now.",
+            "termsLink": "The terms and conditions",
+            "termsAgree": " have been read and are accepted by me.",
+            "review": "Review request",
+            "confirmTitle": "Delegate this account?",
+            "confirmDescription": "The organization will be able to act on this account as the terms describe.",
+            "confirm": "Send request",
+            "sending": "Sending…",
+            "failed": "The bank did not accept the request. Please try again.",
+            "uncertain": "We could not tell whether the request went through. Check with the bank or look at your accounts before trying again.",
+            "again": "Send another request",
+            "error": {
+                "source": "Please choose the account.",
+                "organ": "Please choose an organization.",
+                "terms": "Please accept the terms and conditions to continue."
+            }
         }
     },
     "transaction": {

@@ -59,6 +59,9 @@ export default function AccountPage() {
 							{t("account.openNew")}
 						</Link>
 					</Button>
+					<Button asChild variant="outline" size="sm">
+						<Link to={routeMap.accountDelegate.path}>{t("account.delegateRequest")}</Link>
+					</Button>
 				{syncAllowed.data ? (
 					<Button type="button" variant="outline" size="sm" disabled={sync.isPending} onClick={() => sync.mutate()}>
 						<RefreshCw aria-hidden="true" className={sync.isPending ? "animate-spin" : undefined} />
