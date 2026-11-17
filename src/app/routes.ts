@@ -19,6 +19,7 @@ export const routeMap = {
 	"cardGift": {breadcrumb: "card.gift.title", path: "/card/gift"},
 	"transfer": {breadcrumb: "navigation.transfers", path: "/transfer"},
 	"transferSmart": {breadcrumb: "transfer.smart.title", path: "/transfer/smart"},
+	"transferStandingOrders": {breadcrumb: "transfer.standing.title", path: "/transfer/standing-orders"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

@@ -562,6 +562,26 @@
             "sameAccount": "The destination is the same as the paying account.",
             "amount": "Please enter the amount.",
             "reason": "Please choose a reason."
+        },
+        "standing": {
+            "title": "Standing orders",
+            "empty": "You have no standing orders.",
+            "loadFailed": "The standing orders could not be loaded.",
+            "retry": "Try again",
+            "destination": "Destination account or card",
+            "amount": "Amount",
+            "firstDate": "First payment date",
+            "frequency": "Frequency",
+            "duration": "Duration",
+            "trackingId": "Tracking ID",
+            "cancel": "Cancel order",
+            "cancelTitle": "Cancel this standing order?",
+            "cancelQuestion": "No further payments will be made for this order.",
+            "cancelConfirm": "Cancel order",
+            "cancelling": "Cancelling…",
+            "cancelFailed": "The bank did not cancel the order. Please try again.",
+            "cancelUncertain": "We could not tell whether the order was cancelled. Check the list before trying again.",
+            "backToList": "Back to standing orders"
         }
     }
 }

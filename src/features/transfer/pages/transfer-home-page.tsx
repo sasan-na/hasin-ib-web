@@ -1,4 +1,4 @@
-import {ArrowLeftRight} from "lucide-react"
+import {ArrowLeftRight, CalendarClock} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
 import {routeMap} from "@/app/routes"
@@ -8,6 +8,7 @@ import {ServiceCards, TONES, type Destination} from "@/features/menu/components/
 // have a page yet are added here as they are built.
 const DESTINATIONS: Record<string, Destination> = {
 	SingleTransferMoney: {to: routeMap.transferSmart.path, icon: ArrowLeftRight, ...TONES.info},
+	StandingOrder: {to: routeMap.transferStandingOrders.path, icon: CalendarClock, ...TONES.warning},
 }
 
 /** The transfer section's front page. */
