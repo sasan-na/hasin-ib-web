@@ -31,6 +31,7 @@ const IbanTransfer = React.lazy(() => import("@/features/transfer/pages/iban-tra
 const CardTransfer = React.lazy(() => import("@/features/transfer/pages/card-transfer-page.tsx"));
 const GroupTransfer = React.lazy(() => import("@/features/transfer/pages/group-transfer-page.tsx"));
 const AccountPassword = React.lazy(() => import("@/features/account/pages/account-password-page.tsx"));
+const ReportHome = React.lazy(() => import("@/features/report/pages/report-home-page.tsx"));
 const Statement = React.lazy(() => import("@/features/report/pages/statement-page.tsx"));
 const Events = React.lazy(() => import("@/features/report/pages/events-page.tsx"));
 const Monthly = React.lazy(() => import("@/features/report/pages/monthly-page.tsx"));
@@ -92,6 +93,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.transferCard.path} element={<CardTransfer/>}/>
                     <Route path={routeMap.transferGroup.path} element={<GroupTransfer/>}/>
                     <Route path={routeMap.accountPassword.path} element={<AccountPassword/>}/>
+                    <Route path={routeMap.report.path} element={<ReportHome/>}/>
                     <Route path={routeMap.reportStatement.path} element={<Statement/>}/>
                     <Route path={routeMap.reportEvents.path} element={<Events/>}/>
                     <Route path={routeMap.reportMonthly.path} element={<Monthly/>}/>

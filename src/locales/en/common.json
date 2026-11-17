@@ -914,6 +914,9 @@
                 "future": "The end date cannot be after today.",
                 "period": "The span can be at most {{days}} days."
             }
+        },
+        "landing": {
+            "title": "Reports"
         }
     },
     "loan": {

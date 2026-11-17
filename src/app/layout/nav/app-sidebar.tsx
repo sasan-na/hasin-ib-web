@@ -59,9 +59,9 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         },
         {
             title: t("navigation.reports"),
-            url: routeMap.reportStatement.path,
+            url: routeMap.report.path,
             icon: ScrollText,
-            isActive: pathname.startsWith("/report"),
+            isActive: pathname.startsWith(routeMap.report.path),
         },
         {
             title: t("navigation.messages"),
