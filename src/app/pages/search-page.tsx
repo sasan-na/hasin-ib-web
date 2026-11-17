@@ -4,6 +4,7 @@ import {Link, useSearchParams} from "react-router-dom"
 
 import {Skeleton} from "@/components/ui/skeleton"
 import {accountDestinations} from "@/features/account/lib/destinations"
+import {branchDestinations} from "@/features/branch/lib/destinations"
 import {paymentDestinations} from "@/features/bill/lib/destinations"
 import {cardDestinations} from "@/features/card/lib/destinations"
 import {chequeDestinations} from "@/features/cheque/lib/destinations"
@@ -27,6 +28,7 @@ const destinations: Record<string, Destination> = {
 	...reportDestinations,
 	...dashboardDestinations,
 	...otherDestinations,
+	...branchDestinations,
 }
 
 /** Finds the bank's services by what the user types, and opens the one they pick. */

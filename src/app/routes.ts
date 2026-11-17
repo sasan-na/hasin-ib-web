@@ -76,6 +76,8 @@ export const routeMap = {
 	"changeUsername": {breadcrumb: "profile.username.title", path: "/profile/username"},
 	"settings": {breadcrumb: "settings.title", path: "/settings"},
 	"search": {breadcrumb: "search.title", path: "/search"},
+	"branch": {breadcrumb: "navigation.branch", path: "/branch"},
+	"branchRequests": {breadcrumb: "branch.requests.title", path: "/branch/requests"},
 	"profile": {breadcrumb: "profile.title", path: "/profile"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},
