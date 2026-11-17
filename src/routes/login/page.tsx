@@ -21,6 +21,7 @@ import {useLoginFlow} from "./useLoginFlow"
 export default function LoginPage() {
 	const {t} = useTranslation("auth")
 	const isSignedIn = useSession((s) => s.token !== null)
+	const sessionExpired = useSession((s) => s.expired)
 	const {credentials, otp, onSignedIn, restart, redirectTo} = useLoginFlow()
 	const {form, onSubmit, captcha, blockedMessage} = credentials
 
@@ -33,6 +34,11 @@ export default function LoginPage() {
 				<CardDescription>{t("login.subtitle")}</CardDescription>
 			</CardHeader>
 			<CardContent>
+				{sessionExpired ? (
+					<Alert className="mb-4" role="status">
+						<AlertDescription>{t("login.sessionExpired")}</AlertDescription>
+					</Alert>
+				) : null}
 				{otp ? (
 					<OtpStep context={otp} onSignedIn={onSignedIn} onRestart={restart} />
 				) : blockedMessage !== null ? (

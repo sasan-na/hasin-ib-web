@@ -1,3 +1,4 @@
+import {queryClient} from "@/lib/query-client"
 import {useSession} from "@/store/session"
 
 import {getXsrfToken, XSRF_HEADER_NAME} from "./xsrf"
@@ -23,6 +24,21 @@ const extractErrorMessage = (data: unknown): string | null => {
 	return null
 }
 
+/** The server ended the session (HTTP 401, or `ErrorCode: "401"` in the body): back to the login page. */
+const expireSession = (): void => {
+	// Only a signed-in session can expire; this also keeps parallel failing calls from acting twice.
+	if (useSession.getState().token === null) return
+	useSession.getState().expireSession()
+	// Nothing fetched for the old session may be shown to whoever signs in next.
+	queryClient.clear()
+}
+
+const hasExpiredErrorCode = (data: unknown): boolean => {
+	if (data === null || typeof data !== "object") return false
+	const obj = data as Record<string, unknown>
+	return String(obj.errorCode ?? obj.ErrorCode ?? "") === "401"
+}
+
 export const apiClient = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
 	const token = useSession.getState().token
 	const xsrfToken = getXsrfToken()
@@ -39,6 +55,8 @@ export const apiClient = async <T>(endpoint: string, options?: RequestInit): Pro
 		},
 	})
 
+	if (response.status === 401) expireSession()
+
 	if (!response.ok) {
 		let message: string
 		try {
@@ -49,7 +67,12 @@ export const apiClient = async <T>(endpoint: string, options?: RequestInit): Pro
 		throw new ApiError(response.status, message || `HTTP ${String(response.status)}`)
 	}
 
-	return response.json() as Promise<T>
+	const data: unknown = await response.json()
+	if (hasExpiredErrorCode(data)) {
+		expireSession()
+		throw new ApiError(401, extractErrorMessage(data) ?? response.statusText)
+	}
+	return data as T
 }
 
 /** Ends the server session (`api/Login/Logout`). */
