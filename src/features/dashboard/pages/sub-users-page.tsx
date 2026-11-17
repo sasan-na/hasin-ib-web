@@ -33,12 +33,17 @@ export default function SubUsersPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("dashboard.users.title")}</h1>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild size="sm">
+						<Link to={routeMap.newSubUser.path}>{t("dashboard.newUser.open")}</Link>
+					</Button>
 				<Button asChild variant="outline" size="sm">
 					<Link to={routeMap.dashboard.path}>
 						<BackIcon aria-hidden="true" />
 						{t("dashboard.rules.back")}
 					</Link>
 				</Button>
+				</div>
 			</div>
 			<p className="text-sm text-muted-foreground">{t("dashboard.users.hint")}</p>
 

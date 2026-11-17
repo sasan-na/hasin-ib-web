@@ -1765,6 +1765,46 @@
                 "date": "Enter dates like 1405/01/01.",
                 "state": "Choose successful, failed or both."
             }
+        },
+        "newUser": {
+            "open": "Add a person",
+            "title": "Add a person to your accounts",
+            "back": "Back to people",
+            "hint": "Give someone access to some of your accounts, each in a role you defined.",
+            "who": "Who",
+            "existing": "This person already uses the bank",
+            "customerCode": "Their customer code",
+            "username": "Username",
+            "password": "Password",
+            "confirm": "Repeat the password",
+            "accounts": "Accounts and roles",
+            "noAccounts": "You have no accounts you can share.",
+            "noRoles": "Define a role first: a role says what a person may do on an account.",
+            "loadError": "Your accounts or roles could not be loaded.",
+            "role": "Role",
+            "chooseRole": "Choose a role",
+            "mine": "Your password for this account",
+            "code": "Code",
+            "sendCode": "Send code",
+            "theirs": "Their password on this account",
+            "review": "Review",
+            "confirmTitle": "Add this person",
+            "confirmQuestion": "They get access to {{count}} accounts in the roles shown.",
+            "add": "Add",
+            "failed": "The person was not added. Please check the details and try again.",
+            "doneTitle": "Person added",
+            "done": "{{username}} was added.",
+            "doneAccounts": "They can use {{count}} accounts.",
+            "toPeople": "Back to people",
+            "error": {
+                "username": "Enter a username.",
+                "customerCode": "Enter their customer code.",
+                "password": "The password must be 8 to 35 characters.",
+                "mismatch": "The two passwords do not match.",
+                "accounts": "Choose at least one account.",
+                "grant": "For account {{account}}, choose a role and fill in both passwords (5 to 12 digits).",
+                "existing": "That person cannot be added."
+            }
         }
     },
     "receipt": {
