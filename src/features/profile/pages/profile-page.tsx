@@ -42,6 +42,11 @@ export default function ProfilePage() {
 						</dl>
 					</section>
 
+					<div>
+						<Button asChild variant="outline">
+							<Link to={routeMap.mobileBanking.path}>{t("profile.mobile.open")}</Link>
+						</Button>
+					</div>
 					<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="profile-signin">
 						<h2 id="profile-signin" className="text-base font-semibold">
 							{t("profile.signIn")}

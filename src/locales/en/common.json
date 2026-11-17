@@ -1911,6 +1911,39 @@
             "failed": "The username was not changed. Please check it and try again.",
             "done": "Your username is now {{username}}. Sign in again with it.",
             "signInAgain": "Sign in again"
+        },
+        "mobile": {
+            "open": "Mobile banking",
+            "title": "Mobile banking",
+            "error": "The mobile banking details could not be loaded.",
+            "inactive1": "Your mobile banking gateway is inactive.",
+            "inactive2": "To activate it, visit a branch of the bank.",
+            "numbers": {
+                "title": "Allowed mobile numbers",
+                "hint": "Only these phones can use your mobile banking login.",
+                "number": "Mobile number {{index}}",
+                "remove": "Remove number {{index}}",
+                "add": "Add a number",
+                "invalid": "Each number must be a mobile number like 09123456789.",
+                "duplicate": "A number is listed twice.",
+                "save": "Save",
+                "saving": "Saving…",
+                "saved": "The numbers were saved.",
+                "failed": "The numbers were not saved. Please try again.",
+                "confirmTitle": "Save these mobile numbers",
+                "confirmQuestion": "Only these phones will be allowed to use your mobile banking login."
+            },
+            "password": {
+                "title": "Mobile banking password",
+                "old": "Current password",
+                "new": "New password",
+                "confirm": "Repeat the new password",
+                "mismatch": "The two passwords do not match.",
+                "save": "Change password",
+                "saving": "Changing…",
+                "done": "The password was changed.",
+                "failed": "The password was not changed. Please check it and try again."
+            }
         }
     }
 }
