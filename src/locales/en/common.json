@@ -1898,6 +1898,19 @@
             "websiteAddress": "Website",
             "username": "Username",
             "password": "Password"
+        },
+        "back": "Back to profile",
+        "username": {
+            "title": "Change username",
+            "hint": "You will be signed out when the username changes and sign in again with the new one.",
+            "current": "Current username",
+            "new": "New username",
+            "password": "Your password",
+            "save": "Change username",
+            "saving": "Changing…",
+            "failed": "The username was not changed. Please check it and try again.",
+            "done": "Your username is now {{username}}. Sign in again with it.",
+            "signInAgain": "Sign in again"
         }
     }
 }

@@ -59,6 +59,9 @@ export default function ProfilePage() {
 							</div>
 						</dl>
 						<div className="flex flex-wrap gap-2">
+							<Button asChild variant="outline" size="sm">
+								<Link to={routeMap.changeUsername.path}>{t("profile.username.title")}</Link>
+							</Button>
 							{!profile.data.hasOtp ? (
 								<Button asChild variant="outline" size="sm">
 									<Link to={routeMap.changePassword.path}>{t("profile.changePassword")}</Link>
