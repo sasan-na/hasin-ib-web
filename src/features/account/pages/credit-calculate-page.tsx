@@ -10,10 +10,10 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
-import {calculateCredit, type CreditResult} from "@/lib/api/creditCalculate"
-import {loanOptionsOptions} from "@/lib/api/creditCalculate.queries"
+import {calculateCredit, type CreditResult} from "@/features/account/api/credit-calculate"
+import {loanOptionsOptions} from "@/features/account/api/credit-calculate.queries"
 import {formatAmount} from "@/lib/format"
-import {parseJalali, todayJalali} from "@/lib/jalali"
+import {parseJalali, todayJalali} from "@/features/account/lib/jalali"
 import {routeMap} from "@/app/routes"
 
 type Errors = Partial<Record<"profit" | "period" | "start" | "end", string>>

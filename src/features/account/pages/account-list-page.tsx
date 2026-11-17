@@ -6,13 +6,13 @@ import {RefreshCw} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
-import {moveAccount, syncAccounts, type Balances} from "@/lib/api/account"
-import {accountKeys, accountsOptions, syncAllowedOptions} from "@/lib/api/account.queries"
+import {moveAccount, syncAccounts, type Balances} from "@/features/account/api/account"
+import {accountKeys, accountsOptions, syncAllowedOptions} from "@/features/account/api/account.queries"
 import {formatAmount} from "@/lib/format"
 
-import {AccountFilters} from "./account-filters"
-import {AccountRow} from "./account-row"
-import {categoriesOf, EMPTY_FILTERS, filterAccounts, groupAccounts, groupTotal, hasActiveFilters, type Filters} from "./accountList"
+import {AccountFilters} from "../components/account-filters"
+import {AccountRow} from "../components/account-row"
+import {categoriesOf, EMPTY_FILTERS, filterAccounts, groupAccounts, groupTotal, hasActiveFilters, type Filters} from "../lib/account-list"
 
 /** The user's accounts, grouped by category, with search, on-request balances and reordering. */
 export default function AccountPage() {

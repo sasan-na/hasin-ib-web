@@ -1,4 +1,4 @@
-import type {Account, Balances} from "@/lib/api/account"
+import type {Account, Balances} from "@/features/account/api/account"
 import {normalizeDigits} from "@/lib/normalize-digits"
 import {normalizeIban} from "@/lib/format"
 

@@ -2,7 +2,7 @@ import {Fragment} from "react"
 import {useTranslation} from "react-i18next"
 
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import type {WithdrawRule} from "@/lib/api/account"
+import type {WithdrawRule} from "@/features/account/api/account"
 
 function Connector({label}: {label: string}) {
 	return (

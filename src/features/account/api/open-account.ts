@@ -1,7 +1,7 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
-import {toTransactionResult, type PasswordType, type TransactionResult} from "../../features/transaction/api/transaction"
+import {apiClient} from "@/lib/api/client"
+import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 
 // ---- What can be opened ------------------------------------------------------------------------
 

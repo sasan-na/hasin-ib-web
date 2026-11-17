@@ -1,7 +1,7 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
-import {camelKeys} from "./camel"
+import {apiClient} from "@/lib/api/client"
+import {camelKeys} from "@/lib/api/camel"
 
 // ---- What the account can be calculated against -------------------------------------------------
 

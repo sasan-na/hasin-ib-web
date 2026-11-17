@@ -5,8 +5,8 @@ import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
-import {renameAccount} from "@/lib/api/account"
-import {accountKeys} from "@/lib/api/account.queries"
+import {renameAccount} from "@/features/account/api/account"
+import {accountKeys} from "@/features/account/api/account.queries"
 
 const NAME_MAX = 30
 

@@ -7,12 +7,12 @@ import {CopyButton} from "@/components/copy-button"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
-import {accountInfoOptions, withdrawRulesOptions} from "@/lib/api/account.queries"
+import {accountInfoOptions, withdrawRulesOptions} from "@/features/account/api/account.queries"
 import {formatIban, normalizeIban} from "@/lib/format"
 import {routeMap} from "@/app/routes"
 
-import {RenameField} from "./rename-field"
-import {WithdrawRules} from "./withdraw-rules"
+import {RenameField} from "../components/rename-field"
+import {WithdrawRules} from "../components/withdraw-rules"
 
 /** One account in detail: its numbers, its name (editable), its owners and who must sign to withdraw. */
 export default function AccountInfoPage() {

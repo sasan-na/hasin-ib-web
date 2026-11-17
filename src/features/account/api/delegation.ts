@@ -1,7 +1,7 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
-import {toTransactionResult, type PasswordType, type TransactionResult} from "../../features/transaction/api/transaction"
+import {apiClient} from "@/lib/api/client"
+import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 
 // The bank's organs (companies) an account can be delegated to. The list comes from the core system and
 // arrives wrapped in its own envelope, with "Y"/"N" flags.

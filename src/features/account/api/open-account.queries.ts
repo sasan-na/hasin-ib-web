@@ -1,6 +1,6 @@
 import {queryOptions} from "@tanstack/react-query"
 
-import {getAccountProfiles, getBranches, getDepositTypes, getPersonalInfo} from "./openAccount"
+import {getAccountProfiles, getBranches, getDepositTypes, getPersonalInfo} from "./open-account"
 
 // Names the bank writes (account types, profiles, branches) follow the UI language, so it is part of each key.
 export const openAccountKeys = {

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom"
 
 import {CopyButton} from "@/components/copy-button"
 import {Button} from "@/components/ui/button"
-import {getBalance, type Account, type Balances} from "@/lib/api/account"
+import {getBalance, type Account, type Balances} from "@/features/account/api/account"
 import {formatAmount, formatIban, normalizeIban} from "@/lib/format"
 import {routeMap} from "@/app/routes"
 

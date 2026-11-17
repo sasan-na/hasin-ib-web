@@ -1,6 +1,6 @@
 import {queryOptions} from "@tanstack/react-query"
 
-import {getLoanOptions} from "./creditCalculate"
+import {getLoanOptions} from "./credit-calculate"
 
 export const creditKeys = {
 	options: (accountNumber: string) => ["credit", "options", accountNumber] as const,

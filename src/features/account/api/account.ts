@@ -1,6 +1,6 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
+import {apiClient} from "@/lib/api/client"
 
 // camelCase, like the other post-login endpoints. Optional fields are left out by the server when
 // they do not apply (for example no balances before they are fetched).
