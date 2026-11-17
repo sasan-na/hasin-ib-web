@@ -2,7 +2,7 @@
 
 The new web client for Hasin internet banking, replacing the legacy AngularJS app. React 19, Vite, TypeScript, Tailwind CSS v4, shadcn/ui, React Router 7, TanStack Query, react-hook-form + zod. Persian (default, RTL) and English.
 
-**Status:** login (credentials and one-time code), a minimal protected home and a `/change-password` stub. Everything else is still to come.
+**Status:** sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, recent events) and the account area (landing page, account list with balances, search, groups and reordering, account details with rename, open account, delegation request, facility credit calculator). Account password, cards, cheques, transfers and the rest of the legacy menu are still to come.
 
 ## Getting started
 

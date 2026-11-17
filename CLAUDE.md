@@ -4,7 +4,7 @@ Guidance for Claude Code (claude.ai/code) in this repository.
 
 ## Project
 
-IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Login (credentials, optional one-time code), a minimal protected home and a `/change-password` stub exist; everything else is yet to be built.
+IBN, the new Hasin internet bank web client, replacing the legacy AngularJS app. Built on a React 19 + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui starter. Built so far: sign-in (credentials and one-time code), the forced password change, the home page (welcome, bank message, recent events) and the account area (landing page, account list with balances, search, groups and reordering, account details with rename, open account, delegation request, facility credit calculator). Account password, cards, cheques, transfers and the rest of the legacy menu are still to come.
 
 ## Standing rules
 
@@ -34,19 +34,38 @@ See `.env.example`:
 - `VITE_DEV_PROXY_TARGET` - dev only: the dev server proxies same-origin `/api` here (the real server sends no CORS headers); leave `VITE_API_URL` unset when using it.
 - `VITE_LOG_LEVEL` - `debug` | `info` | `warn` | `error` | `silent` (`src/lib/logger.ts`).
 
+## Code layout
+
+```
+src/
+  app/          router (router.tsx), route map (routes.ts), sign-in guard, shells + navigation (layout/), app-level pages (pages/)
+  features/     one folder per area of the bank: auth, home, menu, account, transaction
+    <feature>/api/         endpoint calls with their zod schemas (x.ts) and TanStack Query options (x.queries.ts)
+    <feature>/pages/       route components, named <name>-page.tsx, default export (the router lazy-loads these)
+    <feature>/components/  pieces used by that feature's pages
+    <feature>/hooks/       hooks;  <feature>/lib/  pure logic and types
+  components/   shared components (ui/ is shadcn - keep it there so the CLI aliases work)
+  hooks/        shared hooks
+  lib/          shared helpers: api/ (fetch client, camelKeys, xsrf), i18n/, format, logger, query-client, zod, utils
+  store/        app-wide Zustand state (session, theme)
+  locales/      en/ and fa/ JSON
+```
+
+Rules: shared code (`components`, `hooks`, `lib`, `store`) never imports a feature. `app/` may import features (only their pages and hooks it needs for chrome). A feature may build on another's API or kit when it must (`account` uses `transaction` and `menu`); no cycles. Put code in the feature that owns it, and move it to a shared folder only when a second feature needs it. File names are kebab-case; imports use the `@/` alias across folders and `./` within one.
+
 ## Architecture
 
 ### Routing and session
 
-`src/routing.tsx` is the single source of truth for routes (`routeMap` holds paths and breadcrumb i18n keys; reference `routeMap.x.path`, never hardcode paths). `/login` is public; everything else sits behind `RequireAuth`, which redirects to login when there is no session token. Route components are `React.lazy`; each shell wraps its outlet in an error boundary + suspense (`RouteFrame` in `src/components/shell.tsx`).
+`src/app/routes.ts` is the single source of truth for paths (`routeMap` holds paths and breadcrumb i18n keys; reference `routeMap.x.path`, never hardcode paths) and `src/app/router.tsx` maps them to pages. `/login` is public; everything else sits behind `RequireAuth` (`src/app/guards.tsx`), which redirects to login when there is no session token. Route components are `React.lazy`; each shell wraps its outlet in an error boundary + suspense (`RouteFrame` in `src/app/layout/shell.tsx`).
 
 The session (`src/store/session.ts`, Zustand) is **memory-only**: a refresh signs the user out. Never put the token or anything sensitive in `localStorage`/`sessionStorage`.
 
 ### Login contract (legacy server, verified against its code)
 
-- `src/lib/auth/loginCrypto.ts`: username/password are AES-256-CBC (key = login GUID without dashes as 32 UTF-8 bytes, IV = sixteen `"0"`, PKCS7, base64), username lower-cased; captcha value = base64(MD5(guid + salt + lower(captcha))).
-- The GUID is **single-use**: every Login2 attempt consumes it, so the page re-initialises after each attempt (`src/routes/login/useLoginForm.ts`).
-- `Login/Initialize` answers camelCase; `Login2`, `TwoFactorLogin/Login` and `TwoFactorLogin/Retry` answer PascalCase (`src/lib/api/login.ts`). `LoginStatus`: 0 ok, 1 password expired, 2 must change password, 3 not allowed, -1 failure.
+- `src/features/auth/lib/login-crypto.ts`: username/password are AES-256-CBC (key = login GUID without dashes as 32 UTF-8 bytes, IV = sixteen `"0"`, PKCS7, base64), username lower-cased; captcha value = base64(MD5(guid + salt + lower(captcha))).
+- The GUID is **single-use**: every Login2 attempt consumes it, so the page re-initialises after each attempt (`src/features/auth/hooks/use-login-form.ts`).
+- `Login/Initialize` answers camelCase; `Login2`, `TwoFactorLogin/Login` and `TwoFactorLogin/Retry` answer PascalCase (`src/features/auth/api/login.ts`). `LoginStatus`: 0 ok, 1 password expired, 2 must change password, 3 not allowed, -1 failure.
 - `src/lib/api/client.ts` sends the token in the raw `Authorization` header (no `Bearer`), `X-XSRF-TOKEN` from the `XSRF-TOKEN` cookie, and `credentials: "include"`. `ErrorCode "401"` means the session expired.
 - zod runs jitless (`src/lib/zod.ts`) so a CSP without `unsafe-eval` works; import `z` from `@/lib/zod`, never from `zod`.
 
@@ -57,7 +76,7 @@ The session (`src/store/session.ts`, Zustand) is **memory-only**: a refresh sign
 ### Logging, theme, UI
 
 - All logging goes through `src/lib/logger.ts`; `no-console` is on (only `warn`/`error` allowed).
-- Theme: light / dark / system, chosen with `ThemeSwitcher`; the choice lives in `src/store/theme.ts` (`localStorage["vite-ui-theme"]`) and `useSelectTheme()` applies it to `<html class="dark">`.
+- Theme: light / dark / system, chosen with `ThemeSwitcher`; the choice lives in `src/store/theme.ts` (`localStorage["vite-ui-theme"]`) and `useSelectTheme()` (`src/app/use-select-theme.ts`) applies it to `<html class="dark">`.
 - shadcn/ui (`new-york`, Tailwind v4, no JS config): primitives live in `src/components/ui/`; theme tokens are in `src/index.css`. Radix imports use the unified `radix-ui` package; toasts go through `sonner`; icons from `lucide-react`; path alias `@/` -> `src/`.
 
 ## Lint/format gotchas
