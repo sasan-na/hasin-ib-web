@@ -13,6 +13,7 @@ import {useSession} from "@/store/session"
 import {CaptchaField} from "./captcha-field"
 import {ForgotPasswordLink} from "./forgot-password-link"
 import {LOGIN_LIMITS} from "./loginSchema"
+import {OtpStep} from "./otp-step"
 import {PasswordField} from "./password-field"
 import {SecurityTips} from "./security-tips"
 import {useLoginFlow} from "./useLoginFlow"
@@ -20,7 +21,7 @@ import {useLoginFlow} from "./useLoginFlow"
 export default function LoginPage() {
 	const {t} = useTranslation("auth")
 	const isSignedIn = useSession((s) => s.token !== null)
-	const {credentials, otp, redirectTo} = useLoginFlow()
+	const {credentials, otp, onSignedIn, restart, redirectTo} = useLoginFlow()
 	const {form, onSubmit, captcha, blockedMessage} = credentials
 
 	if (isSignedIn) return <Navigate to={redirectTo ?? routeMap.home.path} replace />
@@ -32,7 +33,9 @@ export default function LoginPage() {
 				<CardDescription>{t("login.subtitle")}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{otp ? null : blockedMessage !== null ? (
+				{otp ? (
+					<OtpStep context={otp} onSignedIn={onSignedIn} onRestart={restart} />
+				) : blockedMessage !== null ? (
 					<Alert variant="destructive">
 						<AlertDescription>{blockedMessage}</AlertDescription>
 					</Alert>
