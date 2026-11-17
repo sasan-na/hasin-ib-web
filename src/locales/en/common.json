@@ -1001,6 +1001,29 @@
             "backToList": "Back to cheques",
             "failed": "The cheque was not blocked. Please try again.",
             "uncertain": "We could not confirm whether the cheque was blocked. Refresh the list before trying again."
+        },
+        "book": {
+            "title": "Request a cheque book",
+            "type": "Kind of cheque book",
+            "chooseType": "Choose a kind",
+            "typesError": "The kinds of cheque book could not be loaded.",
+            "branch": "Collect at branch",
+            "accept": "I have read and accept",
+            "terms": "the cheque book terms and conditions",
+            "openTerms": "Open the terms first; the box is enabled after that.",
+            "review": "Review",
+            "confirmTitle": "Request cheque book",
+            "confirmQuestion": "The bank will prepare the cheque book for collection at the chosen branch.",
+            "confirm": "Send request",
+            "sending": "Sending…",
+            "again": "Request another",
+            "failed": "The request was not accepted. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the request was received. Check your requests with the bank before sending it again.",
+            "error": {
+                "account": "Choose an account.",
+                "type": "Choose a kind of cheque book.",
+                "branch": "Choose a branch."
+            }
         }
     }
 }

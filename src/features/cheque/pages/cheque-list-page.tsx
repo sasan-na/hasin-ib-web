@@ -1,8 +1,10 @@
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query"
 import {History, RefreshCw, ShieldBan} from "lucide-react"
 import * as React from "react"
+import {Link} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
+import {routeMap} from "@/app/routes"
 import {Badge} from "@/components/ui/badge"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
@@ -49,7 +51,12 @@ export default function ChequeListPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
+				<Button asChild size="sm" variant="outline">
+					<Link to={routeMap.chequeBook.path}>{t("cheque.book.title")}</Link>
+				</Button>
+			</div>
 
 			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
 				<div className="flex flex-col gap-2">

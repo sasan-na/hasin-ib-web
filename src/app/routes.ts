@@ -38,6 +38,7 @@ export const routeMap = {
 	"billList": {breadcrumb: "bill.title", path: "/bill"},
 	"billNew": {breadcrumb: "bill.newTitle", path: "/bill/new"},
 	"chequeList": {breadcrumb: "cheque.title", path: "/cheque"},
+	"chequeBook": {breadcrumb: "cheque.book.title", path: "/cheque/book"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

@@ -1,5 +1,6 @@
 import {infiniteQueryOptions, queryOptions} from "@tanstack/react-query"
 
+import {getChequeBookTypes} from "./cheque-book"
 import {getChequeSeries, getChequeStatuses, getCheques, type ChequeFilter} from "./cheque"
 
 export const PAGE_SIZE = 20
@@ -28,3 +29,5 @@ export const chequesOptions = (filter: ChequeFilter, enabled: boolean) =>
 		staleTime: 60_000,
 		retry: false,
 	})
+
+export const chequeBookTypesOptions = () => queryOptions({queryKey: ["cheque", "book-types"], queryFn: getChequeBookTypes, staleTime: 10 * 60_000, retry: false})
