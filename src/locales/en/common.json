@@ -1098,7 +1098,13 @@
                 "account": "Choose the account to pay from.",
                 "amount": "Enter an amount greater than zero.",
                 "reason": "Choose a reason."
-            }
+            },
+            "import": "Import from Excel",
+            "importing": "Reading the file…",
+            "sample": "Download the template",
+            "importEmpty": "The file has no loans.",
+            "importTooMany": "The list can hold at most {{count}} loans.",
+            "importFailed": "The file could not be read. Use the template and try again."
         }
     },
     "message": {

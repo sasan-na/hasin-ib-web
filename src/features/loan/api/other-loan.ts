@@ -131,3 +131,24 @@ export const payBatchLoan = (request: BatchLoanRequest): Promise<TransactionResu
 			documentDescription: request.documentDescription,
 		}),
 	}).then(toTransactionResult)
+
+const importSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	infoList: z.array(z.object({number: text, amount: text, reasonCode: z.string().nullish()})).nullish(),
+})
+
+export interface ImportedLoan {
+	number: string
+	amount: string
+	reasonCode: string
+}
+
+/** Reads loan numbers, amounts and reasons from the bank's Excel template. Nothing is paid; the rows still need checking. */
+export const importBatchLoans = async (file: File): Promise<ImportedLoan[]> => {
+	const body = new FormData()
+	body.append("file", file)
+	const data = importSchema.parse(camelKeys(await apiClient<unknown>("/AccountBatchInstallment/Import", {method: "POST", body})))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "import failed")
+	return (data.infoList ?? []).map((item) => ({number: String(item.number ?? "").replace(/\D/g, ""), amount: String(item.amount ?? "").replace(/\D/g, ""), reasonCode: (item.reasonCode ?? "").replace(/\s/g, "")}))
+}

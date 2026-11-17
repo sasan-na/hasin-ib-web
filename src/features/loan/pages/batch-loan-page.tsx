@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query"
 import {ArrowLeft, ArrowRight, Plus, Trash2} from "lucide-react"
-import {useState} from "react"
+import {useRef, useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -10,7 +10,7 @@ import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {isLoanNumber, lookupLoan, payBatchLoan} from "@/features/loan/api/other-loan"
+import {importBatchLoans, isLoanNumber, lookupLoan, payBatchLoan} from "@/features/loan/api/other-loan"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
@@ -56,6 +56,9 @@ export default function BatchLoanPage() {
 	const [listError, setListError] = useState<string | null>(null)
 	const [confirming, setConfirming] = useState(false)
 	const [password, setPassword] = useState("")
+	const fileInput = useRef<HTMLInputElement>(null)
+	const [importing, setImporting] = useState(false)
+	const [importError, setImportError] = useState<string | null>(null)
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
 
 	const total = rows.reduce((sum, row) => sum + (row.amount === "" ? 0 : Number(row.amount)), 0)
@@ -84,6 +87,34 @@ export default function BatchLoanPage() {
 		} catch (error) {
 			const message = error instanceof Error && error.message ? error.message : t("loan.other.failed")
 			setRows((current) => current.map((candidate) => (candidate.key === row.key ? {...candidate, checking: false, problem: message} : candidate)))
+		}
+	}
+
+	// Reads the bank's Excel template into rows, then checks each loan number one after another.
+	const importFile = async (file: File): Promise<void> => {
+		setImporting(true)
+		setImportError(null)
+		try {
+			const imported = await importBatchLoans(file)
+			if (imported.length === 0) {
+				setImportError(t("loan.batch.importEmpty"))
+				return
+			}
+			const known = new Set((reasons.data ?? []).map((reason) => reason.code))
+			let key = nextKey
+			const added: Row[] = imported.map((item) => ({...newRow(key++), number: item.number, amount: item.amount.replace(/^0+/, ""), reasonCode: known.has(item.reasonCode) ? item.reasonCode : ""}))
+			const keep = rows.filter((row) => row.number !== "" || row.amount !== "")
+			if (keep.length + added.length > MAX_ROWS) {
+				setImportError(t("loan.batch.importTooMany", {count: MAX_ROWS}))
+				return
+			}
+			setNextKey(key)
+			setRows([...keep, ...added])
+			for (const row of added) await check(row)
+		} catch (error) {
+			setImportError(error instanceof Error && error.message ? error.message : t("loan.batch.importFailed"))
+		} finally {
+			setImporting(false)
 		}
 	}
 
@@ -244,7 +275,25 @@ export default function BatchLoanPage() {
 						</li>
 					))}
 				</ul>
-				<div>
+				<div className="flex flex-wrap items-center gap-2">
+					<input
+						ref={fileInput}
+						type="file"
+						accept=".xlsx,.xls"
+						className="sr-only"
+						aria-label={t("loan.batch.import")}
+						onChange={(event) => {
+							const file = event.target.files?.[0]
+							event.target.value = ""
+							if (file) void importFile(file)
+						}}
+					/>
+					<Button type="button" variant="outline" disabled={importing} onClick={() => fileInput.current?.click()}>
+						{importing ? t("loan.batch.importing") : t("loan.batch.import")}
+					</Button>
+					<a className="text-sm underline underline-offset-4" href={language === "fa" ? "/files/BatchLoanSampleFa.xlsx" : "/files/BatchLoanSampleEn.xlsx"} download>
+						{t("loan.batch.sample")}
+					</a>
 					<Button
 						type="button"
 						variant="outline"
@@ -258,6 +307,11 @@ export default function BatchLoanPage() {
 						{t("loan.batch.add")}
 					</Button>
 				</div>
+				{importError ? (
+					<p role="alert" className="text-sm text-destructive">
+						{importError}
+					</p>
+				) : null}
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bl-note">
 						{t("loan.batch.note")} <span className="font-normal text-muted-foreground">({t("loan.batch.optional")})</span>

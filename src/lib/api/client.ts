@@ -65,7 +65,8 @@ const send = async (endpoint: string, options?: RequestInit): Promise<Response> 
 		credentials: "include",
 		...options,
 		headers: {
-			"Content-Type": "application/json",
+			// A file upload sets its own type (with the multipart boundary); everything else is JSON.
+			...(options?.body instanceof FormData ? {} : {"Content-Type": "application/json"}),
 			// The raw JWT, no "Bearer " prefix: the server decodes the whole header value.
 			...(token ? {Authorization: token} : {}),
 			...(xsrfToken ? {[XSRF_HEADER_NAME]: xsrfToken} : {}),
