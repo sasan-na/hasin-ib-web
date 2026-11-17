@@ -1,6 +1,7 @@
 import {useMutation, useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {useLocation} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
@@ -11,6 +12,8 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {getAccountOwner, transferInternal} from "@/features/transfer/api/transfer"
 import {reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
+import {sourceAccountsOptions} from "@/features/transaction/api/transaction.queries"
+import {readPrefill} from "@/features/transfer/lib/prefill"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
@@ -34,9 +37,14 @@ export default function SmartTransferPage() {
 	const language = i18n.language
 	const reasons = useQuery(reasonCodesOptions(language))
 
-	const [source, setSource] = useState<SourceAccount | null>(null)
-	const [destination, setDestination] = useState("")
-	const [amount, setAmount] = useState("")
+	// The home page's quick transfer hands over what was typed there.
+	const location = useLocation()
+	const [prefill] = useState(() => readPrefill(location.state))
+	const accounts = useQuery(sourceAccountsOptions(SOURCE_SERVICE, language))
+	const [chosen, setSource] = useState<SourceAccount | null>(null)
+	const source = chosen ?? (prefill?.sourceId != null ? (accounts.data?.find((account) => account.id === prefill.sourceId) ?? null) : null)
+	const [destination, setDestination] = useState(prefill?.destination ?? "")
+	const [amount, setAmount] = useState(prefill?.amount ?? "")
 	const [reasonCode, setReasonCode] = useState("")
 	const [description, setDescription] = useState("")
 	const [errors, setErrors] = useState<Errors>({})

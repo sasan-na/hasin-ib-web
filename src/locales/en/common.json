@@ -34,6 +34,28 @@
             "type": "Transaction",
             "dateTime": "Date and time",
             "status": "Status"
+        },
+        "favorites": {
+            "title": "Most used services",
+            "empty": "Star a service on the Accounts, Cards or Transfers pages and it will show up here."
+        },
+        "wallet": {
+            "title": "My money",
+            "accounts": "Accounts",
+            "cards": "Cards",
+            "error": "The list could not be loaded.",
+            "copy": "Copy number",
+            "balance": "Balance",
+            "balanceFailed": "Not available",
+            "rial": "Rial",
+            "openAccount": "Open an account",
+            "openAccountHint": "Open a new account",
+            "allCards": "All cards",
+            "allCardsHint": "Manage your cards"
+        },
+        "quickTransfer": {
+            "title": "Quick transfer",
+            "continue": "Continue"
         }
     },
     "theme": {

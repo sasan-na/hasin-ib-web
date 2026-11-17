@@ -4,6 +4,9 @@ import {useTranslation} from "react-i18next"
 
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
+import {FavoriteServices} from "@/features/home/components/favorite-services"
+import {QuickTransfer} from "@/features/home/components/quick-transfer"
+import {Wallet} from "@/features/home/components/wallet"
 import {RecentTransactions} from "@/features/home/components/recent-transactions"
 import {Skeleton} from "@/components/ui/skeleton"
 import {adminMessageOptions, profileOptions} from "@/features/home/api/home.queries"
@@ -22,7 +25,7 @@ export default function Home() {
 	const image = profile.data?.image || undefined
 
 	return (
-		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
 			<header className="flex items-center gap-4">
 				<Avatar size="lg" className="size-14">
 					{image ? <AvatarImage src={image} alt="" /> : null}
@@ -52,6 +55,13 @@ export default function Home() {
 					</AlertDescription>
 				</Alert>
 			) : null}
+
+			<div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+				<Wallet />
+				<QuickTransfer />
+			</div>
+
+			<FavoriteServices />
 
 			<RecentTransactions />
 		</div>
