@@ -1,9 +1,12 @@
 import {useQuery} from "@tanstack/react-query"
 import {RefreshCw} from "lucide-react"
+import * as React from "react"
 import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
+import {PayInstallmentDialog} from "@/features/loan/components/pay-installment-dialog"
+import type {Loan} from "@/features/loan/api/loan"
 import {loansOptions} from "@/features/loan/api/loan.queries"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 
@@ -12,6 +15,7 @@ export default function LoanListPage() {
 	const {t, i18n} = useTranslation()
 	const language = i18n.language
 	const loans = useQuery(loansOptions(language))
+	const [paying, setPaying] = React.useState<Loan | null>(null)
 
 	const money = (value: number): string => `${formatAmount(value, language)} ${t("loan.rial")}`
 	const row = (label: string, value: string | null, ltr = false) =>
@@ -72,10 +76,16 @@ export default function LoanListPage() {
 									{row(t("loan.firstDate"), loan.firstDate || null, true)}
 								</dl>
 							)}
+							{!loan.error && loan.payable ? (
+								<Button type="button" size="sm" className="self-start" onClick={() => setPaying(loan)}>
+									{t("loan.pay.action")}
+								</Button>
+							) : null}
 						</li>
 					))}
 				</ul>
 			)}
+			{paying ? <PayInstallmentDialog loan={paying} onClose={() => setPaying(null)} /> : null}
 		</div>
 	)
 }

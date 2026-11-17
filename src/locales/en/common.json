@@ -937,7 +937,24 @@
         "progress": "Installments paid",
         "progressValue": "{{paid}} of {{total}}",
         "firstDate": "First installment date",
-        "rial": "Rial"
+        "rial": "Rial",
+        "pay": {
+            "action": "Pay installment",
+            "title": "Pay a loan installment",
+            "question": "The amount is paid from your account towards this loan.",
+            "loan": "Loan",
+            "owner": "Holder",
+            "from": "Pay from",
+            "amount": "Amount",
+            "installmentIs": "The installment is {{amount}}.",
+            "reason": "Reason",
+            "chooseReason": "Choose a reason",
+            "confirm": "Pay",
+            "sending": "Paying…",
+            "again": "Back to loans",
+            "failed": "The payment was not made. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the payment was made. Check your account statement and the loan before paying again."
+        }
     },
     "message": {
         "title": "Messages",

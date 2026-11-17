@@ -2,6 +2,7 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
+import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 
 const text = z.union([z.string(), z.number()]).nullish()
 
@@ -23,6 +24,7 @@ const itemSchema = z.object({
 	payLoanCount: text,
 	firstLoanDate: z.string().nullish(),
 	isOtherLoan: z.boolean().nullish(),
+	loanIdType: z.string().nullish(),
 	hasError: z.boolean().nullish(),
 	errorDescription: z.string().nullish(),
 })
@@ -50,6 +52,10 @@ export interface Loan {
 	firstDate: string
 	/** A loan of someone else the user follows. */
 	isOther: boolean
+	/** Whether the loan is kept on a card (its installments are paid to the card number) rather than on an account. */
+	onCard: boolean
+	/** The bank could tell whose loan this is, so an installment can be paid towards it. */
+	payable: boolean
 	error: string
 }
 
@@ -78,6 +84,41 @@ export const getLoans = async (): Promise<Loan[]> => {
 		totalCount: num(item.allLoanCount),
 		firstDate: item.firstLoanDate ?? "",
 		isOther: item.isOtherLoan === true,
+		onCard: item.loanIdType === "MyCard" || item.loanIdType === "OthersCard",
+		payable: item.loanIdType !== undefined && item.loanIdType !== null && item.loanIdType !== "Unknown",
 		error: item.hasError === true ? (item.errorDescription ?? "") : "",
 	}))
 }
+
+export interface PayInstallmentRequest {
+	sourceAccountNumber: string
+	sourcePassword: string | null
+	sourcePasswordType: PasswordType
+	loan: Loan
+	/** In Rials. */
+	amount: number
+	reasonCode: string
+}
+
+/**
+ * Pays towards a loan from one of the user's accounts. The money goes to the loan's card number when the loan is kept
+ * on a card and to its account number otherwise. A real transaction: send once per confirmation, never retry automatically.
+ */
+export const payInstallment = (request: PayInstallmentRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/AccountInstallment/PayLoan", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceAccountInfo: {
+				accountNumber: request.sourceAccountNumber,
+				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
+				passwordType: request.sourcePasswordType,
+			},
+			destinationCardPan: request.loan.cardNumber,
+			destinationAccountNumber: request.loan.accountNumber,
+			isDestinationCard: request.loan.onCard,
+			amount: request.amount,
+			installmentAmount: request.loan.installment ?? 0,
+			addToInstallmentList: false,
+			reasonCode: request.reasonCode,
+		}),
+	}).then(toTransactionResult)
