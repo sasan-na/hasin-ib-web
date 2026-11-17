@@ -60,6 +60,7 @@ const ConnectedCardStatement = React.lazy(() => import("@/features/card/pages/co
 const ConnectedCards = React.lazy(() => import("@/features/card/pages/connected-card-list-page.tsx"));
 const ChangeUsername = React.lazy(() => import("@/features/profile/pages/change-username-page.tsx"));
 const MobileBanking = React.lazy(() => import("@/features/profile/pages/mobile-banking-page.tsx"));
+const Settings = React.lazy(() => import("@/features/settings/pages/settings-page.tsx"));
 const Profile = React.lazy(() => import("@/features/profile/pages/profile-page.tsx"));
 const LoanHome = React.lazy(() => import("@/features/loan/pages/loan-home-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
@@ -127,6 +128,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.reportBalance.path} element={<Balance/>}/>
                     <Route path={routeMap.loan.path} element={<LoanHome/>}/>
                     <Route path={routeMap.profile.path} element={<Profile/>}/>
+                    <Route path={routeMap.settings.path} element={<Settings/>}/>
                     <Route path={routeMap.mobileBanking.path} element={<MobileBanking/>}/>
                     <Route path={routeMap.changeUsername.path} element={<ChangeUsername/>}/>
                     <Route path={routeMap.cardConnected.path} element={<ConnectedCards/>}/>

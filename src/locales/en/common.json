@@ -1945,5 +1945,46 @@
                 "failed": "The password was not changed. Please check it and try again."
             }
         }
+    },
+    "settings": {
+        "title": "Settings",
+        "saving": "Saving…",
+        "display": {
+            "title": "Accounts, cards and loans shown",
+            "hint": "Hide what you do not use so it stays out of your lists. Hidden items are not deleted and can be shown again.",
+            "error": "The list could not be loaded.",
+            "empty": "There is nothing to show.",
+            "kind": {
+                "account": "Accounts",
+                "card": "Cards",
+                "loan": "Loans"
+            },
+            "hide": "Hide",
+            "show": "Show",
+            "number": "Number",
+            "hideTitle": "Hide this item",
+            "hideQuestion": "It disappears from your lists until you show it again.",
+            "showTitle": "Show this item",
+            "showQuestion": "It appears in your lists again.",
+            "failed": "The change was not accepted. The item may be linked to a sub-user; please try again or ask your branch."
+        },
+        "limits": {
+            "title": "Where you can sign in from",
+            "warning": "Limit sign-in to a country or an address range only if you are sure of it: signing in from anywhere else stops working until the rule is removed.",
+            "error": "The rules could not be loaded.",
+            "none": "There is no restriction; you can sign in from anywhere.",
+            "remove": "Remove",
+            "country": "Country",
+            "chooseCountry": "Choose a country",
+            "add": "Add",
+            "range": "Address range (from – to)",
+            "to": "To address",
+            "errorIp": "Enter both addresses like 192.168.0.1.",
+            "addTitle": "Limit where you can sign in from",
+            "addQuestion": "From now on you can only sign in from this place (together with your other rules).",
+            "removeTitle": "Remove this rule",
+            "removeQuestion": "The rule is removed.",
+            "failed": "The change was not accepted. Please try again."
+        }
     }
 }

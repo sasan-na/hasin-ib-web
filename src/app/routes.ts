@@ -74,6 +74,7 @@ export const routeMap = {
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"mobileBanking": {breadcrumb: "profile.mobile.title", path: "/profile/mobile"},
 	"changeUsername": {breadcrumb: "profile.username.title", path: "/profile/username"},
+	"settings": {breadcrumb: "settings.title", path: "/settings"},
 	"profile": {breadcrumb: "profile.title", path: "/profile"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

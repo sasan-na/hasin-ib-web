@@ -42,7 +42,10 @@ export default function ProfilePage() {
 						</dl>
 					</section>
 
-					<div>
+					<div className="flex flex-wrap gap-2">
+						<Button asChild variant="outline">
+							<Link to={routeMap.settings.path}>{t("settings.title")}</Link>
+						</Button>
 						<Button asChild variant="outline">
 							<Link to={routeMap.mobileBanking.path}>{t("profile.mobile.open")}</Link>
 						</Button>
