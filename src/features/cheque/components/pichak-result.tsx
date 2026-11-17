@@ -73,6 +73,47 @@ export function TransferReceivers({receivers}: {receivers: TransferReceiver[]}) 
 	)
 }
 
+/** A registry amount, in Rials, or as it came when it is not a number. */
+const useMoney = () => {
+	const {t, i18n} = useTranslation()
+	return (value: string): string => (value !== "" && Number.isFinite(Number(value)) ? `${formatAmount(Number(value), i18n.language)} ${t("cheque.rial")}` : value)
+}
+
+/** A national id is ten digits; the registry drops the leading zeros. */
+const showId = (idType: string, idCode: string): string => (idType === "1" ? idCode.padStart(10, "0") : idCode)
+
+/** The drawer's money in cheques still running or blocked, and what each holder of their cheques has bounced and cleared. */
+export function OwnerRecordView({ongoing, blocked, owners}: {ongoing: string; blocked: string; owners: {idCode: string; idType: string; bounced: string; cleared: string}[]}) {
+	const {t} = useTranslation()
+	const words = useWords()
+	const money = useMoney()
+	if (owners.length === 0 && ongoing === "" && blocked === "") return null
+	return (
+		<section className="flex flex-col gap-2">
+			<h3 className="text-sm font-semibold">{t("cheque.pichak.ownerRecord")}</h3>
+			<dl className="flex flex-col gap-2">
+				<Row label={t("cheque.pichak.ongoing")} value={money(ongoing)} />
+				<Row label={t("cheque.pichak.blockedAmount")} value={money(blocked)} />
+			</dl>
+			{owners.length > 0 ? (
+				<ul className="flex flex-col gap-2">
+					{owners.map((owner, index) => (
+						<li key={index} className="flex flex-col gap-1 rounded-md border p-3 text-sm">
+							<div className="flex flex-wrap justify-between gap-2">
+								<span dir="ltr" className="font-medium">
+									{showId(owner.idType, owner.idCode)}
+								</span>
+								<span className="text-muted-foreground">{words("customerType", owner.idType)}</span>
+							</div>
+							<span className="text-muted-foreground">{t("cheque.pichak.counts", {bounced: money(owner.bounced), cleared: money(owner.cleared)})}</span>
+						</li>
+					))}
+				</ul>
+			) : null}
+		</section>
+	)
+}
+
 /** What the cheque registry says about one cheque. */
 export function PichakResult({inquiry}: {inquiry: PichakInquiry}) {
 	const {t, i18n} = useTranslation()
@@ -101,23 +142,7 @@ export function PichakResult({inquiry}: {inquiry: PichakInquiry}) {
 			</dl>
 			<People title={t("cheque.pichak.receivers")} list={cheque.receivers} />
 			<People title={t("cheque.pichak.signers")} list={cheque.signers} />
-			{inquiry.owners.length > 0 || inquiry.ongoing !== "" || inquiry.blocked !== "" ? (
-				<section className="flex flex-col gap-2">
-					<h3 className="text-sm font-semibold">{t("cheque.pichak.ownerRecord")}</h3>
-					<dl className="flex flex-col gap-2">
-						<Row label={t("cheque.pichak.ongoing")} value={inquiry.ongoing} />
-						<Row label={t("cheque.pichak.blockedCount")} value={inquiry.blocked} />
-					</dl>
-					<ul className="flex flex-col gap-2">
-						{inquiry.owners.map((owner, index) => (
-							<li key={index} className="flex flex-wrap justify-between gap-2 rounded-md border p-3 text-sm">
-								<span dir="ltr">{owner.idCode}</span>
-								<span className="text-muted-foreground">{t("cheque.pichak.counts", {bounced: owner.bounced, cleared: owner.cleared})}</span>
-							</li>
-						))}
-					</ul>
-				</section>
-			) : null}
+			<OwnerRecordView ongoing={inquiry.ongoing} blocked={inquiry.blocked} owners={inquiry.owners} />
 		</div>
 	)
 }

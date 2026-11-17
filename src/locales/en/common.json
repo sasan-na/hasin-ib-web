@@ -1067,9 +1067,8 @@
             "receivers": "Payable to",
             "signers": "Guarantors",
             "ownerRecord": "Drawer's record",
-            "ongoing": "Cheques in progress",
-            "blockedCount": "Blocked cheques",
-            "counts": "{{bounced}} bounced · {{cleared}} cleared",
+            "ongoing": "Amount in cheques still running",
+            "counts": "Bounced {{bounced}} · Cleared {{cleared}}",
             "chequeTypeCodes": {
                 "1": "Ordinary",
                 "2": "Bank cheque",
@@ -1139,7 +1138,8 @@
             "transferConfirmQuestion": "The cheque is passed on to the receivers below and they are asked to accept it.",
             "transferConfirm": "Pass cheque on",
             "transferFailed": "The cheque was not passed on. Please check the details and try again.",
-            "transferUncertain": "We could not confirm whether the cheque was passed on. Check the receivers' answers before trying again."
+            "transferUncertain": "We could not confirm whether the cheque was passed on. Check the receivers' answers before trying again.",
+            "blockedAmount": "Blocked amount"
         },
         "register": {
             "action": "Register",
@@ -1198,6 +1198,11 @@
                 "2": "Receiver of the cheque",
                 "3": "Receiver of a transfer"
             }
+        },
+        "owner": {
+            "title": "Drawer's standing",
+            "intro": "Find out how much of a cheque drawer's money is tied up in cheques, and how their cheques have fared, from the Sayyad id of one of their cheques.",
+            "empty": "The registry has no record for this drawer."
         }
     }
 }

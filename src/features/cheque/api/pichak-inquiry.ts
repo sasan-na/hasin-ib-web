@@ -209,3 +209,32 @@ export const transferPichakCheque = (params: {sayyadId: string; description: str
 			amount: params.amount,
 		}),
 	}).then(toTransactionResult)
+
+const ownerStatusSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: text,
+	result: ownerSchema.nullish(),
+})
+
+/** The drawer's money tied up in cheques, and what each holder of their cheques has bounced or cleared. */
+export interface OwnerStanding {
+	ongoing: string
+	blocked: string
+	owners: OwnerRecord[]
+}
+
+/**
+ * Asks the registry about the drawer of a cheque (by its Sayyad id): how much of their money is in cheques still
+ * running or blocked, and the amounts each of their cheque holders has had bounced and cleared. Throws with the
+ * bank's text when the registry cannot answer.
+ */
+export const inquireOwner = async (sayyadId: string): Promise<OwnerStanding> => {
+	const data = ownerStatusSchema.parse(camelKeys(await apiClient<unknown>("/Chakad/ChakadOwnerChequeStatus", {method: "POST", body: JSON.stringify({sayyadId})})))
+	if (data.isSuccessful === false) throw new Error(typeof data.message === "string" ? data.message : "")
+	const owner = data.result?.result?.data
+	return {
+		ongoing: str(owner?.onGoing),
+		blocked: str(owner?.blocked),
+		owners: (owner?.ownersInfo ?? []).map((info) => ({idCode: str(info.idCode), idType: str(info.idType), bounced: str(info.bounced), cleared: str(info.cleared)})),
+	}
+}
