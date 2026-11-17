@@ -74,3 +74,7 @@ export const registerToken = (cardNumber: string, mobile: string, tokenType: Tok
 /** Blocks a card's second password for good: only a branch can restore it. A real change: send once per confirmation. */
 export const blockSecondPassword = (cardNumber: string): Promise<TransactionResult> =>
 	apiClient<unknown>("/Otp/BlockPin2", {method: "POST", body: JSON.stringify({pan: cardNumber})}).then(toTransactionResult)
+
+/** Confirms a verified mobile number with the bank for the user's cards. A real change: send once per confirmation. */
+export const verifyMobileNumber = (mobile: string): Promise<TransactionResult> =>
+	apiClient<unknown>("/Otp/VerifyMobileNumber", {method: "POST", body: JSON.stringify({mobileNumber: mobile})}).then(toTransactionResult)

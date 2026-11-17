@@ -2094,5 +2094,13 @@
         "verified": "The mobile number is verified.",
         "codeFailed": "The code could not be sent. Please try again.",
         "verifyFailed": "The code was not accepted. Please check it and try again."
+    },
+    "mobileVerification": {
+        "title": "Mobile number verification",
+        "hint": "Register your mobile number with the bank. It texts a code; once it is right, the number is confirmed.",
+        "register": "Register the number",
+        "confirmTitle": "Register this mobile number",
+        "confirmQuestion": "The bank records this number as yours.",
+        "again": "Register another number"
     }
 }
