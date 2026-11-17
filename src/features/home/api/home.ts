@@ -1,6 +1,6 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
+import {apiClient} from "@/lib/api/client"
 
 // These endpoints answer camelCase (like Login/Initialize). Fields are optional because the server
 // leaves them out for users it has nothing to say about.

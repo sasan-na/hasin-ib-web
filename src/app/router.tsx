@@ -5,7 +5,7 @@ import useSelectTheme from "@/app/use-select-theme.ts";
 import {RequireAuth} from "@/app/guards";
 import {routeMap} from "@/app/routes";
 
-const Home = React.lazy(() => import("@/routes/home.tsx"));
+const Home = React.lazy(() => import("@/features/home/pages/home-page.tsx"));
 const AccountHome = React.lazy(() => import("@/routes/account/home-page.tsx"));
 const Account = React.lazy(() => import("@/routes/account/page.tsx"));
 const AccountInfo = React.lazy(() => import("@/routes/account/info-page.tsx"));

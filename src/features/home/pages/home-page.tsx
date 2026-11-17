@@ -4,9 +4,9 @@ import {useTranslation} from "react-i18next"
 
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import {RecentTransactions} from "@/components/recent-transactions"
+import {RecentTransactions} from "@/features/home/components/recent-transactions"
 import {Skeleton} from "@/components/ui/skeleton"
-import {adminMessageOptions, profileOptions} from "@/lib/api/home.queries"
+import {adminMessageOptions, profileOptions} from "@/features/home/api/home.queries"
 import {useSession} from "@/store/session"
 
 export default function Home() {

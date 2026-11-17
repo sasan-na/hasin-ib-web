@@ -1,7 +1,7 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
-import {camelKeys} from "./camel"
+import {apiClient} from "@/lib/api/client"
+import {camelKeys} from "@/lib/api/camel"
 
 // The bank's menu is data: each section has items with a name, a description and whether the user pinned
 // them as favourites. The server already leaves out what this user may not use.

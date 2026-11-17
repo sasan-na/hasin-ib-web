@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query"
 import {useTranslation} from "react-i18next"
 
 import {Skeleton} from "@/components/ui/skeleton"
-import {recentTransactionsOptions} from "@/lib/api/home.queries"
+import {recentTransactionsOptions} from "@/features/home/api/home.queries"
 import {cn} from "@/lib/utils"
 
 // The server's status codes: 0 done, 1 in progress, 2 failed, 3 needs reversing (anything else reads as 3).

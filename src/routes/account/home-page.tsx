@@ -5,8 +5,8 @@ import {Link} from "react-router-dom"
 
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
-import {setFavorite, type MenuItem} from "@/lib/api/menu"
-import {menuKeys, menuSectionOptions} from "@/lib/api/menu.queries"
+import {setFavorite, type MenuItem} from "@/features/menu/api/menu"
+import {menuKeys, menuSectionOptions} from "@/features/menu/api/menu.queries"
 import {cn} from "@/lib/utils"
 import {routeMap} from "@/app/routes"
 
