@@ -1049,6 +1049,34 @@
             "unfollowTitle": "Remove this loan from your list",
             "unfollowQuestion": "The loan stays as it is; it just stops showing in your list.",
             "unfollowFailed": "The loan could not be removed. Please try again."
+        },
+        "batch": {
+            "open": "Pay several loans",
+            "title": "Pay several loans at once",
+            "hint": "Pay installments of several loans, yours or others', from one account in a single batch. Check each loan number first.",
+            "loans": "Loans",
+            "loan": "Loan {{number}}",
+            "remove": "Remove loan {{number}}",
+            "check": "Check",
+            "holder": "Holder: {{name}}",
+            "add": "Add a loan",
+            "note": "Note for the batch",
+            "optional": "optional",
+            "follow": "Add these loans to my list",
+            "total": "Total: {{amount}}",
+            "review": "Review",
+            "again": "Pay more loans",
+            "confirmTitle": "Confirm the batch payment",
+            "confirmQuestion": "{{count}} loan payments will be made from your account in one batch.",
+            "totalLabel": "Total",
+            "error": {
+                "notChecked": "Check this loan number first.",
+                "duplicate": "This loan is listed twice.",
+                "fix": "Please fix the loans marked above.",
+                "account": "Choose the account to pay from.",
+                "amount": "Enter an amount greater than zero.",
+                "reason": "Choose a reason."
+            }
         }
     },
     "message": {

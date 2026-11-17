@@ -2,6 +2,7 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
+import {toTransactionResult, type PasswordType, type TransactionResult} from "@/features/transaction/api/transaction"
 import type {Loan} from "@/features/loan/api/loan"
 
 const text = z.union([z.string(), z.number()]).nullish()
@@ -92,3 +93,41 @@ export const unfollowLoan = async (loan: Pick<Loan, "onCard" | "cardNumber" | "a
 	if (data.isSuccessful === false) throw new Error(data.message ?? "unfollow failed")
 	return data.message ?? ""
 }
+
+export interface BatchLoanItem {
+	/** The loan's account or card number. */
+	number: string
+	/** In Rials. */
+	amount: number
+	holder: string
+	reasonCode: string
+}
+
+export interface BatchLoanRequest {
+	sourceAccountNumber: string
+	sourcePassword: string | null
+	sourcePasswordType: PasswordType
+	items: BatchLoanItem[]
+	documentDescription: string
+	/** Also add the loans to the user's list of loans they follow. */
+	follow: boolean
+}
+
+/**
+ * Pays installments of several loans from one account in a single batch. A real transaction: send once per
+ * confirmation, never retry automatically.
+ */
+export const payBatchLoan = (request: BatchLoanRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/AccountBatchInstallment/PayBatchLoan", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceAccountInfo: {
+				accountNumber: request.sourceAccountNumber,
+				...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}),
+				passwordType: request.sourcePasswordType,
+			},
+			loanItems: request.items.map((item) => ({destinationNumber: item.number, amount: item.amount, firstName: item.holder, familyName: "", reasonCode: item.reasonCode})),
+			isRepetitive: request.follow,
+			documentDescription: request.documentDescription,
+		}),
+	}).then(toTransactionResult)

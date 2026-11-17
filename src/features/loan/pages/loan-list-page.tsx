@@ -44,6 +44,9 @@ export default function LoanListPage() {
 						</Link>
 					</Button>
 					<Button asChild variant="outline" size="sm">
+						<Link to={routeMap.loanBatch.path}>{t("loan.batch.open")}</Link>
+					</Button>
+					<Button asChild variant="outline" size="sm">
 						<Link to={routeMap.loanOther.path}>{t("loan.other.open")}</Link>
 					</Button>
 					<Button asChild variant="outline" size="sm">
