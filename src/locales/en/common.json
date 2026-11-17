@@ -27,7 +27,8 @@
         "loans": "Loans",
         "messages": "Messages",
         "contacts": "Contacts",
-        "bills": "Bills"
+        "bills": "Bills",
+        "cheques": "Cheques"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -963,6 +964,43 @@
             "mobile": "Enter a mobile number like 09121234567.",
             "alreadyPaid": "The bill for {{bill}} is already paid.",
             "lookup": "The bill could not be found."
+        }
+    },
+    "cheque": {
+        "title": "Cheques",
+        "account": "Account",
+        "chooseAccount": "Choose a current account to see its cheques.",
+        "media": "Kind of cheque",
+        "paper": "Paper",
+        "digital": "Digital",
+        "status": "Status",
+        "series": "Series",
+        "serial": "Serial",
+        "all": "All",
+        "sayyadId": "Sayyad id",
+        "expiry": "Expires",
+        "refresh": "Refresh",
+        "loading": "Loading…",
+        "more": "Show more",
+        "empty": "No cheque matches.",
+        "error": "The cheques could not be loaded.",
+        "history": {
+            "action": "History",
+            "title": "Cheque history",
+            "show": "Show history",
+            "loading": "Loading…",
+            "empty": "This cheque has no recorded changes.",
+            "error": "The history could not be loaded."
+        },
+        "block": {
+            "action": "Block",
+            "title": "Block cheque",
+            "question": "A blocked cheque cannot be cashed.",
+            "confirm": "Block cheque",
+            "blocking": "Blocking…",
+            "backToList": "Back to cheques",
+            "failed": "The cheque was not blocked. Please try again.",
+            "uncertain": "We could not confirm whether the cheque was blocked. Refresh the list before trying again."
         }
     }
 }
