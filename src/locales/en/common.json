@@ -1552,6 +1552,25 @@
             "failed": "The answer was not accepted. Please try again.",
             "accepted": "Your confirmation was recorded.",
             "rejected": "The request was rejected."
+        },
+        "rules": {
+            "open": "Approval rules",
+            "title": "Approval rules",
+            "back": "Back to approvals",
+            "hint": "The rules that say who must approve which transactions on your accounts. Creating and editing rules is not available here yet.",
+            "error": "The rules could not be loaded.",
+            "empty": "There are no approval rules.",
+            "needsReview": "Needs review",
+            "services": "Covers",
+            "signatories": "Signatories",
+            "confirm": "Confirm",
+            "delete": "Delete",
+            "deleteTitle": "Delete this rule",
+            "deleteQuestion": "Transactions this rule covers will no longer need approval.",
+            "confirmTitle": "Confirm this rule",
+            "confirmQuestion": "The rule was changed and is confirmed as it stands, so it applies again.",
+            "done": "Done.",
+            "failed": "The change was not accepted. Please try again."
         }
     },
     "receipt": {
