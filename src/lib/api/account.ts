@@ -17,6 +17,9 @@ const accountSchema = z.object({
 	passwordType: z.number().nullish(),
 	hasAccessToGetBalance: z.boolean().nullish(),
 	category: z.object({key: z.string().nullish(), name: z.string().nullish()}).nullish(),
+	// The bank's per-account services (balance, info, credit calculation, ...) and whether each is on.
+	defaultService: z.array(z.object({key: z.string().nullish(), isEnabled: z.boolean().nullish()})).nullish(),
+	services: z.array(z.object({key: z.string().nullish(), isEnabled: z.boolean().nullish()})).nullish(),
 	balance: amount,
 	totalBalance: amount,
 	blockedAmount: amount,
@@ -55,6 +58,8 @@ export interface Account {
 	isJoint: boolean
 	passwordType: "otp" | "none" | "password" | null
 	canSeeBalance: boolean
+	/** The bank offers the facility (loan) credit calculation for this account. */
+	canCalculateCredit: boolean
 	/** What the list already carried; null until the user asks for a fresh balance. */
 	balances: Balances
 }
@@ -76,6 +81,7 @@ export const getAccounts = async (): Promise<Account[]> => {
 		isJoint: account.isJointAccount === true,
 		passwordType: PASSWORD_TYPES[account.passwordType as keyof typeof PASSWORD_TYPES] ?? null,
 		canSeeBalance: account.hasAccessToGetBalance === true,
+		canCalculateCredit: [...(account.defaultService ?? []), ...(account.services ?? [])].some((service) => service.key === "LoanCreditCalculate" && service.isEnabled === true),
 		balances: {available: account.balance ?? null, total: account.totalBalance ?? null, blocked: account.blockedAmount ?? null},
 	}))
 }

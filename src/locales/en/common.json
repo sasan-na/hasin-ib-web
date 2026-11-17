@@ -203,6 +203,46 @@
                 "organ": "Please choose an organization.",
                 "terms": "Please accept the terms and conditions to continue."
             }
+        },
+        "creditButton": "Credit calculation",
+        "creditFor": "Credit calculation for {{name}}",
+        "credit": {
+            "title": "Facility credit calculation",
+            "hint": "Choose the start and end dates, then press Calculate to see the facility this account qualifies for.",
+            "profitRate": "Profit / fee rate",
+            "chooseProfit": "Choose a rate",
+            "profitLabel": "{{rate}}% (yearly)",
+            "repayment": "Repayment period",
+            "chooseRepayment": "Choose a period",
+            "monthsLabel": "{{months}} months",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "dateNote": "Dates use the Persian calendar, for example 1404/05/20.",
+            "calculate": "Calculate",
+            "calculating": "Calculating…",
+            "optionsError": "The facility options could not be loaded. Please try again.",
+            "failed": "The calculation could not be done. Please try again.",
+            "result": "Result",
+            "openingDate": "Account opening date",
+            "branchCode": "Opening branch code",
+            "balance": "Account balance",
+            "receivable": "Facility you can receive",
+            "actualCredit": "Actual credit",
+            "noPeriods": "No period was returned for these dates.",
+            "periodTitle": "Period {{index}}",
+            "waiting": "Waiting period (months)",
+            "calcFrom": "Calculation start",
+            "calcTo": "Calculation end",
+            "averageBalance": "Average balance",
+            "facility": "Facility available",
+            "receiveHint": "You can receive your facility online here:",
+            "receiveLink": "Receive facility",
+            "error": {
+                "profit": "Please choose a rate.",
+                "period": "Please choose a repayment period.",
+                "date": "Enter a date like 1404/05/20.",
+                "order": "The end date must not be before the start date."
+            }
         }
     },
     "transaction": {

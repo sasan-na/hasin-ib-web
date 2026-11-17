@@ -5,5 +5,7 @@ interface ImportMetaEnv {
 	readonly VITE_API_URL?: string
 	/** Where password recovery lives. The sign-in page hides its link while this is unset. */
 	readonly VITE_PASSWORD_RECOVERY_URL?: string
+	/** Where a facility can be received online; the credit calculator hides its link while this is unset. */
+	readonly VITE_FACILITY_URL?: string
 	readonly VITE_LOG_LEVEL?: string
 }

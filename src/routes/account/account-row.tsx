@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query"
-import {ChevronDown, ChevronUp, Info, RefreshCw, Users} from "lucide-react"
+import {Calculator, ChevronDown, ChevronUp, Info, RefreshCw, Users} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -135,6 +135,17 @@ export function AccountRow({account, fresh, onFresh, move}: AccountRowProps) {
 							<Button type="button" variant="outline" size="sm" disabled={refresh.isPending} onClick={() => refresh.mutate()}>
 								<RefreshCw aria-hidden="true" className={refresh.isPending ? "animate-spin" : undefined} />
 								{refresh.isPending ? t("account.loadingBalance") : hasBalance ? t("account.refreshBalance") : t("account.showBalance")}
+							</Button>
+						) : null}
+						{account.canCalculateCredit ? (
+							<Button asChild variant="outline" size="sm">
+								<Link
+									to={`${routeMap.accountCreditCalculate.path}?accountId=${account.id}&accountNumber=${encodeURIComponent(account.number)}`}
+									aria-label={t("account.creditFor", {name})}
+								>
+									<Calculator aria-hidden="true" />
+									{t("account.creditButton")}
+								</Link>
 							</Button>
 						) : null}
 						<Button asChild variant="outline" size="sm">
