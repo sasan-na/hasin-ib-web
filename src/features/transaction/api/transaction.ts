@@ -1,6 +1,6 @@
 import {z} from "@/lib/zod"
 
-import {apiClient} from "./client"
+import {apiClient} from "@/lib/api/client"
 
 // Pieces shared by every flow that moves money or changes an account: pick a source account, prove who
 // you are with its password (or a code sent by SMS), confirm, and read the outcome.

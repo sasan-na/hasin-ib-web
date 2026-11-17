@@ -3,8 +3,8 @@ import {useTranslation} from "react-i18next"
 
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
-import type {SourceAccount} from "@/lib/api/transaction"
-import {sourceAccountsOptions} from "@/lib/api/transaction.queries"
+import type {SourceAccount} from "@/features/transaction/api/transaction"
+import {sourceAccountsOptions} from "@/features/transaction/api/transaction.queries"
 import {formatAmount} from "@/lib/format"
 
 interface SourceAccountSelectProps {

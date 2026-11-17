@@ -9,7 +9,7 @@ const Home = React.lazy(() => import("@/features/home/pages/home-page.tsx"));
 const AccountHome = React.lazy(() => import("@/routes/account/home-page.tsx"));
 const Account = React.lazy(() => import("@/routes/account/page.tsx"));
 const AccountInfo = React.lazy(() => import("@/routes/account/info-page.tsx"));
-const TransactionResult = React.lazy(() => import("@/routes/transaction-result.tsx"));
+const TransactionResult = React.lazy(() => import("@/features/transaction/pages/transaction-result-page.tsx"));
 const AccountNew = React.lazy(() => import("@/routes/account/new-page.tsx"));
 const AccountDelegate = React.lazy(() => import("@/routes/account/delegate-page.tsx"));
 const AccountCredit = React.lazy(() => import("@/routes/account/credit-page.tsx"));

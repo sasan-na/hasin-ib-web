@@ -2,10 +2,10 @@ import {useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 
-import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/components/transaction/account-password"
-import {ConfirmDialog} from "@/components/transaction/confirm-dialog"
-import {SourceAccountSelect} from "@/components/transaction/source-account-select"
-import {useSubmitTransaction} from "@/components/transaction/use-submit-transaction"
+import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
+import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
+import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
+import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Label} from "@/components/ui/label"
@@ -13,7 +13,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Skeleton} from "@/components/ui/skeleton"
 import {requestDelegation} from "@/lib/api/delegation"
 import {organsOptions} from "@/lib/api/delegation.queries"
-import type {SourceAccount} from "@/lib/api/transaction"
+import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {routeMap} from "@/app/routes"
 
 // Any of the user's accounts may be delegated, so no service filter applies to the account list. The bank's

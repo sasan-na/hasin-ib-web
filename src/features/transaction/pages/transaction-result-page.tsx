@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 import {Link, Navigate, useLocation} from "react-router-dom"
 
 import {Button} from "@/components/ui/button"
-import type {TransactionResult} from "@/lib/api/transaction"
+import type {TransactionResult} from "@/features/transaction/api/transaction"
 import {cn} from "@/lib/utils"
 import {routeMap} from "@/app/routes"
 

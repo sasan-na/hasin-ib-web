@@ -2,9 +2,9 @@ import {useMutation} from "@tanstack/react-query"
 import {useState} from "react"
 import {useNavigate} from "react-router-dom"
 
-import type {TransactionResult} from "@/lib/api/transaction"
+import type {TransactionResult} from "@/features/transaction/api/transaction"
 import {routeMap} from "@/app/routes"
-import type {TransactionResultState} from "@/routes/transaction-result"
+import type {TransactionResultState} from "@/features/transaction/pages/transaction-result-page"
 
 interface Options {
 	/** Sends the transaction. It should throw when the form is incomplete, so nothing half-built is sent. */

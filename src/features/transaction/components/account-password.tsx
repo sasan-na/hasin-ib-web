@@ -6,8 +6,8 @@ import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Skeleton} from "@/components/ui/skeleton"
-import {requestAccountCode, type PasswordInfo} from "@/lib/api/transaction"
-import {passwordInfoOptions, transactionConfigOptions} from "@/lib/api/transaction.queries"
+import {requestAccountCode, type PasswordInfo} from "@/features/transaction/api/transaction"
+import {passwordInfoOptions, transactionConfigOptions} from "@/features/transaction/api/transaction.queries"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
 // Limits from the legacy field: digits only, 5 to 12 of them. The SMS code is requested at most once a minute.
