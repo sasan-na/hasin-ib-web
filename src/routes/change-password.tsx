@@ -9,13 +9,13 @@ import {PasswordInput} from "@/components/password-input"
 import {PasswordRules} from "@/components/password-rules"
 import {Alert, AlertDescription} from "@/components/ui/alert"
 import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {ApiError} from "@/lib/api/client"
 import {changePassword, checkPasswordRules, PasswordError} from "@/lib/api/password"
 import {passwordRulesOptions} from "@/lib/api/password.queries"
 import {useSignOut} from "@/hooks/use-sign-out"
 import {logger} from "@/lib/logger"
+import {cn} from "@/lib/utils"
 import {z} from "@/lib/zod"
 import {routeMap} from "@/routing.tsx"
 import {useSession} from "@/store/session"
@@ -123,12 +123,17 @@ export default function ChangePassword() {
 	})
 
 	return (
-		<Card className="mx-auto w-full max-w-md">
-			<CardHeader className="text-center">
-				<CardTitle className="text-xl">{t("changePassword.title")}</CardTitle>
-				<CardDescription>{t("changePassword.description")}</CardDescription>
-			</CardHeader>
-			<CardContent className="flex flex-col gap-6">
+		<div
+			className={cn(
+				"mx-auto grid w-full overflow-hidden rounded-lg border bg-card",
+				rules.data ? "max-w-3xl md:grid-cols-[minmax(0,1fr)_17rem]" : "max-w-md",
+			)}
+		>
+			<div className="flex flex-col gap-6 p-6 md:p-8">
+				<div className="flex flex-col gap-1">
+					<h1 className="text-2xl font-bold">{t("changePassword.title")}</h1>
+					<p className="text-sm text-muted-foreground">{t("changePassword.description")}</p>
+				</div>
 				<Form {...form}>
 					<form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
 						<FormField
@@ -179,7 +184,6 @@ export default function ChangePassword() {
 							)}
 						/>
 
-						{rules.data ? <PasswordRules rules={rules.data} violations={violations} /> : null}
 						{checking ? (
 							<p role="status" className="text-sm text-muted-foreground">
 								{t("changePassword.checking")}
@@ -200,7 +204,12 @@ export default function ChangePassword() {
 				<Button variant="outline" className="w-full" onClick={() => void signOut()}>
 					{t("changePassword.logout")}
 				</Button>
-			</CardContent>
-		</Card>
+			</div>
+			{rules.data ? (
+				<aside className="border-t bg-muted/60 p-6 md:border-t-0 md:border-s md:p-8">
+					<PasswordRules rules={rules.data} violations={violations} />
+				</aside>
+			) : null}
+		</div>
 	)
 }
