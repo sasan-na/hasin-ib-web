@@ -56,6 +56,7 @@ const DashboardHome = React.lazy(() => import("@/features/dashboard/pages/dashbo
 const PaymentHome = React.lazy(() => import("@/features/bill/pages/payment-home-page.tsx"));
 const OtherHome = React.lazy(() => import("@/features/menu/pages/other-home-page.tsx"));
 const Ussd = React.lazy(() => import("@/features/ussd/pages/ussd-page.tsx"));
+const ConnectedCards = React.lazy(() => import("@/features/card/pages/connected-card-list-page.tsx"));
 const LoanHome = React.lazy(() => import("@/features/loan/pages/loan-home-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
 const MessageList = React.lazy(() => import("@/features/message/pages/message-list-page.tsx"));
@@ -121,6 +122,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.reportPeriodicEdit.path} element={<PeriodicForm/>}/>
                     <Route path={routeMap.reportBalance.path} element={<Balance/>}/>
                     <Route path={routeMap.loan.path} element={<LoanHome/>}/>
+                    <Route path={routeMap.cardConnected.path} element={<ConnectedCards/>}/>
                     <Route path={routeMap.cheque.path} element={<ChequeHome/>}/>
                     <Route path={routeMap.dashboardHome.path} element={<DashboardHome/>}/>
                     <Route path={routeMap.payment.path} element={<PaymentHome/>}/>

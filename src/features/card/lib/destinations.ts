@@ -1,4 +1,4 @@
-import {Banknote, ClipboardList, CreditCard, Gift} from "lucide-react"
+import {Banknote, ClipboardList, CreditCard, Gift, Link2} from "lucide-react"
 
 import {routeMap} from "@/app/routes"
 import {TONES, type Destination} from "@/features/menu/components/service-cards"
@@ -12,5 +12,6 @@ export const cardDestinations: Record<string, Destination> = {
 	BatchCardlessCashStatus: {to: routeMap.cardlessList.path, icon: Banknote, ...TONES.info},
 	Cardless: {to: routeMap.cardlessNew.path, icon: Banknote, ...TONES.info},
 	CardlessRequest: {to: routeMap.cardlessNew.path, icon: Banknote, ...TONES.info},
+	ListOfConnectedCards: {to: routeMap.cardConnected.path, icon: Link2, ...TONES.success},
 	ListOfCardRequests: {to: routeMap.cardRequestList.path, icon: ClipboardList, ...TONES.warning},
 }

@@ -632,6 +632,46 @@
                 "ratio": "The amount must be a multiple of {{value}} Rial.",
                 "password": "The password must have {{min}} to {{max}} digits."
             }
+        },
+        "connected": {
+            "title": "Connected cards",
+            "hint": "Backup cards connected to one of your accounts. Put credit on a card, take it back, or disconnect the card.",
+            "account": "Account",
+            "chooseAccount": "Choose an account",
+            "accountsError": "Your accounts could not be loaded.",
+            "show": "Show",
+            "option": {
+                "all": "All",
+                "active": "Active",
+                "closed": "Closed"
+            },
+            "searchCard": "Search by card number",
+            "error": "The cards could not be loaded.",
+            "empty": "No connected cards to show.",
+            "card": "Card",
+            "expiry": "Expires",
+            "credit": "Credit",
+            "rial": "Rials",
+            "loading": "Loading…",
+            "creditError": "The credit could not be read.",
+            "refreshCredit": "Update credit",
+            "charge": "Add credit",
+            "discharge": "Take credit back",
+            "disconnect": "Disconnect",
+            "amount": "Amount",
+            "description": "Description",
+            "optional": "optional",
+            "creditIs": "The card holds {{amount}}.",
+            "chargeTitle": "Add credit to the card",
+            "chargeQuestion": "The amount moves from your account onto the card.",
+            "dischargeTitle": "Take credit back from the card",
+            "dischargeQuestion": "The amount moves from the card back to your account.",
+            "disconnectTitle": "Disconnect the card",
+            "disconnectQuestion": "The card is disconnected from this account.",
+            "sending": "Sending…",
+            "again": "Back to connected cards",
+            "failed": "The request was not accepted. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the request went through. Check the card's credit and your account before trying again."
         }
     },
     "transfer": {
