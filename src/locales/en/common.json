@@ -22,7 +22,8 @@
         "general": "General",
         "accounts": "Accounts",
         "cards": "Cards",
-        "transfers": "Transfers"
+        "transfers": "Transfers",
+        "reports": "Reports"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -710,6 +711,40 @@
             "error": {
                 "fix": "Please fix the recipients marked above.",
                 "duplicate": "This account appears more than once."
+            }
+        }
+    },
+    "report": {
+        "statement": {
+            "title": "Account statement",
+            "account": "Account",
+            "chooseAccount": "Choose an account",
+            "accountsError": "Your accounts could not be loaded.",
+            "type": "Statement type",
+            "typesError": "The statement types could not be loaded.",
+            "byDate": "By period",
+            "byLatest": "Latest transactions",
+            "from": "From date (Persian calendar)",
+            "to": "To date (Persian calendar)",
+            "latestCount": "How many transactions",
+            "withdrawals": "Withdrawals",
+            "deposits": "Deposits",
+            "show": "Show statement",
+            "loading": "Loading…",
+            "failed": "The statement could not be loaded. Please try again.",
+            "empty": "No transactions match.",
+            "balance": "Balance",
+            "totalDebit": "Total withdrawals",
+            "totalCredit": "Total deposits",
+            "count": "Showing {{shown}} of {{total}}",
+            "more": "Show more",
+            "error": {
+                "account": "Please choose an account.",
+                "type": "No statement type is available for this account.",
+                "kind": "Choose withdrawals, deposits or both.",
+                "date": "Enter a date like 1405/01/01.",
+                "order": "The end date is before the start date.",
+                "latest": "Enter a number from 1 to {{max}}."
             }
         }
     }
