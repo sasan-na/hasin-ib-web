@@ -12,7 +12,6 @@ import {
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import {NavLink} from "react-router-dom";
-import {useGroup} from "@/hooks/useGroup.ts";
 
 export function NavMain({
                             items,
@@ -29,11 +28,9 @@ export function NavMain({
     }[]
 }) {
 
-    const group = useGroup()
-
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>{group.isOnGroupPage && "Group" || "General"}</SidebarGroupLabel>
+            <SidebarGroupLabel>General</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => {
                     if (item?.items && item.items.length > 0) {

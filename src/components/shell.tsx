@@ -39,9 +39,9 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
         const p = pathname.split("/");
         const title = toTitleCase(p[pathname.split("/").length - 1])
         if (title === "") {
-            document.title = `Acme`;
+            document.title = `IBN`;
         } else {
-            document.title = `${toTitleCase(p[pathname.split("/").length - 1])} · Acme`;
+            document.title = `${toTitleCase(p[pathname.split("/").length - 1])} · IBN`;
         }
     }, [pathname])
 
