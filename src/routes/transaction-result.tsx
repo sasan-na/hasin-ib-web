@@ -18,7 +18,7 @@ export default function TransactionResultPage() {
 	const {t} = useTranslation()
 	const state = useLocation().state as TransactionResultState | null
 
-	if (!state?.result) return <Navigate to={routeMap.account.path} replace />
+	if (!state?.result) return <Navigate to={routeMap.accountList.path} replace />
 	const {result, again} = state
 
 	const tone = result.ok ? (result.needsApproval ? "pending" : "success") : "failure"
@@ -68,7 +68,7 @@ export default function TransactionResultPage() {
 
 			<div className="flex flex-wrap gap-2">
 				<Button asChild>
-					<Link to={routeMap.account.path}>{t("transaction.result.toAccounts")}</Link>
+					<Link to={routeMap.accountList.path}>{t("transaction.result.toAccounts")}</Link>
 				</Button>
 				{again ? (
 					<Button asChild variant="outline">

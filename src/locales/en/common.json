@@ -243,6 +243,15 @@
                 "date": "Enter a date like 1404/05/20.",
                 "order": "The end date must not be before the start date."
             }
+        },
+        "listTitle": "Account list",
+        "landing": {
+            "title": "Accounts",
+            "addFavorite": "Add to favorites",
+            "removeFavorite": "Remove from favorites",
+            "favoriteError": "The favorites could not be changed. Please try again.",
+            "error": "The account services could not be loaded. Please try again.",
+            "empty": "No account service is available for you right now."
         }
     },
     "transaction": {

@@ -51,7 +51,7 @@ export default function AccountPage() {
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
-				<h1 className="text-2xl font-bold">{t("account.title")}</h1>
+				<h1 className="text-2xl font-bold">{t("account.listTitle")}</h1>
 				<div className="flex flex-wrap gap-2">
 					<Button asChild size="sm">
 						<Link to={routeMap.accountNew.path}>
@@ -112,7 +112,7 @@ export default function AccountPage() {
 								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg border bg-card">
 									<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b bg-muted/60 px-5 py-3">
 										<h2 id={headingId} className="text-base font-semibold">
-											{group.name || t("account.title")}
+											{group.name || t("account.listTitle")}
 										</h2>
 										{total !== null ? (
 											<span className="text-sm text-muted-foreground">

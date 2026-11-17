@@ -25,7 +25,7 @@ export default function AccountInfoPage() {
 	const rules = useQuery({...withdrawRulesOptions(accountId, i18n.language), enabled: valid})
 
 	// A missing or mangled id (an old bookmark, a hand-edited address) has nothing to show.
-	if (!valid) return <Navigate to={routeMap.account.path} replace />
+	if (!valid) return <Navigate to={routeMap.accountList.path} replace />
 
 	// "Back" points toward the start side of the page, which flips with the language direction.
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
@@ -35,7 +35,7 @@ export default function AccountInfoPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("account.info.title")}</h1>
 				<Button asChild variant="outline" size="sm">
-					<Link to={routeMap.account.path}>
+					<Link to={routeMap.accountList.path}>
 						<BackIcon aria-hidden="true" />
 						{t("account.info.back")}
 					</Link>

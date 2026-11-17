@@ -5,6 +5,7 @@ import useSelectTheme from "@/hooks/useSelectTheme.ts";
 import {useSession} from "@/store/session";
 
 const Home = React.lazy(() => import("@/routes/home.tsx"));
+const AccountHome = React.lazy(() => import("@/routes/account/home-page.tsx"));
 const Account = React.lazy(() => import("@/routes/account/page.tsx"));
 const AccountInfo = React.lazy(() => import("@/routes/account/info-page.tsx"));
 const TransactionResult = React.lazy(() => import("@/routes/transaction-result.tsx"));
@@ -20,6 +21,7 @@ const NotFound = React.lazy(() => import("@/routes/notfound"));
 export const routeMap = {
     "home": {breadcrumb: "navigation.home", path: "/"},
     "account": {breadcrumb: "navigation.accounts", path: "/account"},
+    "accountList": {breadcrumb: "account.listTitle", path: "/account/list"},
     "accountInfo": {breadcrumb: "account.info.title", path: "/account/info"},
     "transactionResult": {breadcrumb: "transaction.result.title", path: "/transaction-result"},
     "accountNew": {breadcrumb: "account.new.title", path: "/account/new"},
@@ -55,7 +57,8 @@ const router = createBrowserRouter(
                 </Route>
                 <Route element={<AuthShell/>}>
                     <Route path={routeMap.home.path} element={<Home/>} index={true}/>
-                    <Route path={routeMap.account.path} element={<Account/>}/>
+                    <Route path={routeMap.account.path} element={<AccountHome/>}/>
+                    <Route path={routeMap.accountList.path} element={<Account/>}/>
                     <Route path={routeMap.accountInfo.path} element={<AccountInfo/>}/>
                     <Route path={routeMap.transactionResult.path} element={<TransactionResult/>}/>
                     <Route path={routeMap.accountNew.path} element={<AccountNew/>}/>

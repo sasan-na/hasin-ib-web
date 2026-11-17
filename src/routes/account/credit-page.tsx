@@ -58,7 +58,7 @@ export default function CreditCalculatePage() {
 	const calculation = useMutation({mutationFn: calculateCredit})
 	const result: CreditResult | undefined = calculation.data
 
-	if (!valid) return <Navigate to={routeMap.account.path} replace />
+	if (!valid) return <Navigate to={routeMap.accountList.path} replace />
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
 	const hasTypes = (options.data?.types.length ?? 0) > 0
 
@@ -81,7 +81,7 @@ export default function CreditCalculatePage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("account.credit.title")}</h1>
 				<Button asChild variant="outline" size="sm">
-					<Link to={routeMap.account.path}>
+					<Link to={routeMap.accountList.path}>
 						<BackIcon aria-hidden="true" />
 						{t("account.info.back")}
 					</Link>
