@@ -13,7 +13,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {calculateCredit, type CreditResult} from "@/features/account/api/credit-calculate"
 import {loanOptionsOptions} from "@/features/account/api/credit-calculate.queries"
 import {formatAmount} from "@/lib/format"
-import {parseJalali, todayJalali} from "@/features/account/lib/jalali"
+import {parseJalali, todayJalali} from "@/lib/jalali"
 import {routeMap} from "@/app/routes"
 
 type Errors = Partial<Record<"profit" | "period" | "start" | "end", string>>
