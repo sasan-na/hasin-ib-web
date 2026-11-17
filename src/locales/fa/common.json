@@ -1871,5 +1871,33 @@
         "again": "بازگشت به توکن‌ها",
         "failed": "پرداخت انجام نشد. لطفاً دوباره تلاش کنید.",
         "uncertain": "مشخص نشد پرداخت انجام شده است یا نه. پیش از پرداخت دوباره، صورت‌حساب حساب و توکن را بررسی کنید."
+    },
+    "profile": {
+        "title": "پروفایل کاربر",
+        "general": "اطلاعات عمومی",
+        "error": "پروفایل بارگذاری نشد.",
+        "signIn": "اطلاعات ورود",
+        "oneTimeCode": "رمز یکبار مصرف",
+        "changePassword": "تغییر کلمه عبور",
+        "fields": {
+            "customerCode": "کد مشتری",
+            "nationalCode": "کد ملی",
+            "birthCertificateNumber": "شماره شناسنامه",
+            "birthDate": "تاریخ تولد",
+            "passportNumber": "شماره گذرنامه",
+            "mobileNumber": "همراه",
+            "phoneNumber1": "تلفن ۱",
+            "phoneNumber2": "تلفن ۲",
+            "emailAddress": "رایانامه",
+            "address": "آدرس",
+            "businessCode": "کد اقتصادی",
+            "registrationNo": "شماره ثبت",
+            "registrationDate": "تاریخ ثبت",
+            "registrationCity": "شهر محل ثبت",
+            "faxAddress": "دورنگار",
+            "websiteAddress": "آدرس وبگاه",
+            "username": "نام کاربری",
+            "password": "کلمه عبور"
+        }
     }
 }

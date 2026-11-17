@@ -1871,5 +1871,33 @@
         "again": "Back to tokens",
         "failed": "The payment was not made. Please try again.",
         "uncertain": "We could not confirm whether the payment was made. Check your account statement and the token before paying again."
+    },
+    "profile": {
+        "title": "Profile",
+        "general": "General information",
+        "error": "The profile could not be loaded.",
+        "signIn": "Sign-in details",
+        "oneTimeCode": "One-time code",
+        "changePassword": "Change password",
+        "fields": {
+            "customerCode": "Customer code",
+            "nationalCode": "National code",
+            "birthCertificateNumber": "Birth certificate number",
+            "birthDate": "Date of birth",
+            "passportNumber": "Passport number",
+            "mobileNumber": "Mobile number",
+            "phoneNumber1": "Phone number 1",
+            "phoneNumber2": "Phone number 2",
+            "emailAddress": "Email",
+            "address": "Address",
+            "businessCode": "Business code",
+            "registrationNo": "Registration number",
+            "registrationDate": "Registration date",
+            "registrationCity": "Registration city",
+            "faxAddress": "Fax",
+            "websiteAddress": "Website",
+            "username": "Username",
+            "password": "Password"
+        }
     }
 }
