@@ -9,6 +9,7 @@ import {LanguageSwitcher} from "@/components/language-switcher.tsx";
 import {ThemeSwitcher} from "@/components/theme-switcher.tsx";
 import {Logo} from "@/components/logo.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
+import {HeaderSearch} from "@/app/layout/header-search"
 import {BreadcrumbItem, BreadcrumbResponsive} from "@/app/layout/breadcrumbs"
 import {routeMap} from "@/app/routes";
 import {ErrorBoundary} from "@/components/error-boundary.tsx";
@@ -61,6 +62,7 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
                                     <BreadcrumbResponsive items={breadcrumbItems}/>
                                 </div>
                                 <div className="ms-auto flex items-center gap-1">
+                                    <HeaderSearch/>
                                     <ThemeSwitcher/>
                                     <LanguageSwitcher/>
                                 </div>

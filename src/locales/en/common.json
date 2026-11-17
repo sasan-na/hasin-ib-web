@@ -1986,5 +1986,14 @@
             "removeQuestion": "The rule is removed.",
             "failed": "The change was not accepted. Please try again."
         }
+    },
+    "search": {
+        "title": "Search",
+        "placeholder": "Search services",
+        "prompt": "Type a word in the search box to find a service.",
+        "for": "Services for “{{phrase}}”",
+        "short": "Type at least two letters.",
+        "error": "The search failed. Please try again.",
+        "empty": "No service matches. The bank searches its Persian texts, so try a Persian word."
     }
 }
