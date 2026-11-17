@@ -129,5 +129,33 @@
             "and": "and",
             "or": "or"
         }
+    },
+    "transaction": {
+        "cancel": "Cancel",
+        "chooseAccount": "Choose an account",
+        "noAccounts": "You have no account that can be used for this.",
+        "accountsError": "Your accounts could not be loaded. Please try again.",
+        "signatoriesNotSynced": "Not all signatories have signed in yet",
+        "accountPassword": "Account password",
+        "noPasswordNeeded": "This account needs no password for this amount.",
+        "passwordInfoError": "The account's password type could not be loaded. Please try again.",
+        "passwordMin": "Enter at least {{min}} digits.",
+        "sendCode": "Send code",
+        "sendingCode": "Sending…",
+        "resendCode": "Send again",
+        "resendIn": "Send again in {{seconds}} s",
+        "codeSent": "The code was sent to your phone.",
+        "codeError": "The code could not be sent. Please try again.",
+        "result": {
+            "title": "Result",
+            "success": "Done",
+            "pending": "Waiting for approval",
+            "failure": "It did not go through",
+            "type": "Operation",
+            "reference": "Reference number",
+            "errorCode": "Error code",
+            "pendingNote": "Other signatories must approve this before the bank carries it out.",
+            "toAccounts": "Back to accounts"
+        }
     }
 }
