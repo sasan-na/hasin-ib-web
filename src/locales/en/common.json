@@ -28,7 +28,8 @@
         "messages": "Messages",
         "contacts": "Contacts",
         "bills": "Bills",
-        "cheques": "Cheques"
+        "cheques": "Cheques",
+        "dashboard": "Approvals"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -1413,6 +1414,68 @@
             "title": "Drawer's standing",
             "intro": "Find out how much of a cheque drawer's money is tied up in cheques, and how their cheques have fared, from the Sayyad id of one of their cheques.",
             "empty": "The registry has no record for this drawer."
+        }
+    },
+    "dashboard": {
+        "title": "Approvals",
+        "hint": "Transactions and requests that wait for your answer, and the ones that have finished.",
+        "current": "Waiting",
+        "history": "Finished",
+        "searchPlaceholder": "Search by name",
+        "search": "Search",
+        "clear": "Clear",
+        "error": "The list could not be loaded.",
+        "emptyCurrent": "Nothing is waiting for you.",
+        "emptyHistory": "There are no finished items.",
+        "loadMore": "Show more",
+        "loadingMore": "Loading…",
+        "close": "Close",
+        "item": {
+            "name": "Name",
+            "service": "Service",
+            "account": "Account",
+            "initiator": "Started by",
+            "date": "Date",
+            "level": "Current level",
+            "started": "Started",
+            "ended": "Ended",
+            "details": "Details",
+            "progress": "Progress",
+            "viewOnly": "For your information",
+            "waitingAccept": "Waiting for your confirmation",
+            "waitingSign": "Waiting for your signature",
+            "successful": "Successful",
+            "failed": "Failed",
+            "signNote": "Signing, which also carries out the transaction, is not available here. You can still reject it."
+        },
+        "details": {
+            "hint": "What this request does.",
+            "error": "The details could not be loaded."
+        },
+        "progress": {
+            "hint": "Who has to take part and who already has.",
+            "error": "The progress could not be loaded.",
+            "starters": "Starters",
+            "level": "Level {{number}}",
+            "signatories": "Signatories",
+            "master": "master",
+            "accepted": "Accepted",
+            "rejected": "Rejected",
+            "started": "Started",
+            "waiting": "Waiting"
+        },
+        "answer": {
+            "accept": "Confirm",
+            "reject": "Reject",
+            "acceptTitle": "Confirm this request",
+            "rejectTitle": "Reject this request",
+            "acceptQuestion": "Your confirmation is recorded and the request moves on.",
+            "rejectQuestion": "The request is rejected and stops here.",
+            "reason": "Reason for rejecting",
+            "sending": "Sending…",
+            "failed": "The answer was not accepted. Please try again.",
+            "accepted": "Your confirmation was recorded.",
+            "rejected": "The request was rejected."
         }
     }
 }
