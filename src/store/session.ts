@@ -13,6 +13,7 @@ interface SessionState {
 	signOut: () => void
 	expireSession: () => void
 	requirePasswordChange: () => void
+	passwordChanged: () => void
 }
 
 export const useSession = create<SessionState>()((set) => ({
@@ -24,5 +25,6 @@ export const useSession = create<SessionState>()((set) => ({
 	signOut: () => set({username: null, token: null, expired: false, mustChangePassword: false}),
 	expireSession: () => set({username: null, token: null, expired: true, mustChangePassword: false}),
 	requirePasswordChange: () => set({mustChangePassword: true}),
+	passwordChanged: () => set({mustChangePassword: false}),
 }))
 

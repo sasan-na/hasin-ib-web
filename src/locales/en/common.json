@@ -46,5 +46,14 @@
     "notFound": {
         "goHome": "Go to home",
         "title": "Page not found"
+    },
+    "password": {
+        "show": "Show password",
+        "rulesTitle": "Password rules",
+        "ruleState": {
+            "unknown": "not checked yet",
+            "broken": "not met",
+            "met": "met"
+        }
     }
 }

@@ -37,6 +37,9 @@ const encrypt = async (message: string, guid: string): Promise<string> => {
     return toBase64(new Uint8Array(cipher));
 };
 
+/** AES-CBC with a caller-supplied 32-character key (see `passwordCrypto.ts`); same IV and output as login. */
+export const encryptWithKey = encrypt;
+
 /** The server lower-cases the username too, so it is lower-cased before it is encrypted. */
 export const encryptUsername = (username: string, guid: string): Promise<string> =>
     encrypt(username.toLowerCase(), guid);
