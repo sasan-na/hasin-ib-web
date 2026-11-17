@@ -29,7 +29,8 @@
         "contacts": "Contacts",
         "bills": "Bills",
         "cheques": "Cheques",
-        "dashboard": "Approvals"
+        "dashboard": "Approvals",
+        "receipts": "Receipts"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -1476,6 +1477,33 @@
             "failed": "The answer was not accepted. Please try again.",
             "accepted": "Your confirmation was recorded.",
             "rejected": "The request was rejected."
+        }
+    },
+    "receipt": {
+        "title": "Reprint receipt",
+        "hint": "Find the receipt of something you did in the bank and open it to read or print.",
+        "type": "Transaction type",
+        "allTypes": "All",
+        "reference": "Reference number",
+        "from": "From",
+        "to": "To",
+        "search": "Search",
+        "clear": "Clear",
+        "time": "Date",
+        "limitation": "Only receipts of successful transactions made through the internet bank can be shown.",
+        "notFound": "There are no receipts to show.",
+        "loadError": "The receipts could not be loaded.",
+        "view": "Show details",
+        "loadMore": "Show more",
+        "loadingMore": "Loading…",
+        "viewTitle": "Receipt",
+        "back": "Back to receipts",
+        "print": "Print",
+        "viewError": "The receipt could not be loaded.",
+        "rial": "Rials",
+        "error": {
+            "date": "Enter dates like 1405/01/01.",
+            "order": "The start date cannot be after the end date."
         }
     }
 }

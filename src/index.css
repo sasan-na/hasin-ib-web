@@ -324,3 +324,14 @@
 		@apply hidden;
 	}
 }
+
+/* Printing a page (a receipt, a calendar) prints the page itself, not the app around it. */
+@media print {
+	[data-slot="sidebar"],
+	[data-slot="sidebar-gap"],
+	[data-slot="sidebar-container"],
+	[data-slot="sidebar-trigger"],
+	body header {
+		display: none !important;
+	}
+}

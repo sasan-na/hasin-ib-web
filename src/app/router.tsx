@@ -41,6 +41,8 @@ const Balance = React.lazy(() => import("@/features/report/pages/balance-page.ts
 const LoanInterest = React.lazy(() => import("@/features/loan/pages/loan-interest-page.tsx"));
 const LoanJunior = React.lazy(() => import("@/features/loan/pages/loan-junior-page.tsx"));
 const Dashboard = React.lazy(() => import("@/features/dashboard/pages/dashboard-page.tsx"));
+const ReceiptList = React.lazy(() => import("@/features/receipt/pages/receipt-list-page.tsx"));
+const ReceiptView = React.lazy(() => import("@/features/receipt/pages/receipt-view-page.tsx"));
 const LoanList = React.lazy(() => import("@/features/loan/pages/loan-list-page.tsx"));
 const MessageList = React.lazy(() => import("@/features/message/pages/message-list-page.tsx"));
 const MessageDetail = React.lazy(() => import("@/features/message/pages/message-detail-page.tsx"));
@@ -105,6 +107,8 @@ const router = createBrowserRouter(
                     <Route path={routeMap.reportPeriodicEdit.path} element={<PeriodicForm/>}/>
                     <Route path={routeMap.reportBalance.path} element={<Balance/>}/>
                     <Route path={routeMap.loanList.path} element={<LoanList/>}/>
+                    <Route path={routeMap.receiptList.path} element={<ReceiptList/>}/>
+                    <Route path={routeMap.receiptView.path} element={<ReceiptView/>}/>
                     <Route path={routeMap.dashboard.path} element={<Dashboard/>}/>
                     <Route path={routeMap.loanInterest.path} element={<LoanInterest/>}/>
                     <Route path={routeMap.loanJunior.path} element={<LoanJunior/>}/>
