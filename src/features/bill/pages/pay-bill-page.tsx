@@ -7,13 +7,13 @@ import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {getMobileBill, type PayableBill} from "@/features/bill/api/bill"
+import {getMobileBill, importBills, type ImportedBill, type PayableBill} from "@/features/bill/api/bill"
 import {PayBillsDialog} from "@/features/bill/components/pay-bills-dialog"
 import {amountOfPayId, billKindOf, isBillIdValid, isPayIdValid} from "@/features/bill/lib/bill-codes"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
-type Mode = "ids" | "mobile"
+type Mode = "ids" | "mobile" | "file"
 
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
@@ -29,16 +29,39 @@ export default function PayBillPage() {
 	const [preparing, setPreparing] = React.useState(false)
 	const [problem, setProblem] = React.useState<string | null>(null)
 	const [paying, setPaying] = React.useState<PayableBill[] | null>(null)
+	const [imported, setImported] = React.useState<ImportedBill[]>([])
+	const [importing, setImporting] = React.useState(false)
 
 	const billOk = isBillIdValid(billId)
 	const payOk = billOk && isPayIdValid(payId, billId)
 	const mobileOk = /^09\d{9}$/.test(mobile)
 	const kind = billOk ? billKindOf(billId) : null
-	const ready = mode === "ids" ? payOk : mobileOk
+	// A row from the file is good when its ids are valid and agree with each other (as when typed).
+	const importedGood = imported.filter((row) => isBillIdValid(row.billId) && isPayIdValid(row.payId, row.billId))
+	const ready = mode === "ids" ? payOk : mode === "mobile" ? mobileOk : importedGood.length > 0
+
+	const readFile = async (file: File): Promise<void> => {
+		setImporting(true)
+		setProblem(null)
+		try {
+			const rows = await importBills(file)
+			setImported(rows)
+			if (rows.length === 0) setProblem(t("bill.import.empty"))
+		} catch (error) {
+			setImported([])
+			setProblem(error instanceof Error && error.message ? error.message : t("bill.import.failed"))
+		} finally {
+			setImporting(false)
+		}
+	}
 
 	const review = async (): Promise<void> => {
 		setProblem(null)
 		if (!ready) return
+		if (mode === "file") {
+			setPaying(importedGood.map((row) => ({billId: row.billId, payId: row.payId, mobile: "", amount: amountOfPayId(row.payId), title: title.trim()})))
+			return
+		}
 		if (mode === "ids") {
 			setPaying([{billId, payId, mobile: "", amount: amountOfPayId(payId), title: title.trim()}])
 			return
@@ -69,6 +92,9 @@ export default function PayBillPage() {
 				<Button type="button" variant={mode === "mobile" ? "default" : "outline"} aria-pressed={mode === "mobile"} onClick={() => setMode("mobile")}>
 					{t("bill.byMobile")}
 				</Button>
+				<Button type="button" variant={mode === "file" ? "default" : "outline"} aria-pressed={mode === "file"} onClick={() => setMode("file")}>
+					{t("bill.byFile")}
+				</Button>
 			</div>
 
 			<form
@@ -93,6 +119,38 @@ export default function PayBillPage() {
 							{payOk ? <p className="text-sm font-medium">{t("bill.amountIs", {amount: `${formatAmount(amountOfPayId(payId), i18n.language)} ${t("bill.rial")}`})}</p> : null}
 						</div>
 					</>
+				) : mode === "file" ? (
+					<div className="flex flex-col gap-3">
+						<Label htmlFor="bill-file">{t("bill.import.file")}</Label>
+						<input
+							id="bill-file"
+							type="file"
+							accept=".xlsx,.xls"
+							disabled={importing}
+							className="text-sm"
+							onChange={(event) => {
+								const file = event.target.files?.[0]
+								event.target.value = ""
+								if (file) void readFile(file)
+							}}
+						/>
+						<p className="text-xs text-muted-foreground">{importing ? t("bill.import.reading") : t("bill.import.hint")}</p>
+						{imported.length > 0 ? (
+							<ul className="flex flex-col divide-y rounded-md border text-sm">
+								{imported.map((row, index) => {
+									const good = isBillIdValid(row.billId) && isPayIdValid(row.payId, row.billId)
+									return (
+										<li key={index} className="flex flex-wrap items-baseline justify-between gap-2 p-3">
+											<span dir="ltr" className="tabular-nums">
+												{row.billId} / {row.payId}
+											</span>
+											{good ? <span className="font-medium">{`${formatAmount(amountOfPayId(row.payId), i18n.language)} ${t("bill.rial")}`}</span> : <span className="text-destructive">{row.message || t("bill.import.badRow")}</span>}
+										</li>
+									)
+								})}
+							</ul>
+						) : null}
+					</div>
 				) : (
 					<div className="flex flex-col gap-2">
 						<Label htmlFor="bill-mobile">{t("bill.mobile")}</Label>

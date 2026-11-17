@@ -1257,7 +1257,16 @@
         "sourceCard": "Card to pay from",
         "chooseCard": "Choose a card",
         "cardsError": "Your cards could not be loaded.",
-        "noCards": "You have no cards to pay from."
+        "noCards": "You have no cards to pay from.",
+        "byFile": "From Excel",
+        "import": {
+            "file": "Excel file",
+            "hint": "A file with a bill id and a payment id on each row. Only rows that check out are paid.",
+            "reading": "Reading the file…",
+            "empty": "The file has no bills.",
+            "failed": "The file could not be read.",
+            "badRow": "This row is not a valid bill."
+        }
     },
     "cheque": {
         "title": "Cheques",

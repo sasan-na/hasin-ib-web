@@ -97,3 +97,29 @@ export const payBillsFromCard = (request: {credentials: CardCredentials; bills: 
 			bills: request.bills.map((bill) => ({billId: bill.billId, payId: bill.payId, mobile: bill.mobile, amount: bill.amount, title: bill.title})),
 		}),
 	}).then(toTransactionResult)
+
+export interface ImportedBill {
+	billId: string
+	payId: string
+	/** What the bank noted about this row (an unreadable id, a bill already paid), if anything. */
+	message: string
+}
+
+const importSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	billList: z.array(z.object({billId: z.union([z.string(), z.number()]).nullish(), paymentId: z.union([z.string(), z.number()]).nullish(), billMessage: z.string().nullish(), payMessage: z.string().nullish()})).nullish(),
+})
+
+/** Reads bill ids and payment ids from an Excel file. Nothing is paid; the rows still need review. */
+export const importBills = async (file: File): Promise<ImportedBill[]> => {
+	const body = new FormData()
+	body.append("file", file)
+	const data = importSchema.parse(camelKeys(await apiClient<unknown>("/Bill/ImportBills", {method: "POST", body})))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "bill import failed")
+	return (data.billList ?? []).map((item) => ({
+		billId: String(item.billId ?? "").replace(/\D/g, ""),
+		payId: String(item.paymentId ?? "").replace(/\D/g, ""),
+		message: [item.billMessage, item.payMessage].filter(Boolean).join(" "),
+	}))
+}
