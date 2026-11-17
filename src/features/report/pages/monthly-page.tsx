@@ -80,9 +80,14 @@ export default function MonthlyPage() {
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
 				<h1 className="text-2xl font-bold">{t("report.monthly.title")}</h1>
-				<Button asChild size="sm" variant="outline">
-					<Link to={routeMap.reportPeriodic.path}>{t("report.periodic.title")}</Link>
-				</Button>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.reportBalance.path}>{t("report.balance.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.reportPeriodic.path}>{t("report.periodic.title")}</Link>
+					</Button>
+				</div>
 			</div>
 
 			<form

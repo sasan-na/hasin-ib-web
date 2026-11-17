@@ -885,6 +885,35 @@
             "saveFailed": "The periodic statement could not be saved.",
             "saveUncertain": "We could not confirm that it was saved. Check the list before trying again.",
             "loadError": "The periodic statements could not be loaded."
+        },
+        "balance": {
+            "title": "Balance chart",
+            "from": "From date",
+            "to": "To date",
+            "fromPersian": "From date (Persian calendar)",
+            "toPersian": "To date (Persian calendar)",
+            "limit": "The chart covers at most {{days}} days.",
+            "show": "Show chart",
+            "loading": "Loading…",
+            "failed": "The chart could not be loaded.",
+            "empty": "There is no movement to draw in this period.",
+            "result": "Balance chart",
+            "totalDeposit": "Total deposits",
+            "totalWithdrawal": "Total withdrawals",
+            "rial": "Rial",
+            "balance": "Balance",
+            "deposits": "Deposits",
+            "withdrawals": "Withdrawals",
+            "table": "Show the figures as a table",
+            "day": "Day",
+            "chartLabel": "Daily balance from {{from}} to {{to}}",
+            "error": {
+                "account": "Choose an account.",
+                "date": "Enter valid dates.",
+                "order": "The end date is before the start date.",
+                "future": "The end date cannot be after today.",
+                "period": "The span can be at most {{days}} days."
+            }
         }
     },
     "loan": {
