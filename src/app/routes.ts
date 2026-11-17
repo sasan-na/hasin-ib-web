@@ -16,6 +16,7 @@ export const routeMap = {
 	"cardAccountList": {breadcrumb: "card.accounts.title", path: "/card/account-list"},
 	"cardConnectAccount": {breadcrumb: "card.accounts.connectTitle", path: "/card/connect-account"},
 	"cardReplicaRenew": {breadcrumb: "card.replica.title", path: "/card/replica-renew"},
+	"cardGift": {breadcrumb: "card.gift.title", path: "/card/gift"},
 	"login": {breadcrumb: "auth.signIn", path: "/login"},
 	"changePassword": {breadcrumb: "auth.changePassword", path: "/change-password"},
 	"notFound": {breadcrumb: "notFound.title", path: "/404"},

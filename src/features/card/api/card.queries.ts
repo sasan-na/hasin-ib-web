@@ -1,6 +1,7 @@
 import {queryOptions} from "@tanstack/react-query"
 
 import {getReplicaForm} from "./card-actions"
+import {getGiftCardConfig} from "./gift-card"
 import {getCardAccounts, getAddableAccounts} from "./card-account"
 import {getCardCredentialInfo} from "./card-credentials"
 import {getCardInfo, getCardOwner} from "./card-info"
@@ -16,6 +17,7 @@ export const cardKeys = {
 	addable: (cardId: number, linked: string) => [...cardKeys.all, "addable", cardId, linked] as const,
 	credentials: (cardId: number, language: string) => [...cardKeys.all, "credentials", cardId, language] as const,
 	replicaForm: (language: string) => [...cardKeys.all, "replicaForm", language] as const,
+	giftConfig: () => [...cardKeys.all, "giftConfig"] as const,
 }
 
 export const cardsOptions = (language: string) => queryOptions({queryKey: cardKeys.list(language), queryFn: getCards, staleTime: 60_000, retry: false})
@@ -39,3 +41,7 @@ export const cardCredentialInfoOptions = (cardId: number, language: string) =>
 /** The mobile number the bank has and the reasons a card may be reissued. */
 export const replicaFormOptions = (language: string) =>
 	queryOptions({queryKey: cardKeys.replicaForm(language), queryFn: getReplicaForm, staleTime: 5 * 60_000, retry: false})
+
+/** The bank's limits for gift cards (how many, how much, in what steps, and the fee). */
+export const giftCardConfigOptions = () =>
+	queryOptions({queryKey: cardKeys.giftConfig(), queryFn: getGiftCardConfig, staleTime: 5 * 60_000, retry: false})

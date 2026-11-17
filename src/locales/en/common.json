@@ -477,6 +477,49 @@
                 "mobile": "Enter a mobile number like 09123456789.",
                 "reason": "Please choose a reason."
             }
+        },
+        "gift": {
+            "title": "Gift cards",
+            "configError": "The gift card limits could not be loaded. Please try again.",
+            "maxCards": "Most cards per request",
+            "amountRange": "Card amount range (Rials)",
+            "ratio": "Amounts are multiples of",
+            "fee": "Fee per card",
+            "accountTitle": "Pay from",
+            "account": "Account",
+            "cardsTitle": "Gift cards",
+            "branch": "Branch to collect the cards",
+            "mobile": "Mobile number",
+            "cardAmount": "Card {{index}}: amount (Rials)",
+            "count": "Quantity",
+            "removeLine": "Remove card line {{index}}",
+            "lineTotal": "This line comes to {{total}}.",
+            "addLine": "Add another amount",
+            "cardCount": "Number of cards",
+            "cardsTotal": "Total card value",
+            "feeTotal": "Total fee",
+            "grandTotal": "Total to be paid",
+            "review": "Review request",
+            "confirmTitle": "Request these gift cards?",
+            "confirmQuestion": "The total is taken from the account you chose as soon as you confirm.",
+            "confirm": "Request cards",
+            "sending": "Sending…",
+            "price": "Amount (Rials)",
+            "total": "Total (Rials)",
+            "failed": "The bank did not accept the request. Please check the details and try again.",
+            "uncertain": "We could not tell whether the request went through. Check your account and your card requests before trying again.",
+            "again": "Request more gift cards",
+            "error": {
+                "source": "Please choose the account to pay from.",
+                "branch": "Please choose a branch.",
+                "mobile": "Enter a mobile number like 09123456789.",
+                "noCards": "Enter at least one card.",
+                "maxCards": "At most {{count}} cards can be requested at once.",
+                "amountRequired": "Please enter the card amount.",
+                "countRequired": "Please enter how many cards.",
+                "between": "The amount must be between {{min}} and {{max}} Rials.",
+                "ratio": "The amount must be a multiple of {{value}} Rials."
+            }
         }
     }
 }
