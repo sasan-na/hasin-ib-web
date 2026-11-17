@@ -67,6 +67,11 @@ export default function StandingOrderListPage() {
 								{row(t("transfer.standing.trackingId"), order.code, true)}
 								{row(t("transfer.description"), order.description)}
 							</dl>
+							<div className="flex flex-wrap gap-2">
+								<Button asChild variant="outline">
+									<Link to={`${routeMap.transferStandingOrderDetails.path}?${new URLSearchParams({source: order.sourceAccountNumber, destination: order.destinationNumber, code: order.code}).toString()}`}>{t("transfer.standing.details")}</Link>
+								</Button>
+							</div>
 							{order.canCancel ? (
 								<div>
 									<Button type="button" variant="outline" onClick={() => setCancelling(order)}>

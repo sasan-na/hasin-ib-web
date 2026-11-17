@@ -22,6 +22,7 @@ export const routeMap = {
 	"cardlessNew": {breadcrumb: "card.cardless.newTitle", path: "/card/card-less-cash/new"},
 	"transfer": {breadcrumb: "navigation.transfers", path: "/transfer"},
 	"transferSmart": {breadcrumb: "transfer.smart.title", path: "/transfer/smart"},
+	"transferStandingOrderDetails": {breadcrumb: "transfer.standing.detailsTitle", path: "/transfer/standing-orders/details"},
 	"transferStandingOrders": {breadcrumb: "transfer.standing.title", path: "/transfer/standing-orders"},
 	"transferStandingOrderNew": {breadcrumb: "transfer.standing.registerTitle", path: "/transfer/standing-orders/new"},
 	"transferIban": {breadcrumb: "transfer.iban.title", path: "/transfer/iban"},
