@@ -11,6 +11,7 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import {useTranslation} from "react-i18next"
 import {NavLink} from "react-router-dom";
 
 export function NavMain({
@@ -27,10 +28,11 @@ export function NavMain({
         }[]
     }[]
 }) {
+    const {t} = useTranslation()
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>General</SidebarGroupLabel>
+            <SidebarGroupLabel>{t("navigation.general")}</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => {
                     if (item?.items && item.items.length > 0) {
@@ -46,7 +48,7 @@ export function NavMain({
                                         {item.icon && <item.icon/>}
                                         <span>{item.title}</span>
                                         <ChevronRight
-                                            className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"/>
+                                            className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"/>
                                     </SidebarMenuButton>
                                 </CollapsibleTrigger>
                                 <CollapsibleContent>

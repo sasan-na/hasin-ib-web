@@ -1,0 +1,48 @@
+{
+    "skipToMain": "Skip to main content",
+    "appName": "IBN",
+    "button": {
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "close": "Close",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous"
+    },
+    "loading": "Loading...",
+    "error": {
+        "generic": "Something went wrong"
+    },
+    "success": "Success",
+    "navigation": {
+        "home": "Home",
+        "general": "General"
+    },
+    "home": {
+        "welcome": "Welcome, {{username}}!"
+    },
+    "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "auth": {
+        "signIn": "Sign in",
+        "signOut": "Sign out"
+    },
+    "language": {
+        "label": "Language"
+    },
+    "footer": {
+        "copyright": "© {{year}} {{appName}}",
+        "version": "v{{version}}"
+    },
+    "notFound": {
+        "goHome": "Go to home",
+        "title": "Page not found"
+    }
+}

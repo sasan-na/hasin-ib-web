@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client"
 import "./index.css"
+import "@/lib/i18n"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx";
 import Routes from "./routing.tsx"
 import {ErrorBoundary} from "@/components/error-boundary.tsx";

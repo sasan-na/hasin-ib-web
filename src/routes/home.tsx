@@ -1,3 +1,6 @@
+import {useTranslation} from "react-i18next"
+
 export default function Home() {
-    return <h1 className={"text-xl font-semibold"}>IBN</h1>
+    const {t} = useTranslation()
+    return <h1 className={"text-xl font-semibold"}>{t("appName")}</h1>
 }

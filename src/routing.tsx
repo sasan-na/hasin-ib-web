@@ -9,8 +9,8 @@ const NotFound = React.lazy(() => import("@/routes/notfound"));
 // Canonical map of paths and breadcrumb labels. Reference `routeMap.x.path`
 // instead of hardcoding path strings.
 export const routeMap = {
-    "home": {breadcrumb: "Home", path: "/"},
-    "notFound": {breadcrumb: "404", path: "/404"},
+    "home": {breadcrumb: "navigation.home", path: "/"},
+    "notFound": {breadcrumb: "notFound.title", path: "/404"},
 }
 
 const router = createBrowserRouter(

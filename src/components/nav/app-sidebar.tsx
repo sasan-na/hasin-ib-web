@@ -1,6 +1,7 @@
 import * as React from "react"
 import {Home} from "lucide-react"
 import {useLocation} from "react-router-dom"
+import {useTranslation} from "react-i18next"
 
 import {NavMain} from "@/components/nav/nav-main"
 import SidebarLogo from "@/components/nav/nav-logo.tsx"
@@ -10,10 +11,11 @@ import {routeMap} from "@/routing.tsx"
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {pathname} = useLocation()
+    const {t, i18n} = useTranslation()
 
     const navMain = [
         {
-            title: "Home",
+            title: t("navigation.home"),
             url: routeMap.home.path,
             icon: Home,
             isActive: pathname === routeMap.home.path,
@@ -21,7 +23,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     ]
 
     return (
-        <Sidebar variant={"sidebar"} collapsible="offcanvas" {...props}>
+        <Sidebar side={i18n.dir() === "rtl" ? "right" : "left"} variant={"sidebar"} collapsible="offcanvas" {...props}>
             <SidebarLogo/>
             <Separator orientation="horizontal"/>
             <SidebarContent>

@@ -1,0 +1,48 @@
+{
+    "skipToMain": "پرش به محتوای اصلی",
+    "appName": "IBN",
+    "button": {
+        "submit": "ارسال",
+        "cancel": "انصراف",
+        "save": "ذخیره",
+        "delete": "حذف",
+        "edit": "ویرایش",
+        "close": "بستن",
+        "back": "بازگشت",
+        "next": "بعدی",
+        "previous": "قبلی"
+    },
+    "loading": "در حال بارگذاری…",
+    "error": {
+        "generic": "مشکلی پیش آمد"
+    },
+    "success": "موفق",
+    "navigation": {
+        "home": "خانه",
+        "general": "عمومی"
+    },
+    "home": {
+        "welcome": "{{username}} عزیز، خوش آمدید!"
+    },
+    "theme": {
+        "label": "پوسته",
+        "light": "روشن",
+        "dark": "تیره",
+        "system": "سیستم"
+    },
+    "auth": {
+        "signIn": "ورود",
+        "signOut": "خروج"
+    },
+    "language": {
+        "label": "زبان"
+    },
+    "footer": {
+        "copyright": "© {{year}} {{appName}}",
+        "version": "نسخه {{version}}"
+    },
+    "notFound": {
+        "goHome": "بازگشت به صفحه اصلی",
+        "title": "صفحه یافت نشد"
+    }
+}

@@ -3,7 +3,9 @@ import {Outlet, useLocation} from "react-router-dom";
 import {AppSidebar} from "@/components/nav/app-sidebar"
 import {Separator} from "@/components/ui/separator"
 import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar"
-import {findRouteByPath, toTitleCase} from "@/lib/utils.ts";
+import {findRouteByPath} from "@/lib/utils.ts";
+import {useTranslation} from "react-i18next";
+import {LanguageSwitcher} from "@/components/language-switcher.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx"
 import {BreadcrumbItem, BreadcrumbResponsive} from "@/components/breadcrumbs"
 import {routeMap} from "@/routing.tsx";
@@ -20,6 +22,7 @@ const RouteFrame = ({children}: {children?: React.ReactNode}) => (
 
 export function AuthShell({children}: { children?: React.ReactNode }): React.ReactElement {
     const {pathname} = useLocation();
+    const {t} = useTranslation();
     const breadcrumbs: string[] = pathname.split("/");
 
     const breadcrumbItems = React.useMemo((): BreadcrumbItem[] => {
@@ -27,23 +30,18 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
         if (bc[0] === "") bc.splice(0, 1);
         return bc.map((path: string, i: number): BreadcrumbItem => {
             const href = "/" + bc.slice(0, i + 1).join("/")
-            const label = findRouteByPath(routeMap, href ?? path)?.["breadcrumb"] ?? path
+            const key = findRouteByPath(routeMap, href ?? path)?.["breadcrumb"]
+            const label = key ? t(key as never) : path
             return {
                 label: label,
                 href: href
             }
         })
-    }, [breadcrumbs])
+    }, [breadcrumbs, t])
 
     React.useEffect(() => {
-        const p = pathname.split("/");
-        const title = toTitleCase(p[pathname.split("/").length - 1])
-        if (title === "") {
-            document.title = `IBN`;
-        } else {
-            document.title = `${toTitleCase(p[pathname.split("/").length - 1])} · IBN`;
-        }
-    }, [pathname])
+        document.title = t("appName")
+    }, [pathname, t])
 
     return (
         <div id={"auth"} data-vaul-drawer-wrapper="">
@@ -56,10 +54,11 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
                             <header
                                 className="relative z-50 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
                                 <div className="flex items-center">
-                                    <SidebarTrigger className="-ml-1.5"/>
-                                    <Separator orientation="vertical" className="mr-2 h-4"/>
+                                    <SidebarTrigger className="-ms-1.5"/>
+                                    <Separator orientation="vertical" className="me-2 h-4"/>
                                     <BreadcrumbResponsive items={breadcrumbItems}/>
                                 </div>
+                                <LanguageSwitcher className="ms-auto"/>
                             </header>
                             <RouteFrame>{children}</RouteFrame>
                         </div>
