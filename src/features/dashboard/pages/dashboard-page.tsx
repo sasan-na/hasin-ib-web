@@ -115,9 +115,14 @@ export default function DashboardPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+				<div className="flex flex-wrap gap-2">
 				<Button asChild variant="outline" size="sm">
 					<Link to={routeMap.workflowRules.path}>{t("dashboard.rules.open")}</Link>
 				</Button>
+				<Button asChild variant="outline" size="sm">
+					<Link to={routeMap.subUsers.path}>{t("dashboard.users.open")}</Link>
+				</Button>
+				</div>
 			</div>
 			<p className="text-muted-foreground text-sm">{t("dashboard.hint")}</p>
 
