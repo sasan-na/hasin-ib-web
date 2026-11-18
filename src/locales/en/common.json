@@ -69,6 +69,27 @@
         "quickTransfer": {
             "title": "Quick transfer",
             "continue": "Continue"
+        },
+        "balance": {
+            "title": "Balance",
+            "choose": "Choose an account to see how its balance moved over the last month.",
+            "error": "The chart could not be loaded.",
+            "empty": "There was no movement to draw."
+        },
+        "notes": {
+            "title": "Notes and calendar",
+            "previous": "Previous month",
+            "next": "Next month",
+            "error": "The calendar could not be loaded.",
+            "none": "No notes for this day.",
+            "placeholder": "Write a note",
+            "full": "This day cannot hold more notes.",
+            "add": "Add",
+            "save": "Save",
+            "cancel": "Cancel",
+            "edit": "Edit note",
+            "delete": "Delete note",
+            "failed": "The note was not saved. Please try again."
         }
     },
     "theme": {
@@ -2156,6 +2177,31 @@
             "removeTitle": "Remove this rule",
             "removeQuestion": "The rule is removed.",
             "failed": "The change was not accepted. Please try again."
+        },
+        "home": {
+            "title": "Home page",
+            "hint": "Choose what the home page shows below your wallet: pick the rows, how wide each part is, and what goes in it.",
+            "loadError": "The home page layout could not be loaded.",
+            "useDefault": "Use the standard home page",
+            "noRows": "No rows yet. Add one to start.",
+            "row": "Row {{number}}",
+            "layout": "Widths",
+            "moveUp": "Move up",
+            "moveDown": "Move down",
+            "removeRow": "Remove row {{number}}",
+            "widget": "What to show",
+            "nothing": "Nothing",
+            "addRow": "Add a row",
+            "emptyRow": "Every row needs at least one thing to show.",
+            "save": "Save",
+            "saving": "Saving…",
+            "saved": "The home page was updated.",
+            "failed": "The layout was not saved. Please try again.",
+            "widgets": {
+                "BalanceChart": "Balance chart",
+                "Notes": "Notes and calendar",
+                "RecentEvents": "Recent events"
+            }
         }
     },
     "search": {

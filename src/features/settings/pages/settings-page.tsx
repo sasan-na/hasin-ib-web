@@ -9,6 +9,7 @@ import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
 import {addCountryLimitation, addIpLimitation, getCountries, getDisplayItems, getLimitations, removeLimitation, setDisplay, type DisplayItem, type DisplayKind, type Limitation} from "@/features/settings/api/settings"
+import {HomeLayoutSection} from "@/features/settings/components/home-layout-section"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {formatCardNumber} from "@/lib/format"
 
@@ -22,6 +23,7 @@ export default function SettingsPage() {
 	return (
 		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("settings.title")}</h1>
+			<HomeLayoutSection />
 			<DisplaySection />
 			<LimitationsSection />
 		</div>
