@@ -1695,6 +1695,88 @@
             "waiting": "The request has not been approved in the Hamoon app yet. Approve it there, then press Activate again.",
             "failed": "The service was not activated. Please start over and try again.",
             "uncertain": "We could not confirm whether the service was activated. Check the status before trying again."
+        },
+        "cartable": {
+            "title": "Digital cheque cartable",
+            "hint": "The digital cheques that concern you, and what the bank lets you do with each.",
+            "search": "Start of the Sayyad id",
+            "details": "Details",
+            "hide": "Hide",
+            "iban": "IBAN",
+            "type": "Cheque type",
+            "shared": "Shared",
+            "elsewhere": "Also possible, but not yet in this app: {{operations}}.",
+            "error": "The cartable could not be loaded.",
+            "empty": "No digital cheques here."
+        },
+        "guarantee": {
+            "title": "Guarantee",
+            "hint": "Sign as a guarantor, see where a cheque's guarantee stands, ask for a guarantee or stop it.",
+            "modes": {
+                "sign": "Sign as guarantor",
+                "inquiry": "Guarantee status",
+                "request": "Ask for guarantee",
+                "stop": "Stop guarantee"
+            },
+            "modeHint": {
+                "sign": "You were named a guarantor of a digital cheque. Look it up by its Sayyad id, then accept or refuse.",
+                "inquiry": "See each guarantor of a cheque and whether they have signed.",
+                "request": "As the holder, ask the named guarantors to sign for this cheque.",
+                "stop": "As the holder, stop the guarantors from signing for this cheque."
+            },
+            "lookUp": "Look up",
+            "looking": "Looking up…",
+            "review": "Review",
+            "lookupFailed": "The cheque could not be found.",
+            "status": "Cheque status",
+            "guaranteeStatus": "Guarantee status",
+            "blocked": "Block status",
+            "locked": "Lock status",
+            "myAnswer": "Your answer so far: {{answer}}",
+            "noGuarantors": "This cheque has no guarantors yet.",
+            "accept": "Accept guarantee",
+            "refuse": "Refuse guarantee",
+            "sign": "Sign",
+            "sending": "Sending…",
+            "again": "Back to guarantee",
+            "failed": "The request was not accepted. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the request went through. Look the cheque up again before trying again.",
+            "error": {
+                "sayyad": "Enter the {{length}}-digit Sayyad id."
+            },
+            "confirm": {
+                "accept": {
+                    "title": "Accept the guarantee",
+                    "question": "A request is sent to your Hamoon app. Approve it there, then come back and sign.",
+                    "button": "Accept"
+                },
+                "refuse": {
+                    "title": "Refuse the guarantee",
+                    "question": "You tell the registry you will not guarantee this cheque.",
+                    "button": "Refuse"
+                },
+                "request": {
+                    "title": "Ask for guarantee",
+                    "question": "The named guarantors are asked to sign for this cheque.",
+                    "button": "Ask"
+                },
+                "stop": {
+                    "title": "Stop the guarantee",
+                    "question": "The guarantors can no longer sign for this cheque.",
+                    "button": "Stop"
+                }
+            }
+        },
+        "guarantors": {
+            "action": "Guarantors",
+            "title": "Name the guarantors",
+            "hint": "Name the people who guarantee this cheque. You approve the list in your Hamoon app.",
+            "confirmTitle": "Name the guarantors",
+            "confirmQuestion": "A request is sent to your Hamoon app. Approve it there, then come back and send.",
+            "send": "Send to the registry",
+            "waiting": "The request has not been approved in the Hamoon app yet. Approve it there, then press send again.",
+            "failed": "The guarantors were not named. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the guarantors were named. Check the cheque's guarantee status before trying again."
         }
     },
     "dashboard": {

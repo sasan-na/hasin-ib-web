@@ -55,6 +55,14 @@ export default function ChequeListPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
+				<div className="flex flex-wrap gap-2">
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.chakadCartable.path}>{t("cheque.cartable.title")}</Link>
+					</Button>
+					<Button asChild size="sm" variant="outline">
+						<Link to={routeMap.chakadGuarantee.path}>{t("cheque.guarantee.title")}</Link>
+					</Button>
+				</div>
 			</div>
 
 			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
@@ -181,6 +189,11 @@ export default function ChequeListPage() {
 										{cheque.canRegister && account ? (
 											<Button asChild variant="ghost" size="sm">
 												<Link to={`${(cheque.digital ? routeMap.chakadIssue : routeMap.pichakRegister).path}?account=${String(account.id)}&series=${encodeURIComponent(cheque.series)}&serial=${encodeURIComponent(cheque.serial)}&sayyad=${encodeURIComponent(cheque.sayyadId)}`}>{t("cheque.register.action")}</Link>
+											</Button>
+										) : null}
+										{cheque.digital && cheque.sayyadId !== "" ? (
+											<Button asChild variant="ghost" size="sm">
+												<Link to={`${routeMap.chakadGuarantors.path}?sayyad=${encodeURIComponent(cheque.sayyadId)}`}>{t("cheque.guarantors.action")}</Link>
 											</Button>
 										) : null}
 										{cheque.canInquire ? (
