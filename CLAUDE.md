@@ -59,7 +59,7 @@ Rules: shared code (`components`, `hooks`, `lib`, `store`) never imports a featu
 
 `src/app/routes.ts` is the single source of truth for paths (`routeMap` holds paths and breadcrumb i18n keys; reference `routeMap.x.path`, never hardcode paths) and `src/app/router.tsx` maps them to pages. `/login` is public; everything else sits behind `RequireAuth` (`src/app/guards.tsx`), which redirects to login when there is no session token. Route components are `React.lazy`; each shell wraps its outlet in an error boundary + suspense (`RouteFrame` in `src/app/layout/shell.tsx`).
 
-The session (`src/store/session.ts`, Zustand) is **memory-only**: a refresh signs the user out. Never put the token or anything sensitive in `localStorage`/`sessionStorage`.
+The session (`src/store/session.ts`, Zustand) is persisted in `sessionStorage` only (by the owner's choice, so a reload keeps the user signed in; it is tab-scoped and cleared on sign-out or expiry). Never put the token in `localStorage`.
 
 ### Login contract (legacy server, verified against its code)
 
