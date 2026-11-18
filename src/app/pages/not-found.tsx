@@ -15,7 +15,7 @@ export default function NotFound() {
                     variant={"outline"}
                     className={"absolute start-4 top-16"}><ArrowLeft className="rtl:rotate-180"/> {t("button.back")}</Button>
             <Logo size={22}
-                  className={"animate-pulse fill-primary drop-shadow-md"}/>
+                  className={"motion-safe:animate-pulse fill-primary drop-shadow-md"}/>
             <h1 className={"font-semibold tracking-wider text-primary drop-shadow-md"}>
                 404
             </h1>
