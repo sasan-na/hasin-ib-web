@@ -190,6 +190,7 @@
         },
         "new": {
             "title": "Open a new account",
+            "summary": "Account summary",
             "stepType": "Account type",
             "stepDetails": "Account details",
             "stepContact": "Contact details",
