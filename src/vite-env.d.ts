@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+declare const __APP_VERSION__: string
+declare const __APP_BUILD_DATE__: string
+
 interface ImportMetaEnv {
 	/** Legacy server API root, e.g. https://ib.radin.tech/api. Defaults to "/api". */
 	readonly VITE_API_URL?: string

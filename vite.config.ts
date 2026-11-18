@@ -1,11 +1,16 @@
+import { readFileSync } from "node:fs"
 import path from "path"
 import react from "@vitejs/plugin-react"
 import { defineConfig, loadEnv } from "vite"
+
+const { version } = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf-8")) as { version: string }
 
 export default defineConfig(({ mode }) => {
 	// Dev only: forward same-origin /api calls to a real server (it sends no CORS headers).
 	const proxyTarget = loadEnv(mode, process.cwd(), "VITE_").VITE_DEV_PROXY_TARGET
 	return {
+	// The version from package.json and the build date, shown in the browser console (src/lib/app-version.ts).
+	define: { __APP_VERSION__: JSON.stringify(version), __APP_BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)) },
 	plugins: [react()],
 	server: proxyTarget
 		? { proxy: { "/api": { target: proxyTarget, changeOrigin: true, secure: true, cookieDomainRewrite: "localhost" } } }
