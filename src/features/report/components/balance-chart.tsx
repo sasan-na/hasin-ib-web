@@ -49,13 +49,13 @@ export function BalanceChart({days, persian}: Props) {
 			{ticks.map((tick) => (
 				<g key={tick}>
 					<line x1={PAD.left} x2={WIDTH - PAD.right} y1={y(tick)} y2={y(tick)} stroke="currentColor" strokeOpacity={0.12} />
-					<text x={PAD.left - 8} y={y(tick)} textAnchor="end" dominantBaseline="middle" className="fill-muted-foreground text-[10px]">
+					<text x={PAD.left - 8} y={y(tick)} textAnchor="end" dominantBaseline="middle" className="fill-muted-foreground text-xs">
 						{money(tick)}
 					</text>
 				</g>
 			))}
 			{labelAt.map((index) => (
-				<text key={index} x={x(index)} y={HEIGHT - 10} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+				<text key={index} x={x(index)} y={HEIGHT - 10} textAnchor="middle" className="fill-muted-foreground text-xs">
 					{label(days[index].date, persian)}
 				</text>
 			))}
