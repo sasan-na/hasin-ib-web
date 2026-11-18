@@ -15,7 +15,7 @@ export interface TransactionResultState {
 
 /** The outcome of a transaction. The result lives in router state only, so a reload has nothing to show. */
 export default function TransactionResultPage() {
-	const {t} = useTranslation()
+	const {t, i18n} = useTranslation()
 	const state = useLocation().state as TransactionResultState | null
 
 	if (!state?.result) return <Navigate to={routeMap.accountList.path} replace />
@@ -23,29 +23,47 @@ export default function TransactionResultPage() {
 
 	const tone = result.ok ? (result.needsApproval ? "pending" : "success") : "failure"
 	const Icon = tone === "success" ? CircleCheck : tone === "pending" ? Clock : CircleAlert
+	const executed = result.executedAt !== "" ? new Date(result.executedAt) : null
+	const executedText =
+		executed && !Number.isNaN(executed.getTime())
+			? new Intl.DateTimeFormat(i18n.language === "fa" ? "fa-IR-u-ca-persian" : "en-US", {dateStyle: "medium", timeStyle: "short"}).format(executed)
+			: null
 	const title =
 		tone === "success" ? t("transaction.result.success") : tone === "pending" ? t("transaction.result.pending") : t("transaction.result.failure")
 
 	return (
 		<div className="mx-auto flex w-full max-w-xl flex-col gap-6 rounded-sm border bg-slip p-6 md:p-8">
 			<div className="flex items-start gap-3">
-				<Icon
+				<span
 					aria-hidden="true"
-					className={cn("mt-1 size-7 shrink-0", tone === "success" && "text-success", tone === "pending" && "text-warning", tone === "failure" && "text-destructive")}
-				/>
+					className={cn(
+						"grid size-12 shrink-0 place-items-center rounded-full",
+						tone === "success" && "bg-success-soft text-success",
+						tone === "pending" && "bg-warning-soft text-warning-soft-foreground",
+						tone === "failure" && "bg-destructive/10 text-destructive",
+					)}
+				>
+					<Icon className="size-7" />
+				</span>
 				<div className="flex flex-col gap-1">
 					<h1 className="text-2xl font-bold">{title}</h1>
 					{result.message ? <p className="text-sm wrap-break-word text-muted-foreground">{result.message}</p> : null}
 				</div>
 			</div>
 
-			<dl className={cn("flex flex-col gap-2 text-sm", (result.transactionId !== null || (result.errorCode && !result.ok)) && "border-t border-dashed border-slip-rule pt-4")}>
+			<dl className={cn("flex flex-col gap-2 text-sm", (result.transactionId !== null || executedText !== null || (result.errorCode && !result.ok)) && "border-t border-dashed border-slip-rule pt-4")}>
 				{result.transactionId !== null ? (
 					<div className="flex flex-wrap gap-x-3">
 						<dt className="w-32 shrink-0 text-muted-foreground">{t("transaction.result.reference")}</dt>
 						<dd dir="ltr" className="tabular-nums">
 							{result.transactionId}
 						</dd>
+					</div>
+				) : null}
+				{executedText !== null ? (
+					<div className="flex flex-wrap gap-x-3">
+						<dt className="w-32 shrink-0 text-muted-foreground">{t("transaction.result.time")}</dt>
+						<dd className="tabular-nums">{executedText}</dd>
 					</div>
 				) : null}
 				{result.errorCode && !result.ok ? (

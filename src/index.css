@@ -169,25 +169,33 @@
 	--primary: oklch(0.42 0.11 245);
 	--primary-foreground: oklch(0.99 0 0);
 	--primary-soft: oklch(0.95 0.025 240);
+	--primary-soft-foreground: oklch(0.32 0.09 245);
 	--secondary: oklch(0.955 0.012 240);
 	--secondary-foreground: oklch(0.3 0.05 250);
 	--muted: oklch(0.955 0.01 240);
 	--muted-foreground: oklch(0.52 0.03 250);
 	--accent: oklch(0.94 0.03 175);
 	--accent-foreground: oklch(0.38 0.08 175);
+	--accent-soft: oklch(0.95 0.025 195);
 	--destructive: oklch(0.58 0.2 27);
 	--destructive-foreground: oklch(0.99 0 0);
 	--success: oklch(0.52 0.12 160);
+	--success-foreground: oklch(0.985 0 0);
 	--success-soft: oklch(0.95 0.04 160);
+	--success-soft-foreground: oklch(0.30 0.09 150);
 	--warning: #8f5f0a;
 	--warning-soft: oklch(0.96 0.05 85);
 	--warning-foreground: oklch(0.48 0.1 70);
+	--warning-soft-foreground: oklch(0.42 0.10 85);
 	--info: #006fb0;
 	--border: oklch(0.91 0.012 245);
 	--input: oklch(0.62 0.03 250);
 	--ring: oklch(0.55 0.11 245);
 	--gradient-brand: linear-gradient(135deg, oklch(0.36 0.1 250), oklch(0.48 0.11 225));
 	--card-shadow: 0 1px 2px oklch(0.3 0.05 250 / 0.04), 0 8px 24px -12px oklch(0.3 0.05 250 / 0.12);
+	--card-shadow-hover: 0 10px 25px -5px oklch(0.3 0.05 250 / 0.14), 0 8px 10px -6px oklch(0.3 0.05 250 / 0.06);
+	/* The label on the blue gradient: white in both themes, since the gradient is dark in both. */
+	--on-brand: oklch(0.99 0 0);
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
 	--chart-3: oklch(0.398 0.07 227.392);
@@ -218,25 +226,32 @@
 	--primary: oklch(0.72 0.12 240);
 	--primary-foreground: oklch(0.18 0.03 255);
 	--primary-soft: oklch(0.3 0.05 245);
+	--primary-soft-foreground: oklch(0.85 0.05 245);
 	--secondary: oklch(0.28 0.04 255);
 	--secondary-foreground: oklch(0.95 0.01 245);
 	--muted: oklch(0.28 0.04 255);
 	--muted-foreground: oklch(0.72 0.03 250);
 	--accent: oklch(0.3 0.04 175);
 	--accent-foreground: oklch(0.9 0.05 175);
+	--accent-soft: oklch(0.22 0.04 195);
 	--destructive: oklch(0.72 0.17 25);
 	--destructive-foreground: oklch(0.18 0.03 255);
 	--success: oklch(0.75 0.14 160);
+	--success-foreground: oklch(0.12 0.03 150);
 	--success-soft: oklch(0.3 0.05 160);
+	--success-soft-foreground: oklch(0.85 0.06 150);
 	--warning: #e0a93b;
 	--warning-soft: oklch(0.3 0.05 80);
 	--warning-foreground: oklch(0.85 0.1 80);
+	--warning-soft-foreground: oklch(0.88 0.07 85);
 	--info: #4db0e8;
 	--border: oklch(0.3 0.03 255);
 	--input: oklch(0.53 0.04 255);
 	--ring: oklch(0.72 0.12 240);
 	--gradient-brand: linear-gradient(135deg, oklch(0.36 0.1 250), oklch(0.46 0.11 228));
 	--card-shadow: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px -12px oklch(0 0 0 / 0.5);
+	--card-shadow-hover: 0 10px 25px -5px oklch(0 0 0 / 0.5), 0 8px 10px -6px oklch(0 0 0 / 0.3);
+	--on-brand: oklch(0.99 0 0);
 	--chart-1: oklch(0.72 0.17 45);
 	--chart-2: oklch(0.72 0.12 195);
 	--chart-3: oklch(0.72 0.06 235);
@@ -278,8 +293,15 @@
 	--color-warning-soft: var(--warning-soft);
 	--color-warning-foreground: var(--warning-foreground);
 	--color-primary-soft: var(--primary-soft);
+	--color-primary-soft-foreground: var(--primary-soft-foreground);
+	--color-accent-soft: var(--accent-soft);
+	--color-success-foreground: var(--success-foreground);
+	--color-success-soft-foreground: var(--success-soft-foreground);
+	--color-warning-soft-foreground: var(--warning-soft-foreground);
+	--color-on-brand: var(--on-brand);
 	--color-success-soft: var(--success-soft);
 	--shadow-card: var(--card-shadow);
+	--shadow-card-hover: var(--card-shadow-hover);
 	--color-info: var(--info);
 	--color-border: var(--border);
 	--color-input: var(--input);
@@ -405,4 +427,9 @@
 /* The blue gradient of hero panels (the transfer summary). */
 @utility bg-brand-gradient {
 	background-image: var(--gradient-brand);
+}
+
+/* Figures line up in columns and amounts. */
+@utility tabular {
+	font-variant-numeric: tabular-nums;
 }
