@@ -2644,6 +2644,8 @@
             }
         },
         "batch": {
+            "summary": "Batch summary",
+            "settingsStep": "Transfer type and source",
             "title": "Batch transfer through the branch",
             "hint": "Pay several people at once through the branch. List who is paid and how much, then sign one PDF for the whole batch and upload it.",
             "note": "A note for the whole batch",
