@@ -1777,6 +1777,49 @@
             "waiting": "The request has not been approved in the Hamoon app yet. Approve it there, then press send again.",
             "failed": "The guarantors were not named. Please check the details and try again.",
             "uncertain": "We could not confirm whether the guarantors were named. Check the cheque's guarantee status before trying again."
+        },
+        "cashing": {
+            "title": "Cash a digital cheque",
+            "hint": "As the holder of a digital cheque: lock it so it can be cashed, remove that lock, or cash it inside the bank.",
+            "modes": {
+                "lock": "Lock for cashing",
+                "unlock": "Remove the lock",
+                "clear": "Cash inside the bank"
+            },
+            "modeHint": {
+                "lock": "Lock the cheque so no one else can cash or pass it on while you collect it.",
+                "unlock": "Remove the cashing lock from a cheque you locked.",
+                "clear": "Cash the cheque inside the bank: its amount is paid into the account you name."
+            },
+            "bounceQuestion": "Is this cheque being cashed after it bounced?",
+            "bounced": "Yes, it bounced",
+            "notBounced": "No",
+            "iban": "IBAN of the account to be paid",
+            "failed": "The request was not accepted. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the request went through. Look the cheque up again before trying again.",
+            "error": {
+                "alreadyLocked": "This cheque is already locked.",
+                "notLocked": "This cheque is not locked.",
+                "bounce": "Say whether the cheque bounced.",
+                "iban": "Enter a valid IBAN (24 digits, without IR)."
+            },
+            "confirm": {
+                "lock": {
+                    "title": "Lock for cashing",
+                    "question": "The cheque is locked for cashing until you remove the lock.",
+                    "button": "Lock"
+                },
+                "unlock": {
+                    "title": "Remove the lock",
+                    "question": "The cashing lock on this cheque is removed.",
+                    "button": "Remove lock"
+                },
+                "clear": {
+                    "title": "Cash the cheque",
+                    "question": "The cheque's amount is paid into this account and the cheque is cashed. This cannot be undone.",
+                    "button": "Cash cheque"
+                }
+            }
         }
     },
     "dashboard": {

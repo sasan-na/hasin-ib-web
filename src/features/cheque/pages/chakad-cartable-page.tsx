@@ -17,6 +17,7 @@ const dueText = (value: string): string => (/^\d{8}$/.test(value) ? `${value.sli
 /** Where each operation the bank offers is done here; the rest are not available in this client yet. */
 const operationTarget = (key: string, sayyadId: string): string | null => {
 	const guarantee = (mode: string): string => `${routeMap.chakadGuarantee.path}?mode=${mode}&sayyad=${encodeURIComponent(sayyadId)}`
+	const cashing = (mode: string): string => `${routeMap.chakadCashing.path}?mode=${mode}&sayyad=${encodeURIComponent(sayyadId)}`
 	switch (key) {
 		case "GuaranteeInquiry":
 			return guarantee("inquiry")
@@ -24,6 +25,12 @@ const operationTarget = (key: string, sayyadId: string): string | null => {
 			return guarantee("request")
 		case "StopGuarantorSigning":
 			return guarantee("stop")
+		case "LockChequeForCashing":
+			return cashing("lock")
+		case "UnlockChequeForCashing":
+			return cashing("unlock")
+		case "ChequeClearing":
+			return cashing("clear")
 		case "ChakadTransfersChainInquiry":
 			return routeMap.pichakChain.path
 		case "ChakadOwnerChequeStatus":

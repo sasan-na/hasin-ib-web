@@ -77,6 +77,7 @@ export const routeMap = {
 	"chequeBook": {breadcrumb: "cheque.book.title", path: "/cheque/book"},
 	"pichakInquiry": {breadcrumb: "cheque.pichak.title", path: "/cheque/pichak-inquiry"},
 	"chakadActivate": {breadcrumb: "cheque.activate.title", path: "/cheque/activate"},
+	"chakadCashing": {breadcrumb: "cheque.cashing.title", path: "/cheque/cashing"},
 	"chakadCartable": {breadcrumb: "cheque.cartable.title", path: "/cheque/cartable"},
 	"chakadGuarantee": {breadcrumb: "cheque.guarantee.title", path: "/cheque/guarantee"},
 	"chakadGuarantors": {breadcrumb: "cheque.guarantors.title", path: "/cheque/guarantors"},

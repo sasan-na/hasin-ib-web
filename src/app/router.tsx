@@ -90,6 +90,7 @@ const ChequeList = React.lazy(() => import("@/features/cheque/pages/cheque-list-
 const ChequeBook = React.lazy(() => import("@/features/cheque/pages/cheque-book-page.tsx"));
 const PichakInquiry = React.lazy(() => import("@/features/cheque/pages/pichak-inquiry-page.tsx"));
 const ChakadActivate = React.lazy(() => import("@/features/cheque/pages/chakad-activate-page.tsx"));
+const ChakadCashing = React.lazy(() => import("@/features/cheque/pages/chakad-cashing-page.tsx"));
 const ChakadCartable = React.lazy(() => import("@/features/cheque/pages/chakad-cartable-page.tsx"));
 const ChakadGuarantee = React.lazy(() => import("@/features/cheque/pages/chakad-guarantee-page.tsx"));
 const ChakadGuarantors = React.lazy(() => import("@/features/cheque/pages/chakad-guarantors-page.tsx"));
@@ -201,6 +202,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.pichakRegister.path} element={<PichakRegister/>}/>
                     <Route path={routeMap.chakadIssue.path} element={<ChakadIssue/>}/>
                     <Route path={routeMap.chakadCartable.path} element={<ChakadCartable/>}/>
+                    <Route path={routeMap.chakadCashing.path} element={<ChakadCashing/>}/>
                     <Route path={routeMap.chakadGuarantee.path} element={<ChakadGuarantee/>}/>
                     <Route path={routeMap.chakadGuarantors.path} element={<ChakadGuarantors/>}/>
                     <Route path={routeMap.chakadActivate.path} element={<ChakadActivate/>}/>
