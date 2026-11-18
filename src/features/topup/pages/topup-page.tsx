@@ -4,6 +4,8 @@ import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
+import {ChoiceCards} from "@/components/flow/choice-cards"
+import {AMOUNT_INPUT_CLASS, FieldError, FlowLayout, FlowSummary, StepSection} from "@/components/flow/flow-form"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
@@ -67,7 +69,7 @@ export default function TopUpPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("topup.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -76,82 +78,83 @@ export default function TopUpPage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("topup.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="tu-operator">{t("topup.operator")}</Label>
-					{operators.isPending ? (
-						<Skeleton className="h-9 w-full" />
-					) : operators.isError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{t("topup.operatorsError")}
-						</p>
-					) : (
-						<Select value={operator} onValueChange={setOperator}>
-							<SelectTrigger id="tu-operator" className="w-full">
-								<SelectValue placeholder={t("topup.chooseOperator")} />
-							</SelectTrigger>
-							<SelectContent>
-								{operators.data.map((item) => (
-									<SelectItem key={item.key} value={item.key}>
-										{item.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="tu-mobile">{t("topup.mobile")}</Label>
-					<Input id="tu-mobile" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={11} className="max-w-60" value={mobile} onChange={(event) => setMobile(normalizeDigits(event.target.value).replace(/\D/g, ""))} />
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="tu-amount">{t("topup.amount")}</Label>
-					<Input id="tu-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={10} className="max-w-60" value={amount} onChange={(event) => setAmount(normalizeDigits(event.target.value).replace(/\D/g, "").replace(/^0+/, ""))} />
-					{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
-					{limits.data && (limits.data.min > 0 || limits.data.max > 0) ? <p className="text-xs text-muted-foreground">{t("topup.limits", {min: money(limits.data.min), max: money(limits.data.max), step: money(limits.data.step)})}</p> : null}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="tu-card">{t("topup.card")}</Label>
+			<FlowLayout
+				aside={
+					<FlowSummary
+						id="tu-summary"
+						title={t("topup.summary")}
+						amount={value > 0 ? money(value) : null}
+						rows={[
+							{label: t("topup.card"), value: card ? card.name || card.type : null},
+							{label: t("topup.operator"), value: operator !== "" ? operatorName : null},
+							{label: t("topup.mobile"), value: /^09\d{9}$/.test(mobile) ? mobile : null},
+						]}
+						reviewLabel={t("topup.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<StepSection id="tu-from" step={1} title={t("topup.fromStep")}>
+					<p id="tu-card-label" className="sr-only">
+						{t("topup.card")}
+					</p>
 					{cards.isPending ? (
-						<Skeleton className="h-9 w-full" />
+						<Skeleton className="h-24 w-full" />
 					) : cards.isError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{t("topup.cardsError")}
-						</p>
+						<FieldError>{t("topup.cardsError")}</FieldError>
 					) : (
-						<Select
-							value={cardId}
-							onValueChange={(next) => {
-								setCardId(next)
+						<ChoiceCards
+							name="tu-card"
+							labelledBy="tu-card-label"
+							value={card?.id ?? null}
+							onChange={(id) => {
+								setCardId(String(id))
 								setForm(EMPTY_CREDENTIALS)
 							}}
-						>
-							<SelectTrigger id="tu-card" className="w-full">
-								<SelectValue placeholder={t("topup.chooseCard")} />
-							</SelectTrigger>
-							<SelectContent>
-								{cards.data.map((candidate) => (
-									<SelectItem key={candidate.id} value={String(candidate.id)}>
-										<span>{candidate.name || candidate.type}</span> <span dir="ltr">{formatCardNumber(candidate.number)}</span>
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+							choices={cards.data.map((candidate) => ({id: candidate.id, title: candidate.name || candidate.type, number: formatCardNumber(candidate.number)}))}
+						/>
 					)}
-				</div>
-				{card ? <CardCredentialsFields cardId={card.id} cardNumber={card.number} codeServiceName={CODE_SERVICE} value={form} onChange={setForm} /> : null}
+					{card ? <CardCredentialsFields cardId={card.id} cardNumber={card.number} codeServiceName={CODE_SERVICE} value={form} onChange={setForm} /> : null}
+				</StepSection>
 
-				{error ? (
-					<p role="alert" className="text-sm text-destructive">
-						{error}
-					</p>
-				) : null}
-				<div>
-					<Button type="button" onClick={review}>
-						{t("topup.review")}
-					</Button>
-				</div>
-			</section>
+				<StepSection id="tu-to" step={2} title={t("topup.toStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="tu-operator">{t("topup.operator")}</Label>
+						{operators.isPending ? (
+							<Skeleton className="h-9 w-full" />
+						) : operators.isError ? (
+							<FieldError>{t("topup.operatorsError")}</FieldError>
+						) : (
+							<Select value={operator} onValueChange={setOperator}>
+								<SelectTrigger id="tu-operator" className="w-full">
+									<SelectValue placeholder={t("topup.chooseOperator")} />
+								</SelectTrigger>
+								<SelectContent>
+									{operators.data.map((item) => (
+										<SelectItem key={item.key} value={item.key}>
+											{item.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						)}
+					</div>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="tu-mobile">{t("topup.mobile")}</Label>
+						<Input id="tu-mobile" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={11} className="h-11 text-base" value={mobile} onChange={(event) => setMobile(normalizeDigits(event.target.value).replace(/\D/g, ""))} />
+					</div>
+				</StepSection>
+
+				<StepSection id="tu-amount-step" step={3} title={t("topup.amountStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="tu-amount">{t("topup.amount")}</Label>
+						<Input id="tu-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={10} className={AMOUNT_INPUT_CLASS} value={amount} onChange={(event) => setAmount(normalizeDigits(event.target.value).replace(/\D/g, "").replace(/^0+/, ""))} />
+						{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
+						{limits.data && (limits.data.min > 0 || limits.data.max > 0) ? <p className="text-xs text-muted-foreground">{t("topup.limits", {min: money(limits.data.min), max: money(limits.data.max), step: money(limits.data.step)})}</p> : null}
+					</div>
+					{error ? <FieldError>{error}</FieldError> : null}
+				</StepSection>
+			</FlowLayout>
 
 			{confirming && card ? (
 				<ConfirmDialog
