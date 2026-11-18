@@ -627,6 +627,8 @@
             "date": "Date",
             "status": "Status",
             "cancel": "Cancel ticket",
+            "summary": "Ticket summary",
+            "receiverStep": "Receiver and password",
             "intro": "The receiver can take this amount from an ATM without a card, using their mobile number and the password you set here.",
             "configError": "The card-less limits could not be loaded. Try again in a moment.",
             "cardsError": "Your cards could not be loaded. Try again in a moment.",
