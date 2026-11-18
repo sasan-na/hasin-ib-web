@@ -114,7 +114,7 @@ export default function CardRequestListPage() {
 			<h1 className="text-2xl font-bold">{t("card.requests.title")}</h1>
 
 			<form
-				className="flex flex-col gap-5 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-card"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -242,7 +242,7 @@ export default function CardRequestListPage() {
 			) : null}
 
 			{search.isSuccess && search.data.length === 0 ? (
-				<p role="status" className="rounded-lg bg-card p-5 text-sm text-muted-foreground">
+				<p role="status" className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">
 					{t("card.requests.noResult")}
 				</p>
 			) : null}

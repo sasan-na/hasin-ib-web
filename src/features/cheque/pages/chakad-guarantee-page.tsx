@@ -115,7 +115,7 @@ export default function ChakadGuaranteePage() {
 	}
 
 	const details = (cheque: GuaranteeCheque) => (
-		<dl className="grid gap-2 rounded-lg border bg-card p-5 text-sm sm:grid-cols-2">
+		<dl className="grid gap-2 rounded-2xl border bg-card p-5 shadow-card text-sm sm:grid-cols-2">
 			{(
 				[
 					[t("cheque.sayyadId"), cheque.sayyadId, true],
@@ -160,7 +160,7 @@ export default function ChakadGuaranteePage() {
 			<p className="text-sm text-muted-foreground">{t(`cheque.guarantee.modeHint.${mode}`)}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (!ready) return setProblem(t("cheque.guarantee.error.sayyad", {length: SAYYAD_LENGTH}))

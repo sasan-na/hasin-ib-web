@@ -60,15 +60,15 @@ export default function RolesPage() {
 			{roles.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : roles.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{roles.error.message || t("dashboard.roles.error")}
 				</p>
 			) : roles.data.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.roles.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("dashboard.roles.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{roles.data.map((role) => (
-						<li key={role.id} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+						<li key={role.id} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<div className="flex flex-wrap items-baseline justify-between gap-2">
 								<h2 className="text-base font-semibold">{role.name}</h2>
 								{role.isAdmin ? <span className="text-xs text-muted-foreground">{t("dashboard.roles.admin")}</span> : null}

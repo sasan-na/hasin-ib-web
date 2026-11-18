@@ -77,7 +77,7 @@ export default function ContactListPage() {
 			<Input type="search" aria-label={t("contact.search")} placeholder={t("contact.search")} value={query} onChange={(event) => setQuery(event.target.value)} />
 
 			{notice ? (
-				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
+				<p role={notice.ok ? "status" : "alert"} className={`rounded-xl bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
 					{notice.text}
 				</p>
 			) : null}
@@ -88,15 +88,15 @@ export default function ContactListPage() {
 					<Skeleton className="h-24 w-full" />
 				</div>
 			) : contacts.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{contacts.error.message || t("contact.error")}
 				</p>
 			) : visible.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{contacts.data.length === 0 ? t("contact.empty") : t("contact.noMatch")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{contacts.data.length === 0 ? t("contact.empty") : t("contact.noMatch")}</p>
 			) : (
 				<ul className="grid gap-4 md:grid-cols-2">
 					{visible.map((contact) => (
-						<li key={contact.id} className="flex flex-col gap-3 rounded-lg border bg-card p-4">
+						<li key={contact.id} className="flex flex-col gap-3 rounded-xl border bg-card p-4">
 							<div className="flex items-start justify-between gap-2">
 								<div className="flex min-w-0 flex-col gap-1">
 									<h2 className="truncate text-base font-semibold">{`${contact.name} ${contact.family}`.trim()}</h2>

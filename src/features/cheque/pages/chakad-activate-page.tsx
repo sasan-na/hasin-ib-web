@@ -65,7 +65,7 @@ export default function ChakadActivatePage() {
 			<h1 className="text-2xl font-bold">{t("cheque.activate.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("cheque.activate.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 				{status.isPending ? (
 					<Skeleton className="h-16 w-full" />
 				) : status.isError ? (

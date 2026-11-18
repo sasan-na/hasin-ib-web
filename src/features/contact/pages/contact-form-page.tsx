@@ -45,7 +45,7 @@ export default function ContactFormPage() {
 
 function Problem({text}: {text: string}) {
 	return (
-		<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+		<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 			{text}
 		</p>
 	)
@@ -123,7 +123,7 @@ function ContactForm({initial, limits}: {initial: Contact; limits: ContactLimits
 				if (canSave) save.mutate()
 			}}
 		>
-			<div className="grid gap-4 rounded-lg border bg-card p-4 sm:grid-cols-2">
+			<div className="grid gap-4 rounded-xl border bg-card p-4 sm:grid-cols-2">
 				<Field id="contact-name" label={t("contact.name")}>
 					<Input id="contact-name" value={name} maxLength={50} onChange={(event) => setName(event.target.value)} />
 				</Field>

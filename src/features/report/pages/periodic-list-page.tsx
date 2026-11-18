@@ -55,7 +55,7 @@ export default function PeriodicListPage() {
 			<Input type="search" aria-label={t("report.periodic.search")} placeholder={t("report.periodic.search")} value={query} onChange={(event) => setQuery(event.target.value)} />
 
 			{notice ? (
-				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
+				<p role={notice.ok ? "status" : "alert"} className={`rounded-xl bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
 					{notice.text}
 				</p>
 			) : null}
@@ -66,15 +66,15 @@ export default function PeriodicListPage() {
 					<Skeleton className="h-28 w-full" />
 				</div>
 			) : invoices.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{invoices.error.message || t("report.periodic.loadError")}
 				</p>
 			) : visible.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{invoices.data.length === 0 ? t("report.periodic.empty") : t("report.periodic.noMatch")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{invoices.data.length === 0 ? t("report.periodic.empty") : t("report.periodic.noMatch")}</p>
 			) : (
 				<ul className="grid gap-4 md:grid-cols-2">
 					{visible.map((invoice) => (
-						<li key={invoice.id} className="flex flex-col gap-3 rounded-lg border bg-card p-4">
+						<li key={invoice.id} className="flex flex-col gap-3 rounded-xl border bg-card p-4">
 							<div className="flex items-start justify-between gap-2">
 								<div className="flex min-w-0 flex-col gap-1">
 									<span dir="ltr" className="text-sm font-semibold">

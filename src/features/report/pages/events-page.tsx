@@ -133,7 +133,7 @@ export default function EventsPage() {
 			</div>
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-2"
 				onSubmit={(event) => {
 					event.preventDefault()
 					search()
@@ -197,20 +197,20 @@ export default function EventsPage() {
 					<Skeleton className="h-14 w-full" />
 				</div>
 			) : events.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{events.error.message || t("report.events.failed")}
 				</p>
 			) : (
 				<>
-					{note && source === "current" ? <p className="rounded-lg bg-card p-4 text-sm text-muted-foreground">{note}</p> : null}
+					{note && source === "current" ? <p className="rounded-xl bg-card p-4 text-sm text-muted-foreground">{note}</p> : null}
 					{rows.length === 0 ? (
-						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("report.events.empty")}</p>
+						<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("report.events.empty")}</p>
 					) : (
 						<>
 							<p className="text-sm text-muted-foreground">{t("report.events.count", {shown: formatAmount(rows.length, language), total: formatAmount(total, language)})}</p>
 							<ul className="flex flex-col gap-3">
 								{rows.map((event, index) => (
-									<li key={`${String(event.id)}-${String(index)}`} className="flex flex-col gap-1 rounded-lg border bg-card p-4">
+									<li key={`${String(event.id)}-${String(index)}`} className="flex flex-col gap-1 rounded-xl border bg-card p-4">
 										<div className="flex flex-wrap justify-between gap-2">
 											<span className="text-sm font-semibold">{event.type}</span>
 											<span dir="ltr" className="text-xs text-muted-foreground">

@@ -53,7 +53,7 @@ export default function ConnectedCardListPage() {
 			<h1 className="text-2xl font-bold">{t("card.connected.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("card.connected.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="cc-account">{t("card.connected.account")}</Label>
 					{accounts.isPending ? (
@@ -112,17 +112,17 @@ export default function ConnectedCardListPage() {
 			{account === undefined ? null : cards.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : cards.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{cards.error.message || t("card.connected.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.connected.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("card.connected.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{shown.map((card) => {
 						const credit = credits[card.number]
 						return (
-							<li key={card.number} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+							<li key={card.number} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 								<div className="flex flex-wrap items-baseline justify-between gap-2">
 									<h2 dir="ltr" className="text-base font-semibold tabular-nums">
 										{formatCardNumber(card.number)}

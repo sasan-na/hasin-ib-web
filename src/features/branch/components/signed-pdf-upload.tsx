@@ -105,7 +105,7 @@ export function SignedPdfUpload({value, onChange, accountNumber, templateHref, i
 	}
 
 	return (
-		<section className="flex flex-col gap-3 rounded-lg bg-card p-5" aria-labelledby="signed-pdf-title">
+		<section className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="signed-pdf-title">
 			<h2 id="signed-pdf-title" className="text-base font-semibold">
 				{t("branch.upload.title")}
 			</h2>

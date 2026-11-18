@@ -35,7 +35,7 @@ export default function PichakInquiryPage() {
 			<p className="text-sm text-muted-foreground">{t("cheque.pichak.intro")}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (valid && !inquiry.isPending) inquiry.mutate(role)
@@ -88,17 +88,17 @@ export default function PichakInquiryPage() {
 			</form>
 
 			{inquiry.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{inquiry.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}
 			{inquiry.data ? (
-				<section aria-label={t("cheque.pichak.result")} className="rounded-lg bg-card p-5">
+				<section aria-label={t("cheque.pichak.result")} className="rounded-2xl bg-card p-5 shadow-card">
 					<PichakResult inquiry={inquiry.data} />
 				</section>
 			) : null}
 			{canAnswer && inquiry.data?.cheque ? (
-				<section aria-label={t("cheque.pichak.answer")} className="flex flex-col gap-3 rounded-lg bg-card p-5">
+				<section aria-label={t("cheque.pichak.answer")} className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card">
 					<p className="text-sm">{t("cheque.pichak.waiting")}</p>
 					<div className="flex flex-wrap gap-2">
 						<Button type="button" onClick={() => setAnswering(true)}>
@@ -111,7 +111,7 @@ export default function PichakInquiryPage() {
 				</section>
 			) : null}
 			{inquiry.variables === "holder" && inquiry.data?.cheque ? (
-				<section aria-label={t("cheque.pichak.transferStatus")} className="flex flex-col gap-3 rounded-lg bg-card p-5">
+				<section aria-label={t("cheque.pichak.transferStatus")} className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card">
 					<div className="flex flex-wrap items-center justify-between gap-2">
 						<h2 className="text-base font-semibold">{t("cheque.pichak.transferStatus")}</h2>
 						<Button type="button" variant="outline" size="sm" disabled={transferStatus.isPending} onClick={() => transferStatus.mutate()}>

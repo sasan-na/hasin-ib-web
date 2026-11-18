@@ -47,22 +47,22 @@ export default function SearchPage() {
 			<p className="text-sm text-muted-foreground">{phrase === "" ? t("search.prompt") : t("search.for", {phrase})}</p>
 
 			{phrase.length < 2 ? (
-				phrase === "" ? null : <p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("search.short")}</p>
+				phrase === "" ? null : <p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("search.short")}</p>
 			) : results.isPending ? (
 				<Skeleton className="h-24 w-full" />
 			) : results.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{results.error.message || t("search.error")}
 				</p>
 			) : found.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("search.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("search.empty")}</p>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2">
 					{found.map(({item, destination}) => {
 						const Icon = destination.icon
 						return (
 							<li key={item.key}>
-								<Link to={destination.to} className="flex items-center gap-4 rounded-lg border bg-card p-4 hover:bg-muted/40">
+								<Link to={destination.to} className="flex items-center gap-4 rounded-xl border bg-card p-4 hover:bg-muted/40">
 									<span aria-hidden="true" className={cn("flex size-10 shrink-0 items-center justify-center rounded-full", destination.badge)}>
 										<Icon className="size-5" />
 									</span>

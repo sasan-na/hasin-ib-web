@@ -68,7 +68,7 @@ export default function ChakadGuarantorsPage() {
 		return (
 			<div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
 				<h1 className="text-2xl font-bold">{t("cheque.guarantors.title")}</h1>
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{t("cheque.register.noCheque")}
 				</p>
 				<Button asChild variant="outline" className="self-start">
@@ -87,7 +87,7 @@ export default function ChakadGuarantorsPage() {
 			</p>
 
 			<form
-				className="flex flex-col gap-5 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					review()

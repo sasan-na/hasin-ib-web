@@ -60,7 +60,7 @@ export default function MessageListPage() {
 			</div>
 
 			{notice ? (
-				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
+				<p role={notice.ok ? "status" : "alert"} className={`rounded-xl bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
 					{notice.text}
 				</p>
 			) : null}
@@ -72,11 +72,11 @@ export default function MessageListPage() {
 					<Skeleton className="h-20 w-full" />
 				</div>
 			) : messages.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{messages.error.message || t("message.error")}
 				</p>
 			) : messages.data.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("message.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("message.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{messages.data.map((item) => (

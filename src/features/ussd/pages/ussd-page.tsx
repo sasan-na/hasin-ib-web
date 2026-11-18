@@ -21,15 +21,15 @@ export default function UssdPage() {
 			{tokens.isPending ? (
 				<Skeleton className="h-28 w-full" />
 			) : tokens.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{tokens.error.message || t("ussd.error")}
 				</p>
 			) : tokens.data.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("ussd.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("ussd.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{tokens.data.map((token) => (
-						<li key={token.serial} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card p-5">
+						<li key={token.serial} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<dl className="flex flex-col gap-1 text-sm">
 								<div className="flex gap-2">
 									<dt className="text-muted-foreground">{t("ussd.serial")}:</dt>

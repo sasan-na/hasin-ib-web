@@ -132,7 +132,7 @@ export default function StatementPage() {
 
 			<form
 				noValidate
-				className="flex flex-col gap-5 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					run()
@@ -249,14 +249,14 @@ export default function StatementPage() {
 			</form>
 
 			{search.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{search.error.message || t("report.statement.failed")}
 				</p>
 			) : null}
 
 			{result ? (
 				result.rows.length === 0 ? (
-					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("report.statement.empty")}</p>
+					<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("report.statement.empty")}</p>
 				) : (
 					<section aria-label={t("report.statement.title")} className="overflow-hidden rounded-lg bg-card">
 						{result.totalDebit !== null || result.totalCredit !== null ? (

@@ -73,7 +73,7 @@ export default function BalancePage() {
 			<h1 className="text-2xl font-bold">{t("report.balance.title")}</h1>
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-2"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (!diagram.isPending) submit()
@@ -113,17 +113,17 @@ export default function BalancePage() {
 			</form>
 
 			{diagram.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{diagram.error.message || t("report.balance.failed")}
 				</p>
 			) : null}
 
 			{diagram.data ? (
 				days.length === 0 ? (
-					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{diagram.data.note || t("report.balance.empty")}</p>
+					<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{diagram.data.note || t("report.balance.empty")}</p>
 				) : (
 					<section className="flex flex-col gap-4" aria-label={t("report.balance.result")}>
-						<dl className="grid gap-3 rounded-lg border bg-card p-4 text-sm sm:grid-cols-2">
+						<dl className="grid gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-2">
 							<div className="flex justify-between gap-3">
 								<dt className="text-muted-foreground">{t("report.balance.totalDeposit")}</dt>
 								<dd className="font-semibold text-success">{money(totalDeposit)}</dd>
@@ -133,10 +133,10 @@ export default function BalancePage() {
 								<dd className="font-semibold">{money(totalWithdrawal)}</dd>
 							</div>
 						</dl>
-						<div className="rounded-lg border bg-card p-4">
+						<div className="rounded-xl border bg-card p-4">
 							<BalanceChart days={days} persian={persianShown} />
 						</div>
-						<details className="rounded-lg border bg-card p-4">
+						<details className="rounded-xl border bg-card p-4">
 							<summary className="cursor-pointer text-sm font-medium">{t("report.balance.table")}</summary>
 							<div className="mt-3 overflow-x-auto">
 								<table className="w-full text-sm">

@@ -50,7 +50,7 @@ export default function ChangeUsernamePage() {
 			</div>
 
 			{done ? (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 					<p className="text-sm">{t("profile.username.done", {username: username.trim()})}</p>
 					<div>
 						<Button type="button" onClick={() => void signOut()}>
@@ -60,7 +60,7 @@ export default function ChangeUsernamePage() {
 				</section>
 			) : (
 				<form
-					className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+					className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 					noValidate
 					onSubmit={(event) => {
 						event.preventDefault()

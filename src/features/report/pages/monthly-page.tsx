@@ -91,7 +91,7 @@ export default function MonthlyPage() {
 			</div>
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-3 print:hidden"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-3 print:hidden"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (account && !report.isPending) {
@@ -158,7 +158,7 @@ export default function MonthlyPage() {
 			</form>
 
 			{report.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{report.error.message || t("report.monthly.failed")}
 				</p>
 			) : null}
@@ -174,7 +174,7 @@ export default function MonthlyPage() {
 							{t("report.monthly.print")}
 						</Button>
 					</div>
-					<dl className="grid gap-3 rounded-lg border bg-card p-4 text-sm sm:grid-cols-2">
+					<dl className="grid gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-2">
 						<div className="flex justify-between gap-3">
 							<dt className="text-muted-foreground">{t("report.monthly.totalDeposit")}</dt>
 							<dd className="font-semibold text-success">{money(report.data.totalDeposit)}</dd>

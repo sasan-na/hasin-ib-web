@@ -73,7 +73,7 @@ export default function ChakadCartablePage() {
 		const expanded = open === cheque.sayyadId
 		const available = cheque.operations.map((operation) => ({operation, to: operationTarget(operation.key, cheque.sayyadId)}))
 		return (
-			<li key={cheque.sayyadId} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+			<li key={cheque.sayyadId} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 				<div className="flex flex-wrap items-baseline justify-between gap-2">
 					<span dir="ltr" className="font-semibold">
 						{cheque.sayyadId}
@@ -138,11 +138,11 @@ export default function ChakadCartablePage() {
 			{cartable.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : cartable.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{cartable.error.message || t("cheque.cartable.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.cartable.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("cheque.cartable.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">{shown.map(card)}</ul>
 			)}

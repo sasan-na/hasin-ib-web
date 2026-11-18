@@ -76,7 +76,7 @@ export default function ReceiptListPage() {
 			<p className="text-sm text-muted-foreground">{t("receipt.hint")}</p>
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-2"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -129,11 +129,11 @@ export default function ReceiptListPage() {
 			{filter === null || receipts.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : receipts.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{receipts.error.message || t("receipt.loadError")}
 				</p>
 			) : rows.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("receipt.notFound")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("receipt.notFound")}</p>
 			) : (
 				<div className="overflow-x-auto rounded-lg border bg-card">
 					<table className="w-full text-sm">

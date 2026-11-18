@@ -66,7 +66,7 @@ export default function EtcActivatePage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("etc.activate.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="act-serial">{t("etc.serial")}</Label>
 					<Input id="act-serial" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={16} className="max-w-sm" value={serial} onChange={(event) => setSerial(digits(event.target.value))} />

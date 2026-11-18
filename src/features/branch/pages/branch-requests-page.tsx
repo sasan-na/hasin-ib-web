@@ -57,7 +57,7 @@ export default function BranchRequestsPage() {
 			<p className="text-sm text-muted-foreground">{t("branch.requests.hint")}</p>
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-2"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -119,15 +119,15 @@ export default function BranchRequestsPage() {
 			{requests.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : requests.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{requests.error.message || t("branch.requests.error")}
 				</p>
 			) : requests.data.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("branch.requests.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("branch.requests.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{requests.data.map((request, index) => (
-						<li key={`${request.reference}-${index}`} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+						<li key={`${request.reference}-${index}`} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<div className="flex flex-wrap items-baseline justify-between gap-2">
 								<h2 className="text-base font-semibold">{request.service}</h2>
 								<span className={request.status === "rejected" ? "text-xs font-medium text-destructive" : request.status === "confirmed" ? "text-xs font-medium text-success" : "text-xs font-medium text-muted-foreground"}>

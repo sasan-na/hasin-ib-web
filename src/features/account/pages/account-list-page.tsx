@@ -70,16 +70,16 @@ export default function AccountPage() {
 			) : null}
 
 			{accounts.isPending ? (
-				<div className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-hidden="true">
+				<div className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card" aria-hidden="true">
 					<Skeleton className="h-16 w-full" />
 					<Skeleton className="h-16 w-full" />
 				</div>
 			) : accounts.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{t("account.error")}
 				</p>
 			) : accounts.data.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("account.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("account.empty")}</p>
 			) : (
 				<>
 					<AccountFilters filters={filters} onChange={setFilters} onReset={() => setFilters(EMPTY_FILTERS)} categories={categories} />
@@ -91,7 +91,7 @@ export default function AccountPage() {
 					) : null}
 
 					{groups.length === 0 ? (
-						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("account.noResults")}</p>
+						<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("account.noResults")}</p>
 					) : (
 						groups.map((group) => {
 							const total = groupTotal(group.accounts, fresh)

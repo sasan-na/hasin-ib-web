@@ -74,7 +74,7 @@ export default function ConnectedCardStatementPage() {
 			</div>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -115,14 +115,14 @@ export default function ConnectedCardStatementPage() {
 			</form>
 
 			{search.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{search.error.message || t("card.connected.statement.failed")}
 				</p>
 			) : null}
 
 			{result ? (
 				result.movements.length === 0 ? (
-					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.connected.statement.empty")}</p>
+					<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("card.connected.statement.empty")}</p>
 				) : (
 					<section className="rounded-lg bg-card">
 						<div className="overflow-x-auto">

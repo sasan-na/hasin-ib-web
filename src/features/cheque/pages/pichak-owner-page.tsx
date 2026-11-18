@@ -24,7 +24,7 @@ export default function PichakOwnerPage() {
 			<p className="text-sm text-muted-foreground">{t("cheque.owner.intro")}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (valid && !owner.isPending) owner.mutate()
@@ -56,12 +56,12 @@ export default function PichakOwnerPage() {
 			</form>
 
 			{owner.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{owner.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}
 			{owner.data ? (
-				<div className="rounded-lg border bg-card p-5">
+				<div className="rounded-2xl border bg-card p-5 shadow-card">
 					{owner.data.owners.length === 0 && owner.data.ongoing === "" && owner.data.blocked === "" ? (
 						<p className="text-sm text-muted-foreground">{t("cheque.owner.empty")}</p>
 					) : (

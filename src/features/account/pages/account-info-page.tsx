@@ -108,7 +108,7 @@ export default function AccountInfoPage() {
 			</section>
 
 			{rules.data && rules.data.length > 0 ? (
-				<section aria-labelledby="withdraw-rules-title" className="flex flex-col gap-3 rounded-lg bg-card p-5">
+				<section aria-labelledby="withdraw-rules-title" className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card">
 					<h2 id="withdraw-rules-title" className="text-base font-semibold">
 						{t("account.info.withdrawRules")}
 					</h2>

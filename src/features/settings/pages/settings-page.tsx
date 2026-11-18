@@ -50,7 +50,7 @@ function DisplaySection() {
 	const kinds: DisplayKind[] = ["account", "card", "loan"]
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="st-display">
+		<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="st-display">
 			<h2 id="st-display" className="text-base font-semibold">
 				{t("settings.display.title")}
 			</h2>
@@ -164,7 +164,7 @@ function LimitationsSection() {
 	}
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="st-limits">
+		<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="st-limits">
 			<h2 id="st-limits" className="text-base font-semibold">
 				{t("settings.limits.title")}
 			</h2>

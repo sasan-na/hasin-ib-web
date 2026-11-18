@@ -27,7 +27,7 @@ export default function PichakChainPage() {
 			<p className="text-sm text-muted-foreground">{t("cheque.chain.intro")}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (valid && !chain.isPending) chain.mutate()
@@ -82,18 +82,18 @@ export default function PichakChainPage() {
 			</form>
 
 			{chain.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{chain.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}
 
 			{chain.data ? (
 				chain.data.length === 0 ? (
-					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.chain.empty")}</p>
+					<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("cheque.chain.empty")}</p>
 				) : (
 					<ol aria-label={t("cheque.chain.result")} className="flex flex-col gap-4">
 						{chain.data.map((step, index) => (
-							<li key={index} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+							<li key={index} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 								<h2 className="text-base font-semibold">{t(`cheque.chain.roles.${step.role}`, {defaultValue: step.roleText})}</h2>
 								<ul className="flex flex-col gap-2">
 									{step.customers.map((customer, position) => (

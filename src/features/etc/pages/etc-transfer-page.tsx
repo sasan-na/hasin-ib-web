@@ -28,7 +28,7 @@ export default function EtcTransferPage() {
 	if (serial === "")
 		return (
 			<Shell>
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-muted-foreground">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">
 					{t("etc.transfer.noSource")}
 				</p>
 			</Shell>
@@ -42,7 +42,7 @@ export default function EtcTransferPage() {
 	if (source.isError)
 		return (
 			<Shell>
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{source.error.message || t("etc.infoError")}
 				</p>
 			</Shell>

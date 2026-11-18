@@ -91,7 +91,7 @@ export default function CreditCalculatePage() {
 			<p className="text-sm text-muted-foreground">{t("account.credit.hint")}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -232,7 +232,7 @@ export default function CreditCalculatePage() {
 			) : null}
 
 			{result ? (
-				<section aria-labelledby="credit-result" className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section aria-labelledby="credit-result" className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 					<h2 id="credit-result" className="text-base font-semibold">
 						{t("account.credit.result")}
 					</h2>

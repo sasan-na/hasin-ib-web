@@ -87,7 +87,7 @@ export default function CardConnectAccountPage() {
 				</Button>
 			</div>
 
-			<section aria-labelledby="addable-title" className="flex flex-col gap-4 rounded-lg bg-card p-5">
+			<section aria-labelledby="addable-title" className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 				<h2 id="addable-title" className="text-base font-semibold">
 					{t("card.accounts.addable")}
 				</h2>

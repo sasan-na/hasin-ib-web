@@ -49,12 +49,12 @@ export default function NewMessagePage() {
 			{departments.isPending ? (
 				<Skeleton className="h-64 w-full" aria-hidden="true" />
 			) : departments.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{departments.error.message || t("message.departmentsError")}
 				</p>
 			) : (
 				<form
-					className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+					className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 					onSubmit={(event) => {
 						event.preventDefault()
 						setError(null)

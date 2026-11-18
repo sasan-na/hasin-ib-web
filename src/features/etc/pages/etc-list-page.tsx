@@ -64,18 +64,18 @@ export default function EtcListPage() {
 			{tags.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : tags.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{tags.error.message || t("etc.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("etc.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("etc.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{shown.map((tag) => {
 						const balance = balances[tag.serial]
 						const known = balance?.value ?? tag.balance
 						return (
-							<li key={tag.serial} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+							<li key={tag.serial} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 								<div className="flex flex-wrap items-baseline justify-between gap-2">
 									<h2 dir="ltr" className="text-base font-semibold tabular-nums">
 										{tag.serial}

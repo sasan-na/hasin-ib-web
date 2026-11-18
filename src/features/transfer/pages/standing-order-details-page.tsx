@@ -54,12 +54,12 @@ export default function StandingOrderDetailsPage() {
 			{details.isPending ? (
 				<Skeleton className="h-48 w-full" />
 			) : details.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{details.error.message || t("transfer.standing.detailsError")}
 				</p>
 			) : (
 				<>
-					<section className="flex flex-col gap-3 rounded-lg bg-card p-5">
+					<section className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card">
 						<dl className="flex flex-col gap-2">
 							{row(t("transfer.sourceAccount"), details.data.sourceAccountNumber, true)}
 							{row(t("transfer.standing.destination"), details.data.destinationNumber, true)}
@@ -77,7 +77,7 @@ export default function StandingOrderDetailsPage() {
 						) : null}
 					</section>
 
-					<section className="flex flex-col gap-3 rounded-lg bg-card p-5" aria-labelledby="so-history">
+					<section className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="so-history">
 						<div className="flex flex-wrap items-center justify-between gap-2">
 							<h2 id="so-history" className="text-base font-semibold">
 								{t("transfer.standing.history")}

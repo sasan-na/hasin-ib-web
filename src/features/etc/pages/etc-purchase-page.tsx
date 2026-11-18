@@ -161,7 +161,7 @@ export default function EtcPurchasePage() {
 			<p className="text-xs font-medium text-muted-foreground">{t(`etc.purchase.step.${step}`)}</p>
 
 			{step === "owner" ? (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 					<div className="flex gap-4" role="radiogroup" aria-label={t("etc.purchase.kind")}>
 						{[false, true].map((isLegal) => (
 							<label key={String(isLegal)} className="flex items-center gap-2 text-sm">
@@ -203,7 +203,7 @@ export default function EtcPurchasePage() {
 			) : null}
 
 			{step === "details" ? (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 					{hasUser ? <p className="text-sm text-muted-foreground">{t("etc.purchase.hasUser")}</p> : null}
 					{pickUsername ? (
 						<>
@@ -332,7 +332,7 @@ export default function EtcPurchasePage() {
 			) : null}
 
 			{step === "pay" ? (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
 					<dl className="grid gap-2 text-sm">
 						<div className="flex justify-between gap-3">
 							<dt className="text-muted-foreground">{t("etc.purchase.count")}</dt>

@@ -82,7 +82,7 @@ export default function OldHistoryPage() {
 			{note ? <p className="rounded-md border bg-muted/40 p-3 text-sm">{note}</p> : null}
 
 			<form
-				className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2"
+				className="grid gap-4 rounded-2xl border bg-card p-5 shadow-card sm:grid-cols-2"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
@@ -149,15 +149,15 @@ export default function OldHistoryPage() {
 			{list.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : list.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{list.error.message || t("dashboard.old.loadError")}
 				</p>
 			) : records.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.old.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("dashboard.old.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{records.map((record) => (
-						<li key={record.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card p-5">
+						<li key={record.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<div className="flex flex-col gap-1 text-sm">
 								<span className="font-semibold">{record.type}</span>
 								<span dir="ltr" className="text-start text-muted-foreground">

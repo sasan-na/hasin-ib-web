@@ -49,7 +49,7 @@ export default function EditSubUserPage() {
 
 	if (!valid || person.isError || accounts.isError || roles.isError) {
 		return (
-			<p role="alert" className="mx-auto w-full max-w-3xl rounded-lg bg-card p-5 text-sm text-destructive">
+			<p role="alert" className="mx-auto w-full max-w-3xl rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 				{(person.error?.message ?? "") || t("dashboard.editUser.loadError")}
 			</p>
 		)
@@ -128,7 +128,7 @@ function EditForm({person, accounts, roles}: {person: EditableSubUser; accounts:
 		return (
 			<div className="mx-auto flex w-full max-w-xl flex-col gap-6">
 				<h1 className="text-2xl font-bold">{t("dashboard.editUser.doneTitle")}</h1>
-				<section className="flex flex-col gap-3 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-card">
 					<p className="text-sm">{t("dashboard.editUser.done", {username: result.username})}</p>
 					{result.failures.length > 0 ? (
 						<Alert variant="destructive">
@@ -171,7 +171,7 @@ function EditForm({person, accounts, roles}: {person: EditableSubUser; accounts:
 			</p>
 
 			{canChangePassword ? (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="eu-pass">
+				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="eu-pass">
 					<h2 id="eu-pass" className="text-base font-semibold">
 						{t("dashboard.editUser.signIn")}
 					</h2>
@@ -188,7 +188,7 @@ function EditForm({person, accounts, roles}: {person: EditableSubUser; accounts:
 				</section>
 			) : null}
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="eu-accounts">
+			<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card" aria-labelledby="eu-accounts">
 				<h2 id="eu-accounts" className="text-base font-semibold">
 					{t("dashboard.newUser.accounts")}
 				</h2>

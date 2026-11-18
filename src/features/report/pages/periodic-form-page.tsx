@@ -54,7 +54,7 @@ export default function PeriodicFormPage() {
 
 function Problem({text}: {text: string}) {
 	return (
-		<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+		<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 			{text}
 		</p>
 	)
@@ -116,7 +116,7 @@ function InvoiceForm({existing, periods, fields}: {existing: PeriodicInvoice | n
 
 	return (
 		<form
-			className="flex flex-col gap-5 rounded-lg border bg-card p-5"
+			className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-card"
 			onSubmit={(event) => {
 				event.preventDefault()
 				setError(null)

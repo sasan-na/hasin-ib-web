@@ -86,15 +86,15 @@ export default function WorkflowRulesPage() {
 			{rules.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : rules.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{rules.error.message || t("dashboard.rules.error")}
 				</p>
 			) : items.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.rules.empty")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{t("dashboard.rules.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{items.map((rule) => (
-						<li key={rule.id} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+						<li key={rule.id} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<div className="flex flex-wrap items-baseline justify-between gap-2">
 								<h2 className="text-base font-semibold">{rule.name}</h2>
 								{rule.needsReview ? <span className="text-xs font-medium text-warning">{t("dashboard.rules.needsReview")}</span> : null}

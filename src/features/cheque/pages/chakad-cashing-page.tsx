@@ -122,7 +122,7 @@ export default function ChakadCashingPage() {
 			<p className="text-sm text-muted-foreground">{t(`cheque.cashing.modeHint.${mode}`)}</p>
 
 			<form
-				className="flex flex-col gap-4 rounded-lg border bg-card p-5"
+				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (sayyadId.length !== SAYYAD_LENGTH) return setProblem(t("cheque.guarantee.error.sayyad", {length: SAYYAD_LENGTH}))
@@ -150,7 +150,7 @@ export default function ChakadCashingPage() {
 
 			{cheque ? (
 				<section className="flex flex-col gap-4">
-					<dl className="grid gap-2 rounded-lg border bg-card p-5 text-sm sm:grid-cols-2">
+					<dl className="grid gap-2 rounded-2xl border bg-card p-5 shadow-card text-sm sm:grid-cols-2">
 						{row(t("cheque.sayyadId"), cheque.sayyadId, true)}
 						{row(t("cheque.serial"), `${cheque.series} / ${cheque.serial}`, true)}
 						{row(t("cheque.register.dueDate"), dueText(cheque.dueDate), true)}
@@ -162,7 +162,7 @@ export default function ChakadCashingPage() {
 					</dl>
 
 					{mode === "lock" ? (
-						<fieldset className="flex flex-col gap-2 rounded-lg border bg-card p-5">
+						<fieldset className="flex flex-col gap-2 rounded-2xl border bg-card p-5 shadow-card">
 							<legend className="px-1 text-sm font-medium">{t("cheque.cashing.bounceQuestion")}</legend>
 							{(["1", "0"] as const).map((value) => (
 								<label key={value} className="flex items-center gap-2 text-sm">
@@ -174,7 +174,7 @@ export default function ChakadCashingPage() {
 					) : null}
 
 					{mode === "transfer" ? (
-						<div className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+						<div className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card">
 							<RecipientsEditor sayyadId={cheque.sayyadId} rows={rows} setRows={setRows} title={t("cheque.cashing.transferTo")} />
 							<div className="flex flex-col gap-2">
 								<Label htmlFor="cc-transfer-iban">
@@ -193,7 +193,7 @@ export default function ChakadCashingPage() {
 					) : null}
 
 					{mode === "lock" || mode === "clear" ? (
-						<div className="flex flex-col gap-2 rounded-lg border bg-card p-5">
+						<div className="flex flex-col gap-2 rounded-2xl border bg-card p-5 shadow-card">
 							<Label htmlFor="cc-iban">
 								{t("cheque.cashing.iban")} {mode === "lock" ? <span className="font-normal text-muted-foreground">({t("cheque.register.optional")})</span> : null}
 							</Label>

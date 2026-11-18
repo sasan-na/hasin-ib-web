@@ -110,7 +110,7 @@ export default function BillListPage() {
 			<Input type="search" aria-label={t("bill.search")} placeholder={t("bill.search")} value={query} onChange={(event) => setQuery(event.target.value)} />
 
 			{notice ? (
-				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
+				<p role={notice.ok ? "status" : "alert"} className={`rounded-xl bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
 					{notice.text}
 				</p>
 			) : null}
@@ -121,11 +121,11 @@ export default function BillListPage() {
 					<Skeleton className="h-20 w-full" />
 				</div>
 			) : saved.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{saved.error.message || t("bill.error.load")}
 				</p>
 			) : groups.length === 0 ? (
-				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{saved.data.length === 0 ? t("bill.empty") : t("bill.noMatch")}</p>
+				<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{saved.data.length === 0 ? t("bill.empty") : t("bill.noMatch")}</p>
 			) : (
 				<>
 					{groups.map((group) => (
@@ -136,7 +136,7 @@ export default function BillListPage() {
 									const payId = payIds[bill.id] ?? ""
 									const payIdBad = payId !== "" && !isPayIdValid(payId, bill.billId)
 									return (
-										<li key={bill.id} className="flex flex-col gap-3 rounded-lg border bg-card p-4">
+										<li key={bill.id} className="flex flex-col gap-3 rounded-xl border bg-card p-4">
 											<div className="flex items-start gap-3">
 												<Checkbox checked={selected.has(bill.id)} aria-label={t("bill.select", {bill: bill.title || bill.billId})} onCheckedChange={(on) => toggle(bill.id, on === true)} />
 												<div className="flex min-w-0 flex-1 flex-col gap-1">

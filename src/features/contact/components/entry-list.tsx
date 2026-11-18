@@ -33,7 +33,7 @@ export function EntryList({title, numberLabel, maxDigits, entries, max, problem,
 	const update = (key: number, change: Partial<DraftEntry>) => onChange(entries.map((entry) => (entry.key === key ? {...entry, ...change} : entry)))
 
 	return (
-		<fieldset className="flex flex-col gap-3 rounded-lg border bg-card p-4">
+		<fieldset className="flex flex-col gap-3 rounded-xl border bg-card p-4">
 			<legend className="px-1 text-sm font-semibold">{title}</legend>
 			{entries.length === 0 ? <p className="text-sm text-muted-foreground">{t("contact.noEntries")}</p> : null}
 			{entries.map((entry) => {

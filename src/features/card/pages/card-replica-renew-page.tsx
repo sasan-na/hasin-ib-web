@@ -96,12 +96,12 @@ export default function CardReplicaRenewPage() {
 				</Button>
 			</div>
 
-			<div className="flex flex-col gap-2 rounded-lg border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
+			<div className="flex flex-col gap-2 rounded-2xl border bg-card p-5 shadow-card text-sm leading-relaxed text-muted-foreground">
 				<p>{t("card.replica.note1")}</p>
 				<p>{t("card.replica.note2")}</p>
 			</div>
 
-			<section aria-label={t("card.replica.title")} className="flex flex-col gap-5 rounded-lg bg-card p-5">
+			<section aria-label={t("card.replica.title")} className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-card">
 				{card.isPending ? (
 					<Skeleton className="h-6 w-1/2" />
 				) : (

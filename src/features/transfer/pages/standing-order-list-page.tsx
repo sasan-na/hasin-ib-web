@@ -55,7 +55,7 @@ export default function StandingOrderListPage() {
 			) : (
 				<ul className="flex flex-col gap-3">
 					{orders.data.orders.map((order) => (
-						<li key={`${order.sourceAccountNumber}-${order.code}`} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+						<li key={`${order.sourceAccountNumber}-${order.code}`} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-card">
 							<dl className="flex flex-col gap-2">
 								{row(t("transfer.sourceAccount"), order.sourceAccountNumber, true)}
 								{row(t("transfer.standing.destination"), order.destinationNumber, true)}

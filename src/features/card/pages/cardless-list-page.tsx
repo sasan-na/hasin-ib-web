@@ -50,7 +50,7 @@ export default function CardlessListPage() {
 					<Skeleton className="h-24 w-full" />
 				</div>
 			) : tickets.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
 					{tickets.error.message || t("card.cardless.loadError")}
 				</p>
 			) : (
@@ -61,11 +61,11 @@ export default function CardlessListPage() {
 						</p>
 					))}
 					{visible.length === 0 ? (
-						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{tickets.data.tickets.length === 0 ? t("card.cardless.empty") : t("card.cardless.noMatch")}</p>
+						<p className="rounded-2xl bg-card p-5 shadow-card text-sm text-muted-foreground">{tickets.data.tickets.length === 0 ? t("card.cardless.empty") : t("card.cardless.noMatch")}</p>
 					) : (
 						<ul className="grid gap-4 md:grid-cols-2">
 							{visible.map((ticket) => (
-								<li key={`${ticket.cardNumber}-${ticket.traceNumber}`} className="flex flex-col gap-3 rounded-lg border bg-card p-4">
+								<li key={`${ticket.cardNumber}-${ticket.traceNumber}`} className="flex flex-col gap-3 rounded-xl border bg-card p-4">
 									<dl className="flex flex-col gap-2">
 										<Row label={t("card.cardless.traceNumber")} value={ticket.traceNumber} ltr />
 										<Row label={t("card.cardless.mobile")} value={ticket.mobile} ltr />
