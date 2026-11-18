@@ -1627,6 +1627,8 @@
         },
         "register": {
             "action": "Register",
+            "summary": "Cheque summary",
+            "detailsStep": "Cheque details",
             "title": "Register a cheque",
             "noCheque": "Open this page from a cheque in your cheque list.",
             "noAccount": "This account cannot register cheques right now.",
