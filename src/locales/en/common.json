@@ -238,6 +238,8 @@
             }
         },
         "delegate": {
+            "summary": "Request summary",
+            "termsStep": "Terms",
             "title": "Delegate an account",
             "intro": "Make one of your accounts available for delegation to an organ the bank works with.",
             "sourceTitle": "Account to delegate",
