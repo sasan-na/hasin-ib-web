@@ -2587,6 +2587,9 @@
         },
         "documents": {
             "title": "Send documents",
+            "summary": "Request summary",
+            "reasonStep": "Reason and branch",
+            "documentStep": "Signed document",
             "hint": "Send a signed PDF to a branch for one of the reasons below.",
             "reason": "Reason for sending",
             "chooseReason": "Choose a reason",
