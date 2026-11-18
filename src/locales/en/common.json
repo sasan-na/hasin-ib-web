@@ -1715,7 +1715,8 @@
             "confirmTitle": "Confirm this rule",
             "confirmQuestion": "The rule was changed and is confirmed as it stands, so it applies again.",
             "done": "Done.",
-            "failed": "The change was not accepted. Please try again."
+            "failed": "The change was not accepted. Please try again.",
+            "edit": "Edit"
         },
         "users": {
             "open": "People",
@@ -1868,7 +1869,12 @@
                 "levels": "Add at least one approver.",
                 "member": "Choose a person for every approver row.",
                 "range": "The smallest amount cannot be more than the largest."
-            }
+            },
+            "editTitle": "Edit approval rule",
+            "saveTitle": "Save this rule",
+            "saveQuestion": "The bank replaces the rule with this one.",
+            "save": "Save",
+            "loadRuleError": "This rule could not be opened. It may have been deleted."
         }
     },
     "receipt": {

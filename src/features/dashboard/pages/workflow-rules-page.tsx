@@ -133,6 +133,9 @@ export default function WorkflowRulesPage() {
 										{t("dashboard.rules.confirm")}
 									</Button>
 								) : null}
+								<Button asChild size="sm" variant="outline">
+									<Link to={`${routeMap.newRule.path}?id=${rule.id}`}>{t("dashboard.rules.edit")}</Link>
+								</Button>
 								<Button
 									type="button"
 									size="sm"
