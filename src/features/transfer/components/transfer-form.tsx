@@ -23,7 +23,7 @@ export function TransferFormLayout({title, children, aside}: TransferFormLayoutP
 	return (
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{title}</h1>
-			<div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
+			<div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
 				<div className="flex flex-col gap-5">{children}</div>
 				{aside}
 			</div>
@@ -116,7 +116,7 @@ export function TransferSummary({id, title, amount, rows, reviewLabel, onReview}
 	return (
 		<aside aria-labelledby={id} className="lg:sticky lg:top-6 lg:self-start">
 			<div className="overflow-hidden rounded-2xl border bg-card shadow-card">
-				<div className="bg-brand-gradient p-5 text-primary-foreground">
+				<div className="bg-brand-gradient p-5 text-white">
 					<h2 id={id} className="flex items-center gap-2 text-sm">
 						<Wallet aria-hidden="true" className="size-4" />
 						{title}

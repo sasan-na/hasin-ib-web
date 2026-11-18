@@ -793,6 +793,8 @@
         "holder": "Account holder: {{name}}",
         "holderLabel": "Account holder",
         "summary": "Transfer summary",
+        "slidePrevious": "Show the previous ones",
+        "slideNext": "Show the next ones",
         "lookupFailed": "The account could not be checked. Please try again.",
         "details": "Details",
         "amount": "Amount (Rials)",
