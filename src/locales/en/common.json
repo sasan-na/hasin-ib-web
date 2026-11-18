@@ -1246,6 +1246,8 @@
         },
         "batch": {
             "open": "Pay several loans",
+            "summary": "Batch summary",
+            "count": "Loans",
             "title": "Pay several loans at once",
             "hint": "Pay installments of several loans, yours or others', from one account in a single batch. Check each loan number first.",
             "loans": "Loans",

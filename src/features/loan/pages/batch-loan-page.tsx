@@ -1,25 +1,46 @@
-import {OtherLoanTabs} from "@/features/loan/components/other-loan-tabs"
-import {useQuery} from "@tanstack/react-query"
-import {ArrowLeft, ArrowRight, Plus, Trash2} from "lucide-react"
-import {useRef, useState} from "react"
-import {useTranslation} from "react-i18next"
-import {Link} from "react-router-dom"
+import { OtherLoanTabs } from "@/features/loan/components/other-loan-tabs"
+import { useQuery } from "@tanstack/react-query"
+import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
+import { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
-import {routeMap} from "@/app/routes"
-import {Button} from "@/components/ui/button"
-import {Checkbox} from "@/components/ui/checkbox"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {importBatchLoans, isLoanNumber, lookupLoan, payBatchLoan} from "@/features/loan/api/other-loan"
-import type {SourceAccount} from "@/features/transaction/api/transaction"
-import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
-import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
-import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
-import {reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
-import {formatAmount} from "@/lib/format"
-import {normalizeDigits} from "@/lib/normalize-digits"
+import { routeMap } from "@/app/routes"
+import {
+	FieldError,
+	FlowLayout,
+	FlowSummary,
+	StepSection,
+} from "@/components/flow/flow-form"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+import {
+	importBatchLoans,
+	isLoanNumber,
+	lookupLoan,
+	payBatchLoan,
+} from "@/features/loan/api/other-loan"
+import type { SourceAccount } from "@/features/transaction/api/transaction"
+import {
+	AccountPassword,
+	isPasswordComplete,
+	usePasswordRequirement,
+} from "@/features/transaction/components/account-password"
+import { ConfirmDialog } from "@/features/transaction/components/confirm-dialog"
+import { SourceAccountSelect } from "@/features/transaction/components/source-account-select"
+import { useSubmitTransaction } from "@/features/transaction/hooks/use-submit-transaction"
+import { reasonCodesOptions } from "@/features/transfer/api/transfer.queries"
+import { formatAmount } from "@/lib/format"
+import { normalizeDigits } from "@/lib/normalize-digits"
 
 // The bank's name for paying installments from an account: which accounts may pay, the limit and the SMS code.
 const SERVICE = "AccountInstallment"
@@ -39,12 +60,22 @@ interface Row {
 	problem: string | null
 }
 
-const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
-const newRow = (key: number): Row => ({key, number: "", amount: "", reasonCode: "", holder: null, checked: null, checking: false, problem: null})
+const digits = (value: string): string =>
+	normalizeDigits(value).replace(/\D/g, "")
+const newRow = (key: number): Row => ({
+	key,
+	number: "",
+	amount: "",
+	reasonCode: "",
+	holder: null,
+	checked: null,
+	checking: false,
+	problem: null,
+})
 
 /** Pay installments of several loans (yours or others') from one account in a single batch. */
 export default function BatchLoanPage() {
-	const {t, i18n} = useTranslation()
+	const { t, i18n } = useTranslation()
 	const language = i18n.language
 	const reasons = useQuery(reasonCodesOptions(language))
 	const needsReason = (reasons.data?.length ?? 0) > 0
@@ -62,32 +93,67 @@ export default function BatchLoanPage() {
 	const [importError, setImportError] = useState<string | null>(null)
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
 
-	const total = rows.reduce((sum, row) => sum + (row.amount === "" ? 0 : Number(row.amount)), 0)
-	const requirement = usePasswordRequirement({accountId: confirming ? (source?.id ?? null) : null, limitServiceName: SERVICE, amount: total})
-	const money = (value: number): string => `${formatAmount(value, language)} ${t("loan.rial")}`
-	const reasonName = (code: string): string => reasons.data?.find((reason) => reason.code === code)?.name ?? code
+	const total = rows.reduce(
+		(sum, row) => sum + (row.amount === "" ? 0 : Number(row.amount)),
+		0,
+	)
+	const requirement = usePasswordRequirement({
+		accountId: confirming ? (source?.id ?? null) : null,
+		limitServiceName: SERVICE,
+		amount: total,
+	})
+	const money = (value: number): string =>
+		`${formatAmount(value, language)} ${t("loan.rial")}`
+	const reasonName = (code: string): string =>
+		reasons.data?.find((reason) => reason.code === code)?.name ?? code
 
-	const update = (key: number, change: Partial<Row>): void => setRows((current) => current.map((row) => (row.key === key ? {...row, ...change} : row)))
+	const update = (key: number, change: Partial<Row>): void =>
+		setRows((current) =>
+			current.map((row) => (row.key === key ? { ...row, ...change } : row)),
+		)
 
 	const check = async (row: Row): Promise<void> => {
 		if (!isLoanNumber(row.number)) {
-			update(row.key, {problem: t("loan.other.error.number")})
+			update(row.key, { problem: t("loan.other.error.number") })
 			return
 		}
-		update(row.key, {checking: true, problem: null, holder: null, checked: null})
+		update(row.key, {
+			checking: true,
+			problem: null,
+			holder: null,
+			checked: null,
+		})
 		try {
 			const loan = await lookupLoan(row.number)
 			// Ignore the answer when the number was edited meanwhile.
 			setRows((current) =>
 				current.map((candidate) =>
 					candidate.key === row.key && candidate.number === row.number
-						? {...candidate, holder: loan.holder || row.number, checked: row.number, checking: false, amount: candidate.amount === "" && loan.installment ? String(loan.installment) : candidate.amount}
+						? {
+								...candidate,
+								holder: loan.holder || row.number,
+								checked: row.number,
+								checking: false,
+								amount:
+									candidate.amount === "" && loan.installment
+										? String(loan.installment)
+										: candidate.amount,
+							}
 						: candidate,
 				),
 			)
 		} catch (error) {
-			const message = error instanceof Error && error.message ? error.message : t("loan.other.failed")
-			setRows((current) => current.map((candidate) => (candidate.key === row.key ? {...candidate, checking: false, problem: message} : candidate)))
+			const message =
+				error instanceof Error && error.message
+					? error.message
+					: t("loan.other.failed")
+			setRows((current) =>
+				current.map((candidate) =>
+					candidate.key === row.key
+						? { ...candidate, checking: false, problem: message }
+						: candidate,
+				),
+			)
 		}
 	}
 
@@ -103,17 +169,26 @@ export default function BatchLoanPage() {
 			}
 			const known = new Set((reasons.data ?? []).map((reason) => reason.code))
 			let key = nextKey
-			const added: Row[] = imported.map((item) => ({...newRow(key++), number: item.number, amount: item.amount.replace(/^0+/, ""), reasonCode: known.has(item.reasonCode) ? item.reasonCode : ""}))
+			const added: Row[] = imported.map((item) => ({
+				...newRow(key++),
+				number: item.number,
+				amount: item.amount.replace(/^0+/, ""),
+				reasonCode: known.has(item.reasonCode) ? item.reasonCode : "",
+			}))
 			const keep = rows.filter((row) => row.number !== "" || row.amount !== "")
 			if (keep.length + added.length > MAX_ROWS) {
-				setImportError(t("loan.batch.importTooMany", {count: MAX_ROWS}))
+				setImportError(t("loan.batch.importTooMany", { count: MAX_ROWS }))
 				return
 			}
 			setNextKey(key)
 			setRows([...keep, ...added])
 			for (const row of added) await check(row)
 		} catch (error) {
-			setImportError(error instanceof Error && error.message ? error.message : t("loan.batch.importFailed"))
+			setImportError(
+				error instanceof Error && error.message
+					? error.message
+					: t("loan.batch.importFailed"),
+			)
 		} finally {
 			setImporting(false)
 		}
@@ -121,17 +196,23 @@ export default function BatchLoanPage() {
 
 	const sending = useSubmitTransaction({
 		run: () => {
-			if (!source || requirement.state !== "ready") throw new Error("form incomplete")
+			if (!source || requirement.state !== "ready")
+				throw new Error("form incomplete")
 			return payBatchLoan({
 				sourceAccountNumber: source.number,
 				sourcePassword: requirement.needsPassword ? password : null,
 				sourcePasswordType: requirement.info.type,
-				items: rows.map((row) => ({number: row.number, amount: Number(row.amount), holder: row.holder ?? "", reasonCode: row.reasonCode})),
+				items: rows.map((row) => ({
+					number: row.number,
+					amount: Number(row.amount),
+					holder: row.holder ?? "",
+					reasonCode: row.reasonCode,
+				})),
 				documentDescription: note.trim(),
 				follow,
 			})
 		},
-		again: {to: routeMap.loanBatch.path, label: t("loan.batch.again")},
+		again: { to: routeMap.loanBatch.path, label: t("loan.batch.again") },
 		failedText: t("loan.pay.failed"),
 		uncertainText: t("loan.pay.uncertain"),
 	})
@@ -147,13 +228,18 @@ export default function BatchLoanPage() {
 		const seen = new Set<string>()
 		const checked = rows.map((row) => {
 			let problem: string | null = null
-			if (row.checked !== row.number) problem = isLoanNumber(row.number) ? t("loan.batch.error.notChecked") : t("loan.other.error.number")
+			if (row.checked !== row.number)
+				problem = isLoanNumber(row.number)
+					? t("loan.batch.error.notChecked")
+					: t("loan.other.error.number")
 			else if (seen.has(row.number)) problem = t("loan.batch.error.duplicate")
-			else if (row.amount === "" || Number(row.amount) <= 0) problem = t("loan.batch.error.amount")
-			else if (needsReason && row.reasonCode === "") problem = t("loan.batch.error.reason")
+			else if (row.amount === "" || Number(row.amount) <= 0)
+				problem = t("loan.batch.error.amount")
+			else if (needsReason && row.reasonCode === "")
+				problem = t("loan.batch.error.reason")
 			seen.add(row.number)
 			if (problem) valid = false
-			return problem === row.problem ? row : {...row, problem}
+			return problem === row.problem ? row : { ...row, problem }
 		})
 		setRows(checked)
 		if (!valid) {
@@ -166,7 +252,7 @@ export default function BatchLoanPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.batch.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -177,166 +263,271 @@ export default function BatchLoanPage() {
 				</Button>
 			</div>
 			<OtherLoanTabs />
-			<p className="text-sm text-muted-foreground">{t("loan.batch.hint")}</p>
+			<p className="text-muted-foreground text-sm">{t("loan.batch.hint")}</p>
 
-			<section aria-labelledby="bl-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="bl-from" className="text-base font-semibold">
-					{t("loan.pay.from")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="bl-source">{t("loan.pay.from")}</Label>
-					<SourceAccountSelect
-						id="bl-source"
-						serviceName={SERVICE}
-						value={source?.id ?? null}
-						onChange={(account) => {
-							setSource(account)
-							setSourceError(null)
-						}}
-						invalid={sourceError !== null}
+			<FlowLayout
+				aside={
+					<FlowSummary
+						id="bl-summary"
+						title={t("loan.batch.summary")}
+						amount={total > 0 ? money(total) : null}
+						rows={[
+							{
+								label: t("loan.pay.from"),
+								value: source ? source.number : null,
+							},
+							{
+								label: t("loan.batch.count"),
+								value: rows.some((row) => row.number !== "")
+									? formatAmount(
+											rows.filter((row) => row.number !== "").length,
+											language,
+										)
+									: null,
+							},
+						]}
+						reviewLabel={t("loan.batch.review")}
+						onReview={review}
 					/>
-					{sourceError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{sourceError}
+				}
+			>
+				<StepSection id="bl-from" step={1} title={t("loan.pay.from")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="bl-source" className="sr-only">
+							{t("loan.pay.from")}
+						</Label>
+						<SourceAccountSelect
+							id="bl-source"
+							serviceName={SERVICE}
+							value={source?.id ?? null}
+							onChange={(account) => {
+								setSource(account)
+								setSourceError(null)
+							}}
+							invalid={sourceError !== null}
+						/>
+						{sourceError ? (
+							<p role="alert" className="text-destructive text-sm">
+								{sourceError}
+							</p>
+						) : null}
+					</div>
+				</StepSection>
+
+				<StepSection id="bl-loans" step={2} title={t("loan.batch.loans")}>
+					<ul className="flex flex-col gap-4">
+						{rows.map((row, index) => (
+							<li
+								key={row.key}
+								className="flex flex-col gap-3 rounded-xl border p-4"
+							>
+								<div className="flex items-center justify-between">
+									<span className="text-muted-foreground text-sm font-medium">
+										{t("loan.batch.loan", { number: index + 1 })}
+									</span>
+									{rows.length > 1 ? (
+										<Button
+											type="button"
+											variant="ghost"
+											size="icon"
+											aria-label={t("loan.batch.remove", { number: index + 1 })}
+											onClick={() =>
+												setRows((current) =>
+													current.filter(
+														(candidate) => candidate.key !== row.key,
+													),
+												)
+											}
+										>
+											<Trash2 aria-hidden="true" />
+										</Button>
+									) : null}
+								</div>
+								<div className="flex flex-col gap-2">
+									<Label htmlFor={`bl-number-${row.key}`}>
+										{t("loan.other.number")}
+									</Label>
+									<div className="flex items-center gap-2">
+										<Input
+											id={`bl-number-${row.key}`}
+											dir="ltr"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={22}
+											value={row.number}
+											aria-invalid={row.problem !== null}
+											onChange={(event) =>
+												update(row.key, {
+													number: digits(event.target.value),
+													holder: null,
+													checked: null,
+													problem: null,
+												})
+											}
+											onKeyDown={(event) => {
+												if (event.key === "Enter") {
+													event.preventDefault()
+													void check(row)
+												}
+											}}
+										/>
+										<Button
+											type="button"
+											variant="outline"
+											disabled={row.checking || row.number === ""}
+											onClick={() => void check(row)}
+										>
+											{row.checking
+												? t("loan.other.looking")
+												: t("loan.batch.check")}
+										</Button>
+									</div>
+									{row.holder ? (
+										<p
+											role="status"
+											className="text-success text-sm font-medium"
+										>
+											{t("loan.batch.holder", { name: row.holder })}
+										</p>
+									) : null}
+									{row.problem ? (
+										<p role="alert" className="text-destructive text-sm">
+											{row.problem}
+										</p>
+									) : null}
+								</div>
+								<div className="grid gap-3 sm:grid-cols-2">
+									<div className="flex flex-col gap-2">
+										<Label htmlFor={`bl-amount-${row.key}`}>
+											{t("loan.pay.amount")}
+										</Label>
+										<Input
+											id={`bl-amount-${row.key}`}
+											dir="ltr"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={15}
+											value={row.amount}
+											onChange={(event) =>
+												update(row.key, {
+													amount: digits(event.target.value).replace(/^0+/, ""),
+													problem: null,
+												})
+											}
+										/>
+										{row.amount !== "" ? (
+											<p className="text-muted-foreground text-sm">
+												{money(Number(row.amount))}
+											</p>
+										) : null}
+									</div>
+									<div className="flex flex-col gap-2">
+										<Label htmlFor={`bl-reason-${row.key}`}>
+											{t("loan.pay.reason")}
+										</Label>
+										<Select
+											value={row.reasonCode}
+											onValueChange={(value) =>
+												update(row.key, { reasonCode: value, problem: null })
+											}
+										>
+											<SelectTrigger
+												id={`bl-reason-${row.key}`}
+												className="w-full"
+											>
+												<SelectValue placeholder={t("loan.pay.chooseReason")} />
+											</SelectTrigger>
+											<SelectContent>
+												{(reasons.data ?? []).map((reason) => (
+													<SelectItem key={reason.code} value={reason.code}>
+														{reason.name}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
+					<div className="flex flex-wrap items-center gap-2">
+						<input
+							ref={fileInput}
+							type="file"
+							accept=".xlsx,.xls"
+							className="sr-only"
+							aria-label={t("loan.batch.import")}
+							onChange={(event) => {
+								const file = event.target.files?.[0]
+								event.target.value = ""
+								if (file) void importFile(file)
+							}}
+						/>
+						<Button
+							type="button"
+							variant="outline"
+							disabled={importing}
+							onClick={() => fileInput.current?.click()}
+						>
+							{importing ? t("loan.batch.importing") : t("loan.batch.import")}
+						</Button>
+						<a
+							className="text-sm underline underline-offset-4"
+							href={
+								language === "fa"
+									? "/files/BatchLoanSampleFa.xlsx"
+									: "/files/BatchLoanSampleEn.xlsx"
+							}
+							download
+						>
+							{t("loan.batch.sample")}
+						</a>
+						<Button
+							type="button"
+							variant="outline"
+							disabled={rows.length >= MAX_ROWS}
+							onClick={() => {
+								setRows((current) => [...current, newRow(nextKey)])
+								setNextKey((key) => key + 1)
+							}}
+						>
+							<Plus aria-hidden="true" />
+							{t("loan.batch.add")}
+						</Button>
+					</div>
+					{importError ? (
+						<p role="alert" className="text-destructive text-sm">
+							{importError}
 						</p>
 					) : null}
-				</div>
-			</section>
-
-			<section aria-labelledby="bl-loans" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="bl-loans" className="text-base font-semibold">
-					{t("loan.batch.loans")}
-				</h2>
-				<ul className="flex flex-col gap-4">
-					{rows.map((row, index) => (
-						<li key={row.key} className="flex flex-col gap-3 rounded-md border p-4">
-							<div className="flex items-center justify-between">
-								<span className="text-sm font-medium text-muted-foreground">{t("loan.batch.loan", {number: index + 1})}</span>
-								{rows.length > 1 ? (
-									<Button type="button" variant="ghost" size="icon" aria-label={t("loan.batch.remove", {number: index + 1})} onClick={() => setRows((current) => current.filter((candidate) => candidate.key !== row.key))}>
-										<Trash2 aria-hidden="true" />
-									</Button>
-								) : null}
-							</div>
-							<div className="flex flex-col gap-2">
-								<Label htmlFor={`bl-number-${row.key}`}>{t("loan.other.number")}</Label>
-								<div className="flex items-center gap-2">
-									<Input
-										id={`bl-number-${row.key}`}
-										dir="ltr"
-										inputMode="numeric"
-										autoComplete="off"
-										maxLength={22}
-										value={row.number}
-										aria-invalid={row.problem !== null}
-										onChange={(event) => update(row.key, {number: digits(event.target.value), holder: null, checked: null, problem: null})}
-										onKeyDown={(event) => {
-											if (event.key === "Enter") {
-												event.preventDefault()
-												void check(row)
-											}
-										}}
-									/>
-									<Button type="button" variant="outline" disabled={row.checking || row.number === ""} onClick={() => void check(row)}>
-										{row.checking ? t("loan.other.looking") : t("loan.batch.check")}
-									</Button>
-								</div>
-								{row.holder ? (
-									<p role="status" className="text-sm font-medium text-success">
-										{t("loan.batch.holder", {name: row.holder})}
-									</p>
-								) : null}
-								{row.problem ? (
-									<p role="alert" className="text-sm text-destructive">
-										{row.problem}
-									</p>
-								) : null}
-							</div>
-							<div className="grid gap-3 sm:grid-cols-2">
-								<div className="flex flex-col gap-2">
-									<Label htmlFor={`bl-amount-${row.key}`}>{t("loan.pay.amount")}</Label>
-									<Input id={`bl-amount-${row.key}`} dir="ltr" inputMode="numeric" autoComplete="off" maxLength={15} value={row.amount} onChange={(event) => update(row.key, {amount: digits(event.target.value).replace(/^0+/, ""), problem: null})} />
-									{row.amount !== "" ? <p className="text-sm text-muted-foreground">{money(Number(row.amount))}</p> : null}
-								</div>
-								<div className="flex flex-col gap-2">
-									<Label htmlFor={`bl-reason-${row.key}`}>{t("loan.pay.reason")}</Label>
-									<Select value={row.reasonCode} onValueChange={(value) => update(row.key, {reasonCode: value, problem: null})}>
-										<SelectTrigger id={`bl-reason-${row.key}`} className="w-full">
-											<SelectValue placeholder={t("loan.pay.chooseReason")} />
-										</SelectTrigger>
-										<SelectContent>
-											{(reasons.data ?? []).map((reason) => (
-												<SelectItem key={reason.code} value={reason.code}>
-													{reason.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-							</div>
-						</li>
-					))}
-				</ul>
-				<div className="flex flex-wrap items-center gap-2">
-					<input
-						ref={fileInput}
-						type="file"
-						accept=".xlsx,.xls"
-						className="sr-only"
-						aria-label={t("loan.batch.import")}
-						onChange={(event) => {
-							const file = event.target.files?.[0]
-							event.target.value = ""
-							if (file) void importFile(file)
-						}}
-					/>
-					<Button type="button" variant="outline" disabled={importing} onClick={() => fileInput.current?.click()}>
-						{importing ? t("loan.batch.importing") : t("loan.batch.import")}
-					</Button>
-					<a className="text-sm underline underline-offset-4" href={language === "fa" ? "/files/BatchLoanSampleFa.xlsx" : "/files/BatchLoanSampleEn.xlsx"} download>
-						{t("loan.batch.sample")}
-					</a>
-					<Button
-						type="button"
-						variant="outline"
-						disabled={rows.length >= MAX_ROWS}
-						onClick={() => {
-							setRows((current) => [...current, newRow(nextKey)])
-							setNextKey((key) => key + 1)
-						}}
-					>
-						<Plus aria-hidden="true" />
-						{t("loan.batch.add")}
-					</Button>
-				</div>
-				{importError ? (
-					<p role="alert" className="text-sm text-destructive">
-						{importError}
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="bl-note">
+							{t("loan.batch.note")}{" "}
+							<span className="text-muted-foreground font-normal">
+								({t("loan.batch.optional")})
+							</span>
+						</Label>
+						<Input
+							id="bl-note"
+							value={note}
+							maxLength={200}
+							onChange={(event) => setNote(event.target.value)}
+						/>
+					</div>
+					<div className="flex items-center gap-2">
+						<Checkbox
+							id="bl-follow"
+							checked={follow}
+							onCheckedChange={(checked) => setFollow(checked === true)}
+						/>
+						<Label htmlFor="bl-follow">{t("loan.batch.follow")}</Label>
+					</div>
+					<p className="text-sm font-semibold">
+						{t("loan.batch.total", { amount: money(total) })}
 					</p>
-				) : null}
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="bl-note">
-						{t("loan.batch.note")} <span className="font-normal text-muted-foreground">({t("loan.batch.optional")})</span>
-					</Label>
-					<Input id="bl-note" value={note} maxLength={200} onChange={(event) => setNote(event.target.value)} />
-				</div>
-				<div className="flex items-center gap-2">
-					<Checkbox id="bl-follow" checked={follow} onCheckedChange={(checked) => setFollow(checked === true)} />
-					<Label htmlFor="bl-follow">{t("loan.batch.follow")}</Label>
-				</div>
-				<p className="text-sm font-semibold">{t("loan.batch.total", {amount: money(total)})}</p>
-			</section>
-
-			{listError ? (
-				<p role="alert" className="text-sm text-destructive">
-					{listError}
-				</p>
-			) : null}
-			<div>
-				<Button type="button" onClick={review}>
-					{t("loan.batch.review")}
-				</Button>
-			</div>
+					{listError ? <FieldError>{listError}</FieldError> : null}
+				</StepSection>
+			</FlowLayout>
 
 			{confirming ? (
 				<ConfirmDialog
@@ -347,29 +538,49 @@ export default function BatchLoanPage() {
 						setConfirming(false)
 					}}
 					title={t("loan.batch.confirmTitle")}
-					description={t("loan.batch.confirmQuestion", {count: rows.length})}
+					description={t("loan.batch.confirmQuestion", { count: rows.length })}
 					summary={[
-						{label: t("loan.pay.from"), value: <span dir="ltr">{source?.number}</span>},
+						{
+							label: t("loan.pay.from"),
+							value: <span dir="ltr">{source?.number}</span>,
+						},
 						...rows.map((row, index) => ({
-							label: row.holder || t("loan.batch.loan", {number: index + 1}),
+							label: row.holder || t("loan.batch.loan", { number: index + 1 }),
 							value: (
 								<span>
-									<span dir="ltr">{row.number}</span> · {money(Number(row.amount))}
+									<span dir="ltr">{row.number}</span> ·{" "}
+									{money(Number(row.amount))}
 									{row.reasonCode ? ` · ${reasonName(row.reasonCode)}` : ""}
 								</span>
 							),
 						})),
-						{label: t("loan.batch.totalLabel"), amount: true, value: money(total)},
-						...(note.trim() !== "" ? [{label: t("loan.batch.note"), value: note.trim()}] : []),
+						{
+							label: t("loan.batch.totalLabel"),
+							amount: true,
+							value: money(total),
+						},
+						...(note.trim() !== ""
+							? [{ label: t("loan.batch.note"), value: note.trim() }]
+							: []),
 					]}
 					confirmLabel={t("loan.pay.confirm")}
 					pendingLabel={t("loan.pay.sending")}
-					canConfirm={isPasswordComplete(requirement, password) && !sending.blocked}
+					canConfirm={
+						isPasswordComplete(requirement, password) && !sending.blocked
+					}
 					pending={sending.pending}
 					error={sending.refusal}
 					onConfirm={sending.submit}
 				>
-					<AccountPassword requirement={requirement} accountNumber={source?.number ?? ""} codeServiceName={SERVICE} amount={total} value={password} onChange={setPassword} disabled={sending.pending} />
+					<AccountPassword
+						requirement={requirement}
+						accountNumber={source?.number ?? ""}
+						codeServiceName={SERVICE}
+						amount={total}
+						value={password}
+						onChange={setPassword}
+						disabled={sending.pending}
+					/>
 				</ConfirmDialog>
 			) : null}
 		</div>
