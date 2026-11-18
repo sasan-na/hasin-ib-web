@@ -358,6 +358,7 @@
             "failure": "It did not go through",
             "type": "Operation",
             "reference": "Reference number",
+            "time": "Time",
             "errorCode": "Error code",
             "pendingNote": "Other signatories must approve this before the bank carries it out.",
             "toAccounts": "Back to accounts",
@@ -795,6 +796,19 @@
         "summary": "Transfer summary",
         "slidePrevious": "Show the previous ones",
         "slideNext": "Show the next ones",
+        "quick": {
+            "add": "Add {{amount}} Toman",
+            "all": "Whole balance"
+        },
+        "payees": "Saved contacts",
+        "type": {
+            "account": "Account to account",
+            "accountHint": "Instant transfer to accounts at this bank",
+            "card": "Card to card",
+            "cardHint": "Transfer by the destination card number",
+            "groupHint": "Pay several accounts at once",
+            "standingHint": "Automatic payments on a schedule"
+        },
         "lookupFailed": "The account could not be checked. Please try again.",
         "details": "Details",
         "amount": "Amount (Rials)",

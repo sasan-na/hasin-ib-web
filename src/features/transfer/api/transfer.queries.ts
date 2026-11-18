@@ -1,5 +1,6 @@
 import {queryOptions} from "@tanstack/react-query"
 
+import {getSavedDestinations, type DestinationKind} from "./destinations"
 import {getFrequencies, getStandingOrders} from "./standing-order"
 import {getIbanLimits, getReasonCodes, type IbanNetwork} from "./transfer"
 
@@ -22,3 +23,7 @@ export const frequenciesOptions = (language: string) =>
 
 export const ibanLimitsOptions = (network: IbanNetwork) =>
 	queryOptions({queryKey: [...transferKeys.all, "iban-limits", network], queryFn: () => getIbanLimits(network), staleTime: 10 * 60_000, retry: false})
+
+// Saved destinations are the user's own data, so they are kept for a short while only.
+export const savedDestinationsOptions = (kind: DestinationKind) =>
+	queryOptions({queryKey: [...transferKeys.all, "saved-destinations", kind], queryFn: () => getSavedDestinations(kind), staleTime: 60_000, retry: false})
