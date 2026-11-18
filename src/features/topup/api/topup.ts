@@ -50,3 +50,50 @@ export const topUp = (request: TopUpRequest): Promise<TransactionResult> =>
 		method: "POST",
 		body: JSON.stringify({cardInfo: toCardInfoBody(request.credentials), voucherType: request.operator, mobileNumber: request.mobile, amount: request.amount, isRepetitive: false}),
 	}).then(toTransactionResult)
+
+const vouchersSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	operatorVouchers: z.array(z.object({operatorKey: z.string().nullish(), operatorName: z.string().nullish(), vouchers: z.array(z.object({amount: z.union([z.string(), z.number()]).nullish(), description: z.string().nullish()})).nullish()})).nullish(),
+})
+
+export interface VoucherOperator {
+	key: string
+	name: string
+	/** The charge cards on offer, cheapest first. */
+	vouchers: {amount: number; description: string}[]
+}
+
+/** The operators with the charge cards the bank sells. */
+export const getVoucherOperators = async (): Promise<VoucherOperator[]> => {
+	const data = vouchersSchema.parse(camelKeys(await apiClient<unknown>("/PurchaseVoucher/GetVoucherTypes")))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "vouchers failed")
+	return (data.operatorVouchers ?? []).flatMap((operator) =>
+		operator.operatorKey
+			? [
+					{
+						key: operator.operatorKey,
+						name: operator.operatorName ?? operator.operatorKey,
+						vouchers: (operator.vouchers ?? []).flatMap((voucher) => (Number(voucher.amount) > 0 ? [{amount: Number(voucher.amount), description: voucher.description ?? String(voucher.amount)}] : [])),
+					},
+				]
+			: [],
+	)
+}
+
+export interface VoucherRequest {
+	credentials: CardCredentials
+	operator: string
+	/** In Rials: the face value of the charge card. */
+	amount: number
+}
+
+/**
+ * Buys one charge card with one of the user's cards; its serial and PIN are on the receipt. A real transaction: send once per
+ * confirmation, never retry automatically.
+ */
+export const purchaseVoucher = (request: VoucherRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/PurchaseVoucher/PurchaseVoucher", {
+		method: "POST",
+		body: JSON.stringify({cardInfo: toCardInfoBody(request.credentials), voucherCount: 1, voucherType: request.operator, voucherAmount: request.amount, isRepetitive: false}),
+	}).then(toTransactionResult)

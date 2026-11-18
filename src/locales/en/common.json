@@ -2325,6 +2325,22 @@
             "max": "The amount cannot be more than {{amount}}.",
             "step": "The amount must be a multiple of {{amount}}.",
             "card": "Choose a card and fill in its details."
+        },
+        "toVoucher": "Buy a charge card instead",
+        "voucher": {
+            "title": "Buy a charge card",
+            "toTopUp": "Top up a number instead",
+            "hint": "Buy a mobile charge card with one of your cards. Its serial number and PIN are on the receipt afterwards.",
+            "loadError": "The charge cards could not be loaded.",
+            "value": "Value",
+            "confirmTitle": "Confirm the purchase",
+            "confirmQuestion": "The price is taken from your card. The serial and PIN appear on the receipt.",
+            "again": "Buy another charge card",
+            "failed": "The charge card was not bought. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the charge card was bought. Check the card statement before trying again.",
+            "error": {
+                "amount": "Choose a charge card value."
+            }
         }
     }
 }

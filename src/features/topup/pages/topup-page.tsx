@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
+import {Link} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
@@ -67,7 +68,12 @@ export default function TopUpPage() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("topup.title")}</h1>
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<h1 className="text-2xl font-bold">{t("topup.title")}</h1>
+				<Button asChild variant="outline" size="sm">
+					<Link to={routeMap.voucher.path}>{t("topup.toVoucher")}</Link>
+				</Button>
+			</div>
 			<p className="text-sm text-muted-foreground">{t("topup.hint")}</p>
 
 			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">

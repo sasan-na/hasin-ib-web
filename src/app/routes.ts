@@ -53,6 +53,7 @@ export const routeMap = {
 	"workflowRules": {breadcrumb: "dashboard.rules.title", path: "/dashboard/rules"},
 	"dashboardHome": {breadcrumb: "navigation.dashboard", path: "/dashboard"},
 	"dashboard": {breadcrumb: "dashboard.title", path: "/dashboard/list"},
+	"voucher": {breadcrumb: "topup.voucher.title", path: "/payment/voucher"},
 	"topUp": {breadcrumb: "topup.title", path: "/payment/top-up"},
 	"ussd": {breadcrumb: "ussd.title", path: "/payment/ussd"},
 	"payment": {breadcrumb: "navigation.payments", path: "/payment"},
