@@ -34,6 +34,9 @@ interface ConfirmDialogProps {
 	onConfirm: () => void
 }
 
+/** "Amount (Rials)" becomes "Amount": the big amount carries its own unit. */
+const withoutUnit = (label: string): string => label.replace(/\s*[(（][^)）]*[)）]\s*$/, "")
+
 /**
  * The last step before something is sent to the bank. It shows what will happen, asks for the password, and
  * cannot be dismissed or confirmed twice while a request is in flight, so one click is one transaction.
@@ -75,7 +78,7 @@ export function ConfirmDialog({
 						.filter((row) => row.amount)
 						.map((row, index) => (
 							<div key={row.label} className={cn("flex flex-col gap-1", index === 0 ? "mt-2 border-t border-dashed border-slip-rule pt-3" : "")}>
-								<dt className="text-muted-foreground">{row.label}</dt>
+								<dt className="text-muted-foreground">{typeof row.value === "string" ? withoutUnit(row.label) : row.label}</dt>
 								<dd>{typeof row.value === "string" ? <Amount text={row.value} /> : row.value}</dd>
 							</div>
 						))}
