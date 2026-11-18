@@ -22,7 +22,8 @@ export function HomeLayoutSection() {
 	const query = useQuery(arrangementOptions())
 	if (query.isPending) return <Skeleton className="h-32 w-full" />
 	if (query.isError) return <LoadError />
-	return <Editor key={JSON.stringify(query.data)} initial={query.data} />
+	// No key on the data: the editor keeps what the user is doing (and its saved notice) when the layout is refetched after saving.
+	return <Editor initial={query.data} />
 }
 
 function LoadError() {

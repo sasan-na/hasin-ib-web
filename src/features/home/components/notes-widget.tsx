@@ -29,7 +29,7 @@ export function NotesWidget() {
 	const current = shown ?? today.data ?? null
 	const month = useQuery({
 		queryKey: ["home", "notes", "month", language, current?.year, current?.month],
-		queryFn: () => getCalendarMonth(current?.year ?? 0, current?.month ?? 0),
+		queryFn: () => getCalendarMonth(current?.year ?? 0, current?.month ?? 0, language !== "en"),
 		enabled: current !== null,
 		staleTime: 30_000,
 		retry: false,
@@ -81,7 +81,7 @@ export function NotesWidget() {
 					<Button type="button" variant="ghost" size="icon" aria-label={t("home.notes.previous")} onClick={() => move(-1)} disabled={!current}>
 						{i18n.dir() === "rtl" ? <ChevronRight aria-hidden="true" /> : <ChevronLeft aria-hidden="true" />}
 					</Button>
-					<span className="min-w-28 text-center text-sm font-medium">{month.data?.titles[0] ?? ""}</span>
+					<span className="min-w-28 text-center text-sm font-medium">{month.data?.title || (month.data?.titles[0] ?? "")}</span>
 					<Button type="button" variant="ghost" size="icon" aria-label={t("home.notes.next")} onClick={() => move(1)} disabled={!current}>
 						{i18n.dir() === "rtl" ? <ChevronLeft aria-hidden="true" /> : <ChevronRight aria-hidden="true" />}
 					</Button>
@@ -119,7 +119,8 @@ export function NotesWidget() {
 								}}
 								className={cn(
 									"relative rounded-md py-1.5 text-sm tabular-nums transition-colors hover:bg-accent",
-									day.isHoliday && "text-destructive",
+									// Friday is a day off whatever the bank's holiday list says; the weeks run Saturday to Friday.
+									(day.isHoliday || (month.data.startDay - 1 + day.number - 1) % 7 === 6) && "text-destructive",
 									day.isToday && "font-bold ring-1 ring-primary",
 									selected?.number === day.number && "bg-accent",
 								)}

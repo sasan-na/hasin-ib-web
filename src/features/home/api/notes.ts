@@ -74,13 +74,18 @@ export interface CalendarMonth {
 	days: CalendarDay[]
 	/** The month's name(s) and year(s), in the calendars the bank shows. */
 	titles: string[]
+	/** The month and year in the calendar the grid is drawn in (Persian or Gregorian). */
+	title: string
 }
 
 /** One month of the calendar with the user's notes on each day. */
-export const getCalendarMonth = async (year: number, month: number): Promise<CalendarMonth> => {
+export const getCalendarMonth = async (year: number, month: number, persian: boolean): Promise<CalendarMonth> => {
 	const data = monthSchema.parse(camelKeys(await apiClient<unknown>(`/Note/GetCalendarMonthDetails?year=${year}&month=${month}`)))
 	if (data.isSuccessful === false) throw new Error(data.message ?? "calendar failed")
+	const first = data.days?.[0]
+	const name = persian ? first?.solarMonth : first?.gregorianMonth
 	return {
+		title: name ? `${name} ${year}` : "",
 		startDay: data.startDay ?? 1,
 		titles: [data.solarMonthYear, data.gregorianMonthYear, data.hijriMonthYear].filter((value): value is string => !!value),
 		days: (data.days ?? []).map((day, index) => ({
