@@ -13,7 +13,7 @@ import {getCardHolder} from "@/features/transfer/api/card-transfer"
 import {reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import {CardTransferDialog} from "@/features/transfer/components/card-transfer-dialog"
 import {ChoiceCards} from "@/features/transfer/components/choice-cards"
-import {FieldError, HolderCard, QUICK_AMOUNTS, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {isValidCardNumber} from "@/features/transfer/lib/numbers"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -23,7 +23,7 @@ type Errors = Partial<Record<"source" | "destination" | "amount" | "reason", str
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
 /** Send money from one of your cards to any bank card by its number. */
-export default function CardTransferPage() {
+export function CardTransferForm() {
 	const {t, i18n} = useTranslation()
 	const language = i18n.language
 	const cards = useQuery(cardsOptions(language))
@@ -75,7 +75,6 @@ export default function CardTransferPage() {
 	return (
 		<>
 			<TransferFormLayout
-				title={t("transfer.card.title")}
 				aside={
 					<TransferSummary
 						id="ct-summary"
@@ -120,6 +119,14 @@ export default function CardTransferPage() {
 
 				<StepSection id="ct-to" step={2} title={t("transfer.to")}>
 					<div className="flex flex-col gap-2">
+						<PayeeShortcuts
+							kind="cards"
+							onPick={(number) => {
+								setDestination(number)
+								lookup.reset()
+								touch()
+							}}
+						/>
 						<Label htmlFor="ct-destination">{t("transfer.card.destinationCard")}</Label>
 						<div className="flex items-center gap-2">
 							<Input
@@ -164,7 +171,7 @@ export default function CardTransferPage() {
 							inputMode="numeric"
 							autoComplete="off"
 							maxLength={15}
-							className="h-14 text-xl font-semibold md:text-xl"
+							className={AMOUNT_INPUT_CLASS}
 							value={amount}
 							aria-invalid={errors.amount !== undefined}
 							aria-describedby={errors.amount !== undefined ? "ct-amount-error" : undefined}
@@ -174,7 +181,6 @@ export default function CardTransferPage() {
 							}}
 						/>
 						<QuickAmounts
-							amounts={QUICK_AMOUNTS}
 							value={amountValue}
 							onPick={(quick) => {
 								setAmount(String(quick))

@@ -39,7 +39,7 @@ export function CardTransferDialog({cardId, cardNumber, holder, amount, descript
 			if (!credentials) throw new Error("form incomplete")
 			return transferCard({credentials, holder, amount, description, reasonCode: reason?.code ?? ""})
 		},
-		again: {to: routeMap.transferCard.path, label: t("transfer.again")},
+		again: {to: `${routeMap.transferSmart.path}?type=card`, label: t("transfer.again")},
 		failedText: t("transfer.failed"),
 		uncertainText: t("transfer.uncertain"),
 	})

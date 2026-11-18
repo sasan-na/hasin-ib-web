@@ -1,28 +1,39 @@
-import {CheckCircle2, UserRound, Wallet} from "lucide-react"
+import {useQuery} from "@tanstack/react-query"
+import {CheckCircle2, ChevronRight, UserRound, Wallet} from "lucide-react"
 import type {ReactNode} from "react"
 import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
+import type {DestinationKind} from "@/features/transfer/api/destinations"
+import {savedDestinationsOptions} from "@/features/transfer/api/transfer.queries"
 import {formatAmount} from "@/lib/format"
 
-// The pieces every transfer page is built from: numbered steps in cards, a sticky summary beside them,
-// the holder shown once a lookup succeeds, and quick amounts. One look for account, card, IBAN and group transfers.
+// The pieces every transfer page is built from: numbered steps in cards, a live summary (beside the steps on large
+// screens, a bar at the bottom on small ones), saved payees to pick, the holder shown once a lookup succeeds, and
+// quick amounts. One look for account, card, IBAN, group and standing order transfers.
 
-/** Round amounts, in Rials, offered under the amount field. */
-export const QUICK_AMOUNTS = [10_000_000, 50_000_000, 100_000_000, 500_000_000] as const
+/** The amount field: the biggest number on the page. */
+export const AMOUNT_INPUT_CLASS = "h-16 text-3xl font-bold tabular md:text-3xl"
+
+/** Increments offered under the amount field, in Toman (the amount itself is in Rials). */
+const QUICK_TOMAN = [500_000, 1_000_000, 5_000_000] as const
+const RIALS_PER_TOMAN = 10
+const MAX_AMOUNT = 999_999_999_999_999
 
 interface TransferFormLayoutProps {
-	title: string
+	/** Left out when the page around the form already has its heading. */
+	title?: string
 	children: ReactNode
-	/** The summary panel, shown beside the steps on large screens and after them on small ones. */
+	/** The summary panel: a card beside the steps on large screens, a bar at the bottom on small ones. */
 	aside: ReactNode
 }
 
 /** A title, the steps in a column and the summary beside them. */
 export function TransferFormLayout({title, children, aside}: TransferFormLayoutProps) {
 	return (
-		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{title}</h1>
+		// The bottom padding keeps the last step clear of the summary bar on small screens.
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6 pb-28 lg:pb-0">
+			{title ? <h1 className="text-2xl font-bold">{title}</h1> : null}
 			<div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
 				<div className="flex flex-col gap-5">{children}</div>
 				{aside}
@@ -44,7 +55,7 @@ export function StepSection({id, step, title, children}: StepSectionProps) {
 	return (
 		<section aria-labelledby={id} className="flex flex-col gap-5 rounded-2xl border bg-card p-6 shadow-card">
 			<h2 id={id} className="flex items-center gap-3 text-base font-semibold">
-				<span aria-hidden="true" className="grid size-7 place-items-center rounded-full bg-primary-soft text-sm text-primary">
+				<span aria-hidden="true" className="grid size-7 place-items-center rounded-full bg-primary-soft text-sm text-primary-soft-foreground">
 					{formatAmount(step, i18n.language)}
 				</span>
 				{title}
@@ -71,32 +82,88 @@ export function HolderCard({label, name}: {label: string; name: string}) {
 				<UserRound aria-hidden="true" className="size-5" />
 			</span>
 			<span className="flex min-w-0 flex-col text-sm">
-				<span className="text-muted-foreground">{label}</span>
-				<span className="truncate font-semibold">{name}</span>
+				<span className="text-success-soft-foreground/80">{label}</span>
+				<span className="truncate font-semibold text-success-soft-foreground">{name}</span>
 			</span>
 			<CheckCircle2 aria-hidden="true" className="ms-auto size-5 shrink-0 text-success" />
 		</div>
 	)
 }
 
-/** Round amounts to pick with one tap. */
-export function QuickAmounts({amounts, value, onPick}: {amounts: readonly number[]; value: number; onPick: (amount: number) => void}) {
-	const {i18n} = useTranslation()
+interface QuickAmountsProps {
+	/** The amount now typed, in Rials. */
+	value: number
+	/** Gets the new amount, in Rials. */
+	onPick: (amount: number) => void
+	/** What the paying account holds, in Rials; adds a "whole balance" chip. Leave out when it is not known. */
+	balance?: number | null
+}
+
+/** Chips that add to the amount (500,000 Toman and so on), and one that takes the whole balance. */
+export function QuickAmounts({value, onPick, balance = null}: QuickAmountsProps) {
+	const {t, i18n} = useTranslation()
 	return (
 		<div className="flex flex-wrap gap-2">
-			{amounts.map((quick) => (
+			{QUICK_TOMAN.map((toman) => (
 				<Button
-					key={quick}
+					key={toman}
 					type="button"
 					variant="outline"
 					size="sm"
-					aria-pressed={value === quick}
-					className={value === quick ? "border-primary bg-primary-soft text-primary" : undefined}
-					onClick={() => onPick(quick)}
+					aria-label={t("transfer.quick.add", {amount: formatAmount(toman, i18n.language)})}
+					onClick={() => onPick(Math.min(value + toman * RIALS_PER_TOMAN, MAX_AMOUNT))}
 				>
-					{formatAmount(quick, i18n.language)}
+					+{formatAmount(toman, i18n.language)}
 				</Button>
 			))}
+			{balance !== null && balance > 0 ? (
+				<Button type="button" variant="outline" size="sm" aria-pressed={value === balance} className={value === balance ? "border-primary bg-primary-soft text-primary-soft-foreground" : undefined} onClick={() => onPick(balance)}>
+					{t("transfer.quick.all")}
+				</Button>
+			) : null}
+		</div>
+	)
+}
+
+interface PayeeShortcutsProps {
+	/** Which kind of number to offer: the server keeps a separate list of saved destinations for each. */
+	kind: DestinationKind
+	/** Gets the number to fill in. */
+	onPick: (number: string) => void
+}
+
+/** Saved destinations as one-tap chips that fill the destination in. Left out when there are none or they cannot be loaded. */
+export function PayeeShortcuts({kind, onPick}: PayeeShortcutsProps) {
+	const {t} = useTranslation()
+	const saved = useQuery(savedDestinationsOptions(kind))
+	const payees = (saved.data ?? []).filter((payee) => payee.holder !== "").slice(0, 8)
+
+	if (payees.length === 0) return null
+
+	return (
+		<div className="flex flex-col gap-2">
+			<p className="text-sm text-muted-foreground">{t("transfer.payees")}</p>
+			<ul className="flex flex-wrap gap-2">
+				{payees.map((payee) => (
+					<li key={payee.key}>
+						<button
+							type="button"
+							onClick={() => onPick(payee.number)}
+							className="flex min-h-11 items-center gap-2 rounded-full border bg-card py-1 ps-1 pe-3 text-sm transition-colors hover:border-primary/40 hover:bg-primary-soft focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+						>
+							<span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary-soft-foreground">
+								{payee.holder.charAt(0)}
+							</span>
+							<span className="flex flex-col text-start leading-tight">
+								<span className="font-medium">{payee.holder}</span>
+								<span dir="ltr" className="text-xs text-muted-foreground">
+									{payee.number}
+								</span>
+							</span>
+						</button>
+					</li>
+				))}
+			</ul>
 		</div>
 	)
 }
@@ -111,32 +178,52 @@ interface TransferSummaryProps {
 	onReview: () => void
 }
 
-/** The sticky panel that fills in as the steps are completed and holds the button that moves on. */
+/** The forward button: a chevron that points the way the page reads and nudges that way on hover. */
+function ReviewButton({label, onClick, className}: {label: string; onClick: () => void; className?: string}) {
+	return (
+		<Button type="button" size="lg" className={`group ${className ?? ""}`} onClick={onClick}>
+			{label}
+			<ChevronRight aria-hidden="true" className="transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+		</Button>
+	)
+}
+
+/**
+ * The live summary and the one button that moves on. A card beside the steps on large screens; on small screens
+ * a bar fixed to the bottom with the amount and the button.
+ */
 export function TransferSummary({id, title, amount, rows, reviewLabel, onReview}: TransferSummaryProps) {
 	return (
-		<aside aria-labelledby={id} className="lg:sticky lg:top-6 lg:self-start">
-			<div className="overflow-hidden rounded-2xl border bg-card shadow-card">
-				<div className="bg-brand-gradient p-5 text-white">
-					<h2 id={id} className="flex items-center gap-2 text-sm">
-						<Wallet aria-hidden="true" className="size-4" />
-						{title}
-					</h2>
-					<p className="mt-2 text-2xl font-bold">{amount ?? "—"}</p>
+		<>
+			<aside aria-labelledby={id} className="hidden lg:sticky lg:top-6 lg:block lg:self-start">
+				<div className="overflow-hidden rounded-2xl border bg-card shadow-card">
+					<div className="bg-brand-gradient p-5 text-on-brand">
+						<h2 id={id} className="flex items-center gap-2 text-sm">
+							<Wallet aria-hidden="true" className="size-4" />
+							{title}
+						</h2>
+						<p className="tabular mt-2 text-2xl font-bold">{amount ?? "—"}</p>
+					</div>
+					<dl className="divide-y px-5 text-sm">
+						{rows.map((row) => (
+							<div key={row.label} className="flex items-center justify-between gap-4 py-3">
+								<dt className="text-muted-foreground">{row.label}</dt>
+								<dd className="truncate text-end font-medium">{row.value ?? "—"}</dd>
+							</div>
+						))}
+					</dl>
+					<div className="p-5 pt-3">
+						<ReviewButton label={reviewLabel} onClick={onReview} className="w-full" />
+					</div>
 				</div>
-				<dl className="divide-y px-5 text-sm">
-					{rows.map((row) => (
-						<div key={row.label} className="flex items-center justify-between gap-4 py-3">
-							<dt className="text-muted-foreground">{row.label}</dt>
-							<dd className="truncate text-end font-medium">{row.value ?? "—"}</dd>
-						</div>
-					))}
-				</dl>
-				<div className="p-5 pt-3">
-					<Button type="button" size="lg" className="w-full" onClick={onReview}>
-						{reviewLabel}
-					</Button>
+			</aside>
+			<div role="region" aria-label={title} className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t bg-card p-3 shadow-card lg:hidden">
+				<div className="flex min-w-0 flex-1 flex-col">
+					<span className="text-xs text-muted-foreground">{title}</span>
+					<span className="tabular truncate text-lg font-bold">{amount ?? "—"}</span>
 				</div>
+				<ReviewButton label={reviewLabel} onClick={onReview} />
 			</div>
-		</aside>
+		</>
 	)
 }

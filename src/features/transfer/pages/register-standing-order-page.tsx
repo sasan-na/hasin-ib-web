@@ -17,7 +17,7 @@ import {registerStandingOrder} from "@/features/transfer/api/standing-order"
 import {getAccountOwner} from "@/features/transfer/api/transfer"
 import {frequenciesOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, QUICK_AMOUNTS, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {formatAmount} from "@/lib/format"
 import {jalaliToIso, parseJalali} from "@/lib/jalali"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -154,6 +154,14 @@ export default function RegisterStandingOrderPage() {
 
 				<StepSection id="so-to" step={2} title={t("transfer.to")}>
 					<div className="flex flex-col gap-2">
+						<PayeeShortcuts
+							kind="accounts"
+							onPick={(number) => {
+								setDestination(number)
+								lookup.reset()
+								touch()
+							}}
+						/>
 						<Label htmlFor="so-destination">{t("transfer.destinationAccount")}</Label>
 						<div className="flex items-center gap-2">
 							<Input
@@ -198,7 +206,7 @@ export default function RegisterStandingOrderPage() {
 							inputMode="numeric"
 							autoComplete="off"
 							maxLength={15}
-							className="h-14 text-xl font-semibold md:text-xl"
+							className={AMOUNT_INPUT_CLASS}
 							value={amount}
 							aria-invalid={errors.amount !== undefined}
 							aria-describedby={errors.amount !== undefined ? "so-amount-error" : undefined}
@@ -208,7 +216,6 @@ export default function RegisterStandingOrderPage() {
 							}}
 						/>
 						<QuickAmounts
-							amounts={QUICK_AMOUNTS}
 							value={amountValue}
 							onPick={(quick) => {
 								setAmount(String(quick))

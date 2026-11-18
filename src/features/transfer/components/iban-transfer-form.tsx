@@ -2,13 +2,11 @@ import {useMutation, useQuery} from "@tanstack/react-query"
 import {Loader2, Search} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
-import {useSearchParams} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
@@ -18,22 +16,20 @@ import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-tran
 import {getIbanHolder, transferIban, type IbanNetwork} from "@/features/transfer/api/transfer"
 import {ibanLimitsOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, QUICK_AMOUNTS, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib/numbers"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
-import {cn} from "@/lib/utils"
 
 type Errors = Partial<Record<"source" | "iban" | "name" | "amount" | "reason", string>>
 
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
 /** Send money to an account at another bank by its IBAN, over Paya (next working day, any amount) or Satna (same day, large amounts). */
-export default function IbanTransferPage() {
+/** The IBAN transfer for one network; the page around it picks the network. */
+export function IbanTransferForm({network}: {network: IbanNetwork}) {
 	const {t, i18n} = useTranslation()
 	const language = i18n.language
-	const [params, setParams] = useSearchParams()
-	const network: IbanNetwork = params.get("type") === "paya" ? "paya" : "satna"
 	// The bank names the service after the network; it decides which accounts may pay, the limit and the SMS code.
 	const service = network === "paya" ? "PayaTransferMoney" : "SatnaTransferMoney"
 
@@ -77,7 +73,7 @@ export default function IbanTransferPage() {
 				reasonCode,
 			})
 		},
-		again: {to: `${routeMap.transferIban.path}?type=${network}`, label: t("transfer.again")},
+		again: {to: `${routeMap.transferSmart.path}?type=${network}`, label: t("transfer.again")},
 		failedText: t("transfer.failed"),
 		uncertainText: t("transfer.uncertain"),
 	})
@@ -122,7 +118,6 @@ export default function IbanTransferPage() {
 	return (
 		<>
 			<TransferFormLayout
-				title={t("transfer.iban.title")}
 				aside={
 					<TransferSummary
 						id="iban-summary"
@@ -139,40 +134,6 @@ export default function IbanTransferPage() {
 					/>
 				}
 			>
-				<section aria-labelledby="iban-network" className="flex flex-col gap-4 rounded-2xl border bg-card p-6 shadow-card">
-					<h2 id="iban-network" className="text-base font-semibold">
-						{t("transfer.iban.network")}
-					</h2>
-					<RadioGroup
-						value={network}
-						onValueChange={(value) => {
-							setParams({type: value === "paya" ? "paya" : "satna"}, {replace: true})
-							// Another network means other limits and another set of paying accounts.
-							setSource(null)
-							lookup.reset()
-							touch()
-						}}
-						className="grid gap-3 sm:grid-cols-2"
-					>
-						{(["satna", "paya"] as const).map((option) => (
-							<Label
-								key={option}
-								htmlFor={`iban-${option}`}
-								className={cn(
-									"flex cursor-pointer items-start gap-3 rounded-xl border p-4 font-normal transition-colors has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring/50",
-									network === option ? "border-primary bg-primary-soft ring-2 ring-primary/20" : "hover:border-foreground/40",
-								)}
-							>
-								<RadioGroupItem id={`iban-${option}`} value={option} className="mt-1" />
-								<span className="flex flex-col items-start gap-0.5">
-									<span className="font-medium">{t(`transfer.iban.${option}`)}</span>
-									<span className="text-sm text-muted-foreground">{t(`transfer.iban.${option}Hint`)}</span>
-								</span>
-							</Label>
-						))}
-					</RadioGroup>
-				</section>
-
 				<StepSection id="iban-from" step={1} title={t("transfer.from")}>
 					<p id="iban-source-label" className="sr-only">
 						{t("transfer.sourceAccount")}
@@ -192,6 +153,14 @@ export default function IbanTransferPage() {
 
 				<StepSection id="iban-to" step={2} title={t("transfer.to")}>
 					<div className="flex flex-col gap-2">
+						<PayeeShortcuts
+							kind="ibans"
+							onPick={(number) => {
+								setIban(number)
+								lookup.reset()
+								touch()
+							}}
+						/>
 						<Label htmlFor="iban-number">{t("transfer.iban.number")}</Label>
 						<div className="flex items-center gap-2">
 							<span dir="ltr" className="font-medium text-muted-foreground">
@@ -257,7 +226,7 @@ export default function IbanTransferPage() {
 							inputMode="numeric"
 							autoComplete="off"
 							maxLength={15}
-							className="h-14 text-xl font-semibold md:text-xl"
+							className={AMOUNT_INPUT_CLASS}
 							value={amount}
 							aria-invalid={errors.amount !== undefined}
 							aria-describedby={errors.amount !== undefined ? "iban-amount-error" : undefined}
@@ -267,7 +236,6 @@ export default function IbanTransferPage() {
 							}}
 						/>
 						<QuickAmounts
-							amounts={QUICK_AMOUNTS}
 							value={amountValue}
 							onPick={(quick) => {
 								setAmount(String(quick))
