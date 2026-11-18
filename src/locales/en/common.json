@@ -1656,6 +1656,26 @@
         },
         "landing": {
             "title": "Cheques"
+        },
+        "issue": {
+            "title": "Issue a digital cheque",
+            "hint": "Write the cheque here, then approve it in your Hamoon app. The cheque is issued only after you approve.",
+            "notActivated": "The digital cheque service is not active for you yet, so a cheque cannot be issued. Activate it first.",
+            "noAccount": "This account cannot issue digital cheques right now.",
+            "guarantors": "Guarantors",
+            "guarantorsHint": "Optional. Guarantors are asked to sign for the cheque after it is issued.",
+            "guarantor": "Guarantor {{number}}",
+            "confirmTitle": "Issue digital cheque",
+            "confirmQuestion": "A request is sent to your Hamoon app. Approve it there, then come back and issue the cheque.",
+            "approveQuestion": "Approve the request in your Hamoon app, then press Issue.",
+            "hamoonSent": "The request was sent to your Hamoon app. Open the app and approve it.",
+            "sign": "Send to Hamoon",
+            "signing": "Sending…",
+            "issue": "Issue cheque",
+            "issuing": "Issuing…",
+            "signFailed": "The request could not be sent to Hamoon. Please try again.",
+            "failed": "The cheque was not issued. If you have not approved the request in Hamoon yet, do that and try again.",
+            "uncertain": "We could not confirm whether the cheque was issued. Check the cheque list before trying again."
         }
     },
     "dashboard": {

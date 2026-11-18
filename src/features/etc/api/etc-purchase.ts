@@ -3,6 +3,7 @@ import {z} from "@/lib/zod"
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
 import {toCardInfoBody, type CardCredentials} from "@/features/card/api/card-credentials"
+import {getMyNationalCode} from "@/features/profile/api/profile"
 import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
 
 const text = z.string().nullish()
@@ -48,15 +49,6 @@ export const getEtcPrice = async (): Promise<EtcPrice> => {
 	const data = priceSchema.parse(camelKeys(await apiClient<unknown>("/Etc/GetEtcPrice")))
 	if (data.isSuccessful === false || data.tagCost == null) throw new Error(data.message ?? "price failed")
 	return {tag: data.tagCost, post: data.postCost ?? 0, tehranPost: data.tehranPostCost ?? 0}
-}
-
-const nationalSchema = z.object({...base, result: z.union([z.string(), z.number()]).nullish()})
-
-/** The signed-in user's own national code, to save typing it. */
-export const getMyNationalCode = async (): Promise<string> => {
-	const data = nationalSchema.parse(camelKeys(await apiClient<unknown>("/Profile/GetNationalCode")))
-	if (data.isSuccessful === false || data.result == null) throw new Error(data.message ?? "national code failed")
-	return String(data.result)
 }
 
 const infoSchema = z.object({
@@ -164,3 +156,5 @@ export const purchaseEtc = (request: EtcPurchase): Promise<TransactionResult> =>
 			isTehranProvince: request.isTehran,
 		}),
 	}).then(toTransactionResult)
+
+export {getMyNationalCode}

@@ -50,10 +50,12 @@ interface Props {
 	setRows: Dispatch<SetStateAction<RecipientRow[]>>
 	/** Heading above the list. */
 	title: string
+	/** The fewest rows the list may have; 0 lets the user remove every row. Default 1. */
+	minRows?: number
 }
 
 /** The people a cheque is payable to: each one is looked up in the registry so the name cannot be typed wrongly. */
-export function RecipientsEditor({sayyadId, rows, setRows, title}: Props) {
+export function RecipientsEditor({sayyadId, rows, setRows, title, minRows = 1}: Props) {
 	const {t} = useTranslation()
 
 	const update = (key: number, change: Partial<RecipientRow>): void => setRows((current) => current.map((row) => (row.key === key ? {...row, ...change} : row)))
@@ -83,7 +85,7 @@ export function RecipientsEditor({sayyadId, rows, setRows, title}: Props) {
 					<li key={row.key} className="flex flex-col gap-3 rounded-md border p-4">
 						<div className="flex items-center justify-between">
 							<span className="text-sm font-medium text-muted-foreground">{t("cheque.register.recipient", {number: index + 1})}</span>
-							{rows.length > 1 ? (
+							{rows.length > minRows ? (
 								<Button type="button" variant="ghost" size="icon" aria-label={t("cheque.register.remove", {number: index + 1})} onClick={() => setRows((current) => current.filter((candidate) => candidate.key !== row.key))}>
 									<Trash2 aria-hidden="true" />
 								</Button>

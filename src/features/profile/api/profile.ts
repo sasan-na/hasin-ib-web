@@ -113,3 +113,12 @@ export const getProfile = async (): Promise<Profile> => {
 		]),
 	}
 }
+
+const nationalCodeSchema = z.object({isSuccessful: z.boolean().nullish(), message: z.string().nullish(), result: z.union([z.string(), z.number()]).nullish()})
+
+/** The signed-in user's own national code. */
+export const getMyNationalCode = async (): Promise<string> => {
+	const data = nationalCodeSchema.parse(camelKeys(await apiClient<unknown>("/Profile/GetNationalCode")))
+	if (data.isSuccessful === false || data.result == null) throw new Error(data.message ?? "national code failed")
+	return String(data.result)
+}
