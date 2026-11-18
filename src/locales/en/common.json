@@ -1061,6 +1061,8 @@
             "removeFailed": "The periodic statement could not be stopped.",
             "notFound": "This periodic statement could not be found.",
             "formError": "The form could not be loaded. Try again in a moment.",
+            "whoStep": "Account and delivery",
+            "whenStep": "Start date and contents",
             "interval": "Period",
             "chooseInterval": "Choose a period",
             "language": "Statement language",
