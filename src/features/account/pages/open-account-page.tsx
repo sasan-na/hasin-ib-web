@@ -49,7 +49,7 @@ type Errors = Partial<Record<"depositType" | "profile" | "usage" | "amount" | "m
 
 function Section({step, title, children}: {step: number; title: string; children: React.ReactNode}) {
 	return (
-		<section aria-labelledby={`step-${step}`} className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+		<section aria-labelledby={`step-${step}`} className="flex flex-col gap-4 rounded-lg bg-card p-5">
 			<h2 id={`step-${step}`} className="flex items-center gap-3 text-base font-semibold">
 				{/* A real sequence, so the numbers carry meaning. */}
 				<span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">

@@ -113,14 +113,14 @@ export default function BalancePage() {
 			</form>
 
 			{diagram.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{diagram.error.message || t("report.balance.failed")}
 				</p>
 			) : null}
 
 			{diagram.data ? (
 				days.length === 0 ? (
-					<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{diagram.data.note || t("report.balance.empty")}</p>
+					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{diagram.data.note || t("report.balance.empty")}</p>
 				) : (
 					<section className="flex flex-col gap-4" aria-label={t("report.balance.result")}>
 						<dl className="grid gap-3 rounded-lg border bg-card p-4 text-sm sm:grid-cols-2">

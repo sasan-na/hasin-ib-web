@@ -104,7 +104,7 @@ export default function NewSubUserPage() {
 		return (
 			<div className="mx-auto flex w-full max-w-xl flex-col gap-6">
 				<h1 className="text-2xl font-bold">{t("dashboard.newUser.doneTitle")}</h1>
-				<section className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+				<section className="flex flex-col gap-3 rounded-lg bg-card p-5">
 					<p className="text-sm">{t("dashboard.newUser.done", {username: result.username})}</p>
 					{result.accountCount ? <p className="text-sm text-muted-foreground">{t("dashboard.newUser.doneAccounts", {count: result.accountCount})}</p> : null}
 					<div>
@@ -130,7 +130,7 @@ export default function NewSubUserPage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("dashboard.newUser.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="nu-who">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="nu-who">
 				<h2 id="nu-who" className="text-base font-semibold">
 					{t("dashboard.newUser.who")}
 				</h2>
@@ -166,7 +166,7 @@ export default function NewSubUserPage() {
 				{passwordRules.data ? <PasswordRules rules={passwordRules.data} violations={null} /> : null}
 			</section>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="nu-accounts">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="nu-accounts">
 				<h2 id="nu-accounts" className="text-base font-semibold">
 					{t("dashboard.newUser.accounts")}
 				</h2>

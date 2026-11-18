@@ -75,11 +75,11 @@ export default function AccountPage() {
 					<Skeleton className="h-16 w-full" />
 				</div>
 			) : accounts.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("account.error")}
 				</p>
 			) : accounts.data.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("account.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("account.empty")}</p>
 			) : (
 				<>
 					<AccountFilters filters={filters} onChange={setFilters} onReset={() => setFilters(EMPTY_FILTERS)} categories={categories} />
@@ -91,13 +91,13 @@ export default function AccountPage() {
 					) : null}
 
 					{groups.length === 0 ? (
-						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("account.noResults")}</p>
+						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("account.noResults")}</p>
 					) : (
 						groups.map((group) => {
 							const total = groupTotal(group.accounts, fresh)
 							const headingId = `account-group-${group.key || "none"}`
 							return (
-								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg border bg-card">
+								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg bg-card">
 									<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b bg-muted/60 px-5 py-3">
 										<h2 id={headingId} className="text-base font-semibold">
 											{group.name || t("account.listTitle")}

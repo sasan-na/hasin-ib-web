@@ -119,11 +119,11 @@ export default function BranchRequestsPage() {
 			{requests.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : requests.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{requests.error.message || t("branch.requests.error")}
 				</p>
 			) : requests.data.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("branch.requests.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("branch.requests.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{requests.data.map((request, index) => (

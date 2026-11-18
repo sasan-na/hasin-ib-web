@@ -138,11 +138,11 @@ export default function ChakadCartablePage() {
 			{cartable.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : cartable.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{cartable.error.message || t("cheque.cartable.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("cheque.cartable.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.cartable.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">{shown.map(card)}</ul>
 			)}

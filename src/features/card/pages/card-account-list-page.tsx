@@ -53,7 +53,7 @@ export default function CardAccountListPage() {
 				</div>
 			</div>
 
-			<section aria-label={t("card.accounts.title")} className="overflow-hidden rounded-lg border bg-card">
+			<section aria-label={t("card.accounts.title")} className="overflow-hidden rounded-lg bg-card">
 				{accounts.isPending ? (
 					<div className="flex flex-col gap-3 p-5" aria-hidden="true">
 						<Skeleton className="h-14 w-full" />

@@ -143,7 +143,7 @@ export default function ChakadIssuePage() {
 		return (
 			<div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
 				<h1 className="text-2xl font-bold">{t("cheque.issue.title")}</h1>
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("cheque.register.noCheque")}
 				</p>
 				<Button asChild variant="outline" className="self-start">
@@ -172,7 +172,7 @@ export default function ChakadIssuePage() {
 			{accounts.isPending ? (
 				<Skeleton className="h-16 w-full" />
 			) : !account ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("cheque.issue.noAccount")}
 				</p>
 			) : (

@@ -43,7 +43,7 @@ export default function CardInfoPage() {
 				</Button>
 			</div>
 
-			<section aria-label={t("card.info.title")} className="overflow-hidden rounded-lg border bg-card">
+			<section aria-label={t("card.info.title")} className="overflow-hidden rounded-lg bg-card">
 				{info.isPending ? (
 					<div className="flex flex-col gap-3 p-5" aria-hidden="true">
 						<Skeleton className="h-6 w-1/2" />

@@ -59,7 +59,7 @@ export default function ChequeListPage() {
 				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
 			</div>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="cheque-account">{t("cheque.account")}</Label>
 					<SourceAccountSelect id="cheque-account" serviceName={SERVICE} value={account?.id ?? null} onChange={changeAccount} />
@@ -132,7 +132,7 @@ export default function ChequeListPage() {
 			</section>
 
 			{account === null ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("cheque.chooseAccount")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.chooseAccount")}</p>
 			) : list.isPending ? (
 				<div className="flex flex-col gap-3" aria-hidden="true">
 					<Skeleton className="h-16 w-full" />
@@ -140,7 +140,7 @@ export default function ChequeListPage() {
 					<Skeleton className="h-16 w-full" />
 				</div>
 			) : list.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{list.error.message || t("cheque.error")}
 				</p>
 			) : (
@@ -152,7 +152,7 @@ export default function ChequeListPage() {
 						</Button>
 					</div>
 					{cheques.length === 0 ? (
-						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("cheque.empty")}</p>
+						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.empty")}</p>
 					) : (
 						<ul className="flex flex-col gap-3">
 							{cheques.map((cheque) => (

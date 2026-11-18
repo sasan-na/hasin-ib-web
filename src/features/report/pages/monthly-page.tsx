@@ -158,7 +158,7 @@ export default function MonthlyPage() {
 			</form>
 
 			{report.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{report.error.message || t("report.monthly.failed")}
 				</p>
 			) : null}

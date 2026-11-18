@@ -30,7 +30,7 @@ export default function NewRulePage() {
 	if (rule.isPending) return <Skeleton className="mx-auto h-64 w-full max-w-3xl" />
 	if (rule.isError) {
 		return (
-			<p role="alert" className="mx-auto w-full max-w-3xl rounded-lg border bg-card p-5 text-sm text-destructive">
+			<p role="alert" className="mx-auto w-full max-w-3xl rounded-lg bg-card p-5 text-sm text-destructive">
 				{rule.error.message || t("dashboard.newRule.loadRuleError")}
 			</p>
 		)
@@ -122,7 +122,7 @@ function RuleForm({editId, initial}: {editId?: number; initial?: EditableRule}) 
 			</div>
 			<p className="text-sm text-muted-foreground">{t("dashboard.newRule.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="nr-title">{t("dashboard.newRule.name")}</Label>
 					<Input id="nr-title" maxLength={100} value={title} onChange={(event) => setTitle(event.target.value)} />
@@ -163,7 +163,7 @@ function RuleForm({editId, initial}: {editId?: number; initial?: EditableRule}) 
 
 			{enabled ? (
 				<>
-					<section className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-labelledby="nr-services">
+					<section className="flex flex-col gap-3 rounded-lg bg-card p-5" aria-labelledby="nr-services">
 						<h2 id="nr-services" className="text-base font-semibold">
 							{t("dashboard.newRule.services")}
 						</h2>
@@ -187,7 +187,7 @@ function RuleForm({editId, initial}: {editId?: number; initial?: EditableRule}) 
 						)}
 					</section>
 
-					<section className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-labelledby="nr-initiators">
+					<section className="flex flex-col gap-3 rounded-lg bg-card p-5" aria-labelledby="nr-initiators">
 						<h2 id="nr-initiators" className="text-base font-semibold">
 							{t("dashboard.newRule.initiators")}
 						</h2>
@@ -210,7 +210,7 @@ function RuleForm({editId, initial}: {editId?: number; initial?: EditableRule}) 
 						)}
 					</section>
 
-					<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="nr-levels">
+					<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="nr-levels">
 						<h2 id="nr-levels" className="text-base font-semibold">
 							{t("dashboard.newRule.levels")}
 						</h2>
@@ -263,7 +263,7 @@ function RuleForm({editId, initial}: {editId?: number; initial?: EditableRule}) 
 					</section>
 
 					{signatories.data && signatories.data.people.length > 0 ? (
-						<section className="flex flex-col gap-2 rounded-lg border bg-card p-5" aria-labelledby="nr-sign">
+						<section className="flex flex-col gap-2 rounded-lg bg-card p-5" aria-labelledby="nr-sign">
 							<h2 id="nr-sign" className="text-base font-semibold">
 								{t("dashboard.newRule.signatories")}
 							</h2>

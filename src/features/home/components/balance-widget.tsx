@@ -29,7 +29,7 @@ export function BalanceWidget() {
 	})
 
 	return (
-		<section aria-labelledby="balance-title" className="overflow-hidden rounded-lg border bg-card">
+		<section aria-labelledby="balance-title" className="overflow-hidden rounded-lg bg-card">
 			<h2 id="balance-title" className="border-b px-5 py-4 text-base font-semibold">
 				{t("home.balance.title")}
 			</h2>

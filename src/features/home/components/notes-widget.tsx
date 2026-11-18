@@ -72,7 +72,7 @@ export function NotesWidget() {
 	const locale = language === "en" ? "en-US" : "fa-IR"
 
 	return (
-		<section aria-labelledby="notes-title" className="overflow-hidden rounded-lg border bg-card">
+		<section aria-labelledby="notes-title" className="overflow-hidden rounded-lg bg-card">
 			<div className="flex items-center justify-between gap-2 border-b px-5 py-3">
 				<h2 id="notes-title" className="text-base font-semibold">
 					{t("home.notes.title")}

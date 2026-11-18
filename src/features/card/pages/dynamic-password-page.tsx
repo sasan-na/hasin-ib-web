@@ -34,11 +34,11 @@ export default function DynamicPasswordPage() {
 			{cards.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : cards.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{cards.error.message || t("dynamicPassword.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("dynamicPassword.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dynamicPassword.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{shown.map((card) => (

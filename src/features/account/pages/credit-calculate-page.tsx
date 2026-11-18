@@ -232,7 +232,7 @@ export default function CreditCalculatePage() {
 			) : null}
 
 			{result ? (
-				<section aria-labelledby="credit-result" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+				<section aria-labelledby="credit-result" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 					<h2 id="credit-result" className="text-base font-semibold">
 						{t("account.credit.result")}
 					</h2>

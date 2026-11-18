@@ -50,7 +50,7 @@ export default function CardlessListPage() {
 					<Skeleton className="h-24 w-full" />
 				</div>
 			) : tickets.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{tickets.error.message || t("card.cardless.loadError")}
 				</p>
 			) : (
@@ -61,7 +61,7 @@ export default function CardlessListPage() {
 						</p>
 					))}
 					{visible.length === 0 ? (
-						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{tickets.data.tickets.length === 0 ? t("card.cardless.empty") : t("card.cardless.noMatch")}</p>
+						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{tickets.data.tickets.length === 0 ? t("card.cardless.empty") : t("card.cardless.noMatch")}</p>
 					) : (
 						<ul className="grid gap-4 md:grid-cols-2">
 							{visible.map((ticket) => (

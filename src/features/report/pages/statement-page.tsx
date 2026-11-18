@@ -249,16 +249,16 @@ export default function StatementPage() {
 			</form>
 
 			{search.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{search.error.message || t("report.statement.failed")}
 				</p>
 			) : null}
 
 			{result ? (
 				result.rows.length === 0 ? (
-					<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("report.statement.empty")}</p>
+					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("report.statement.empty")}</p>
 				) : (
-					<section aria-label={t("report.statement.title")} className="overflow-hidden rounded-lg border bg-card">
+					<section aria-label={t("report.statement.title")} className="overflow-hidden rounded-lg bg-card">
 						{result.totalDebit !== null || result.totalCredit !== null ? (
 							<dl className="flex flex-wrap gap-x-8 gap-y-2 border-b p-5 text-sm">
 								{result.totalDebit !== null ? (

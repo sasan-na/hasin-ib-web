@@ -81,14 +81,14 @@ export default function PichakChainPage() {
 			</form>
 
 			{chain.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{chain.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}
 
 			{chain.data ? (
 				chain.data.length === 0 ? (
-					<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("cheque.chain.empty")}</p>
+					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("cheque.chain.empty")}</p>
 				) : (
 					<ol aria-label={t("cheque.chain.result")} className="flex flex-col gap-4">
 						{chain.data.map((step, index) => (

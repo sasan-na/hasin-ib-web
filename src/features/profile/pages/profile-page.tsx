@@ -21,12 +21,12 @@ export default function ProfilePage() {
 			{profile.isPending ? (
 				<Skeleton className="h-64 w-full" />
 			) : profile.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{profile.error.message || t("profile.error")}
 				</p>
 			) : (
 				<>
-					<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="profile-general">
+					<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="profile-general">
 						<h2 id="profile-general" className="text-base font-semibold">
 							{profile.data.title || t("profile.general")}
 						</h2>
@@ -50,7 +50,7 @@ export default function ProfilePage() {
 							<Link to={routeMap.mobileBanking.path}>{t("profile.mobile.open")}</Link>
 						</Button>
 					</div>
-					<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="profile-signin">
+					<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="profile-signin">
 						<h2 id="profile-signin" className="text-base font-semibold">
 							{t("profile.signIn")}
 						</h2>

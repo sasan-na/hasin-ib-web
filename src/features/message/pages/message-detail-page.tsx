@@ -51,7 +51,7 @@ export default function MessageDetailPage() {
 			</Button>
 
 			{!valid ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("message.notFound")}
 				</p>
 			) : thread.isPending ? (
@@ -61,7 +61,7 @@ export default function MessageDetailPage() {
 					<Skeleton className="h-24 w-full" />
 				</div>
 			) : thread.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{thread.error.message || t("message.error")}
 				</p>
 			) : (

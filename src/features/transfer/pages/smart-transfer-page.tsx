@@ -107,7 +107,7 @@ export default function SmartTransferPage() {
 		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("transfer.smart.title")}</h1>
 
-			<section aria-labelledby="transfer-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="transfer-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="transfer-from" className="text-base font-semibold">
 					{t("transfer.from")}
 				</h2>
@@ -131,7 +131,7 @@ export default function SmartTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="transfer-to" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="transfer-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="transfer-to" className="text-base font-semibold">
 					{t("transfer.to")}
 				</h2>
@@ -180,7 +180,7 @@ export default function SmartTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="transfer-details" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="transfer-details" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="transfer-details" className="text-base font-semibold">
 					{t("transfer.details")}
 				</h2>

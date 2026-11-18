@@ -62,7 +62,7 @@ export default function ReceiptViewPage() {
 			{receipt.isPending ? (
 				<Skeleton className="h-48 w-full" />
 			) : receipt.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{receipt.error.message || t("receipt.viewError")}
 				</p>
 			) : (

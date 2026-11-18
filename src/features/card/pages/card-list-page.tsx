@@ -73,11 +73,11 @@ export default function CardListPage() {
 					<Skeleton className="h-16 w-full" />
 				</div>
 			) : cards.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("card.error")}
 				</p>
 			) : cards.data.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("card.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.empty")}</p>
 			) : (
 				<>
 					<CardFilters filters={filters} onChange={setFilters} onReset={() => setFilters(EMPTY_FILTERS)} categories={categories} />
@@ -89,13 +89,13 @@ export default function CardListPage() {
 					) : null}
 
 					{groups.length === 0 ? (
-						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("card.noResults")}</p>
+						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.noResults")}</p>
 					) : (
 						groups.map((group) => {
 							const total = groupTotal(group.cards, fresh)
 							const headingId = `card-group-${group.key || "none"}`
 							return (
-								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg border bg-card">
+								<section key={group.key} aria-labelledby={headingId} className="overflow-hidden rounded-lg bg-card">
 									<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b bg-muted/60 px-5 py-3">
 										<h2 id={headingId} className="text-base font-semibold">
 											{group.name || t("card.listTitle")}

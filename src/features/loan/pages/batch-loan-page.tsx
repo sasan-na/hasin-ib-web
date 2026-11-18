@@ -179,7 +179,7 @@ export default function BatchLoanPage() {
 			<OtherLoanTabs />
 			<p className="text-sm text-muted-foreground">{t("loan.batch.hint")}</p>
 
-			<section aria-labelledby="bl-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="bl-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="bl-from" className="text-base font-semibold">
 					{t("loan.pay.from")}
 				</h2>
@@ -203,7 +203,7 @@ export default function BatchLoanPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="bl-loans" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="bl-loans" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="bl-loans" className="text-base font-semibold">
 					{t("loan.batch.loans")}
 				</h2>

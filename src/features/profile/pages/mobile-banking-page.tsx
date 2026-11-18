@@ -42,7 +42,7 @@ export default function MobileBankingPage() {
 			{info.isPending ? (
 				<Skeleton className="h-48 w-full" />
 			) : info.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{info.error.message || t("profile.mobile.error")}
 				</p>
 			) : info.data === null ? (
@@ -52,7 +52,7 @@ export default function MobileBankingPage() {
 				</div>
 			) : (
 				<>
-					<section className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+					<section className="flex flex-col gap-3 rounded-lg bg-card p-5">
 						<dl className="grid gap-3 sm:grid-cols-2">
 							<div className="flex flex-col">
 								<dt className="text-sm text-muted-foreground">{t("profile.fields.username")}</dt>
@@ -98,7 +98,7 @@ function NumbersSection({info}: {info: MobileInfo}) {
 	})
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="mb-numbers">
+		<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="mb-numbers">
 			<h2 id="mb-numbers" className="text-base font-semibold">
 				{t("profile.mobile.numbers.title")}
 			</h2>
@@ -195,7 +195,7 @@ function PasswordSection() {
 	const ready = oldPassword !== "" && newPassword.length >= 8 && newPassword !== oldPassword && confirm === newPassword
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="mb-password">
+		<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="mb-password">
 			<h2 id="mb-password" className="text-base font-semibold">
 				{t("profile.mobile.password.title")}
 			</h2>

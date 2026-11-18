@@ -194,7 +194,7 @@ export default function BranchBatchTransferPage() {
 			<h1 className="text-2xl font-bold">{t("branch.batch.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("branch.batch.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-wrap gap-4" role="radiogroup" aria-label={t("branch.transfer.kind")}>
 					{KINDS.map((item) => (
 						<label key={item} className="flex items-center gap-2 text-sm">

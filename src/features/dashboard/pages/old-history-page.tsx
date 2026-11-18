@@ -149,11 +149,11 @@ export default function OldHistoryPage() {
 			{list.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : list.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{list.error.message || t("dashboard.old.loadError")}
 				</p>
 			) : records.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("dashboard.old.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.old.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{records.map((record) => (

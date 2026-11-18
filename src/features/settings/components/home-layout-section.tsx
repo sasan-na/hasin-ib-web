@@ -29,7 +29,7 @@ export function HomeLayoutSection() {
 function LoadError() {
 	const {t} = useTranslation()
 	return (
-		<section className="rounded-lg border bg-card p-5">
+		<section className="rounded-lg bg-card p-5">
 			<h2 className="text-base font-semibold">{t("settings.home.title")}</h2>
 			<p role="alert" className="mt-2 text-sm text-destructive">
 				{t("settings.home.loadError")}
@@ -77,7 +77,7 @@ function Editor({initial}: {initial: Arrangement}) {
 	}
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg border bg-card p-5" aria-labelledby="home-layout-title">
+		<section className="flex flex-col gap-4 rounded-lg bg-card p-5" aria-labelledby="home-layout-title">
 			<h2 id="home-layout-title" className="text-base font-semibold">
 				{t("settings.home.title")}
 			</h2>

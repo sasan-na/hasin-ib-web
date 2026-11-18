@@ -87,17 +87,17 @@ export default function PichakInquiryPage() {
 			</form>
 
 			{inquiry.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{inquiry.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}
 			{inquiry.data ? (
-				<section aria-label={t("cheque.pichak.result")} className="rounded-lg border bg-card p-5">
+				<section aria-label={t("cheque.pichak.result")} className="rounded-lg bg-card p-5">
 					<PichakResult inquiry={inquiry.data} />
 				</section>
 			) : null}
 			{canAnswer && inquiry.data?.cheque ? (
-				<section aria-label={t("cheque.pichak.answer")} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+				<section aria-label={t("cheque.pichak.answer")} className="flex flex-col gap-3 rounded-lg bg-card p-5">
 					<p className="text-sm">{t("cheque.pichak.waiting")}</p>
 					<div className="flex flex-wrap gap-2">
 						<Button type="button" onClick={() => setAnswering(true)}>
@@ -110,7 +110,7 @@ export default function PichakInquiryPage() {
 				</section>
 			) : null}
 			{inquiry.variables === "holder" && inquiry.data?.cheque ? (
-				<section aria-label={t("cheque.pichak.transferStatus")} className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+				<section aria-label={t("cheque.pichak.transferStatus")} className="flex flex-col gap-3 rounded-lg bg-card p-5">
 					<div className="flex flex-wrap items-center justify-between gap-2">
 						<h2 className="text-base font-semibold">{t("cheque.pichak.transferStatus")}</h2>
 						<Button type="button" variant="outline" size="sm" disabled={transferStatus.isPending} onClick={() => transferStatus.mutate()}>

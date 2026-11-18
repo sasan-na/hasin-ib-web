@@ -19,7 +19,7 @@ export function RecentTransactions() {
 	const query = useQuery(recentTransactionsOptions(i18n.language))
 
 	return (
-		<section aria-labelledby="recent-events-title" className="overflow-hidden rounded-lg border bg-card">
+		<section aria-labelledby="recent-events-title" className="overflow-hidden rounded-lg bg-card">
 			<h2 id="recent-events-title" className="border-b px-5 py-4 text-base font-semibold">
 				{t("home.recentTransactions.title")}
 			</h2>

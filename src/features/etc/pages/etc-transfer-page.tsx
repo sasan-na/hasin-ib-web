@@ -27,7 +27,7 @@ export default function EtcTransferPage() {
 	if (serial === "")
 		return (
 			<Shell>
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-muted-foreground">
 					{t("etc.transfer.noSource")}
 				</p>
 			</Shell>
@@ -41,7 +41,7 @@ export default function EtcTransferPage() {
 	if (source.isError)
 		return (
 			<Shell>
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{source.error.message || t("etc.infoError")}
 				</p>
 			</Shell>
@@ -113,7 +113,7 @@ function TransferForm({source}: {source: EtcInfo}) {
 		) : null
 
 	return (
-		<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+		<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 			<div className="flex flex-wrap justify-between gap-2 text-sm">
 				<span className="text-muted-foreground">{t("etc.transfer.from")}</span>
 				<span dir="ltr" className="font-medium tabular-nums">

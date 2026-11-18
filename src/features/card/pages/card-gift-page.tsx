@@ -138,7 +138,7 @@ export default function CardGiftPage() {
 			{config.isPending ? (
 				<Skeleton className="h-24 w-full" />
 			) : config.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("card.gift.configError")}
 				</p>
 			) : (
@@ -164,7 +164,7 @@ export default function CardGiftPage() {
 				</dl>
 			)}
 
-			<section aria-labelledby="gift-account" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="gift-account" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="gift-account" className="text-base font-semibold">
 					{t("card.gift.accountTitle")}
 				</h2>
@@ -188,7 +188,7 @@ export default function CardGiftPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="gift-cards" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="gift-cards" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="gift-cards" className="text-base font-semibold">
 					{t("card.gift.cardsTitle")}
 				</h2>

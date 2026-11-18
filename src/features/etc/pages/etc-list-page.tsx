@@ -64,11 +64,11 @@ export default function EtcListPage() {
 			{tags.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : tags.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{tags.error.message || t("etc.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("etc.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("etc.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{shown.map((tag) => {

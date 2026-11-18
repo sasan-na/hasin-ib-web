@@ -53,7 +53,7 @@ export default function ConnectedCardListPage() {
 			<h1 className="text-2xl font-bold">{t("card.connected.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("card.connected.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="cc-account">{t("card.connected.account")}</Label>
 					{accounts.isPending ? (
@@ -112,11 +112,11 @@ export default function ConnectedCardListPage() {
 			{account === undefined ? null : cards.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : cards.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{cards.error.message || t("card.connected.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("card.connected.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.connected.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{shown.map((card) => {

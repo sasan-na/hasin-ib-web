@@ -127,7 +127,7 @@ export default function IbanTransferPage() {
 		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("transfer.iban.title")}</h1>
 
-			<section aria-labelledby="iban-network" className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+			<section aria-labelledby="iban-network" className="flex flex-col gap-3 rounded-lg bg-card p-5">
 				<h2 id="iban-network" className="text-base font-semibold">
 					{t("transfer.iban.network")}
 				</h2>
@@ -154,7 +154,7 @@ export default function IbanTransferPage() {
 				</RadioGroup>
 			</section>
 
-			<section aria-labelledby="iban-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="iban-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="iban-from" className="text-base font-semibold">
 					{t("transfer.from")}
 				</h2>
@@ -175,7 +175,7 @@ export default function IbanTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="iban-to" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="iban-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="iban-to" className="text-base font-semibold">
 					{t("transfer.to")}
 				</h2>
@@ -233,7 +233,7 @@ export default function IbanTransferPage() {
 				) : null}
 			</section>
 
-			<section aria-labelledby="iban-details" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="iban-details" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="iban-details" className="text-base font-semibold">
 					{t("transfer.details")}
 				</h2>

@@ -61,11 +61,11 @@ export default function SubUsersPage() {
 			{users.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : users.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{users.error.message || t("dashboard.users.error")}
 				</p>
 			) : shown.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("dashboard.users.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.users.empty")}</p>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2">
 					{shown.map((user) => (

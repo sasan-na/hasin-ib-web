@@ -197,14 +197,14 @@ export default function EventsPage() {
 					<Skeleton className="h-14 w-full" />
 				</div>
 			) : events.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{events.error.message || t("report.events.failed")}
 				</p>
 			) : (
 				<>
-					{note && source === "current" ? <p className="rounded-lg border bg-card p-4 text-sm text-muted-foreground">{note}</p> : null}
+					{note && source === "current" ? <p className="rounded-lg bg-card p-4 text-sm text-muted-foreground">{note}</p> : null}
 					{rows.length === 0 ? (
-						<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("report.events.empty")}</p>
+						<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("report.events.empty")}</p>
 					) : (
 						<>
 							<p className="text-sm text-muted-foreground">{t("report.events.count", {shown: formatAmount(rows.length, language), total: formatAmount(total, language)})}</p>

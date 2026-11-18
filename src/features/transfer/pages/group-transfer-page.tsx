@@ -118,7 +118,7 @@ export default function GroupTransferPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("transfer.group.title")}</h1>
 
-			<section aria-labelledby="gt-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="gt-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="gt-from" className="text-base font-semibold">
 					{t("transfer.from")}
 				</h2>
@@ -142,7 +142,7 @@ export default function GroupTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="gt-to" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="gt-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="gt-to" className="text-base font-semibold">
 					{t("transfer.group.recipients")}
 				</h2>

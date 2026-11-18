@@ -115,16 +115,16 @@ export default function ConnectedCardStatementPage() {
 			</form>
 
 			{search.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{search.error.message || t("card.connected.statement.failed")}
 				</p>
 			) : null}
 
 			{result ? (
 				result.movements.length === 0 ? (
-					<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("card.connected.statement.empty")}</p>
+					<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("card.connected.statement.empty")}</p>
 				) : (
-					<section className="rounded-lg border bg-card">
+					<section className="rounded-lg bg-card">
 						<div className="overflow-x-auto">
 							<table className="w-full text-sm">
 								<thead>

@@ -80,7 +80,7 @@ export default function CardTransferPage() {
 		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{t("transfer.card.title")}</h1>
 
-			<section aria-labelledby="ct-from" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="ct-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="ct-from" className="text-base font-semibold">
 					{t("transfer.from")}
 				</h2>
@@ -118,7 +118,7 @@ export default function CardTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="ct-to" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="ct-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="ct-to" className="text-base font-semibold">
 					{t("transfer.to")}
 				</h2>
@@ -159,7 +159,7 @@ export default function CardTransferPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="ct-details" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="ct-details" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="ct-details" className="text-base font-semibold">
 					{t("transfer.details")}
 				</h2>

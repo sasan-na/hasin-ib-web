@@ -55,7 +55,7 @@ export default function PichakOwnerPage() {
 			</form>
 
 			{owner.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{owner.error.message || t("cheque.pichak.failed")}
 				</p>
 			) : null}

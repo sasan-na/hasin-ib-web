@@ -49,7 +49,7 @@ export default function NewMessagePage() {
 			{departments.isPending ? (
 				<Skeleton className="h-64 w-full" aria-hidden="true" />
 			) : departments.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{departments.error.message || t("message.departmentsError")}
 				</p>
 			) : (

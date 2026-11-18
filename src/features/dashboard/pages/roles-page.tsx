@@ -60,11 +60,11 @@ export default function RolesPage() {
 			{roles.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : roles.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{roles.error.message || t("dashboard.roles.error")}
 				</p>
 			) : roles.data.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("dashboard.roles.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.roles.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{roles.data.map((role) => (

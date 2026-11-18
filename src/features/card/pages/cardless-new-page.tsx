@@ -69,7 +69,7 @@ export default function CardlessNewPage() {
 			<p className="text-sm text-muted-foreground">{t("card.cardless.intro")}</p>
 
 			{config.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("card.cardless.configError")}
 				</p>
 			) : (

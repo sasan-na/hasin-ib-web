@@ -42,7 +42,7 @@ export default function AccountInfoPage() {
 				</Button>
 			</div>
 
-			<section aria-label={t("account.info.title")} className="overflow-hidden rounded-lg border bg-card">
+			<section aria-label={t("account.info.title")} className="overflow-hidden rounded-lg bg-card">
 				{info.isPending ? (
 					<div className="flex flex-col gap-3 p-5" aria-hidden="true">
 						<Skeleton className="h-6 w-1/2" />
@@ -108,7 +108,7 @@ export default function AccountInfoPage() {
 			</section>
 
 			{rules.data && rules.data.length > 0 ? (
-				<section aria-labelledby="withdraw-rules-title" className="flex flex-col gap-3 rounded-lg border bg-card p-5">
+				<section aria-labelledby="withdraw-rules-title" className="flex flex-col gap-3 rounded-lg bg-card p-5">
 					<h2 id="withdraw-rules-title" className="text-base font-semibold">
 						{t("account.info.withdrawRules")}
 					</h2>

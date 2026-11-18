@@ -50,7 +50,7 @@ export default function ChangeUsernamePage() {
 			</div>
 
 			{done ? (
-				<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 					<p className="text-sm">{t("profile.username.done", {username: username.trim()})}</p>
 					<div>
 						<Button type="button" onClick={() => void signOut()}>

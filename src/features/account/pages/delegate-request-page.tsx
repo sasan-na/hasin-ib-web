@@ -73,7 +73,7 @@ export default function DelegateRequestPage() {
 			<h1 className="text-2xl font-bold">{t("account.delegate.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("account.delegate.intro")}</p>
 
-			<section aria-labelledby="delegate-source" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="delegate-source" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="delegate-source" className="text-base font-semibold">
 					{t("account.delegate.sourceTitle")}
 				</h2>
@@ -97,7 +97,7 @@ export default function DelegateRequestPage() {
 				</div>
 			</section>
 
-			<section aria-labelledby="delegate-organ" className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section aria-labelledby="delegate-organ" className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<h2 id="delegate-organ" className="text-base font-semibold">
 					{t("account.delegate.organTitle")}
 				</h2>

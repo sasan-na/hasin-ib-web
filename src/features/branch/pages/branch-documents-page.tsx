@@ -50,7 +50,7 @@ export default function BranchDocumentsPage() {
 			<h1 className="text-2xl font-bold">{t("branch.documents.title")}</h1>
 			<p className="text-sm text-muted-foreground">{t("branch.documents.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bd-reason">{t("branch.documents.reason")}</Label>
 					{reasons.isPending ? (

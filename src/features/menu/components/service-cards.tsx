@@ -101,11 +101,11 @@ export function ServiceCards({section, title, destinations}: ServiceCardsProps) 
 					<Skeleton className="h-52 w-full" />
 				</div>
 			) : menu.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{t("landing.error")}
 				</p>
 			) : cards.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("landing.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("landing.empty")}</p>
 			) : (
 				<div className="grid gap-6 md:grid-cols-2">
 					{cards.map(({item, destination}) => (

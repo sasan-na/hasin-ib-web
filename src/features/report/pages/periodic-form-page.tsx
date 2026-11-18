@@ -54,7 +54,7 @@ export default function PeriodicFormPage() {
 
 function Problem({text}: {text: string}) {
 	return (
-		<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+		<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 			{text}
 		</p>
 	)

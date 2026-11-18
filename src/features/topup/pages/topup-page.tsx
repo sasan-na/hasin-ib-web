@@ -76,7 +76,7 @@ export default function TopUpPage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("topup.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="tu-operator">{t("topup.operator")}</Label>
 					{operators.isPending ? (

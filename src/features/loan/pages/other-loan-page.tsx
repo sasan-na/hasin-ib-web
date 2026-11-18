@@ -100,7 +100,7 @@ export default function OtherLoanPage() {
 			) : null}
 
 			{loan ? (
-				<section className="flex flex-col gap-3 rounded-lg border bg-card p-5" aria-labelledby="other-loan-result">
+				<section className="flex flex-col gap-3 rounded-lg bg-card p-5" aria-labelledby="other-loan-result">
 					<div className="flex flex-col gap-1">
 						<h2 id="other-loan-result" className="text-base font-semibold">
 							{loan.title || t("loan.fallbackTitle")}

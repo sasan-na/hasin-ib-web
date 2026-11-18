@@ -49,7 +49,7 @@ export function PichakTransferSection({sayyadId, cheque}: Props) {
 	}
 
 	return (
-		<section aria-label={t("cheque.pichak.transferTitle")} className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+		<section aria-label={t("cheque.pichak.transferTitle")} className="flex flex-col gap-4 rounded-lg bg-card p-5">
 			<div className="flex flex-col gap-1">
 				<h2 className="text-base font-semibold">{t("cheque.pichak.transferTitle")}</h2>
 				<p className="text-sm text-muted-foreground">{t("cheque.pichak.transferIntro")}</p>

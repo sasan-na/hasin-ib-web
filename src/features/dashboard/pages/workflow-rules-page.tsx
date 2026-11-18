@@ -86,11 +86,11 @@ export default function WorkflowRulesPage() {
 			{rules.isPending ? (
 				<Skeleton className="h-32 w-full" />
 			) : rules.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{rules.error.message || t("dashboard.rules.error")}
 				</p>
 			) : items.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("dashboard.rules.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("dashboard.rules.empty")}</p>
 			) : (
 				<ul className="flex flex-col gap-3">
 					{items.map((rule) => (

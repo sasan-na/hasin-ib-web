@@ -47,15 +47,15 @@ export default function SearchPage() {
 			<p className="text-sm text-muted-foreground">{phrase === "" ? t("search.prompt") : t("search.for", {phrase})}</p>
 
 			{phrase.length < 2 ? (
-				phrase === "" ? null : <p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("search.short")}</p>
+				phrase === "" ? null : <p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("search.short")}</p>
 			) : results.isPending ? (
 				<Skeleton className="h-24 w-full" />
 			) : results.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{results.error.message || t("search.error")}
 				</p>
 			) : found.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{t("search.empty")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("search.empty")}</p>
 			) : (
 				<ul className="grid gap-3 sm:grid-cols-2">
 					{found.map(({item, destination}) => {

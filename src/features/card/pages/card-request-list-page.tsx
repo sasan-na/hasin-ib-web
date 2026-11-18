@@ -242,13 +242,13 @@ export default function CardRequestListPage() {
 			) : null}
 
 			{search.isSuccess && search.data.length === 0 ? (
-				<p role="status" className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">
+				<p role="status" className="rounded-lg bg-card p-5 text-sm text-muted-foreground">
 					{t("card.requests.noResult")}
 				</p>
 			) : null}
 
 			{search.isSuccess && search.data.length > 0 ? (
-				<section aria-labelledby="request-results" className="overflow-hidden rounded-lg border bg-card">
+				<section aria-labelledby="request-results" className="overflow-hidden rounded-lg bg-card">
 					<h2 id="request-results" className="border-b px-5 py-4 text-base font-semibold">
 						{t("card.requests.list")}
 					</h2>

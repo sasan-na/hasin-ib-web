@@ -110,7 +110,7 @@ export default function BillListPage() {
 			<Input type="search" aria-label={t("bill.search")} placeholder={t("bill.search")} value={query} onChange={(event) => setQuery(event.target.value)} />
 
 			{notice ? (
-				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg border bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
+				<p role={notice.ok ? "status" : "alert"} className={`rounded-lg bg-card p-4 text-sm ${notice.ok ? "" : "text-destructive"}`}>
 					{notice.text}
 				</p>
 			) : null}
@@ -121,11 +121,11 @@ export default function BillListPage() {
 					<Skeleton className="h-20 w-full" />
 				</div>
 			) : saved.isError ? (
-				<p role="alert" className="rounded-lg border bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
 					{saved.error.message || t("bill.error.load")}
 				</p>
 			) : groups.length === 0 ? (
-				<p className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">{saved.data.length === 0 ? t("bill.empty") : t("bill.noMatch")}</p>
+				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{saved.data.length === 0 ? t("bill.empty") : t("bill.noMatch")}</p>
 			) : (
 				<>
 					{groups.map((group) => (

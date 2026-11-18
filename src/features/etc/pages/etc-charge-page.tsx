@@ -77,7 +77,7 @@ export default function EtcChargePage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("etc.charge.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">
+			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="etc-serial">{t("etc.serial")}</Label>
 					<div className="flex items-center gap-2">
