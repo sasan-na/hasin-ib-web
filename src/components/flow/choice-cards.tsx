@@ -1,7 +1,7 @@
 import {Check} from "lucide-react"
 import type {ReactNode} from "react"
 
-import {SlideRow} from "@/features/transfer/components/slide-row"
+import {SlideRow} from "@/components/flow/slide-row"
 import {cn} from "@/lib/utils"
 
 export interface Choice {

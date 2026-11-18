@@ -777,6 +777,15 @@
             }
         }
     },
+    "flow": {
+        "slidePrevious": "Show the previous ones",
+        "slideNext": "Show the next ones",
+        "quick": {
+            "add": "Add {{amount}} Toman",
+            "all": "Whole balance"
+        },
+        "payees": "Saved contacts"
+    },
     "transfer": {
         "landing": {
             "title": "Transfers",
@@ -794,13 +803,6 @@
         "holder": "Account holder: {{name}}",
         "holderLabel": "Account holder",
         "summary": "Transfer summary",
-        "slidePrevious": "Show the previous ones",
-        "slideNext": "Show the next ones",
-        "quick": {
-            "add": "Add {{amount}} Toman",
-            "all": "Whole balance"
-        },
-        "payees": "Saved contacts",
         "type": {
             "account": "Account to account",
             "accountHint": "Instant transfer to accounts at this bank",

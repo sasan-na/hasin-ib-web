@@ -11,8 +11,8 @@ import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/fea
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {getAccountOwner, transferGroup, type AccountOwner} from "@/features/transfer/api/transfer"
-import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {SourceAccountCards} from "@/features/transaction/components/source-account-cards"
+import {FieldError, HolderCard, StepSection, FlowLayout, FlowSummary} from "@/components/flow/flow-form"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
@@ -117,10 +117,10 @@ export default function GroupTransferPage() {
 
 	return (
 		<>
-			<TransferFormLayout
+			<FlowLayout
 				title={t("transfer.group.title")}
 				aside={
-					<TransferSummary
+					<FlowSummary
 						id="gt-summary"
 						title={t("transfer.summary")}
 						amount={total > 0 ? money(total) : null}
@@ -238,7 +238,7 @@ export default function GroupTransferPage() {
 					<p className="text-sm font-semibold">{t("transfer.group.total", {amount: money(total)})}</p>
 					{listError ? <FieldError>{listError}</FieldError> : null}
 				</StepSection>
-			</TransferFormLayout>
+			</FlowLayout>
 
 			{confirming ? (
 				<ConfirmDialog

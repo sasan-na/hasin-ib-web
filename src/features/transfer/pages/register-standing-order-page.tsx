@@ -16,8 +16,9 @@ import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-tran
 import {registerStandingOrder} from "@/features/transfer/api/standing-order"
 import {getAccountOwner} from "@/features/transfer/api/transfer"
 import {frequenciesOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
-import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {SourceAccountCards} from "@/features/transaction/components/source-account-cards"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, QuickAmounts, StepSection, FlowLayout, FlowSummary} from "@/components/flow/flow-form"
+import {PayeeShortcuts} from "@/features/transfer/components/payee-shortcuts"
 import {formatAmount} from "@/lib/format"
 import {jalaliToIso, parseJalali} from "@/lib/jalali"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -118,10 +119,10 @@ export default function RegisterStandingOrderPage() {
 
 	return (
 		<>
-			<TransferFormLayout
+			<FlowLayout
 				title={t("transfer.standing.registerTitle")}
 				aside={
-					<TransferSummary
+					<FlowSummary
 						id="so-summary"
 						title={t("transfer.summary")}
 						amount={amountValue > 0 ? money(amountValue) : null}
@@ -348,7 +349,7 @@ export default function RegisterStandingOrderPage() {
 						</div>
 					</div>
 				</StepSection>
-			</TransferFormLayout>
+			</FlowLayout>
 
 			{confirming ? (
 				<ConfirmDialog

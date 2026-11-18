@@ -12,8 +12,9 @@ import {cardsOptions} from "@/features/card/api/card.queries"
 import {getCardHolder} from "@/features/transfer/api/card-transfer"
 import {reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import {CardTransferDialog} from "@/features/transfer/components/card-transfer-dialog"
-import {ChoiceCards} from "@/features/transfer/components/choice-cards"
-import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {ChoiceCards} from "@/components/flow/choice-cards"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, QuickAmounts, StepSection, FlowLayout, FlowSummary} from "@/components/flow/flow-form"
+import {PayeeShortcuts} from "@/features/transfer/components/payee-shortcuts"
 import {isValidCardNumber} from "@/features/transfer/lib/numbers"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -74,9 +75,9 @@ export function CardTransferForm() {
 
 	return (
 		<>
-			<TransferFormLayout
+			<FlowLayout
 				aside={
-					<TransferSummary
+					<FlowSummary
 						id="ct-summary"
 						title={t("transfer.summary")}
 						amount={amountValue > 0 ? money(amountValue) : null}
@@ -227,7 +228,7 @@ export function CardTransferForm() {
 						</div>
 					</div>
 				</StepSection>
-			</TransferFormLayout>
+			</FlowLayout>
 
 			{confirming && source && holder ? (
 				<CardTransferDialog

@@ -1,15 +1,12 @@
-import {useQuery} from "@tanstack/react-query"
 import {CheckCircle2, ChevronRight, UserRound, Wallet} from "lucide-react"
 import type {ReactNode} from "react"
 import {useTranslation} from "react-i18next"
 
 import {Button} from "@/components/ui/button"
-import type {DestinationKind} from "@/features/transfer/api/destinations"
-import {savedDestinationsOptions} from "@/features/transfer/api/transfer.queries"
-import {SlideRow} from "@/features/transfer/components/slide-row"
+import {SlideRow} from "@/components/flow/slide-row"
 import {formatAmount} from "@/lib/format"
 
-// The pieces every transfer page is built from: numbered steps in cards, a live summary (beside the steps on large
+// The pieces every money form is built from (transfers, bills, installments, top-ups): numbered steps in cards, a live summary (beside the steps on large
 // screens, a bar at the bottom on small ones), saved payees to pick, the holder shown once a lookup succeeds, and
 // quick amounts. One look for account, card, IBAN, group and standing order transfers.
 
@@ -21,7 +18,7 @@ const QUICK_TOMAN = [500_000, 1_000_000, 5_000_000] as const
 const RIALS_PER_TOMAN = 10
 const MAX_AMOUNT = 999_999_999_999_999
 
-interface TransferFormLayoutProps {
+interface FlowLayoutProps {
 	/** Left out when the page around the form already has its heading. */
 	title?: string
 	children: ReactNode
@@ -30,7 +27,7 @@ interface TransferFormLayoutProps {
 }
 
 /** A title, the steps in a column and the summary beside them. */
-export function TransferFormLayout({title, children, aside}: TransferFormLayoutProps) {
+export function FlowLayout({title, children, aside}: FlowLayoutProps) {
 	return (
 		// The bottom padding keeps the last step clear of the summary bar on small screens.
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6 pb-28 lg:pb-0">
@@ -111,7 +108,7 @@ export function QuickAmounts({value, onPick, balance = null}: QuickAmountsProps)
 					type="button"
 					variant="outline"
 					size="sm"
-					aria-label={t("transfer.quick.add", {amount: formatAmount(toman, i18n.language)})}
+					aria-label={t("flow.quick.add", {amount: formatAmount(toman, i18n.language)})}
 					onClick={() => onPick(Math.min(value + toman * RIALS_PER_TOMAN, MAX_AMOUNT))}
 				>
 					+{formatAmount(toman, i18n.language)}
@@ -119,30 +116,34 @@ export function QuickAmounts({value, onPick, balance = null}: QuickAmountsProps)
 			))}
 			{balance !== null && balance > 0 ? (
 				<Button type="button" variant="outline" size="sm" aria-pressed={value === balance} className={value === balance ? "border-primary bg-primary-soft text-primary-soft-foreground" : undefined} onClick={() => onPick(balance)}>
-					{t("transfer.quick.all")}
+					{t("flow.quick.all")}
 				</Button>
 			) : null}
 		</div>
 	)
 }
 
-interface PayeeShortcutsProps {
-	/** Which kind of number to offer: the server keeps a separate list of saved destinations for each. */
-	kind: DestinationKind
+export interface Payee {
+	key: string
+	/** The name shown on the pill. */
+	name: string
+	/** What a tap fills in. */
+	number: string
+}
+
+interface PayeeChipsProps {
+	payees: Payee[]
 	/** Gets the number to fill in. */
 	onPick: (number: string) => void
 }
 
-/** Saved destinations as one-tap pills in a single row under the destination field; the row slides when they do not fit. Left out when there are none or they cannot be loaded. */
-export function PayeeShortcuts({kind, onPick}: PayeeShortcutsProps) {
+/** Saved payees as one-tap pills in a single row; the row slides when they do not fit. Nothing is drawn when there are none. */
+export function PayeeChips({payees, onPick}: PayeeChipsProps) {
 	const {t} = useTranslation()
-	const saved = useQuery(savedDestinationsOptions(kind))
-	const payees = (saved.data ?? []).filter((payee) => payee.holder !== "")
-
 	if (payees.length === 0) return null
 
 	return (
-		<SlideRow role="group" aria-label={t("transfer.payees")} className="gap-2">
+		<SlideRow role="group" aria-label={t("flow.payees")} className="gap-2">
 			{payees.map((payee) => (
 				<button
 					key={payee.key}
@@ -151,7 +152,7 @@ export function PayeeShortcuts({kind, onPick}: PayeeShortcutsProps) {
 					onClick={() => onPick(payee.number)}
 					className="min-h-9 shrink-0 snap-start rounded-full border bg-card px-4 text-sm whitespace-nowrap text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none pointer-coarse:min-h-11"
 				>
-					{payee.holder}
+					{payee.name}
 					<span className="sr-only"> {payee.number}</span>
 				</button>
 			))}
@@ -159,7 +160,7 @@ export function PayeeShortcuts({kind, onPick}: PayeeShortcutsProps) {
 	)
 }
 
-interface TransferSummaryProps {
+interface FlowSummaryProps {
 	id: string
 	title: string
 	/** The amount line, or null before one is typed. */
@@ -183,7 +184,7 @@ function ReviewButton({label, onClick, className}: {label: string; onClick: () =
  * The live summary and the one button that moves on. A card beside the steps on large screens; on small screens
  * a bar fixed to the bottom with the amount and the button.
  */
-export function TransferSummary({id, title, amount, rows, reviewLabel, onReview}: TransferSummaryProps) {
+export function FlowSummary({id, title, amount, rows, reviewLabel, onReview}: FlowSummaryProps) {
 	return (
 		<>
 			<aside aria-labelledby={id} className="hidden lg:sticky lg:top-6 lg:block lg:self-start">

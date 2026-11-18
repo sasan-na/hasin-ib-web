@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next"
 import {Skeleton} from "@/components/ui/skeleton"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {sourceAccountsOptions} from "@/features/transaction/api/transaction.queries"
-import {ChoiceCards} from "@/features/transfer/components/choice-cards"
+import {ChoiceCards} from "@/components/flow/choice-cards"
 import {formatAmount} from "@/lib/format"
 
 interface SourceAccountCardsProps {

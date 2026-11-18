@@ -10,8 +10,9 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
-import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {SourceAccountCards} from "@/features/transaction/components/source-account-cards"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, QuickAmounts, StepSection, FlowLayout, FlowSummary} from "@/components/flow/flow-form"
+import {PayeeShortcuts} from "@/features/transfer/components/payee-shortcuts"
 import {getAccountOwner, transferInternal} from "@/features/transfer/api/transfer"
 import {reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
@@ -107,9 +108,9 @@ export function AccountTransferForm() {
 
 	return (
 		<>
-			<TransferFormLayout
+			<FlowLayout
 				aside={
-					<TransferSummary
+					<FlowSummary
 						id="transfer-summary"
 						title={t("transfer.summary")}
 						amount={amountValue > 0 ? money(amountValue) : null}
@@ -255,7 +256,7 @@ export function AccountTransferForm() {
 						</div>
 					</div>
 				</StepSection>
-			</TransferFormLayout>
+			</FlowLayout>
 
 			{confirming ? (
 				<ConfirmDialog

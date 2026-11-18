@@ -15,8 +15,9 @@ import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {getIbanHolder, transferIban, type IbanNetwork} from "@/features/transfer/api/transfer"
 import {ibanLimitsOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
-import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
-import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, PayeeShortcuts, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
+import {SourceAccountCards} from "@/features/transaction/components/source-account-cards"
+import {FieldError, HolderCard, AMOUNT_INPUT_CLASS, QuickAmounts, StepSection, FlowLayout, FlowSummary} from "@/components/flow/flow-form"
+import {PayeeShortcuts} from "@/features/transfer/components/payee-shortcuts"
 import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib/numbers"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -117,9 +118,9 @@ export function IbanTransferForm({network}: {network: IbanNetwork}) {
 
 	return (
 		<>
-			<TransferFormLayout
+			<FlowLayout
 				aside={
-					<TransferSummary
+					<FlowSummary
 						id="iban-summary"
 						title={t("transfer.summary")}
 						amount={amountValue > 0 ? money(amountValue) : null}
@@ -298,7 +299,7 @@ export function IbanTransferForm({network}: {network: IbanNetwork}) {
 						<Input id="iban-description" value={description} onChange={(event) => setDescription(event.target.value)} />
 					</div>
 				</StepSection>
-			</TransferFormLayout>
+			</FlowLayout>
 
 			{confirming ? (
 				<ConfirmDialog

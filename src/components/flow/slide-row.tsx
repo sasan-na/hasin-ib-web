@@ -58,10 +58,10 @@ export function SlideRow({children, className, role, "aria-labelledby": labelled
 			</div>
 			{overflowing ? (
 				<div className="mt-2 flex justify-end gap-2">
-					<Button type="button" variant="outline" size="icon-sm" aria-label={t("transfer.slidePrevious")} onClick={() => slide(-1)}>
+					<Button type="button" variant="outline" size="icon-sm" aria-label={t("flow.slidePrevious")} onClick={() => slide(-1)}>
 						<ChevronLeft aria-hidden="true" className="rtl:rotate-180" />
 					</Button>
-					<Button type="button" variant="outline" size="icon-sm" aria-label={t("transfer.slideNext")} onClick={() => slide(1)}>
+					<Button type="button" variant="outline" size="icon-sm" aria-label={t("flow.slideNext")} onClick={() => slide(1)}>
 						<ChevronRight aria-hidden="true" className="rtl:rotate-180" />
 					</Button>
 				</div>
