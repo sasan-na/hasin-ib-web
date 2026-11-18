@@ -160,7 +160,12 @@ export default function ChakadIssuePage() {
 
 			{activated.data === false ? (
 				<Alert variant="destructive">
-					<AlertDescription>{t("cheque.issue.notActivated")}</AlertDescription>
+					<AlertDescription>
+						{t("cheque.issue.notActivated")}{" "}
+						<Link to={routeMap.chakadActivate.path} className="underline">
+							{t("cheque.issue.activate")}
+						</Link>
+					</AlertDescription>
 				</Alert>
 			) : null}
 

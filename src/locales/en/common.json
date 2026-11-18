@@ -1660,7 +1660,7 @@
         "issue": {
             "title": "Issue a digital cheque",
             "hint": "Write the cheque here, then approve it in your Hamoon app. The cheque is issued only after you approve.",
-            "notActivated": "The digital cheque service is not active for you yet, so a cheque cannot be issued. Activate it first.",
+            "notActivated": "The digital cheque service is not active for you yet, so a cheque cannot be issued.",
             "noAccount": "This account cannot issue digital cheques right now.",
             "guarantors": "Guarantors",
             "guarantorsHint": "Optional. Guarantors are asked to sign for the cheque after it is issued.",
@@ -1675,7 +1675,26 @@
             "issuing": "Issuing…",
             "signFailed": "The request could not be sent to Hamoon. Please try again.",
             "failed": "The cheque was not issued. If you have not approved the request in Hamoon yet, do that and try again.",
-            "uncertain": "We could not confirm whether the cheque was issued. Check the cheque list before trying again."
+            "uncertain": "We could not confirm whether the cheque was issued. Check the cheque list before trying again.",
+            "activate": "Activate it"
+        },
+        "activate": {
+            "title": "Activate digital cheques",
+            "hint": "Digital cheques need the service switched on once. You approve it in your Hamoon app.",
+            "statusError": "We could not check whether the service is active. Please try again later.",
+            "active": "The digital cheque service is active.",
+            "notActive": "The digital cheque service is not active yet. A request will be sent to your Hamoon app.",
+            "approve": "The request was sent to your Hamoon app. Open the app, approve it, then press Activate.",
+            "send": "Send request to Hamoon",
+            "sending": "Sending…",
+            "activate": "Activate",
+            "activating": "Activating…",
+            "startOver": "Start over",
+            "checkStatus": "Check the status",
+            "startFailed": "The request could not be sent to Hamoon. Please try again.",
+            "waiting": "The request has not been approved in the Hamoon app yet. Approve it there, then press Activate again.",
+            "failed": "The service was not activated. Please start over and try again.",
+            "uncertain": "We could not confirm whether the service was activated. Check the status before trying again."
         }
     },
     "dashboard": {

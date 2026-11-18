@@ -89,6 +89,7 @@ const PayBill = React.lazy(() => import("@/features/bill/pages/pay-bill-page.tsx
 const ChequeList = React.lazy(() => import("@/features/cheque/pages/cheque-list-page.tsx"));
 const ChequeBook = React.lazy(() => import("@/features/cheque/pages/cheque-book-page.tsx"));
 const PichakInquiry = React.lazy(() => import("@/features/cheque/pages/pichak-inquiry-page.tsx"));
+const ChakadActivate = React.lazy(() => import("@/features/cheque/pages/chakad-activate-page.tsx"));
 const ChakadIssue = React.lazy(() => import("@/features/cheque/pages/chakad-issue-page.tsx"));
 const PichakRegister = React.lazy(() => import("@/features/cheque/pages/pichak-register-page.tsx"));
 const PichakChain = React.lazy(() => import("@/features/cheque/pages/pichak-chain-page.tsx"));
@@ -196,6 +197,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.pichakInquiry.path} element={<PichakInquiry/>}/>
                     <Route path={routeMap.pichakRegister.path} element={<PichakRegister/>}/>
                     <Route path={routeMap.chakadIssue.path} element={<ChakadIssue/>}/>
+                    <Route path={routeMap.chakadActivate.path} element={<ChakadActivate/>}/>
                     <Route path={routeMap.pichakChain.path} element={<PichakChain/>}/>
                     <Route path={routeMap.pichakOwner.path} element={<PichakOwner/>}/>
                     <Route path={routeMap.notFound.path} element={<NotFound/>}/>
