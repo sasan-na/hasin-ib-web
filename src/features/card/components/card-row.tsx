@@ -61,7 +61,7 @@ export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 						type="button"
 						variant="ghost"
 						size="icon"
-						className="size-7"
+						className="size-11 md:size-7"
 						disabled={!move.canMoveUp || move.busy}
 						aria-label={t("card.moveUp", {name})}
 						onClick={() => move.onMove("up")}
@@ -72,7 +72,7 @@ export function CardRow({card, fresh, onFresh, move}: CardRowProps) {
 						type="button"
 						variant="ghost"
 						size="icon"
-						className="size-7"
+						className="size-11 md:size-7"
 						disabled={!move.canMoveDown || move.busy}
 						aria-label={t("card.moveDown", {name})}
 						onClick={() => move.onMove("down")}

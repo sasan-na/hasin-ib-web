@@ -57,7 +57,7 @@ export function AccountRow({account, fresh, onFresh, move}: AccountRowProps) {
 						type="button"
 						variant="ghost"
 						size="icon"
-						className="size-7"
+						className="size-11 md:size-7"
 						disabled={!move.canMoveUp || move.busy}
 						aria-label={t("account.moveUp", {name})}
 						onClick={() => move.onMove("up")}
@@ -68,7 +68,7 @@ export function AccountRow({account, fresh, onFresh, move}: AccountRowProps) {
 						type="button"
 						variant="ghost"
 						size="icon"
-						className="size-7"
+						className="size-11 md:size-7"
 						disabled={!move.canMoveDown || move.busy}
 						aria-label={t("account.moveDown", {name})}
 						onClick={() => move.onMove("down")}
