@@ -761,6 +761,7 @@
             }
         },
         "pin": {
+            "fillFirst": "Choose the card and fill in its details above first.",
             "title": "Change card PIN",
             "hint": "Choose a new PIN (second password) for one of your cards. The bank texts you a code to prove it is you.",
             "card": "Card",
