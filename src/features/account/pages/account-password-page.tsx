@@ -244,11 +244,11 @@ export default function AccountPasswordPage() {
 			{details.isPending || gateways.isPending ? (
 				<Skeleton className="h-64 w-full" />
 			) : details.isError || gateways.isError ? (
-				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
+				<p role="alert" className="rounded-2xl bg-card p-5 text-sm text-destructive">
 					{t("account.password.loadFailed")}
 				</p>
 			) : (
-				<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
+				<section className="flex flex-col gap-4 rounded-2xl border bg-card p-6 shadow-card">
 					<p className="text-sm text-muted-foreground">
 						{t("account.number")}: <span dir="ltr">{details.data.number}</span>
 					</p>
