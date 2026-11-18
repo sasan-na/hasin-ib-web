@@ -45,6 +45,9 @@ export default function EtcListPage() {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("etc.title")}</h1>
 				<div className="flex flex-wrap gap-2">
+				<Button asChild size="sm">
+					<Link to={routeMap.etcPurchase.path}>{t("etc.purchase.open")}</Link>
+				</Button>
 				<Button asChild variant="outline" size="sm">
 					<Link to={routeMap.etcCharge.path}>{t("etc.charge.open")}</Link>
 				</Button>

@@ -55,6 +55,7 @@ const BatchLoan = React.lazy(() => import("@/features/loan/pages/batch-loan-page
 const StandingOrderDetails = React.lazy(() => import("@/features/transfer/pages/standing-order-details-page.tsx"));
 const EtcCharge = React.lazy(() => import("@/features/etc/pages/etc-charge-page.tsx"));
 const EtcActivate = React.lazy(() => import("@/features/etc/pages/etc-activate-page.tsx"));
+const EtcPurchase = React.lazy(() => import("@/features/etc/pages/etc-purchase-page.tsx"));
 const EtcList = React.lazy(() => import("@/features/etc/pages/etc-list-page.tsx"));
 const ChequeHome = React.lazy(() => import("@/features/cheque/pages/cheque-home-page.tsx"));
 const DashboardHome = React.lazy(() => import("@/features/dashboard/pages/dashboard-home-page.tsx"));
@@ -163,6 +164,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.other.path} element={<OtherHome/>}/>
                     <Route path={routeMap.loanList.path} element={<LoanList/>}/>
                     <Route path={routeMap.etcList.path} element={<EtcList/>}/>
+                    <Route path={routeMap.etcPurchase.path} element={<EtcPurchase/>}/>
                     <Route path={routeMap.etcActivate.path} element={<EtcActivate/>}/>
                     <Route path={routeMap.etcCharge.path} element={<EtcCharge/>}/>
                     <Route path={routeMap.transferStandingOrderDetails.path} element={<StandingOrderDetails/>}/>
