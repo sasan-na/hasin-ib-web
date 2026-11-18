@@ -778,7 +778,8 @@
     },
     "transfer": {
         "landing": {
-            "title": "Transfers"
+            "title": "Transfers",
+            "contacts": "Saved contacts"
         },
         "smart": {
             "title": "Transfer money"
@@ -791,6 +792,7 @@
         "checking": "Checking…",
         "holder": "Account holder: {{name}}",
         "holderLabel": "Account holder",
+        "summary": "Transfer summary",
         "lookupFailed": "The account could not be checked. Please try again.",
         "details": "Details",
         "amount": "Amount (Rials)",
@@ -837,6 +839,7 @@
             "backToList": "Back to standing orders",
             "new": "New standing order",
             "registerTitle": "New standing order",
+            "schedule": "Schedule",
             "startDate": "Start date",
             "startDateHint": "Format 1405/01/01. It must be after today.",
             "repeatEvery": "Repeat every",
@@ -896,6 +899,7 @@
             "title": "Card to card",
             "sourceCard": "Paying card",
             "destinationCard": "Destination card number",
+            "holderLabel": "Card holder",
             "chooseCard": "Choose a card",
             "cardsError": "Your cards could not be loaded. Try again in a moment.",
             "noCards": "You have no cards to pay from.",
