@@ -2601,6 +2601,11 @@
         },
         "transfer": {
             "title": "Transfer through the branch",
+            "summary": "Transfer summary",
+            "fromStep": "Transfer type and source",
+            "toStep": "Destination",
+            "detailsStep": "Amount and details",
+            "documentStep": "Signed document",
             "hint": "Make a transfer that goes through the branch. Fill in the form, sign it, then upload it with the transfer.",
             "kind": "Kind of transfer",
             "kinds": {
