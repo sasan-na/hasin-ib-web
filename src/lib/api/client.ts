@@ -78,13 +78,15 @@ const send = async (endpoint: string, options?: RequestInit): Promise<Response> 
 	if (response.status === 403) requirePasswordChange()
 
 	if (!response.ok) {
-		let message: string
+		// Only a message the server wrote goes into the error. Without one it stays empty, so the page shows its own
+		// text ("could not be loaded, try again") instead of "HTTP 500"; the status is still on the error.
+		let message = ""
 		try {
-			message = extractErrorMessage(await response.json()) ?? response.statusText
+			message = extractErrorMessage(await response.json()) ?? ""
 		} catch {
-			message = response.statusText
+			// The body was not JSON: there is no message to show.
 		}
-		throw new ApiError(response.status, message || `HTTP ${String(response.status)}`)
+		throw new ApiError(response.status, message)
 	}
 	return response
 }
