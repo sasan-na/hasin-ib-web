@@ -5,10 +5,11 @@ import {useTranslation} from "react-i18next"
 import {Link, useSearchParams} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
+import {ChoiceCards} from "@/components/flow/choice-cards"
+import {AMOUNT_INPUT_CLASS, FieldError, FlowLayout, FlowSummary, StepSection} from "@/components/flow/flow-form"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
 import {cardsOptions} from "@/features/card/api/card.queries"
 import {getChargeConfig, getDestEtcInfo, type EtcInfo} from "@/features/etc/api/etc"
@@ -57,15 +58,8 @@ export default function EtcChargePage() {
 		if (Object.keys(found).length === 0) setConfirming(true)
 	}
 
-	const error = (message?: string) =>
-		message ? (
-			<p role="alert" className="text-sm text-destructive">
-				{message}
-			</p>
-		) : null
-
 	return (
-		<div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("etc.charge.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -77,83 +71,93 @@ export default function EtcChargePage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("etc.charge.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="etc-serial">{t("etc.serial")}</Label>
-					<div className="flex items-center gap-2">
-						<Input
-							id="etc-serial"
-							dir="ltr"
-							inputMode="numeric"
-							autoComplete="off"
-							maxLength={16}
-							value={serial}
-							aria-invalid={errors.serial !== undefined}
-							onChange={(event) => {
-								setSerial(digits(event.target.value))
-								lookup.reset()
-							}}
-							onKeyDown={(event) => {
-								if (event.key === "Enter") {
-									event.preventDefault()
-									check()
-								}
-							}}
-						/>
-						<Button type="button" variant="outline" disabled={lookup.isPending || serial === ""} onClick={check}>
-							{lookup.isPending ? t("etc.charge.checking") : t("etc.charge.check")}
-						</Button>
+			<FlowLayout
+				aside={
+					<FlowSummary
+						id="etc-summary"
+						title={t("etc.charge.summary")}
+						amount={value > 0 ? money(value) : null}
+						rows={[
+							{label: t("etc.serial"), value: tag && tag.serial === serial ? tag.serial : null},
+							{label: t("etc.charge.card"), value: card ? card.name || card.type : null},
+						]}
+						reviewLabel={t("etc.charge.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<StepSection id="etc-tag-step" step={1} title={t("etc.charge.tagStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="etc-serial">{t("etc.serial")}</Label>
+						<div className="flex items-center gap-2">
+							<Input
+								id="etc-serial"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={16}
+								className="h-11 text-base"
+								value={serial}
+								aria-invalid={errors.serial !== undefined}
+								onChange={(event) => {
+									setSerial(digits(event.target.value))
+									lookup.reset()
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter") {
+										event.preventDefault()
+										check()
+									}
+								}}
+							/>
+							<Button type="button" variant="outline" size="lg" disabled={lookup.isPending || serial === ""} onClick={check}>
+								{lookup.isPending ? t("etc.charge.checking") : t("etc.charge.check")}
+							</Button>
+						</div>
+						{tag ? (
+							<p role="status" className="text-sm font-medium text-success">
+								{t("etc.charge.found", {owner: tag.owner || tag.serial, car: tag.car})}
+							</p>
+						) : null}
+						{lookup.isError ? <FieldError>{lookup.error.message || t("etc.charge.lookupFailed")}</FieldError> : null}
+						{errors.serial ? <FieldError>{errors.serial}</FieldError> : null}
 					</div>
-					{tag ? (
-						<p role="status" className="text-sm font-medium text-success">
-							{t("etc.charge.found", {owner: tag.owner || tag.serial, car: tag.car})}
-						</p>
-					) : null}
-					{lookup.isError ? error(lookup.error.message || t("etc.charge.lookupFailed")) : null}
-					{error(errors.serial)}
-				</div>
+				</StepSection>
 
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="etc-amount">{t("etc.charge.amount")}</Label>
-					<Input id="etc-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={12} className="max-w-72" value={amount} aria-invalid={errors.amount !== undefined} onChange={(event) => setAmount(digits(event.target.value).replace(/^0+/, ""))} />
-					{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
-					{config.data && (config.data.min > 0 || config.data.max > 0) ? (
-						<p className="text-xs text-muted-foreground">{t("etc.charge.limits", {min: money(config.data.min), max: money(config.data.max)})}</p>
-					) : null}
-					{error(errors.amount)}
-				</div>
+				<StepSection id="etc-amount-step" step={2} title={t("etc.charge.amountStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="etc-amount">{t("etc.charge.amount")}</Label>
+						<Input id="etc-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={12} className={AMOUNT_INPUT_CLASS} value={amount} aria-invalid={errors.amount !== undefined} onChange={(event) => setAmount(digits(event.target.value).replace(/^0+/, ""))} />
+						{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
+						{config.data && (config.data.min > 0 || config.data.max > 0) ? (
+							<p className="text-xs text-muted-foreground">{t("etc.charge.limits", {min: money(config.data.min), max: money(config.data.max)})}</p>
+						) : null}
+						{errors.amount ? <FieldError>{errors.amount}</FieldError> : null}
+					</div>
+				</StepSection>
 
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="etc-card">{t("etc.charge.card")}</Label>
+				<StepSection id="etc-card-step" step={3} title={t("etc.charge.cardStep")}>
+					<p id="etc-card-label" className="sr-only">
+						{t("etc.charge.card")}
+					</p>
 					{cards.isPending ? (
-						<Skeleton className="h-9 w-full" />
+						<Skeleton className="h-24 w-full" />
 					) : cards.isError ? (
-						error(t("etc.charge.cardsError"))
+						<FieldError>{t("etc.charge.cardsError")}</FieldError>
 					) : cards.data.length === 0 ? (
 						<p className="text-sm text-muted-foreground">{t("etc.charge.noCards")}</p>
 					) : (
-						<Select value={cardId} onValueChange={setCardId}>
-							<SelectTrigger id="etc-card" className="w-full" aria-invalid={errors.card !== undefined}>
-								<SelectValue placeholder={t("etc.charge.chooseCard")} />
-							</SelectTrigger>
-							<SelectContent>
-								{cards.data.map((candidate) => (
-									<SelectItem key={candidate.id} value={String(candidate.id)}>
-										<span>{candidate.name || candidate.type}</span> <span dir="ltr">{formatCardNumber(candidate.number)}</span>
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<ChoiceCards
+							name="etc-card"
+							labelledBy="etc-card-label"
+							value={card?.id ?? null}
+							onChange={(id) => setCardId(String(id))}
+							choices={cards.data.map((candidate) => ({id: candidate.id, title: candidate.name || candidate.type, number: formatCardNumber(candidate.number)}))}
+						/>
 					)}
-					{error(errors.card)}
-				</div>
-
-				<div>
-					<Button type="button" onClick={review}>
-						{t("etc.charge.review")}
-					</Button>
-				</div>
-			</section>
+					{errors.card ? <FieldError>{errors.card}</FieldError> : null}
+				</StepSection>
+			</FlowLayout>
 
 			{confirming && tag && card ? <EtcChargeDialog tag={tag} cardId={card.id} cardNumber={card.number} amount={value} onClose={() => setConfirming(false)} /> : null}
 		</div>
