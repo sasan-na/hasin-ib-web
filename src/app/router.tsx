@@ -71,6 +71,9 @@ const MobileBanking = React.lazy(() => import("@/features/profile/pages/mobile-b
 const Settings = React.lazy(() => import("@/features/settings/pages/settings-page.tsx"));
 const Search = React.lazy(() => import("@/app/pages/search-page.tsx"));
 const BranchHome = React.lazy(() => import("@/features/branch/pages/branch-home-page.tsx"));
+const BranchTransfer = React.lazy(() => import("@/features/branch/pages/branch-transfer-page.tsx"));
+const BranchDocuments = React.lazy(() => import("@/features/branch/pages/branch-documents-page.tsx"));
+const BranchFacility = React.lazy(() => import("@/features/branch/pages/branch-facility-contract-page.tsx"));
 const BranchRequests = React.lazy(() => import("@/features/branch/pages/branch-requests-page.tsx"));
 const MobileVerification = React.lazy(() => import("@/features/card/pages/mobile-verification-page.tsx"));
 const DynamicPassword = React.lazy(() => import("@/features/card/pages/dynamic-password-page.tsx"));
@@ -155,6 +158,9 @@ const router = createBrowserRouter(
                     <Route path={routeMap.cardChangePin.path} element={<ChangeCardPin/>}/>
                     <Route path={routeMap.branch.path} element={<BranchHome/>}/>
                     <Route path={routeMap.branchRequests.path} element={<BranchRequests/>}/>
+                    <Route path={routeMap.branchTransfer.path} element={<BranchTransfer/>}/>
+                    <Route path={routeMap.branchDocuments.path} element={<BranchDocuments/>}/>
+                    <Route path={routeMap.branchFacility.path} element={<BranchFacility/>}/>
                     <Route path={routeMap.search.path} element={<Search/>}/>
                     <Route path={routeMap.settings.path} element={<Settings/>}/>
                     <Route path={routeMap.mobileBanking.path} element={<MobileBanking/>}/>

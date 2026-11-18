@@ -2492,7 +2492,93 @@
         },
         "error": {
             "date": "Enter dates like 1405/01/01.",
-            "order": "The start date cannot be after the end date."
+            "order": "The start date cannot be after the end date.",
+            "branch": "Choose a branch.",
+            "document": "Upload the signed PDF."
+        },
+        "menu": {
+            "back": "Back to in-branch services"
+        },
+        "review": "Review",
+        "send": "Send",
+        "sending": "Sending…",
+        "branch": "Branch",
+        "upload": {
+            "title": "Signed document",
+            "hint": "The document must be signed with your digital certificate before you upload it. Sign the PDF with the bank's signing tool (see the guide), then upload the signed file.",
+            "template": "Download the form to fill in",
+            "guide": "How to sign a PDF (guide)",
+            "choose": "Choose the signed PDF",
+            "replace": "Choose another file",
+            "check": "Check with the bank",
+            "checking": "Checking…",
+            "valid": "The bank accepts this document.",
+            "invalid": "The bank does not accept this document.",
+            "notPdf": "The file must be a PDF.",
+            "tooBig": "The file is too big. The most allowed is {{size}} MB.",
+            "file": "Document"
+        },
+        "facility": {
+            "title": "Facility contract",
+            "hint": "Ask a branch for the contract of a facility you hold. The number of requests you can make in a day is limited.",
+            "contract": "Facility contract number",
+            "confirmTitle": "Ask for the facility contract",
+            "confirmQuestion": "The branch is asked to prepare this contract for you.",
+            "failed": "The request was not accepted. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the request was made. Check your requests list before trying again.",
+            "error": {
+                "contract": "Enter the facility contract number."
+            }
+        },
+        "documents": {
+            "title": "Send documents",
+            "hint": "Send a signed PDF to a branch for one of the reasons below.",
+            "reason": "Reason for sending",
+            "chooseReason": "Choose a reason",
+            "loadError": "The reasons could not be loaded.",
+            "confirmTitle": "Send the documents",
+            "confirmQuestion": "The signed document is sent to the branch.",
+            "failed": "The documents were not sent. Please check them and try again.",
+            "uncertain": "We could not confirm whether the documents were sent. Check your requests list before trying again.",
+            "error": {
+                "reason": "Choose a reason."
+            }
+        },
+        "transfer": {
+            "title": "Transfer through the branch",
+            "hint": "Make a transfer that goes through the branch. Fill in the form, sign it, then upload it with the transfer.",
+            "kind": "Kind of transfer",
+            "kinds": {
+                "internal": "To an account at this bank",
+                "satna": "Satna (to another bank)",
+                "paya": "Paya (to another bank)"
+            },
+            "source": "Paying account",
+            "destinationAccount": "Destination account number",
+            "destinationIban": "Destination IBAN (without IR)",
+            "lookUp": "Find the holder",
+            "looking": "Looking…",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "amount": "Amount",
+            "reason": "Reason for the transfer",
+            "paymentId": "Payment id",
+            "description": "Description",
+            "holder": "Holder",
+            "confirmTitle": "Confirm the transfer",
+            "confirmQuestion": "The amount is paid from your account and the signed document goes to the bank. This cannot be undone.",
+            "confirm": "Transfer",
+            "again": "Make another transfer",
+            "failed": "The transfer was not made. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the transfer was made. Check your account statement before trying again.",
+            "error": {
+                "source": "Choose the paying account.",
+                "destination": "Find the holder of the destination first.",
+                "amount": "Enter an amount greater than zero.",
+                "description": "Enter a description.",
+                "reason": "Choose a reason.",
+                "lookup": "The destination could not be found."
+            }
         }
     },
     "security": {
