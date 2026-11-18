@@ -139,3 +139,58 @@ export const intraBatchTransfer = (request: IntraBatchRequest): Promise<Transact
 			document: request.document,
 		}),
 	}).then(toTransactionResult)
+
+const importItemSchema = z.object({
+	accountNumber: z.union([z.string(), z.number()]).nullish(),
+	destinationIban: z.string().nullish(),
+	destinationFirstName: z.string().nullish(),
+	destinationLastName: z.string().nullish(),
+	amount: z.union([z.string(), z.number()]).nullish(),
+	paymentId: z.union([z.string(), z.number()]).nullish(),
+	description: z.string().nullish(),
+	reasonCode: z.string().nullish(),
+	accountNumberMessage: z.string().nullish(),
+	ibanMessage: z.string().nullish(),
+	amountMessage: z.string().nullish(),
+	paymentIdMessage: z.string().nullish(),
+	descriptionMessage: z.string().nullish(),
+})
+
+const importSchema = z.object({...base, infoList: z.array(importItemSchema).nullish()})
+
+/** One line of the Excel file, as the bank read it. */
+export interface ImportedTransfer {
+	/** An account number, or an IBAN without IR. */
+	destination: string
+	firstName: string
+	lastName: string
+	/** Digits only; empty when the cell was not a number. */
+	amount: string
+	paymentId: string
+	description: string
+	reasonCode: string
+	/** What the bank found wrong with the line, if anything. */
+	problems: string[]
+}
+
+/**
+ * Reads the destinations, amounts and descriptions from the bank's Excel template. Nothing is paid; the lines still need their
+ * holders found and the document signed.
+ */
+export const importTransfers = async (kind: IntraTransferKind, file: File): Promise<ImportedTransfer[]> => {
+	const body = new FormData()
+	body.append("file", file)
+	const path = kind === "internal" ? "/TransferMoney/Batch/ImportInternal" : `/TransferMoney/Batch/ImportSatnaPaya?isSatna=${kind === "satna"}`
+	const data = importSchema.parse(camelKeys(await apiClient<unknown>(path, {method: "POST", body})))
+	if (data.isSuccessful === false) throw new Error(data.message ?? "import failed")
+	return (data.infoList ?? []).map((item) => ({
+		destination: String(kind === "internal" ? (item.accountNumber ?? "") : (item.destinationIban ?? "")).replace(/\D/g, ""),
+		firstName: (item.destinationFirstName ?? "").trim(),
+		lastName: (item.destinationLastName ?? "").trim(),
+		amount: String(item.amount ?? "").replace(/\D/g, ""),
+		paymentId: String(item.paymentId ?? "").replace(/\D/g, ""),
+		description: (item.description ?? "").trim(),
+		reasonCode: (item.reasonCode ?? "").replace(/\s/g, ""),
+		problems: [item.accountNumberMessage, item.ibanMessage, item.amountMessage, item.paymentIdMessage, item.descriptionMessage].filter((message): message is string => !!message),
+	}))
+}

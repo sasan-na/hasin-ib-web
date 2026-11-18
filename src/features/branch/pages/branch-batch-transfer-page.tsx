@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query"
-import {Plus, Trash2} from "lucide-react"
-import {useState} from "react"
+import {useMutation, useQuery} from "@tanstack/react-query"
+import {FileSpreadsheet, Plus, Trash2} from "lucide-react"
+import {useRef, useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -10,7 +10,7 @@ import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Skeleton} from "@/components/ui/skeleton"
-import {intraBatchTransfer, type IntraTransferKind} from "@/features/branch/api/intra"
+import {importTransfers, intraBatchTransfer, type ImportedTransfer, type IntraTransferKind} from "@/features/branch/api/intra"
 import {SignedPdfUpload, type SignedPdf} from "@/features/branch/components/signed-pdf-upload"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
@@ -43,6 +43,23 @@ interface Row {
 	checking: boolean
 	problem: string | null
 }
+
+/** A line read from the Excel file: the holder is not looked up yet, and anything the bank flagged is shown on the row. */
+const fromImport = (key: number, item: ImportedTransfer): Row => ({
+	key,
+	destination: item.destination,
+	firstName: item.firstName,
+	lastName: item.lastName,
+	amount: item.amount,
+	paymentId: item.paymentId,
+	description: item.description,
+	found: false,
+	typed: false,
+	checking: false,
+	problem: item.problems.length > 0 ? item.problems.join(" ") : null,
+})
+
+const isBlank = (row: Row): boolean => row.destination === "" && row.amount === "" && row.description === "" && row.paymentId === ""
 
 const newRow = (key: number): Row => ({key, destination: "", firstName: "", lastName: "", amount: "", paymentId: "", description: "", found: false, typed: false, checking: false, problem: null})
 
@@ -79,11 +96,43 @@ export default function BranchBatchTransferPage() {
 				patch(row.key, {checking: false, found: true, typed: false, firstName: owner.firstName, lastName: owner.lastName})
 			} else {
 				const holder = await getIbanHolder(row.destination, kind)
-				patch(row.key, holder.withoutInquiry ? {checking: false, found: true, typed: true, firstName: "", lastName: ""} : {checking: false, found: true, typed: false, firstName: holder.firstName, lastName: holder.lastName})
+				patch(row.key, holder.withoutInquiry ? {checking: false, found: true, typed: true, firstName: row.firstName, lastName: row.lastName} : {checking: false, found: true, typed: false, firstName: holder.firstName, lastName: holder.lastName})
 			}
 		} catch (error) {
 			patch(row.key, {checking: false, found: false, problem: error instanceof Error && error.message ? error.message : t("branch.transfer.error.lookup")})
 		}
+	}
+
+	const fileInput = useRef<HTMLInputElement>(null)
+	const [importProblem, setImportProblem] = useState("")
+	const [importNote, setImportNote] = useState("")
+	const [checkingAll, setCheckingAll] = useState(false)
+
+	const importing = useMutation({
+		mutationFn: (file: File) => importTransfers(kind, file),
+		onSuccess: (items) => {
+			setImportProblem("")
+			setImportNote(t("branch.batch.imported", {count: items.length}))
+			setRows((current) => {
+				const kept = current.filter((row) => !isBlank(row))
+				const start = Math.max(0, ...current.map((row) => row.key)) + 1
+				return [...kept, ...items.map((item, index) => fromImport(start + index, item))]
+			})
+			const code = items.find((item) => item.reasonCode !== "")?.reasonCode
+			if (code && reasonCode === "" && reasons.data?.some((item) => item.code === code)) setReasonCode(code)
+		},
+		onError: (error: Error) => {
+			setImportNote("")
+			setImportProblem(error.message || t("branch.batch.importFailed"))
+		},
+	})
+
+	// Finds the holder of every row that has none yet, a few at a time so the bank is not flooded.
+	const checkAll = async (): Promise<void> => {
+		setCheckingAll(true)
+		const waiting = rows.filter((row) => !row.found && row.destination !== "")
+		for (let at = 0; at < waiting.length; at += 3) await Promise.all(waiting.slice(at, at + 3).map((row) => lookUp(row)))
+		setCheckingAll(false)
 	}
 
 	const changeKind = (next: IntraTransferKind): void => {
@@ -91,6 +140,8 @@ export default function BranchBatchTransferPage() {
 		setSource(null)
 		setRows([newRow(1)])
 		setProblem("")
+		setImportProblem("")
+		setImportNote("")
 	}
 
 	const sending = useSubmitTransaction({
@@ -187,6 +238,32 @@ export default function BranchBatchTransferPage() {
 				<h2 id="bb-rows" className="text-base font-semibold">
 					{t("branch.batch.rows")}
 				</h2>
+				<div className="flex flex-wrap items-center gap-3 rounded-lg border bg-card p-4">
+					<input
+						ref={fileInput}
+						type="file"
+						accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+						className="sr-only"
+						aria-label={t("branch.batch.import")}
+						onChange={(event) => {
+							const file = event.target.files?.[0]
+							event.target.value = ""
+							if (file) importing.mutate(file)
+						}}
+					/>
+					<Button type="button" variant="outline" disabled={importing.isPending} onClick={() => fileInput.current?.click()}>
+						<FileSpreadsheet aria-hidden="true" />
+						{importing.isPending ? t("branch.batch.importing") : t("branch.batch.import")}
+					</Button>
+					<a href={`/files/${kind === "internal" ? "InternalTransferSample" : kind === "satna" ? "SatnaSample" : "PayaSample"}${language === "en" ? "En" : "Fa"}.xlsx`} download className="text-sm underline underline-offset-4">
+						{t("branch.batch.sample")}
+					</a>
+					<Button type="button" variant="ghost" size="sm" disabled={checkingAll || !rows.some((row) => !row.found && row.destination !== "")} onClick={() => void checkAll()}>
+						{checkingAll ? t("branch.batch.checkingAll") : t("branch.batch.checkAll")}
+					</Button>
+					{importNote ? <p role="status" className="basis-full text-sm font-medium text-success">{importNote}</p> : null}
+					{importProblem ? <p role="alert" className="basis-full text-sm text-destructive">{importProblem}</p> : null}
+				</div>
 				<ul className="flex flex-col gap-3">
 					{rows.map((row, index) => (
 						<li key={row.key} className="flex flex-col gap-3 rounded-lg border bg-card p-4">

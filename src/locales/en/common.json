@@ -2600,7 +2600,14 @@
                 "notFound": "Find the holder for this destination first.",
                 "duplicate": "This destination and amount appear twice.",
                 "fixRows": "Fix the transfers marked above."
-            }
+            },
+            "import": "Import from Excel",
+            "importing": "Reading the file…",
+            "sample": "Download the Excel template",
+            "checkAll": "Find all holders",
+            "checkingAll": "Finding holders…",
+            "imported": "{{count}} lines were read from the file. Find the holders, then check each line.",
+            "importFailed": "The file could not be read. Please use the template."
         }
     },
     "security": {
