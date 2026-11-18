@@ -4,6 +4,8 @@ import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
+import {ChoiceCards} from "@/components/flow/choice-cards"
+import {FieldError, FlowLayout, FlowSummary, StepSection} from "@/components/flow/flow-form"
 import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
@@ -14,6 +16,7 @@ import {getVoucherOperators, purchaseVoucher} from "@/features/topup/api/topup"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {formatAmount, formatCardNumber} from "@/lib/format"
+import {cn} from "@/lib/utils"
 
 // The bank's name for the text message that proves a charge card purchase from a card.
 const CODE_SERVICE = "PurchaseVoucher"
@@ -58,7 +61,7 @@ export default function VoucherPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("topup.voucher.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -67,89 +70,94 @@ export default function VoucherPage() {
 			</div>
 			<p className="text-sm text-muted-foreground">{t("topup.voucher.hint")}</p>
 
-			<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="vc-operator">{t("topup.operator")}</Label>
-					{operators.isPending ? (
-						<Skeleton className="h-9 w-full" />
-					) : operators.isError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{t("topup.voucher.loadError")}
-						</p>
-					) : (
-						<Select
-							value={operator}
-							onValueChange={(next) => {
-								setOperator(next)
-								setAmount("")
-							}}
-						>
-							<SelectTrigger id="vc-operator" className="w-full">
-								<SelectValue placeholder={t("topup.chooseOperator")} />
-							</SelectTrigger>
-							<SelectContent>
-								{operators.data.map((item) => (
-									<SelectItem key={item.key} value={item.key}>
-										{item.name}
-									</SelectItem>
+			<FlowLayout
+				aside={
+					<FlowSummary
+						id="vc-summary"
+						title={t("topup.voucher.summary")}
+						amount={value > 0 && chosen?.vouchers.some((voucher) => String(voucher.amount) === amount) ? money(value) : null}
+						rows={[
+							{label: t("topup.operator"), value: chosen ? chosen.name : null},
+							{label: t("topup.card"), value: card ? card.name || card.type : null},
+						]}
+						reviewLabel={t("topup.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<StepSection id="vc-choose" step={1} title={t("topup.voucher.chooseStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="vc-operator">{t("topup.operator")}</Label>
+						{operators.isPending ? (
+							<Skeleton className="h-9 w-full" />
+						) : operators.isError ? (
+							<FieldError>{t("topup.voucher.loadError")}</FieldError>
+						) : (
+							<Select
+								value={operator}
+								onValueChange={(next) => {
+									setOperator(next)
+									setAmount("")
+								}}
+							>
+								<SelectTrigger id="vc-operator" className="w-full">
+									<SelectValue placeholder={t("topup.chooseOperator")} />
+								</SelectTrigger>
+								<SelectContent>
+									{operators.data.map((item) => (
+										<SelectItem key={item.key} value={item.key}>
+											{item.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						)}
+					</div>
+					{chosen ? (
+						<fieldset className="flex flex-col gap-2">
+							<legend className="mb-1 text-sm font-medium">{t("topup.voucher.value")}</legend>
+							<div className="grid gap-2 sm:grid-cols-2">
+								{chosen.vouchers.map((voucher) => (
+									<label
+										key={voucher.amount}
+										className={cn(
+											"flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border bg-card p-3 text-sm transition-colors focus-within:ring-[3px] focus-within:ring-ring/50",
+											amount === String(voucher.amount) ? "border-primary bg-primary-soft ring-2 ring-primary/20" : "hover:border-foreground/40",
+										)}
+									>
+										<input type="radio" name="vc-amount" className="accent-primary" checked={amount === String(voucher.amount)} onChange={() => setAmount(String(voucher.amount))} />
+										{voucher.description}
+									</label>
 								))}
-							</SelectContent>
-						</Select>
-					)}
-				</div>
-				{chosen ? (
-					<fieldset className="flex flex-col gap-2">
-						<legend className="mb-1 text-sm font-medium">{t("topup.voucher.value")}</legend>
-						{chosen.vouchers.map((voucher) => (
-							<label key={voucher.amount} className="flex items-center gap-2 text-sm">
-								<input type="radio" name="vc-amount" className="accent-primary" checked={amount === String(voucher.amount)} onChange={() => setAmount(String(voucher.amount))} />
-								{voucher.description}
-							</label>
-						))}
-					</fieldset>
-				) : null}
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="vc-card">{t("topup.card")}</Label>
+							</div>
+						</fieldset>
+					) : null}
+				</StepSection>
+
+				<StepSection id="vc-from" step={2} title={t("topup.fromStep")}>
+					<p id="vc-card-label" className="sr-only">
+						{t("topup.card")}
+					</p>
 					{cards.isPending ? (
-						<Skeleton className="h-9 w-full" />
+						<Skeleton className="h-24 w-full" />
 					) : cards.isError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{t("topup.cardsError")}
-						</p>
+						<FieldError>{t("topup.cardsError")}</FieldError>
 					) : (
-						<Select
-							value={cardId}
-							onValueChange={(next) => {
-								setCardId(next)
+						<ChoiceCards
+							name="vc-card"
+							labelledBy="vc-card-label"
+							value={card?.id ?? null}
+							onChange={(id) => {
+								setCardId(String(id))
 								setForm(EMPTY_CREDENTIALS)
 							}}
-						>
-							<SelectTrigger id="vc-card" className="w-full">
-								<SelectValue placeholder={t("topup.chooseCard")} />
-							</SelectTrigger>
-							<SelectContent>
-								{cards.data.map((candidate) => (
-									<SelectItem key={candidate.id} value={String(candidate.id)}>
-										<span>{candidate.name || candidate.type}</span> <span dir="ltr">{formatCardNumber(candidate.number)}</span>
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+							choices={cards.data.map((candidate) => ({id: candidate.id, title: candidate.name || candidate.type, number: formatCardNumber(candidate.number)}))}
+						/>
 					)}
-				</div>
-				{card ? <CardCredentialsFields cardId={card.id} cardNumber={card.number} codeServiceName={CODE_SERVICE} value={form} onChange={setForm} /> : null}
-
-				{error ? (
-					<p role="alert" className="text-sm text-destructive">
-						{error}
-					</p>
-				) : null}
-				<div>
-					<Button type="button" onClick={review}>
-						{t("topup.review")}
-					</Button>
-				</div>
-			</section>
+					{card ? <CardCredentialsFields cardId={card.id} cardNumber={card.number} codeServiceName={CODE_SERVICE} value={form} onChange={setForm} /> : null}
+					{error ? <FieldError>{error}</FieldError> : null}
+				</StepSection>
+			</FlowLayout>
 
 			{confirming && card && chosen ? (
 				<ConfirmDialog

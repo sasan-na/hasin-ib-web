@@ -2757,6 +2757,8 @@
         "toVoucher": "Buy a charge card instead",
         "voucher": {
             "title": "Buy a charge card",
+            "summary": "Charge card summary",
+            "chooseStep": "Operator and value",
             "toTopUp": "Top up a number instead",
             "hint": "Buy a mobile charge card with one of your cards. Its serial number and PIN are on the receipt afterwards.",
             "loadError": "The charge cards could not be loaded. Try again in a moment.",
