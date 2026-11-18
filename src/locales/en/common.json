@@ -2505,7 +2505,7 @@
         "branch": "Branch",
         "upload": {
             "title": "Signed document",
-            "hint": "The document must be signed with your digital certificate before you upload it. Sign the PDF with the bank's signing tool (see the guide), then upload the signed file.",
+            "hint": "Sign the PDF with your digital certificate, then upload it. Or upload the unsigned PDF and sign it here with the certificate on your token.",
             "template": "Download the form to fill in",
             "guide": "How to sign a PDF (guide)",
             "choose": "Choose the signed PDF",
@@ -2608,6 +2608,29 @@
             "checkingAll": "Finding holders…",
             "imported": "{{count}} lines were read from the file. Find the holders, then check each line.",
             "importFailed": "The file could not be read. Please use the template."
+        },
+        "sign": {
+            "button": "Sign with my certificate",
+            "signing": "Waiting for your token…",
+            "done": "The document is signed. You can check it with the bank, then continue.",
+            "stamp": "National code {{nationalCode}} signed this document electronically on {{date}}",
+            "missing": "The signing service was not found on this computer. Install it, connect your token and try again.",
+            "download": "Download the signing service",
+            "failed": "The document could not be signed. Please try again.",
+            "errors": {
+                "11": "No certificate was chosen.",
+                "12": "The token does not support this kind of signature.",
+                "18": "You cancelled the signing.",
+                "20": "This action is not allowed.",
+                "24": "A hardware error happened while choosing the certificate.",
+                "25": "The token has no certificate.",
+                "30": "The token has no private key.",
+                "31": "The signature could not be made.",
+                "32": "The document could not be hashed.",
+                "33": "The signature could not be made.",
+                "34": "The data is not in the expected format.",
+                "80": "The signing service is set up wrongly."
+            }
         }
     },
     "security": {
