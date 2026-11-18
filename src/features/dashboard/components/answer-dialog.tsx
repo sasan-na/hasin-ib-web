@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import {
 	answerWorkflow,
+	executeSigned,
 	type WorkflowItem,
 } from "@/features/dashboard/api/dashboard"
 import {
@@ -23,6 +24,9 @@ import { ConfirmDialog } from "@/features/transaction/components/confirm-dialog"
 
 // The bank's name for the check that the signed-in user may answer (it also keys the text-message code).
 const SERVICE = "Authorizer_Authenticate"
+
+/** The signature was recorded but the transaction it was for did not go through (or may not have). */
+class AfterSignError extends Error {}
 
 interface Props {
 	item: WorkflowItem
@@ -47,6 +51,8 @@ export function AnswerDialog({ item, accept, onClose, onDone }: Props) {
 	const [password, setPassword] = useState("")
 	const [reason, setReason] = useState("")
 	const [refusal, setRefusal] = useState<string | null>(null)
+	// After a signature the transaction must not be signed or sent a second time from this dialog.
+	const [blocked, setBlocked] = useState(false)
 
 	const answer = useMutation({
 		mutationFn: () => {
@@ -54,24 +60,54 @@ export function AnswerDialog({ item, accept, onClose, onDone }: Props) {
 				throw new Error("form incomplete")
 			const needsPassword =
 				requirement.state === "ready" && requirement.needsPassword
+			const passwordType =
+				requirement.state === "ready" ? requirement.info.type : 2
 			return answerWorkflow({
 				workflowRunId: item.id,
 				accept,
 				isSign: item.isSign,
 				rejectReason: reason.trim(),
 				password: needsPassword ? password : null,
-				passwordType: requirement.state === "ready" ? requirement.info.type : 2,
+				passwordType,
+			}).then(async (result) => {
+				if (!(item.isSign && accept && result.shouldExecute)) return
+				let sent: { ok: boolean; message: string }
+				try {
+					sent = await executeSigned({
+						workflowRunId: item.id,
+						serviceKey: item.serviceKey,
+						toCard:
+							details.data?.fields.some(
+								(field) => field.key === "DestinationCardPan",
+							) === true,
+						accountNumber: item.accountNumber,
+						password: needsPassword ? password : null,
+						passwordType,
+					})
+				} catch {
+					throw new AfterSignError(t("dashboard.answer.signUncertain"))
+				}
+				if (!sent.ok)
+					throw new AfterSignError(
+						sent.message || t("dashboard.answer.signFailed"),
+					)
 			})
 		},
 		onSuccess: () => {
 			void queryClient.invalidateQueries({ queryKey: dashboardKeys.all })
 			onDone(accept)
 		},
-		onError: (error: Error) =>
-			setRefusal(error.message || t("dashboard.answer.failed")),
+		onError: (error: Error) => {
+			setRefusal(error.message || t("dashboard.answer.failed"))
+			if (error instanceof AfterSignError) {
+				setBlocked(true)
+				void queryClient.invalidateQueries({ queryKey: dashboardKeys.all })
+			}
+		},
 	})
 
 	const needsReason = !accept
+	const signing = item.isSign && accept
 
 	return (
 		<ConfirmDialog
@@ -81,12 +117,16 @@ export function AnswerDialog({ item, accept, onClose, onDone }: Props) {
 			}}
 			title={
 				accept
-					? t("dashboard.answer.acceptTitle")
+					? signing
+						? t("dashboard.answer.signTitle")
+						: t("dashboard.answer.acceptTitle")
 					: t("dashboard.answer.rejectTitle")
 			}
 			description={
 				accept
-					? t("dashboard.answer.acceptQuestion")
+					? signing
+						? t("dashboard.answer.signQuestion")
+						: t("dashboard.answer.acceptQuestion")
 					: t("dashboard.answer.rejectQuestion")
 			}
 			summary={[
@@ -105,11 +145,18 @@ export function AnswerDialog({ item, accept, onClose, onDone }: Props) {
 					: []),
 			]}
 			confirmLabel={
-				accept ? t("dashboard.answer.accept") : t("dashboard.answer.reject")
+				accept
+					? signing
+						? t("dashboard.answer.sign")
+						: t("dashboard.answer.accept")
+					: t("dashboard.answer.reject")
 			}
 			pendingLabel={t("dashboard.answer.sending")}
 			destructive={!accept}
 			canConfirm={
+				!blocked &&
+				// A standing order to a card is told from one to an account by its details.
+				(!signing || item.serviceKey !== "RegisterStandingOrder" || details.isSuccess) &&
 				(noAccount || isPasswordComplete(requirement, password)) &&
 				(!needsReason || reason.trim() !== "")
 			}

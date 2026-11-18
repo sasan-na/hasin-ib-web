@@ -1687,8 +1687,7 @@
             "waitingAccept": "Waiting for your confirmation",
             "waitingSign": "Waiting for your signature",
             "successful": "Successful",
-            "failed": "Failed",
-            "signNote": "Signing, which also carries out the transaction, is not available here. You can still reject it."
+            "failed": "Failed"
         },
         "details": {
             "hint": "What this request does.",
@@ -1717,7 +1716,13 @@
             "sending": "Sending…",
             "failed": "The answer was not accepted. Please try again.",
             "accepted": "Your confirmation was recorded.",
-            "rejected": "The request was rejected."
+            "rejected": "The request was rejected.",
+            "sign": "Sign",
+            "signTitle": "Sign and send this transaction",
+            "signQuestion": "Your signature is recorded and the transaction is sent to the bank right away.",
+            "signed": "Signed, and the transaction was sent.",
+            "signUncertain": "Your signature was recorded, but we could not confirm that the transaction was sent. Check the receipts before doing anything else.",
+            "signFailed": "Your signature was recorded, but the bank did not carry out the transaction."
         },
         "rules": {
             "open": "Approval rules",

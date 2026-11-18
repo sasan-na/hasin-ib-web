@@ -350,7 +350,7 @@ export const getWorkflowProgress = async (
 export interface WorkflowAnswer {
 	workflowRunId: number
 	accept: boolean
-	/** The item is at its signing step; only rejecting is supported there (signing also sends the transaction). */
+	/** The item is at its signing step: signing records the signature, and the transaction is then sent separately. */
 	isSign: boolean
 	/** Only a rejection needs a reason. */
 	rejectReason: string
@@ -373,7 +373,7 @@ export interface AnswerResult {
 
 /**
  * Accepts or rejects a waiting item. A real action on the bank's side: send once per confirmation, never retry
- * automatically. Signing an item (which also sends the transaction) is not done here.
+ * automatically. When this was a signature, `shouldExecute` says the caller must now send the transaction (executeSigned).
  */
 export const answerWorkflow = async (
 	answer: WorkflowAnswer,
@@ -396,4 +396,57 @@ export const answerWorkflow = async (
 	if (data.isSuccessful === false)
 		throw new Error(data.message ?? "answer failed")
 	return { shouldExecute: data.shouldExecute === true }
+}
+
+const executeSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	extendedMessage: z.string().nullish(),
+})
+
+export interface SignedExecution {
+	workflowRunId: number
+	/** The bank's key for the service; its transaction is what gets sent. */
+	serviceKey: string
+	/** True for a standing order to a card: the bank has one key for both kinds and tells them apart by this. */
+	toCard: boolean
+	accountNumber: string
+	password: string | null
+	passwordType: PasswordType
+}
+
+/**
+ * Sends the transaction an item has just been signed for. A real transaction: send once per signature, never retry
+ * automatically. Resolves with the bank's text when it refused; rejects when the request failed on the way, so nobody
+ * knows whether the bank acted.
+ */
+export const executeSigned = async (
+	execution: SignedExecution,
+): Promise<{ ok: boolean; message: string }> => {
+	const key =
+		execution.serviceKey === "RegisterStandingOrder" && execution.toCard
+			? "RegisterStandingOrderCard"
+			: execution.serviceKey
+	const data = executeSchema.parse(
+		camelKeys(
+			await apiClient<unknown>(
+				`/${encodeURIComponent(key)}/DoDashboardTransaction`,
+				{
+					method: "POST",
+					body: JSON.stringify({
+						workflowRunId: execution.workflowRunId,
+						accountInfo: {
+							accountNumber: execution.accountNumber,
+							accountPin: execution.password ?? undefined,
+							passwordType: execution.passwordType,
+						},
+					}),
+				},
+			),
+		),
+	)
+	return {
+		ok: data.isSuccessful !== false,
+		message: data.extendedMessage ?? data.message ?? "",
+	}
 }

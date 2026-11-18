@@ -292,13 +292,15 @@ export default function DashboardPage() {
 												{t("dashboard.item.progress")}
 											</Button>
 										) : null}
-										{!item.isView && !item.isSign ? (
+										{!item.isView ? (
 											<Button
 												type="button"
 												size="sm"
 												onClick={() => setAnswering({ item, accept: true })}
 											>
-												{t("dashboard.answer.accept")}
+												{item.isSign
+													? t("dashboard.answer.sign")
+													: t("dashboard.answer.accept")}
 											</Button>
 										) : null}
 										{!item.isView ? (
@@ -312,11 +314,6 @@ export default function DashboardPage() {
 											</Button>
 										) : null}
 									</div>
-									{!item.isView && item.isSign ? (
-										<p className="text-muted-foreground text-xs">
-											{t("dashboard.item.signNote")}
-										</p>
-									) : null}
 								</li>
 							))
 						: (items as HistoryItem[]).map((item) => (
@@ -433,7 +430,9 @@ export default function DashboardPage() {
 						setAnswering(null)
 						setNotice(
 							accepted
-								? t("dashboard.answer.accepted")
+								? answering.item.isSign
+									? t("dashboard.answer.signed")
+									: t("dashboard.answer.accepted")
 								: t("dashboard.answer.rejected"),
 						)
 					}}
