@@ -1,7 +1,7 @@
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query"
 import {History, RefreshCw, ShieldBan} from "lucide-react"
 import * as React from "react"
-import {Link} from "react-router-dom"
+import {Link, useSearchParams} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 
 import {routeMap} from "@/app/routes"
@@ -27,7 +27,9 @@ export default function ChequeListPage() {
 	const {t, i18n} = useTranslation()
 	const statuses = useQuery(chequeStatusesOptions(i18n.language))
 	const [account, setAccount] = React.useState<SourceAccount | null>(null)
-	const [media, setMedia] = React.useState<"1" | "2">("1")
+	// The digital cheque section opens this page on the digital tab with ?media=digital.
+	const [params] = useSearchParams()
+	const [media, setMedia] = React.useState<"1" | "2">(params.get("media") === "digital" ? "2" : "1")
 	const [statusKey, setStatusKey] = React.useState("")
 	const [series, setSeries] = React.useState("")
 	const [serial, setSerial] = React.useState("")
@@ -55,14 +57,6 @@ export default function ChequeListPage() {
 		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("cheque.title")}</h1>
-				<div className="flex flex-wrap gap-2">
-					<Button asChild size="sm" variant="outline">
-						<Link to={routeMap.chakadCartable.path}>{t("cheque.cartable.title")}</Link>
-					</Button>
-					<Button asChild size="sm" variant="outline">
-						<Link to={routeMap.chakadGuarantee.path}>{t("cheque.guarantee.title")}</Link>
-					</Button>
-				</div>
 			</div>
 
 			<section className="flex flex-col gap-4 rounded-lg border bg-card p-5">

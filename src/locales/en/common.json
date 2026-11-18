@@ -35,7 +35,8 @@
         "payments": "Payments",
         "other": "Other services",
         "branch": "In-branch services",
-        "security": "Dynamic password"
+        "security": "Dynamic password",
+        "digitalCheques": "Digital cheques"
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
@@ -2725,6 +2726,32 @@
             "uncertain": "We could not confirm whether the charge card was bought. Check the card statement before trying again.",
             "error": {
                 "amount": "Choose a charge card value."
+            }
+        }
+    },
+    "digitalCheque": {
+        "title": "Digital cheques",
+        "hint": "Cheques issued and signed digitally, approved in your Hamoon app. Paper cheques have their own section.",
+        "cards": {
+            "cartable": {
+                "title": "Cartable",
+                "text": "The digital cheques that concern you, and what you can do with each."
+            },
+            "issue": {
+                "title": "Issue a cheque",
+                "text": "Pick a cheque from your digital cheque book, write it and approve it in the Hamoon app."
+            },
+            "hold": {
+                "title": "Cheques you hold",
+                "text": "Lock a cheque for cashing, remove the lock, cash it inside the bank, pass it on or give it back."
+            },
+            "guarantee": {
+                "title": "Guarantee",
+                "text": "Sign as a guarantor, see where a guarantee stands, ask for a guarantee or stop it."
+            },
+            "activate": {
+                "title": "Activate the service",
+                "text": "Turn on digital cheques once, with an approval in your Hamoon app."
             }
         }
     }

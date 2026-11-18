@@ -57,6 +57,7 @@ const EtcCharge = React.lazy(() => import("@/features/etc/pages/etc-charge-page.
 const EtcActivate = React.lazy(() => import("@/features/etc/pages/etc-activate-page.tsx"));
 const EtcPurchase = React.lazy(() => import("@/features/etc/pages/etc-purchase-page.tsx"));
 const EtcList = React.lazy(() => import("@/features/etc/pages/etc-list-page.tsx"));
+const DigitalChequeHome = React.lazy(() => import("@/features/cheque/pages/digital-cheque-home-page.tsx"));
 const ChequeHome = React.lazy(() => import("@/features/cheque/pages/cheque-home-page.tsx"));
 const DashboardHome = React.lazy(() => import("@/features/dashboard/pages/dashboard-home-page.tsx"));
 const PaymentHome = React.lazy(() => import("@/features/bill/pages/payment-home-page.tsx"));
@@ -170,6 +171,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.cardConnected.path} element={<ConnectedCards/>}/>
                     <Route path={routeMap.cardConnectedStatement.path} element={<ConnectedCardStatement/>}/>
                     <Route path={routeMap.cheque.path} element={<ChequeHome/>}/>
+                    <Route path={routeMap.digitalCheque.path} element={<DigitalChequeHome/>}/>
                     <Route path={routeMap.dashboardHome.path} element={<DashboardHome/>}/>
                     <Route path={routeMap.payment.path} element={<PaymentHome/>}/>
                     <Route path={routeMap.ussd.path} element={<Ussd/>}/>
