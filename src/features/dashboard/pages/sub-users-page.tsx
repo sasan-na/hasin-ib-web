@@ -81,6 +81,11 @@ export default function SubUsersPage() {
 								</span>
 							</div>
 							<div className="flex flex-wrap gap-2">
+								{user.kind !== 0 && user.active ? (
+									<Button asChild size="sm" variant="outline">
+										<Link to={`${routeMap.editSubUser.path}?id=${user.id}`}>{t("dashboard.users.edit")}</Link>
+									</Button>
+								) : null}
 								{user.kind === 2 && user.active ? (
 									<Button type="button" size="sm" variant="outline" onClick={() => {setRefusal(null); setActing({user, kind: "disable"})}}>
 										{t("dashboard.users.disable")}

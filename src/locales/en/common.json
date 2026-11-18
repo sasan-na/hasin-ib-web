@@ -1744,7 +1744,8 @@
             "removeQuestion": "The user is removed from the people on your accounts.",
             "removeDone": "The user was removed.",
             "blocked": "This person is part of the approval rules below. Change those rules first.",
-            "checkFailed": "Their approval rules could not be checked."
+            "checkFailed": "Their approval rules could not be checked.",
+            "edit": "Edit"
         },
         "landing": {
             "title": "Approvals"
@@ -1875,6 +1876,24 @@
             "saveQuestion": "The bank replaces the rule with this one.",
             "save": "Save",
             "loadRuleError": "This rule could not be opened. It may have been deleted."
+        },
+        "editUser": {
+            "title": "Edit a person",
+            "hint": "Change what this person can do on your accounts:",
+            "loadError": "This person could not be opened.",
+            "signIn": "Sign-in password",
+            "signInHint": "Leave empty to keep their current password.",
+            "newPassword": "New password",
+            "willChange": "Will change",
+            "reset": "Give them a new password for this account",
+            "loseAccess": "Loses access",
+            "confirmTitle": "Save the changes",
+            "confirmQuestion": "Changing someone's role on an account cancels the approvals still waiting on that account that involve them, and taking an account away removes their access to it.",
+            "save": "Save",
+            "failed": "The changes were not saved. Please check them and try again.",
+            "doneTitle": "Changes saved",
+            "done": "The changes to {{username}} were saved.",
+            "someFailed": "The bank could not change these accounts:"
         }
     },
     "receipt": {

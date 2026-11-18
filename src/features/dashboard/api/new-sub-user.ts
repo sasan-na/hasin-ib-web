@@ -69,6 +69,7 @@ const resultSchema = z.object({
 	addSubUserSuccessful: z.boolean().nullish(),
 	addSubUserMessage: z.string().nullish(),
 	subUsername: z.string().nullish(),
+	subUserAccountResults: z.array(z.object({accountNumber: z.string().nullish(), isSuccessful: z.boolean().nullish(), message: z.string().nullish()})).nullish(),
 	accountCount: z.union([z.string(), z.number()]).nullish(),
 	createDate: z.string().nullish(),
 	isSuccessful: z.boolean().nullish(),
@@ -80,7 +81,17 @@ export interface NewSubUserResult {
 	message: string
 	username: string
 	accountCount: string
+	/** Accounts the bank could not change, with its reason. */
+	failures: {accountNumber: string; message: string}[]
 }
+
+const toResult = (data: z.infer<typeof resultSchema>, fallbackUsername: string): NewSubUserResult => ({
+	ok: data.addSubUserSuccessful === true,
+	message: data.addSubUserMessage ?? data.message ?? "",
+	username: data.subUsername ?? fallbackUsername,
+	accountCount: data.accountCount === null || data.accountCount === undefined ? "" : String(data.accountCount),
+	failures: (data.subUserAccountResults ?? []).filter((item) => item.isSuccessful === false).map((item) => ({accountNumber: item.accountNumber ?? "", message: item.message ?? ""})),
+})
 
 /**
  * Adds a person who may act on some of the user's accounts. The new password travels encrypted under a fresh ticket.
@@ -105,5 +116,72 @@ export const addSubUser = async (request: NewSubUser): Promise<NewSubUserResult>
 		),
 	)
 	if (data.isSuccessful === false && data.addSubUserSuccessful === undefined) throw new Error(data.message ?? "add sub-user failed")
-	return {ok: data.addSubUserSuccessful === true, message: data.addSubUserMessage ?? data.message ?? "", username: data.subUsername ?? request.username, accountCount: data.accountCount === null || data.accountCount === undefined ? "" : String(data.accountCount)}
+	return toResult(data, request.username)
+}
+
+const editInfoSchema = z.object({
+	isSuccessful: z.boolean().nullish(),
+	message: z.string().nullish(),
+	isExistingUser: z.boolean().nullish(),
+	username: z.string().nullish(),
+	isMyChild: z.boolean().nullish(),
+	userAccounts: z.array(z.object({accountNumber: z.string().nullish(), roleId: z.number().nullish()})).nullish(),
+})
+
+export interface EditableSubUser {
+	username: string
+	/** A registered user of the bank rather than a sub-user: they keep their own sign-in password. */
+	existing: boolean
+	/** Only the person who created a sub-user may change their passwords. */
+	isMine: boolean
+	/** The accounts they can act on now, with their roles. */
+	accounts: {accountNumber: string; roleId: number}[]
+}
+
+/** A person as they are now, ready to be changed. */
+export const getSubUserForEdit = async (id: number): Promise<EditableSubUser> => {
+	const data = editInfoSchema.parse(camelKeys(await apiClient<unknown>(`/SubUser/GetSubUserToEdit?userId=${id}`)))
+	if (data.isSuccessful === false || !data.username) throw new Error(data.message ?? "sub-user not found")
+	return {
+		username: data.username,
+		existing: data.isExistingUser === true,
+		isMine: data.isMyChild === true,
+		accounts: (data.userAccounts ?? []).map((account) => ({accountNumber: account.accountNumber ?? "", roleId: account.roleId ?? 0})),
+	}
+}
+
+export interface SubUserChange {
+	username: string
+	existing: boolean
+	/** A new sign-in password; empty keeps the current one. */
+	newPassword: string
+	/** Every account the person should have after the change; any account left out loses access. */
+	accounts: (GrantedAccount & {passwordChanged: boolean})[]
+}
+
+/**
+ * Changes a person's roles, accounts and passwords. The bank adds, changes and removes accounts one by one, so some can fail
+ * while others succeed (see failures). A real change: send once per confirmation, never retry automatically.
+ */
+export const editSubUser = async (change: SubUserChange): Promise<NewSubUserResult> => {
+	const protectedPassword = change.newPassword === "" ? null : await protectPasswords(change.newPassword)
+	const data = resultSchema.parse(
+		camelKeys(
+			await apiClient<unknown>("/SubUser/EditSubUser", {
+				method: "POST",
+				body: JSON.stringify({
+					accountList: change.accounts.map((account) => ({accountNumber: account.accountNumber, masterPassword: account.masterPassword, subUserPassword: account.subUserPassword, roleId: account.roleId, hasPasswordBeenChanged: account.passwordChanged})),
+					username: change.username,
+					customerCode: "",
+					password: protectedPassword ? protectedPassword.encrypted[0] : "",
+					isExistingUser: change.existing,
+					hasPasswordBeenChanged: protectedPassword !== null,
+					isEncrypted: protectedPassword !== null,
+					ticket: protectedPassword?.ticket ?? "",
+				}),
+			}),
+		),
+	)
+	if (data.isSuccessful === false && data.addSubUserSuccessful === undefined) throw new Error(data.message ?? "edit sub-user failed")
+	return toResult(data, change.username)
 }

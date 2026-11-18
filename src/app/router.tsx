@@ -42,6 +42,7 @@ const LoanInterest = React.lazy(() => import("@/features/loan/pages/loan-interes
 const LoanJunior = React.lazy(() => import("@/features/loan/pages/loan-junior-page.tsx"));
 const OldHistory = React.lazy(() => import("@/features/dashboard/pages/old-history-page.tsx"));
 const Roles = React.lazy(() => import("@/features/dashboard/pages/roles-page.tsx"));
+const EditSubUser = React.lazy(() => import("@/features/dashboard/pages/edit-sub-user-page.tsx"));
 const NewSubUser = React.lazy(() => import("@/features/dashboard/pages/new-sub-user-page.tsx"));
 const SubUsers = React.lazy(() => import("@/features/dashboard/pages/sub-users-page.tsx"));
 const NewRule = React.lazy(() => import("@/features/dashboard/pages/new-rule-page.tsx"));
@@ -172,6 +173,7 @@ const router = createBrowserRouter(
                     <Route path={routeMap.newRule.path} element={<NewRule/>}/>
                     <Route path={routeMap.subUsers.path} element={<SubUsers/>}/>
                     <Route path={routeMap.newSubUser.path} element={<NewSubUser/>}/>
+                    <Route path={routeMap.editSubUser.path} element={<EditSubUser/>}/>
                     <Route path={routeMap.roles.path} element={<Roles/>}/>
                     <Route path={routeMap.oldHistory.path} element={<OldHistory/>}/>
                     <Route path={routeMap.loanInterest.path} element={<LoanInterest/>}/>
