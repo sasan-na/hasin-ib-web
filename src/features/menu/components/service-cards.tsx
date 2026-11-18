@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
-import {ChevronRight, Star, StarOff, type LucideIcon} from "lucide-react"
+import {Star, StarOff, type LucideIcon} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
@@ -13,9 +13,9 @@ import {cn} from "@/lib/utils"
 export interface Destination {
 	to: string
 	icon: LucideIcon
-	/** Classes for the icon tile. */
+	/** Classes for the round icon. */
 	badge: string
-	/** Classes for a solid line in the tone, used by pages that still draw one. */
+	/** Classes for the line beside the title. */
 	line: string
 }
 
@@ -45,36 +45,31 @@ function ServiceCard({item, destination, section}: ServiceCardProps) {
 	})
 
 	return (
-		<article className="flex flex-col rounded-2xl border bg-card shadow-card">
-			<div className="flex items-center">
-				<Link to={destination.to} className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl p-3 outline-offset-[-2px] hover:bg-muted/40">
-					<span aria-hidden="true" className={cn("flex size-10 shrink-0 items-center justify-center rounded-full", destination.badge)}>
-						<Icon className="size-5" />
+		<article className="flex flex-col overflow-hidden rounded-lg border bg-card">
+			<Link to={destination.to} className="flex flex-1 flex-col gap-5 p-5 outline-offset-[-2px] hover:bg-muted/40">
+				<div className="flex items-center gap-4">
+					<h2 className="text-lg font-semibold">{item.name}</h2>
+					<span aria-hidden="true" className={cn("h-0.5 flex-1", destination.line)} />
+					<span aria-hidden="true" className={cn("flex size-12 shrink-0 items-center justify-center rounded-full", destination.badge)}>
+						<Icon className="size-6" />
 					</span>
-					<div className="flex min-w-0 flex-1 flex-col">
-						<h2 className="truncate text-sm font-semibold">{item.name}</h2>
-						<p className="line-clamp-2 text-xs text-muted-foreground">{item.description}</p>
+				</div>
+				<p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+			</Link>
+			{item.canBeFavorite ? (
+				<div className="flex flex-col gap-2 px-5 pb-5">
+					<div>
+						<Button type="button" variant="outline" size="sm" disabled={favorite.isPending} onClick={() => favorite.mutate()}>
+							<FavoriteIcon aria-hidden="true" className={item.isFavorite ? undefined : "text-brand"} />
+							{item.isFavorite ? t("landing.removeFavorite") : t("landing.addFavorite")}
+						</Button>
 					</div>
-					<ChevronRight aria-hidden="true" className="size-4 shrink-0 text-muted-foreground rtl:rotate-180" />
-				</Link>
-				{item.canBeFavorite ? (
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon-sm"
-						className="me-1 shrink-0"
-						disabled={favorite.isPending}
-						aria-label={item.isFavorite ? t("landing.removeFavorite") : t("landing.addFavorite")}
-						onClick={() => favorite.mutate()}
-					>
-						<FavoriteIcon aria-hidden="true" className={item.isFavorite ? undefined : "text-brand"} />
-					</Button>
-				) : null}
-			</div>
-			{favorite.isError ? (
-				<p role="alert" className="px-3 pb-3 text-xs text-destructive">
-					{t("landing.favoriteError")}
-				</p>
+					{favorite.isError ? (
+						<p role="alert" className="text-sm text-destructive">
+							{t("landing.favoriteError")}
+						</p>
+					) : null}
+				</div>
 			) : null}
 		</article>
 	)
@@ -101,10 +96,9 @@ export function ServiceCards({section, title, destinations}: ServiceCardsProps) 
 		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<h1 className="text-2xl font-bold">{title}</h1>
 			{menu.isPending ? (
-				<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-					<Skeleton className="h-20 w-full rounded-2xl" />
-					<Skeleton className="h-20 w-full rounded-2xl" />
-					<Skeleton className="h-20 w-full rounded-2xl" />
+				<div className="grid gap-6 md:grid-cols-2" aria-hidden="true">
+					<Skeleton className="h-52 w-full" />
+					<Skeleton className="h-52 w-full" />
 				</div>
 			) : menu.isError ? (
 				<p role="alert" className="rounded-lg bg-card p-5 text-sm text-destructive">
@@ -113,7 +107,7 @@ export function ServiceCards({section, title, destinations}: ServiceCardsProps) 
 			) : cards.length === 0 ? (
 				<p className="rounded-lg bg-card p-5 text-sm text-muted-foreground">{t("landing.empty")}</p>
 			) : (
-				<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid gap-6 md:grid-cols-2">
 					{cards.map(({item, destination}) => (
 						<ServiceCard key={item.id} item={item} destination={destination} section={section} />
 					))}
