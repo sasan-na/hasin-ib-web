@@ -6,7 +6,7 @@ import prettier from "eslint-config-prettier"
 import globals from "globals"
 
 export default [
-	{ ignores: ["dist", "public", "node_modules", "eslint.config.js"] },
+	{ ignores: ["dist", "public", ".claude", "node_modules", "eslint.config.js"] },
 	js.configs.recommended,
 	...tseslint.configs.recommended,
 	prettier,
