@@ -351,7 +351,7 @@ export default function CardGiftPage() {
 						{label: t("card.gift.cardCount"), value: formatAmount(cardCount, language)},
 						{label: t("card.gift.cardsTotal"), value: money(cardsTotal)},
 						{label: t("card.gift.feeTotal"), value: money(feeTotal)},
-						{label: t("card.gift.grandTotal"), value: <strong>{money(grandTotal)}</strong>},
+						{label: t("card.gift.grandTotal"), amount: true, value: money(grandTotal)},
 					]}
 					confirmLabel={t("card.gift.confirm")}
 					pendingLabel={t("card.gift.sending")}

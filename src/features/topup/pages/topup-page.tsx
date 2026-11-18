@@ -165,7 +165,7 @@ export default function TopUpPage() {
 						{label: t("topup.operator"), value: operatorName},
 						{label: t("topup.mobile"), value: <span dir="ltr">{mobile}</span>},
 						{label: t("topup.card"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>},
-						{label: t("topup.amount"), value: <strong>{money(value)}</strong>},
+						{label: t("topup.amount"), amount: true, value: money(value)},
 					]}
 					confirmLabel={t("topup.pay")}
 					pendingLabel={t("topup.sending")}

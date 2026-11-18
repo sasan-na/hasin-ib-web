@@ -162,7 +162,7 @@ export default function VoucherPage() {
 					summary={[
 						{label: t("topup.operator"), value: chosen.name},
 						{label: t("topup.card"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>},
-						{label: t("topup.voucher.value"), value: <strong>{money(value)}</strong>},
+						{label: t("topup.voucher.value"), amount: true, value: money(value)},
 					]}
 					confirmLabel={t("topup.pay")}
 					pendingLabel={t("topup.sending")}

@@ -198,7 +198,7 @@ function TransferDialog({source, destination, amount, onClose}: {source: EtcInfo
 				{label: t("etc.transfer.from"), value: <span dir="ltr">{source.serial}</span>},
 				{label: t("etc.transfer.to"), value: <span dir="ltr">{destination.serial}</span>},
 				...(destination.owner ? [{label: t("etc.owner"), value: destination.owner}] : []),
-				{label: t("etc.charge.amount"), value: `${formatAmount(amount, i18n.language)} ${t("etc.rial")}`},
+				{label: t("etc.charge.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("etc.rial")}`},
 			]}
 			confirmLabel={t("etc.transfer.confirm")}
 			pendingLabel={t("etc.sending")}

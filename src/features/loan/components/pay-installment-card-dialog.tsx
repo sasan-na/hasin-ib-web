@@ -67,7 +67,7 @@ export function PayInstallmentCardDialog({loan, offerFollow = false, onClose}: P
 				...(loan.onCard && loan.cardNumber ? [{label: t("loan.card"), value: <span dir="ltr">{formatCardNumber(loan.cardNumber)}</span>}] : [{label: t("loan.account"), value: <span dir="ltr">{loan.accountNumber}</span>}]),
 				...(loan.holder ? [{label: t("loan.pay.owner"), value: loan.holder}] : []),
 				...(card ? [{label: t("loan.pay.fromCard"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>}] : []),
-				...(value > 0 ? [{label: t("loan.pay.amount"), value: <strong>{money(value)}</strong>}] : []),
+				...(value > 0 ? [{label: t("loan.pay.amount"), amount: true, value: money(value)}] : []),
 			]}
 			confirmLabel={t("loan.pay.confirm")}
 			pendingLabel={t("loan.pay.sending")}

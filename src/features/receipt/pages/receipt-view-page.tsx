@@ -6,6 +6,7 @@ import {Link, Navigate, useSearchParams} from "react-router-dom"
 import {routeMap} from "@/app/routes"
 import {Button} from "@/components/ui/button"
 import {Skeleton} from "@/components/ui/skeleton"
+import {Amount} from "@/components/amount"
 import {DetailValue} from "@/features/dashboard/components/workflow-dialogs"
 import {getReceipt, getReceiptPdf} from "@/features/receipt/api/receipt"
 import {formatAmount, formatCardNumber} from "@/lib/format"
@@ -22,6 +23,8 @@ export default function ReceiptViewPage() {
 	const valid = Number.isInteger(id) && id > 0 && /^\w{2,80}$/.test(typeKey)
 
 	const receipt = useQuery({queryKey: ["receipt", "view", id, typeKey, batchId, isBatch], queryFn: () => getReceipt({id, typeKey, batchId, isBatch}), enabled: valid, staleTime: 60_000, retry: false})
+	// The first amount on the slip is the one it is about: it sits apart, below the rule.
+	const headline = receipt.data?.fields.find((field) => field.type === "Amount" && /^\d+$/.test(field.value))
 	const pdf = useMutation({
 		mutationFn: async (): Promise<void> => saveFile(await getReceiptPdf({id, typeKey, batchId, isBatch}), `Receipt-${String(id)}.pdf`),
 	})
@@ -63,10 +66,10 @@ export default function ReceiptViewPage() {
 					{receipt.error.message || t("receipt.viewError")}
 				</p>
 			) : (
-				<article className="flex flex-col gap-5 rounded-lg border bg-card p-6 print:border-0 print:p-0">
+				<article className="flex flex-col gap-5 rounded-sm border bg-slip p-6 print:border-0 print:p-0">
 					<h2 className="text-lg font-semibold">{receipt.data.description || t("receipt.viewTitle")}</h2>
 					<dl className="flex flex-col gap-2 text-sm">
-						{receipt.data.fields.map((field, index) => (
+						{receipt.data.fields.filter((field) => field !== headline).map((field, index) => (
 							<div key={index} className="flex flex-wrap justify-between gap-2 border-b pb-2 last:border-0">
 								<dt className="text-muted-foreground">{field.label}</dt>
 								<dd className="font-medium wrap-break-word">
@@ -76,6 +79,13 @@ export default function ReceiptViewPage() {
 							</div>
 						))}
 					</dl>
+
+					{headline ? (
+						<div className="flex flex-col gap-1 border-t border-dashed border-slip-rule pt-4">
+							<span className="text-sm text-muted-foreground">{headline.label}</span>
+							<Amount text={`${formatAmount(Number(headline.value), i18n.language)} ${t("receipt.rial")}`} />
+						</div>
+					) : null}
 
 					{receipt.data.batch ? (
 						<div className="flex flex-col gap-2">

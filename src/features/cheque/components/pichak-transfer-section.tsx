@@ -104,7 +104,7 @@ export function PichakTransferSection({sayyadId, cheque}: Props) {
 					summary={[
 						{label: t("cheque.sayyadId"), value: <span dir="ltr">{sayyadId}</span>},
 						{label: t("cheque.serial"), value: <span dir="ltr">{`${cheque.series} / ${cheque.serial}`}</span>},
-						...(Number.isFinite(amount) ? [{label: t("cheque.pichak.amount"), value: <strong>{`${formatAmount(amount, i18n.language)} ${t("cheque.rial")}`}</strong>}] : []),
+						...(Number.isFinite(amount) ? [{label: t("cheque.pichak.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("cheque.rial")}`}] : []),
 						...rows.map((row, index) => ({label: t("cheque.register.recipient", {number: index + 1}), value: `${row.name} (${row.idCode})`})),
 					]}
 					confirmLabel={t("cheque.pichak.transferConfirm")}

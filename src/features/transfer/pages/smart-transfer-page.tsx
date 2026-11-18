@@ -270,7 +270,7 @@ export default function SmartTransferPage() {
 						{label: t("transfer.sourceAccount"), value: <span dir="ltr">{source?.number}</span>},
 						{label: t("transfer.destinationAccount"), value: <span dir="ltr">{owner?.number}</span>},
 						{label: t("transfer.holderLabel"), value: owner?.name},
-						{label: t("transfer.amount"), value: <strong>{money(amountValue)}</strong>},
+						{label: t("transfer.amount"), amount: true, value: money(amountValue)},
 						...(reason ? [{label: t("transfer.reason"), value: reason.name}] : []),
 						...(description.trim() !== "" ? [{label: t("transfer.description"), value: description.trim()}] : []),
 					]}

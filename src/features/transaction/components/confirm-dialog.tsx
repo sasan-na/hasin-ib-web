@@ -1,12 +1,16 @@
 import type {ReactNode} from "react"
 import {useTranslation} from "react-i18next"
 
+import {Amount} from "@/components/amount"
 import {Button} from "@/components/ui/button"
+import {cn} from "@/lib/utils"
 import {AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "@/components/ui/alert-dialog"
 
 export interface SummaryRow {
 	label: string
 	value: ReactNode
+	/** The amount (or total) this is about: set apart below a dashed rule, large. Give it a text such as "12,500 Rials". */
+	amount?: boolean
 }
 
 interface ConfirmDialogProps {
@@ -58,13 +62,23 @@ export function ConfirmDialog({
 					<AlertDialogTitle>{title}</AlertDialogTitle>
 					<AlertDialogDescription>{description}</AlertDialogDescription>
 				</AlertDialogHeader>
-				<dl className="flex flex-col gap-2 rounded-md border bg-muted/40 p-4 text-sm">
-					{summary.map((row) => (
-						<div key={row.label} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-							<dt className="text-muted-foreground">{row.label}</dt>
-							<dd className="font-medium wrap-break-word">{row.value}</dd>
-						</div>
-					))}
+				<dl className="flex flex-col gap-2 rounded-sm border bg-slip p-4 text-sm">
+					{summary
+						.filter((row) => !row.amount)
+						.map((row) => (
+							<div key={row.label} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+								<dt className="text-muted-foreground">{row.label}</dt>
+								<dd className="font-medium wrap-break-word">{row.value}</dd>
+							</div>
+						))}
+					{summary
+						.filter((row) => row.amount)
+						.map((row, index) => (
+							<div key={row.label} className={cn("flex flex-col gap-1", index === 0 ? "mt-2 border-t border-dashed border-slip-rule pt-3" : "")}>
+								<dt className="text-muted-foreground">{row.label}</dt>
+								<dd>{typeof row.value === "string" ? <Amount text={row.value} /> : row.value}</dd>
+							</div>
+						))}
 				</dl>
 				{children}
 				{error ? (

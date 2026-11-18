@@ -233,7 +233,7 @@ export default function ChakadCashingPage() {
 					description={t(`cheque.cashing.confirm.${mode}.question`)}
 					summary={[
 						{label: t("cheque.sayyadId"), value: <span dir="ltr">{cheque.sayyadId}</span>},
-						{label: t("cheque.pichak.amount"), value: <strong>{money(cheque.amount)}</strong>},
+						{label: t("cheque.pichak.amount"), amount: true, value: money(cheque.amount)},
 						...(iban !== "" ? [{label: t("cheque.cashing.iban"), value: <span dir="ltr">{`IR${iban}`}</span>}] : []),
 						...(mode === "transfer" ? rows.map((row, index) => ({label: t("cheque.register.recipient", {number: index + 1}), value: `${row.name} (${row.idCode})`})) : []),
 					]}

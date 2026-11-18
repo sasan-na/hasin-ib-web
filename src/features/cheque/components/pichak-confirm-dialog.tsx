@@ -43,7 +43,7 @@ export function PichakConfirmDialog({sayyadId, cheque, accept, onClose}: Props) 
 				{label: t("cheque.sayyadId"), value: <span dir="ltr">{sayyadId}</span>},
 				{label: t("cheque.serial"), value: <span dir="ltr">{`${cheque.series} / ${cheque.serial}`}</span>},
 				{label: t("cheque.pichak.dueDate"), value: <span dir="ltr">{cheque.dueDate}</span>},
-				...(Number.isFinite(amount) ? [{label: t("cheque.pichak.amount"), value: <strong>{`${formatAmount(amount, i18n.language)} ${t("cheque.rial")}`}</strong>}] : []),
+				...(Number.isFinite(amount) ? [{label: t("cheque.pichak.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("cheque.rial")}`}] : []),
 			]}
 			confirmLabel={accept ? t("cheque.pichak.accept") : t("cheque.pichak.reject")}
 			pendingLabel={t("cheque.pichak.sending")}

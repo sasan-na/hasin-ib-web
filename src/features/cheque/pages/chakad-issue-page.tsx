@@ -288,7 +288,7 @@ export default function ChakadIssuePage() {
 						{label: t("cheque.account"), value: <span dir="ltr">{account.number}</span>},
 						{label: t("cheque.sayyadId"), value: <span dir="ltr">{sayyadId}</span>},
 						{label: t("cheque.register.dueDate"), value: <span dir="ltr">{parsedDue}</span>},
-						{label: t("cheque.pichak.amount"), value: <strong>{money(amountValue)}</strong>},
+						{label: t("cheque.pichak.amount"), amount: true, value: money(amountValue)},
 						...(reason ? [{label: t("cheque.register.reason"), value: reason.name}] : []),
 						...receivers.map((row, index) => ({label: t("cheque.register.recipient", {number: index + 1}), value: `${row.name} (${row.idCode})`})),
 						...guarantors.map((row, index) => ({label: t("cheque.issue.guarantor", {number: index + 1}), value: `${row.name} (${row.idCode})`})),

@@ -51,7 +51,7 @@ export function IssueCardlessDialog({cardId, cardNumber, mobile, amount, passwor
 			summary={[
 				{label: t("card.cardless.card"), value: <span dir="ltr">{formatCardNumber(cardNumber)}</span>},
 				{label: t("card.cardless.mobile"), value: <span dir="ltr">{mobile}</span>},
-				{label: t("card.cardless.amount"), value: <strong>{`${formatAmount(amount, i18n.language)} ${t("card.rial")}`}</strong>},
+				{label: t("card.cardless.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("card.rial")}`},
 			]}
 			confirmLabel={t("card.cardless.issue")}
 			pendingLabel={t("card.cardless.issuing")}
@@ -101,7 +101,7 @@ export function CancelCardlessDialog({ticket, onClose}: CancelProps) {
 				{label: t("card.cardless.traceNumber"), value: <span dir="ltr">{ticket.traceNumber}</span>},
 				{label: t("card.cardless.card"), value: <span dir="ltr">{formatCardNumber(ticket.cardNumber)}</span>},
 				{label: t("card.cardless.mobile"), value: <span dir="ltr">{ticket.mobile}</span>},
-				{label: t("card.cardless.amount"), value: <strong>{`${formatAmount(ticket.amount, i18n.language)} ${t("card.rial")}`}</strong>},
+				{label: t("card.cardless.amount"), amount: true, value: `${formatAmount(ticket.amount, i18n.language)} ${t("card.rial")}`},
 			]}
 			confirmLabel={t("card.cardless.cancelConfirm")}
 			pendingLabel={t("card.cardless.cancelling")}

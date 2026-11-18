@@ -130,7 +130,8 @@ export function PayInstallmentDialog({ loan, offerFollow = false, onClose }: Pro
 					? [
 							{
 								label: t("loan.pay.amount"),
-								value: <strong>{money(value)}</strong>,
+								amount: true,
+								value: money(value),
 							},
 						]
 					: []),

@@ -359,7 +359,7 @@ export default function BatchLoanPage() {
 								</span>
 							),
 						})),
-						{label: t("loan.batch.totalLabel"), value: <strong>{money(total)}</strong>},
+						{label: t("loan.batch.totalLabel"), amount: true, value: money(total)},
 						...(note.trim() !== "" ? [{label: t("loan.batch.note"), value: note.trim()}] : []),
 					]}
 					confirmLabel={t("loan.pay.confirm")}

@@ -27,7 +27,7 @@ export default function TransactionResultPage() {
 		tone === "success" ? t("transaction.result.success") : tone === "pending" ? t("transaction.result.pending") : t("transaction.result.failure")
 
 	return (
-		<div className="mx-auto flex w-full max-w-xl flex-col gap-6 rounded-lg border bg-card p-6 md:p-8">
+		<div className="mx-auto flex w-full max-w-xl flex-col gap-6 rounded-sm border bg-slip p-6 md:p-8">
 			<div className="flex items-start gap-3">
 				<Icon
 					aria-hidden="true"
@@ -39,7 +39,7 @@ export default function TransactionResultPage() {
 				</div>
 			</div>
 
-			<dl className="flex flex-col gap-2 text-sm">
+			<dl className={cn("flex flex-col gap-2 text-sm", (result.transactionId !== null || (result.errorCode && !result.ok)) && "border-t border-dashed border-slip-rule pt-4")}>
 				{result.transactionId !== null ? (
 					<div className="flex flex-wrap gap-x-3">
 						<dt className="w-32 shrink-0 text-muted-foreground">{t("transaction.result.reference")}</dt>

@@ -430,7 +430,7 @@ export default function EtcPurchasePage() {
 						{label: t("etc.purchase.username"), value: <span dir="ltr">{username.trim()}</span>},
 						{label: t("etc.purchase.sendTo"), value: `${province.name}، ${city.name}`},
 						{label: t("topup.card"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>},
-						{label: t("etc.purchase.total"), value: <strong>{money(total)}</strong>},
+						{label: t("etc.purchase.total"), amount: true, value: money(total)},
 					]}
 					confirmLabel={t("topup.pay")}
 					pendingLabel={t("topup.sending")}

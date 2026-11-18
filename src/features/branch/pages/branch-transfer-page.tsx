@@ -257,7 +257,7 @@ export default function BranchTransferPage() {
 						{label: t("branch.transfer.source"), value: <span dir="ltr">{source.number}</span>},
 						{label: iban ? t("branch.transfer.destinationIban") : t("branch.transfer.destinationAccount"), value: <span dir="ltr">{`${iban ? "IR" : ""}${holder?.iban ?? owner?.number ?? destination}`}</span>},
 						{label: t("branch.transfer.holder"), value: holderName},
-						{label: t("branch.transfer.amount"), value: <strong>{money(value)}</strong>},
+						{label: t("branch.transfer.amount"), amount: true, value: money(value)},
 						{label: t("branch.upload.file"), value: <span dir="ltr">{document.name}</span>},
 					]}
 					confirmLabel={t("branch.transfer.confirm")}

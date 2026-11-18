@@ -86,7 +86,7 @@ export function PayBillsDialog({bills, remember, onClose}: Props) {
 						</span>
 					),
 				})),
-				{label: t("bill.total"), value: <strong>{money(total)}</strong>},
+				{label: t("bill.total"), amount: true, value: money(total)},
 			]}
 			confirmLabel={t("bill.pay")}
 			pendingLabel={t("bill.paying")}

@@ -329,7 +329,7 @@ export default function IbanTransferPage() {
 						{label: t("transfer.sourceAccount"), value: <span dir="ltr">{source?.number}</span>},
 						{label: t("transfer.iban.number"), value: <span dir="ltr">{`IR${holder?.iban ?? ""}`}</span>},
 						{label: t("transfer.holderLabel"), value: holderName},
-						{label: t("transfer.amount"), value: <strong>{money(amountValue)}</strong>},
+						{label: t("transfer.amount"), amount: true, value: money(amountValue)},
 						...(reason ? [{label: t("transfer.reason"), value: reason.name}] : []),
 						...(description.trim() !== "" ? [{label: t("transfer.description"), value: description.trim()}] : []),
 					]}

@@ -341,7 +341,7 @@ export default function OpenAccountPage() {
 				description={t("account.new.confirmDescription")}
 				summary={[
 					{label: t("account.new.profile"), value: profile?.name},
-					{label: t("account.new.amount"), value: `${formatAmount(amount, i18n.language)} ${t("account.rial")}`},
+					{label: t("account.new.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("account.rial")}`},
 					{label: t("account.new.stampFee"), value: `${formatAmount(profile?.stampFee ?? 0, i18n.language)} ${t("account.rial")}`},
 					{label: t("account.new.source"), value: <span dir="ltr">{form.source?.number}</span>},
 					{label: t("account.new.branch"), value: branchName},

@@ -62,7 +62,7 @@ export function CreditDialog({payer, card, discharge, onClose}: CreditProps) {
 			summary={[
 				{label: t("card.connected.account"), value: <span dir="ltr">{payer.number}</span>},
 				{label: t("card.connected.card"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>},
-				...(value > 0 ? [{label: t("card.connected.amount"), value: <strong>{money(value)}</strong>}] : []),
+				...(value > 0 ? [{label: t("card.connected.amount"), amount: true, value: money(value)}] : []),
 			]}
 			confirmLabel={discharge ? t("card.connected.discharge") : t("card.connected.charge")}
 			pendingLabel={t("card.connected.sending")}
@@ -277,7 +277,7 @@ export function GroupCreditDialog({payer, onClose}: GroupProps) {
 			description={t("card.connected.group.question", {count: rows.length})}
 			summary={[
 				{label: t("card.connected.account"), value: <span dir="ltr">{payer.number}</span>},
-				...(rows.length > 0 ? [{label: t("card.connected.group.cards"), value: String(rows.length)}, {label: t("card.connected.group.total"), value: <strong>{money(total)}</strong>}] : []),
+				...(rows.length > 0 ? [{label: t("card.connected.group.cards"), value: String(rows.length)}, {label: t("card.connected.group.total"), amount: true, value: money(total)}] : []),
 			]}
 			confirmLabel={discharge ? t("card.connected.discharge") : t("card.connected.charge")}
 			pendingLabel={t("card.connected.sending")}

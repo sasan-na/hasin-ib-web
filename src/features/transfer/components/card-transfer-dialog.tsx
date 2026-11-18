@@ -56,7 +56,7 @@ export function CardTransferDialog({cardId, cardNumber, holder, amount, descript
 				{label: t("transfer.card.sourceCard"), value: <span dir="ltr">{formatCardNumber(cardNumber)}</span>},
 				{label: t("transfer.card.destinationCard"), value: <span dir="ltr">{formatCardNumber(holder.destinationNumber)}</span>},
 				{label: t("transfer.holderLabel"), value: holder.name},
-				{label: t("transfer.amount"), value: <strong>{`${formatAmount(amount, i18n.language)} ${t("transfer.rial")}`}</strong>},
+				{label: t("transfer.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("transfer.rial")}`},
 				...(reason ? [{label: t("transfer.reason"), value: reason.name}] : []),
 				...(description !== "" ? [{label: t("transfer.description"), value: description}] : []),
 			]}

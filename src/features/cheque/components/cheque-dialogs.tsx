@@ -184,7 +184,7 @@ export function ConfirmChequeAmountDialog({account, cheque, onClose}: Props) {
 				{label: t("cheque.account"), value: <span dir="ltr">{account.number}</span>},
 				{label: t("cheque.series"), value: <span dir="ltr">{cheque.series}</span>},
 				{label: t("cheque.serial"), value: <span dir="ltr">{cheque.serial}</span>},
-				...(value > 0 ? [{label: t("cheque.confirmAmount.amount"), value: <strong>{`${formatAmount(value, i18n.language)} ${t("cheque.rial")}`}</strong>}] : []),
+				...(value > 0 ? [{label: t("cheque.confirmAmount.amount"), amount: true, value: `${formatAmount(value, i18n.language)} ${t("cheque.rial")}`}] : []),
 			]}
 			confirmLabel={t("cheque.confirmAmount.confirm")}
 			pendingLabel={t("cheque.confirmAmount.sending")}

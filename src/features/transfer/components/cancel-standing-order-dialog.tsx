@@ -39,7 +39,7 @@ export function CancelStandingOrderDialog({order, onClose}: Props) {
 				{label: t("transfer.standing.destination"), value: <span dir="ltr">{order.destinationNumber}</span>},
 				...(order.destinationOwner ? [{label: t("transfer.holderLabel"), value: order.destinationOwner}] : []),
 				{label: t("transfer.standing.trackingId"), value: <span dir="ltr">{order.code}</span>},
-				{label: t("transfer.standing.amount"), value: <strong>{`${formatAmount(order.amount, i18n.language)} ${t("transfer.rial")}`}</strong>},
+				{label: t("transfer.standing.amount"), amount: true, value: `${formatAmount(order.amount, i18n.language)} ${t("transfer.rial")}`},
 			]}
 			confirmLabel={t("transfer.standing.cancelConfirm")}
 			pendingLabel={t("transfer.standing.cancelling")}

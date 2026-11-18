@@ -55,7 +55,7 @@ export function EtcChargeDialog({tag, cardId, cardNumber, amount, onClose}: Prop
 				...(tag.owner ? [{label: t("etc.owner"), value: tag.owner}] : []),
 				...(tag.car ? [{label: t("etc.car"), value: tag.car}] : []),
 				{label: t("etc.charge.card"), value: <span dir="ltr">{formatCardNumber(cardNumber)}</span>},
-				{label: t("etc.charge.amount"), value: <strong>{`${formatAmount(amount, i18n.language)} ${t("etc.rial")}`}</strong>},
+				{label: t("etc.charge.amount"), amount: true, value: `${formatAmount(amount, i18n.language)} ${t("etc.rial")}`},
 			]}
 			confirmLabel={t("etc.charge.confirm")}
 			pendingLabel={t("etc.sending")}

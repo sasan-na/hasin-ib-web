@@ -345,7 +345,7 @@ export default function BranchBatchTransferPage() {
 					summary={[
 						{label: t("branch.transfer.source"), value: <span dir="ltr">{source.number}</span>},
 						{label: t("branch.batch.count"), value: String(rows.length)},
-						{label: t("branch.batch.totalLabel"), value: <strong>{money(total)}</strong>},
+						{label: t("branch.batch.totalLabel"), amount: true, value: money(total)},
 						{label: t("branch.upload.file"), value: <span dir="ltr">{document.name}</span>},
 					]}
 					confirmLabel={t("branch.transfer.confirm")}

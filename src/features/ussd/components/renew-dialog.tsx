@@ -51,7 +51,7 @@ export function RenewDialog({token, onClose}: Props) {
 				{label: t("ussd.serial"), value: <span dir="ltr">{token.serial}</span>},
 				{label: t("ussd.expiry"), value: <span dir="ltr">{token.expiryDate}</span>},
 				...(token.nextExpiryDate ? [{label: t("ussd.newExpiry"), value: <span dir="ltr">{token.nextExpiryDate}</span>}] : []),
-				{label: t("ussd.cost"), value: <strong>{`${formatAmount(token.cost, i18n.language)} ${t("ussd.rial")}`}</strong>},
+				{label: t("ussd.cost"), amount: true, value: `${formatAmount(token.cost, i18n.language)} ${t("ussd.rial")}`},
 			]}
 			confirmLabel={t("ussd.pay")}
 			pendingLabel={t("ussd.sending")}

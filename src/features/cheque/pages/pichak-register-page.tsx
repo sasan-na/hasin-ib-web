@@ -241,7 +241,7 @@ export default function PichakRegisterPage() {
 						{label: t("cheque.account"), value: <span dir="ltr">{account.number}</span>},
 						{label: t("cheque.serial"), value: <span dir="ltr">{`${series} / ${serial}`}</span>},
 						{label: t("cheque.register.dueDate"), value: <span dir="ltr">{parsedDue}</span>},
-						{label: t("cheque.pichak.amount"), value: <strong>{money(amountValue)}</strong>},
+						{label: t("cheque.pichak.amount"), amount: true, value: money(amountValue)},
 						...(reason ? [{label: t("cheque.register.reason"), value: reason.name}] : []),
 						...rows.map((row, index) => ({label: t("cheque.register.recipient", {number: index + 1}), value: `${row.name} (${row.idCode})`})),
 					]}

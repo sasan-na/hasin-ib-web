@@ -269,7 +269,7 @@ export default function GroupTransferPage() {
 								</span>
 							),
 						})),
-						{label: t("transfer.group.totalLabel"), value: <strong>{money(total)}</strong>},
+						{label: t("transfer.group.totalLabel"), amount: true, value: money(total)},
 						...(note.trim() !== "" ? [{label: t("transfer.group.note"), value: note.trim()}] : []),
 					]}
 					confirmLabel={t("transfer.confirm")}
