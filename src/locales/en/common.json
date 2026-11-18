@@ -574,6 +574,7 @@
             "amountRange": "Card amount range (Rials)",
             "ratio": "Amounts are multiples of",
             "fee": "Fee per card",
+            "summary": "Request summary",
             "accountTitle": "Pay from",
             "account": "Account",
             "cardsTitle": "Gift cards",
