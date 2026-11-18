@@ -152,95 +152,107 @@
 }
 
 /*
- * Brand tokens from the bank's mobile app (js/commons/styles/ColorPalette.js): orange #EC6B06 is the
- * accent, #EEF3FA the light surface, slate #464A5E and blue #007BC3 the supporting colours.
- * Pairings are chosen for WCAG AA: brand orange carries an ink label (white on it is only 3.2:1),
- * the focus ring and links use the blue, and success/destructive are a shade deeper than the app's
- * pure green and red so small text passes.
+ * Theme from the Lovable transfer redesign: a calm blue, soft tinted surfaces, large radii and a
+ * blue gradient for hero panels. Light values are Lovable's own; the dark theme is derived from the
+ * same hues. Three values are deliberately a shade off Lovable's so small text and control borders
+ * keep WCAG AA: success (L 0.52, text), input (L 0.62 light / 0.53 dark, 3:1 control border) and
+ * the slip rule. Every text pairing is 4.5:1 or better in both themes.
  */
 :root {
-	--background: #eef3fa;
-	--foreground: #1f2333;
-	--card: #ffffff;
-	--card-foreground: #1f2333;
-	--popover: #ffffff;
-	--popover-foreground: #1f2333;
-	--primary: #ec6b06;
-	--primary-foreground: #1f2333;
-	--secondary: #e3e9f2;
-	--secondary-foreground: #1f2333;
-	--muted: #e3e9f2;
-	--muted-foreground: #5b6075;
-	--accent: #e3e9f2;
-	--accent-foreground: #1f2333;
-	--destructive: #d32f2f;
-	--destructive-foreground: #ffffff;
-	--success: #047a00;
+	--radius: 0.875rem;
+	--background: oklch(0.975 0.006 240);
+	--foreground: oklch(0.24 0.04 250);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.24 0.04 250);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.24 0.04 250);
+	--primary: oklch(0.42 0.11 245);
+	--primary-foreground: oklch(0.99 0 0);
+	--primary-soft: oklch(0.95 0.025 240);
+	--secondary: oklch(0.955 0.012 240);
+	--secondary-foreground: oklch(0.3 0.05 250);
+	--muted: oklch(0.955 0.01 240);
+	--muted-foreground: oklch(0.52 0.03 250);
+	--accent: oklch(0.94 0.03 175);
+	--accent-foreground: oklch(0.38 0.08 175);
+	--destructive: oklch(0.58 0.2 27);
+	--destructive-foreground: oklch(0.99 0 0);
+	--success: oklch(0.52 0.12 160);
+	--success-soft: oklch(0.95 0.04 160);
 	--warning: #8f5f0a;
+	--warning-soft: oklch(0.96 0.05 85);
+	--warning-foreground: oklch(0.48 0.1 70);
 	--info: #006fb0;
-	--border: #d3dae6;
-	--input: #7a8196;
-	--ring: #007bc3;
-	--radius: 0.3125rem;
-	--chart-1: #ec6b06;
-	--chart-2: #007bc3;
-	--chart-3: #464a5e;
-	--chart-4: #047a00;
-	--chart-5: #b8860b;
-	--sidebar: #ffffff;
-	--sidebar-foreground: #464a5e;
-	--sidebar-primary: #ec6b06;
-	--sidebar-primary-foreground: #1f2333;
-	--sidebar-accent: #e3e9f2;
-	--sidebar-accent-foreground: #1f2333;
-	--sidebar-border: #d3dae6;
-	--sidebar-ring: #007bc3;
-	/* Brand orange as text: #ec6b06 on white is only 3.2:1, this shade is 5:1. */
-	--brand-text: #b84f00;
+	--border: oklch(0.91 0.012 245);
+	--input: oklch(0.62 0.03 250);
+	--ring: oklch(0.55 0.11 245);
+	--gradient-brand: linear-gradient(135deg, oklch(0.36 0.1 250), oklch(0.48 0.11 225));
+	--card-shadow: 0 1px 2px oklch(0.3 0.05 250 / 0.04), 0 8px 24px -12px oklch(0.3 0.05 250 / 0.12);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: oklch(1 0 0);
+	--sidebar-foreground: oklch(0.24 0.04 250);
+	--sidebar-primary: oklch(0.42 0.11 245);
+	--sidebar-primary-foreground: oklch(0.99 0 0);
+	--sidebar-accent: oklch(0.95 0.025 240);
+	--sidebar-accent-foreground: oklch(0.3 0.05 250);
+	--sidebar-border: oklch(0.91 0.012 245);
+	--sidebar-ring: oklch(0.55 0.11 245);
+	/* The brand colour as text. */
+	--brand-text: oklch(0.42 0.11 245);
 	/* The slip: confirmations, receipts and results. A shade apart from the cards, with a dashed rule before the total. */
-	--slip: #fbfcfe;
-	--slip-rule: #7a8196;
+	--slip: oklch(0.985 0.006 240);
+	--slip-rule: oklch(0.62 0.03 250);
 }
 
 .dark {
-	--background: #151826;
-	--foreground: #e8ecf4;
-	--card: #1c2033;
-	--card-foreground: #e8ecf4;
-	--popover: #1c2033;
-	--popover-foreground: #e8ecf4;
-	--primary: #ec6b06;
-	--primary-foreground: #151826;
-	--secondary: #262c42;
-	--secondary-foreground: #e8ecf4;
-	--muted: #262c42;
-	--muted-foreground: #9aa1b8;
-	--accent: #262c42;
-	--accent-foreground: #e8ecf4;
-	--destructive: #f27474;
-	--destructive-foreground: #151826;
-	--success: #4cc24a;
+	--background: oklch(0.19 0.03 255);
+	--foreground: oklch(0.95 0.01 245);
+	--card: oklch(0.235 0.035 255);
+	--card-foreground: oklch(0.95 0.01 245);
+	--popover: oklch(0.235 0.035 255);
+	--popover-foreground: oklch(0.95 0.01 245);
+	--primary: oklch(0.72 0.12 240);
+	--primary-foreground: oklch(0.18 0.03 255);
+	--primary-soft: oklch(0.3 0.05 245);
+	--secondary: oklch(0.28 0.04 255);
+	--secondary-foreground: oklch(0.95 0.01 245);
+	--muted: oklch(0.28 0.04 255);
+	--muted-foreground: oklch(0.72 0.03 250);
+	--accent: oklch(0.3 0.04 175);
+	--accent-foreground: oklch(0.9 0.05 175);
+	--destructive: oklch(0.72 0.17 25);
+	--destructive-foreground: oklch(0.18 0.03 255);
+	--success: oklch(0.75 0.14 160);
+	--success-soft: oklch(0.3 0.05 160);
 	--warning: #e0a93b;
+	--warning-soft: oklch(0.3 0.05 80);
+	--warning-foreground: oklch(0.85 0.1 80);
 	--info: #4db0e8;
-	--border: #2a3047;
-	--input: #6a7396;
-	--ring: #4db0e8;
-	--chart-1: #ec6b06;
-	--chart-2: #4db0e8;
-	--chart-3: #9aa1b8;
-	--chart-4: #4cc24a;
-	--chart-5: #e0a93b;
-	--sidebar: #111421;
-	--sidebar-foreground: #c3c9db;
-	--sidebar-primary: #ec6b06;
-	--sidebar-primary-foreground: #151826;
-	--sidebar-accent: #262c42;
-	--sidebar-accent-foreground: #e8ecf4;
-	--sidebar-border: #2a3047;
-	--sidebar-ring: #4db0e8;
-	--brand-text: #f4813a;
-	--slip: #20253a;
-	--slip-rule: #5a6283;
+	--border: oklch(0.3 0.03 255);
+	--input: oklch(0.53 0.04 255);
+	--ring: oklch(0.72 0.12 240);
+	--gradient-brand: linear-gradient(135deg, oklch(0.36 0.1 250), oklch(0.46 0.11 228));
+	--card-shadow: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px -12px oklch(0 0 0 / 0.5);
+	--chart-1: oklch(0.72 0.17 45);
+	--chart-2: oklch(0.72 0.12 195);
+	--chart-3: oklch(0.72 0.06 235);
+	--chart-4: oklch(0.85 0.17 90);
+	--chart-5: oklch(0.8 0.16 70);
+	--sidebar: oklch(0.16 0.03 255);
+	--sidebar-foreground: oklch(0.85 0.02 250);
+	--sidebar-primary: oklch(0.72 0.12 240);
+	--sidebar-primary-foreground: oklch(0.18 0.03 255);
+	--sidebar-accent: oklch(0.28 0.04 255);
+	--sidebar-accent-foreground: oklch(0.95 0.01 245);
+	--sidebar-border: oklch(0.3 0.03 255);
+	--sidebar-ring: oklch(0.72 0.12 240);
+	--brand-text: oklch(0.72 0.12 240);
+	--slip: oklch(0.255 0.035 255);
+	--slip-rule: oklch(0.53 0.04 255);
 }
 
 @theme inline {
@@ -263,6 +275,11 @@
 	--color-destructive-foreground: var(--destructive-foreground);
 	--color-success: var(--success);
 	--color-warning: var(--warning);
+	--color-warning-soft: var(--warning-soft);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-primary-soft: var(--primary-soft);
+	--color-success-soft: var(--success-soft);
+	--shadow-card: var(--card-shadow);
 	--color-info: var(--info);
 	--color-border: var(--border);
 	--color-input: var(--input);
@@ -298,6 +315,9 @@
 	--radius-lg: var(--radius);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 8px);
+	--radius-3xl: calc(var(--radius) + 12px);
 
 	--animate-accordion-down: accordion-down 0.2s ease-out;
 	--animate-accordion-up: accordion-up 0.2s ease-out;
@@ -348,7 +368,7 @@
 	}
 
 	::selection {
-		background: hsla(11.1, 100%, 58.6%, 0.7);
+		background: oklch(0.42 0.11 245 / 0.7);
 		color: white;
 	}
 }
@@ -380,4 +400,9 @@
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
 	}
+}
+
+/* The blue gradient of hero panels (the transfer summary). */
+@utility bg-brand-gradient {
+	background-image: var(--gradient-brand);
 }
