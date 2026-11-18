@@ -111,6 +111,11 @@ export default function EtcListPage() {
 											<Link to={`${routeMap.etcCharge.path}?serial=${encodeURIComponent(tag.serial)}`}>{t("etc.charge.action")}</Link>
 										</Button>
 									) : null}
+									{tag.operations.includes("EtcTransferCharge") ? (
+										<Button asChild size="sm" variant="outline">
+											<Link to={`${routeMap.etcTransfer.path}?serial=${encodeURIComponent(tag.serial)}`}>{t("etc.transfer.action")}</Link>
+										</Button>
+									) : null}
 									{tag.operations.includes("EtcActivation") ? (
 										<Button asChild size="sm" variant="outline">
 											<Link to={`${routeMap.etcActivate.path}?serial=${encodeURIComponent(tag.serial)}`}>{t("etc.activate.action")}</Link>

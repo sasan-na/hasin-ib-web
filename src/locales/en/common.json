@@ -2280,6 +2280,18 @@
                 "provinces": "The provinces could not be loaded.",
                 "price": "The price could not be loaded. Please go back and try again."
             }
+        },
+        "transfer": {
+            "title": "Transfer charge",
+            "action": "Transfer charge",
+            "hint": "Move charge from this tag to another toll tag.",
+            "noSource": "Open this page from a tag in your list.",
+            "from": "From tag",
+            "to": "To tag",
+            "sameTag": "Choose a different tag from the one the charge comes from.",
+            "confirmTitle": "Transfer charge",
+            "confirmQuestion": "Move this charge from your tag to the other tag?",
+            "confirm": "Transfer"
         }
     },
     "payment": {

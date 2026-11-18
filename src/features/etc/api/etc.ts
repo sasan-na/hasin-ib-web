@@ -153,6 +153,29 @@ export const chargeEtc = (request: ChargeRequest): Promise<TransactionResult> =>
 		body: JSON.stringify({etcSerial: request.tag.serial, nationalCode: request.tag.nationalCode, amount: request.amount, cardInfo: toCardInfoBody(request.credentials), isRepetitive: false}),
 	}).then(toTransactionResult)
 
+export interface TransferChargeRequest {
+	source: Pick<EtcInfo, "serial" | "nationalCode">
+	destination: Pick<EtcInfo, "serial" | "nationalCode" | "owner">
+	/** In Rials. */
+	amount: number
+}
+
+/** Moves charge from one of your tags to another tag. A real transaction: send once per confirmation, never retry automatically. */
+export const transferEtcCharge = (request: TransferChargeRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/Etc/TransferChargeFromEtc", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceEtcSerial: request.source.serial,
+			sourceNationalCode: request.source.nationalCode,
+			amount: request.amount,
+			etcUserName: "",
+			etcPassword: "",
+			destinationEtcSerial: request.destination.serial,
+			destinationNationalCode: request.destination.nationalCode,
+			destinationOwner: request.destination.owner,
+		}),
+	}).then(toTransactionResult)
+
 const operation = (path: string, serial: string): Promise<TransactionResult> =>
 	apiClient<unknown>(path, {method: "POST", body: JSON.stringify({etcSerial: serial, etcUserName: "", etcPassword: "", nationalCode: ""})}).then(toTransactionResult)
 
