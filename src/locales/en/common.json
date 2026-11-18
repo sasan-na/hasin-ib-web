@@ -1693,6 +1693,8 @@
         },
         "issue": {
             "title": "Issue a digital cheque",
+            "summary": "Cheque summary",
+            "detailsStep": "Cheque details",
             "hint": "Write the cheque here, then approve it in your Hamoon app. The cheque is issued only after you approve.",
             "notActivated": "The digital cheque service is not active for you yet, so a cheque cannot be issued.",
             "noAccount": "This account cannot issue digital cheques right now.",
