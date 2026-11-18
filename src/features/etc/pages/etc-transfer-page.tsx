@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next"
 import {Link, useSearchParams} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
+import {AMOUNT_INPUT_CLASS, FieldError, FlowLayout, FlowSummary, StepSection} from "@/components/flow/flow-form"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
@@ -57,7 +58,7 @@ function Shell({children}: {children: ReactNode}) {
 	const {t, i18n} = useTranslation()
 	const BackIcon = i18n.dir() === "rtl" ? ArrowRight : ArrowLeft
 	return (
-		<div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("etc.transfer.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -105,74 +106,85 @@ function TransferForm({source}: {source: EtcInfo}) {
 		if (Object.keys(found).length === 0) setConfirming(true)
 	}
 
-	const error = (message?: string) =>
-		message ? (
-			<p role="alert" className="text-sm text-destructive">
-				{message}
-			</p>
-		) : null
-
 	return (
-		<section className="flex flex-col gap-4 rounded-lg bg-card p-5">
-			<div className="flex flex-wrap justify-between gap-2 text-sm">
-				<span className="text-muted-foreground">{t("etc.transfer.from")}</span>
-				<span dir="ltr" className="font-medium tabular-nums">
-					{source.serial}
-				</span>
-				{source.owner ? <span className="w-full text-muted-foreground">{source.owner}</span> : null}
-			</div>
-
-			<div className="flex flex-col gap-2">
-				<Label htmlFor="etc-to">{t("etc.transfer.to")}</Label>
-				<div className="flex items-center gap-2">
-					<Input
-						id="etc-to"
-						dir="ltr"
-						inputMode="numeric"
-						autoComplete="off"
-						maxLength={16}
-						value={serial}
-						aria-invalid={errors.serial !== undefined}
-						onChange={(event) => {
-							setSerial(digits(event.target.value))
-							lookup.reset()
-						}}
-						onKeyDown={(event) => {
-							if (event.key === "Enter") {
-								event.preventDefault()
-								check()
-							}
-						}}
+		<>
+			<FlowLayout
+				aside={
+					<FlowSummary
+						id="etc-transfer-summary"
+						title={t("etc.transfer.summary")}
+						amount={value > 0 ? money(value) : null}
+						rows={[
+							{label: t("etc.transfer.from"), value: source.serial},
+							{label: t("etc.transfer.to"), value: tag && tag.serial === serial ? tag.serial : null},
+						]}
+						reviewLabel={t("etc.charge.review")}
+						onReview={review}
 					/>
-					<Button type="button" variant="outline" disabled={lookup.isPending || serial === ""} onClick={check}>
-						{lookup.isPending ? t("etc.charge.checking") : t("etc.charge.check")}
-					</Button>
-				</div>
-				{tag ? (
-					<p role="status" className="text-sm font-medium text-success">
-						{t("etc.charge.found", {owner: tag.owner || tag.serial, car: tag.car})}
-					</p>
-				) : null}
-				{lookup.isError ? error(lookup.error.message || t("etc.charge.lookupFailed")) : null}
-				{error(errors.serial)}
-			</div>
+				}
+			>
+				<StepSection id="etc-from-step" step={1} title={t("etc.transfer.from")}>
+					<div className="flex flex-wrap justify-between gap-2 text-sm">
+						<span dir="ltr" className="font-medium tabular-nums">
+							{source.serial}
+						</span>
+						{source.owner ? <span className="w-full text-muted-foreground">{source.owner}</span> : null}
+					</div>
+				</StepSection>
 
-			<div className="flex flex-col gap-2">
-				<Label htmlFor="etc-transfer-amount">{t("etc.charge.amount")}</Label>
-				<Input id="etc-transfer-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={12} className="max-w-72" value={amount} aria-invalid={errors.amount !== undefined} onChange={(event) => setAmount(digits(event.target.value).replace(/^0+/, ""))} />
-				{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
-				{config.data && (config.data.min > 0 || config.data.max > 0) ? <p className="text-xs text-muted-foreground">{t("etc.charge.limits", {min: money(config.data.min), max: money(config.data.max)})}</p> : null}
-				{error(errors.amount)}
-			</div>
+				<StepSection id="etc-to-step" step={2} title={t("etc.transfer.to")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="etc-to" className="sr-only">
+							{t("etc.transfer.to")}
+						</Label>
+						<div className="flex items-center gap-2">
+							<Input
+								id="etc-to"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={16}
+								className="h-11 text-base"
+								value={serial}
+								aria-invalid={errors.serial !== undefined}
+								onChange={(event) => {
+									setSerial(digits(event.target.value))
+									lookup.reset()
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter") {
+										event.preventDefault()
+										check()
+									}
+								}}
+							/>
+							<Button type="button" variant="outline" size="lg" disabled={lookup.isPending || serial === ""} onClick={check}>
+								{lookup.isPending ? t("etc.charge.checking") : t("etc.charge.check")}
+							</Button>
+						</div>
+						{tag ? (
+							<p role="status" className="text-sm font-medium text-success">
+								{t("etc.charge.found", {owner: tag.owner || tag.serial, car: tag.car})}
+							</p>
+						) : null}
+						{lookup.isError ? <FieldError>{lookup.error.message || t("etc.charge.lookupFailed")}</FieldError> : null}
+						{errors.serial ? <FieldError>{errors.serial}</FieldError> : null}
+					</div>
+				</StepSection>
 
-			<div>
-				<Button type="button" onClick={review}>
-					{t("etc.charge.review")}
-				</Button>
-			</div>
+				<StepSection id="etc-transfer-amount-step" step={3} title={t("etc.charge.amountStep")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="etc-transfer-amount">{t("etc.charge.amount")}</Label>
+						<Input id="etc-transfer-amount" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={12} className={AMOUNT_INPUT_CLASS} value={amount} aria-invalid={errors.amount !== undefined} onChange={(event) => setAmount(digits(event.target.value).replace(/^0+/, ""))} />
+						{amount !== "" ? <p className="text-sm text-muted-foreground">{money(value)}</p> : null}
+						{config.data && (config.data.min > 0 || config.data.max > 0) ? <p className="text-xs text-muted-foreground">{t("etc.charge.limits", {min: money(config.data.min), max: money(config.data.max)})}</p> : null}
+						{errors.amount ? <FieldError>{errors.amount}</FieldError> : null}
+					</div>
+				</StepSection>
+			</FlowLayout>
 
 			{confirming && tag ? <TransferDialog source={source} destination={tag} amount={value} onClose={() => setConfirming(false)} /> : null}
-		</section>
+		</>
 	)
 }
 

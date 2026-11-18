@@ -2319,6 +2319,7 @@
             "from": "From tag",
             "to": "To tag",
             "sameTag": "Choose a different tag from the one the charge comes from.",
+            "summary": "Transfer summary",
             "confirmTitle": "Transfer charge",
             "confirmQuestion": "Move this charge from your tag to the other tag?",
             "confirm": "Transfer"
