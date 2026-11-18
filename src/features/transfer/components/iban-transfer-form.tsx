@@ -153,14 +153,6 @@ export function IbanTransferForm({network}: {network: IbanNetwork}) {
 
 				<StepSection id="iban-to" step={2} title={t("transfer.to")}>
 					<div className="flex flex-col gap-2">
-						<PayeeShortcuts
-							kind="ibans"
-							onPick={(number) => {
-								setIban(number)
-								lookup.reset()
-								touch()
-							}}
-						/>
 						<Label htmlFor="iban-number">{t("transfer.iban.number")}</Label>
 						<div className="flex items-center gap-2">
 							<span dir="ltr" className="font-medium text-muted-foreground">
@@ -193,6 +185,14 @@ export function IbanTransferForm({network}: {network: IbanNetwork}) {
 								{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
 							</Button>
 						</div>
+						<PayeeShortcuts
+							kind="ibans"
+							onPick={(number) => {
+								setIban(number)
+								lookup.reset()
+								touch()
+							}}
+						/>
 						{holder && !holder.withoutInquiry ? <HolderCard label={t("transfer.holderLabel")} name={holder.name} /> : null}
 						{holder?.withoutInquiry ? <p className="text-sm text-muted-foreground">{holder.note || t("transfer.iban.withoutInquiry")}</p> : null}
 						{lookup.isError ? <FieldError>{lookup.error.message || t("transfer.lookupFailed")}</FieldError> : null}

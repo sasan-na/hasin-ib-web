@@ -141,14 +141,6 @@ export function AccountTransferForm() {
 
 				<StepSection id="transfer-to" step={2} title={t("transfer.to")}>
 					<div className="flex flex-col gap-2">
-						<PayeeShortcuts
-							kind="accounts"
-							onPick={(number) => {
-								setDestination(number)
-								lookup.reset()
-								touch()
-							}}
-						/>
 						<Label htmlFor="transfer-destination">{t("transfer.destinationAccount")}</Label>
 						<div className="flex items-center gap-2">
 							<Input
@@ -178,6 +170,14 @@ export function AccountTransferForm() {
 								{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
 							</Button>
 						</div>
+						<PayeeShortcuts
+							kind="accounts"
+							onPick={(number) => {
+								setDestination(number)
+								lookup.reset()
+								touch()
+							}}
+						/>
 						{owner ? <HolderCard label={t("transfer.holderLabel")} name={owner.name || owner.number} /> : null}
 						{lookup.isError ? <FieldError>{lookup.error.message || t("transfer.lookupFailed")}</FieldError> : null}
 						{errors.destination ? <FieldError id="transfer-destination-error">{errors.destination}</FieldError> : null}

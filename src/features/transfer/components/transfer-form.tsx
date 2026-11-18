@@ -6,14 +6,15 @@ import {useTranslation} from "react-i18next"
 import {Button} from "@/components/ui/button"
 import type {DestinationKind} from "@/features/transfer/api/destinations"
 import {savedDestinationsOptions} from "@/features/transfer/api/transfer.queries"
+import {SlideRow} from "@/features/transfer/components/slide-row"
 import {formatAmount} from "@/lib/format"
 
 // The pieces every transfer page is built from: numbered steps in cards, a live summary (beside the steps on large
 // screens, a bar at the bottom on small ones), saved payees to pick, the holder shown once a lookup succeeds, and
 // quick amounts. One look for account, card, IBAN, group and standing order transfers.
 
-/** The amount field: the biggest number on the page. */
-export const AMOUNT_INPUT_CLASS = "h-16 text-3xl font-bold tabular md:text-3xl"
+/** The amount field: the largest text in the form, without shouting. */
+export const AMOUNT_INPUT_CLASS = "h-14 text-xl font-semibold tabular md:text-xl"
 
 /** Increments offered under the amount field, in Toman (the amount itself is in Rials). */
 const QUICK_TOMAN = [500_000, 1_000_000, 5_000_000] as const
@@ -132,39 +133,29 @@ interface PayeeShortcutsProps {
 	onPick: (number: string) => void
 }
 
-/** Saved destinations as one-tap chips that fill the destination in. Left out when there are none or they cannot be loaded. */
+/** Saved destinations as one-tap pills in a single row under the destination field; the row slides when they do not fit. Left out when there are none or they cannot be loaded. */
 export function PayeeShortcuts({kind, onPick}: PayeeShortcutsProps) {
 	const {t} = useTranslation()
 	const saved = useQuery(savedDestinationsOptions(kind))
-	const payees = (saved.data ?? []).filter((payee) => payee.holder !== "").slice(0, 8)
+	const payees = (saved.data ?? []).filter((payee) => payee.holder !== "")
 
 	if (payees.length === 0) return null
 
 	return (
-		<div className="flex flex-col gap-2">
-			<p className="text-sm text-muted-foreground">{t("transfer.payees")}</p>
-			<ul className="flex flex-wrap gap-2">
-				{payees.map((payee) => (
-					<li key={payee.key}>
-						<button
-							type="button"
-							onClick={() => onPick(payee.number)}
-							className="flex min-h-11 items-center gap-2 rounded-full border bg-card py-1 ps-1 pe-3 text-sm transition-colors hover:border-primary/40 hover:bg-primary-soft focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
-						>
-							<span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary-soft-foreground">
-								{payee.holder.charAt(0)}
-							</span>
-							<span className="flex flex-col text-start leading-tight">
-								<span className="font-medium">{payee.holder}</span>
-								<span dir="ltr" className="text-xs text-muted-foreground">
-									{payee.number}
-								</span>
-							</span>
-						</button>
-					</li>
-				))}
-			</ul>
-		</div>
+		<SlideRow role="group" aria-label={t("transfer.payees")} className="gap-2">
+			{payees.map((payee) => (
+				<button
+					key={payee.key}
+					type="button"
+					title={payee.number}
+					onClick={() => onPick(payee.number)}
+					className="min-h-9 shrink-0 snap-start rounded-full border bg-card px-4 text-sm whitespace-nowrap text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none pointer-coarse:min-h-11"
+				>
+					{payee.holder}
+					<span className="sr-only"> {payee.number}</span>
+				</button>
+			))}
+		</SlideRow>
 	)
 }
 
