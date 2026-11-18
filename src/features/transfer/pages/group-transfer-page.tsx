@@ -1,4 +1,4 @@
-import {Plus, Trash2} from "lucide-react"
+import {Loader2, Plus, Search, Trash2} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 
@@ -9,9 +9,10 @@ import {Label} from "@/components/ui/label"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {getAccountOwner, transferGroup, type AccountOwner} from "@/features/transfer/api/transfer"
+import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
+import {FieldError, HolderCard, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
@@ -115,139 +116,129 @@ export default function GroupTransferPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("transfer.group.title")}</h1>
-
-			<section aria-labelledby="gt-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="gt-from" className="text-base font-semibold">
-					{t("transfer.from")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="gt-source">{t("transfer.sourceAccount")}</Label>
-					<SourceAccountSelect
-						id="gt-source"
+		<>
+			<TransferFormLayout
+				title={t("transfer.group.title")}
+				aside={
+					<TransferSummary
+						id="gt-summary"
+						title={t("transfer.summary")}
+						amount={total > 0 ? money(total) : null}
+						rows={[
+							{label: t("transfer.sourceAccount"), value: source ? source.name || source.type : null},
+							{label: t("transfer.group.recipients"), value: formatAmount(rows.length, language)},
+						]}
+						reviewLabel={t("transfer.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<StepSection id="gt-from" step={1} title={t("transfer.from")}>
+					<p id="gt-source-label" className="sr-only">
+						{t("transfer.sourceAccount")}
+					</p>
+					<SourceAccountCards
 						serviceName={SERVICE}
 						value={source?.id ?? null}
+						labelledBy="gt-source-label"
 						onChange={(account) => {
 							setSource(account)
 							setSourceError(null)
 						}}
-						invalid={sourceError !== null}
 					/>
-					{sourceError ? (
-						<p role="alert" className="text-sm text-destructive">
-							{sourceError}
-						</p>
-					) : null}
-				</div>
-			</section>
+					{sourceError ? <FieldError>{sourceError}</FieldError> : null}
+				</StepSection>
 
-			<section aria-labelledby="gt-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="gt-to" className="text-base font-semibold">
-					{t("transfer.group.recipients")}
-				</h2>
-				<ul className="flex flex-col gap-4">
-					{rows.map((row, index) => (
-						<li key={row.key} className="flex flex-col gap-3 rounded-md border p-4">
-							<div className="flex items-center justify-between">
-								<span className="text-sm font-medium text-muted-foreground">{t("transfer.group.recipient", {number: index + 1})}</span>
-								{rows.length > 1 ? (
-									<Button type="button" variant="ghost" size="icon" aria-label={t("transfer.group.remove", {number: index + 1})} onClick={() => setRows((current) => current.filter((candidate) => candidate.key !== row.key))}>
-										<Trash2 aria-hidden="true" />
-									</Button>
-								) : null}
-							</div>
-							<div className="flex flex-col gap-2">
-								<Label htmlFor={`gt-dest-${row.key}`}>{t("transfer.destinationAccount")}</Label>
-								<div className="flex items-center gap-2">
-									<Input
-										id={`gt-dest-${row.key}`}
-										dir="ltr"
-										inputMode="numeric"
-										autoComplete="off"
-										maxLength={15}
-										value={row.destination}
-										aria-invalid={row.problem !== null}
-										onChange={(event) => update(row.key, {destination: digits(event.target.value), owner: null, problem: null})}
-										onKeyDown={(event) => {
-											if (event.key === "Enter") {
-												event.preventDefault()
-												void check(row)
-											}
-										}}
-									/>
-									<Button type="button" variant="outline" disabled={row.checking || row.destination === ""} onClick={() => void check(row)}>
-										{row.checking ? t("transfer.checking") : t("transfer.check")}
-									</Button>
-								</div>
-								{row.owner ? (
-									<p role="status" className="text-sm font-medium text-success">
-										{t("transfer.holder", {name: row.owner.name || row.owner.number})}
-									</p>
-								) : null}
-								{row.problem ? (
-									<p role="alert" className="text-sm text-destructive">
-										{row.problem}
-									</p>
-								) : null}
-							</div>
-							<div className="grid gap-3 sm:grid-cols-2">
-								<div className="flex flex-col gap-2">
-									<Label htmlFor={`gt-amount-${row.key}`}>{t("transfer.amount")}</Label>
-									<Input
-										id={`gt-amount-${row.key}`}
-										dir="ltr"
-										inputMode="numeric"
-										autoComplete="off"
-										maxLength={15}
-										value={row.amount}
-										onChange={(event) => update(row.key, {amount: digits(event.target.value).replace(/^0+/, ""), problem: null})}
-									/>
-									{row.amount !== "" ? <p className="text-sm text-muted-foreground">{money(Number(row.amount))}</p> : null}
+				<StepSection id="gt-to" step={2} title={t("transfer.group.recipients")}>
+					<ul className="flex flex-col gap-4">
+						{rows.map((row, index) => (
+							<li key={row.key} className="flex flex-col gap-3 rounded-xl border p-4">
+								<div className="flex items-center justify-between">
+									<span className="text-sm font-medium text-muted-foreground">{t("transfer.group.recipient", {number: index + 1})}</span>
+									{rows.length > 1 ? (
+										<Button type="button" variant="ghost" size="icon" aria-label={t("transfer.group.remove", {number: index + 1})} onClick={() => setRows((current) => current.filter((candidate) => candidate.key !== row.key))}>
+											<Trash2 aria-hidden="true" />
+										</Button>
+									) : null}
 								</div>
 								<div className="flex flex-col gap-2">
-									<Label htmlFor={`gt-desc-${row.key}`}>
-										{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
-									</Label>
-									<Input id={`gt-desc-${row.key}`} value={row.description} onChange={(event) => update(row.key, {description: event.target.value})} />
+									<Label htmlFor={`gt-dest-${row.key}`}>{t("transfer.destinationAccount")}</Label>
+									<div className="flex items-center gap-2">
+										<Input
+											id={`gt-dest-${row.key}`}
+											dir="ltr"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={15}
+											className="h-11 text-base"
+											value={row.destination}
+											aria-invalid={row.problem !== null}
+											aria-describedby={row.problem !== null ? `gt-dest-${row.key}-error` : undefined}
+											onChange={(event) => update(row.key, {destination: digits(event.target.value), owner: null, problem: null})}
+											onKeyDown={(event) => {
+												if (event.key === "Enter") {
+													event.preventDefault()
+													void check(row)
+												}
+											}}
+										/>
+										<Button type="button" variant="outline" className="h-11" disabled={row.checking || row.destination === ""} onClick={() => void check(row)}>
+											{row.checking ? <Loader2 aria-hidden="true" className="animate-spin" /> : <Search aria-hidden="true" />}
+											{row.checking ? t("transfer.checking") : t("transfer.check")}
+										</Button>
+									</div>
+									{row.owner ? <HolderCard label={t("transfer.holderLabel")} name={row.owner.name || row.owner.number} /> : null}
+									{row.problem ? <FieldError id={`gt-dest-${row.key}-error`}>{row.problem}</FieldError> : null}
 								</div>
-							</div>
-						</li>
-					))}
-				</ul>
-				<div>
-					<Button
-						type="button"
-						variant="outline"
-						disabled={rows.length >= MAX_ROWS}
-						onClick={() => {
-							setRows((current) => [...current, newRow(nextKey)])
-							setNextKey((key) => key + 1)
-						}}
-					>
-						<Plus aria-hidden="true" />
-						{t("transfer.group.add")}
-					</Button>
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="gt-note">
-						{t("transfer.group.note")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
-					</Label>
-					<Input id="gt-note" value={note} onChange={(event) => setNote(event.target.value)} />
-				</div>
-				<p className="text-sm font-semibold">{t("transfer.group.total", {amount: money(total)})}</p>
-			</section>
-
-			{listError ? (
-				<p role="alert" className="text-sm text-destructive">
-					{listError}
-				</p>
-			) : null}
-			<div>
-				<Button type="button" onClick={review}>
-					{t("transfer.review")}
-				</Button>
-			</div>
+								<div className="grid gap-3 sm:grid-cols-2">
+									<div className="flex flex-col gap-2">
+										<Label htmlFor={`gt-amount-${row.key}`}>{t("transfer.amount")}</Label>
+										<Input
+											id={`gt-amount-${row.key}`}
+											dir="ltr"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={15}
+											className="h-11 text-base"
+											value={row.amount}
+											onChange={(event) => update(row.key, {amount: digits(event.target.value).replace(/^0+/, ""), problem: null})}
+										/>
+										{row.amount !== "" ? <p className="text-sm text-muted-foreground">{money(Number(row.amount))}</p> : null}
+									</div>
+									<div className="flex flex-col gap-2">
+										<Label htmlFor={`gt-desc-${row.key}`}>
+											{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
+										</Label>
+										<Input id={`gt-desc-${row.key}`} className="h-11" value={row.description} onChange={(event) => update(row.key, {description: event.target.value})} />
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
+					<div>
+						<Button
+							type="button"
+							variant="outline"
+							disabled={rows.length >= MAX_ROWS}
+							onClick={() => {
+								setRows((current) => [...current, newRow(nextKey)])
+								setNextKey((key) => key + 1)
+							}}
+						>
+							<Plus aria-hidden="true" />
+							{t("transfer.group.add")}
+						</Button>
+					</div>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="gt-note">
+							{t("transfer.group.note")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
+						</Label>
+						<Input id="gt-note" value={note} onChange={(event) => setNote(event.target.value)} />
+					</div>
+					<p className="text-sm font-semibold">{t("transfer.group.total", {amount: money(total)})}</p>
+					{listError ? <FieldError>{listError}</FieldError> : null}
+				</StepSection>
+			</TransferFormLayout>
 
 			{confirming ? (
 				<ConfirmDialog
@@ -290,6 +281,6 @@ export default function GroupTransferPage() {
 					/>
 				</ConfirmDialog>
 			) : null}
-		</div>
+		</>
 	)
 }

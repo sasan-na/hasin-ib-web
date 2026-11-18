@@ -1,4 +1,5 @@
 import {useMutation, useQuery} from "@tanstack/react-query"
+import {Loader2, Search} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {useSearchParams} from "react-router-dom"
@@ -13,13 +14,15 @@ import {Skeleton} from "@/components/ui/skeleton"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {getIbanHolder, transferIban, type IbanNetwork} from "@/features/transfer/api/transfer"
 import {ibanLimitsOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
+import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
+import {FieldError, HolderCard, QUICK_AMOUNTS, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib/numbers"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
+import {cn} from "@/lib/utils"
 
 type Errors = Partial<Record<"source" | "iban" | "name" | "amount" | "reason", string>>
 
@@ -116,203 +119,218 @@ export default function IbanTransferPage() {
 		setConfirming(true)
 	}
 
-	const error = (message?: string) =>
-		message ? (
-			<p role="alert" className="text-sm text-destructive">
-				{message}
-			</p>
-		) : null
-
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("transfer.iban.title")}</h1>
-
-			<section aria-labelledby="iban-network" className="flex flex-col gap-3 rounded-lg bg-card p-5">
-				<h2 id="iban-network" className="text-base font-semibold">
-					{t("transfer.iban.network")}
-				</h2>
-				<RadioGroup
-					value={network}
-					onValueChange={(value) => {
-						setParams({type: value === "paya" ? "paya" : "satna"}, {replace: true})
-						// Another network means other limits and another set of paying accounts.
-						setSource(null)
-						lookup.reset()
-						touch()
-					}}
-					className="gap-3"
-				>
-					{(["satna", "paya"] as const).map((option) => (
-						<div key={option} className="flex items-start gap-3">
-							<RadioGroupItem id={`iban-${option}`} value={option} className="mt-1" />
-							<Label htmlFor={`iban-${option}`} className="flex flex-col items-start gap-0.5">
-								<span>{t(`transfer.iban.${option}`)}</span>
-								<span className="text-sm font-normal text-muted-foreground">{t(`transfer.iban.${option}Hint`)}</span>
+		<>
+			<TransferFormLayout
+				title={t("transfer.iban.title")}
+				aside={
+					<TransferSummary
+						id="iban-summary"
+						title={t("transfer.summary")}
+						amount={amountValue > 0 ? money(amountValue) : null}
+						rows={[
+							{label: t("transfer.iban.network"), value: t(`transfer.iban.${network}`)},
+							{label: t("transfer.sourceAccount"), value: source ? source.name || source.type : null},
+							{label: t("transfer.holderLabel"), value: holderName !== "" ? holderName : null},
+							{label: t("transfer.reason"), value: reason?.name ?? null},
+						]}
+						reviewLabel={t("transfer.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<section aria-labelledby="iban-network" className="flex flex-col gap-4 rounded-2xl border bg-card p-6 shadow-card">
+					<h2 id="iban-network" className="text-base font-semibold">
+						{t("transfer.iban.network")}
+					</h2>
+					<RadioGroup
+						value={network}
+						onValueChange={(value) => {
+							setParams({type: value === "paya" ? "paya" : "satna"}, {replace: true})
+							// Another network means other limits and another set of paying accounts.
+							setSource(null)
+							lookup.reset()
+							touch()
+						}}
+						className="grid gap-3 sm:grid-cols-2"
+					>
+						{(["satna", "paya"] as const).map((option) => (
+							<Label
+								key={option}
+								htmlFor={`iban-${option}`}
+								className={cn(
+									"flex cursor-pointer items-start gap-3 rounded-xl border p-4 font-normal transition-colors has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring/50",
+									network === option ? "border-primary bg-primary-soft ring-2 ring-primary/20" : "hover:border-foreground/40",
+								)}
+							>
+								<RadioGroupItem id={`iban-${option}`} value={option} className="mt-1" />
+								<span className="flex flex-col items-start gap-0.5">
+									<span className="font-medium">{t(`transfer.iban.${option}`)}</span>
+									<span className="text-sm text-muted-foreground">{t(`transfer.iban.${option}Hint`)}</span>
+								</span>
 							</Label>
-						</div>
-					))}
-				</RadioGroup>
-			</section>
+						))}
+					</RadioGroup>
+				</section>
 
-			<section aria-labelledby="iban-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="iban-from" className="text-base font-semibold">
-					{t("transfer.from")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-source">{t("transfer.sourceAccount")}</Label>
-					<SourceAccountSelect
+				<StepSection id="iban-from" step={1} title={t("transfer.from")}>
+					<p id="iban-source-label" className="sr-only">
+						{t("transfer.sourceAccount")}
+					</p>
+					<SourceAccountCards
 						key={service}
-						id="iban-source"
 						serviceName={service}
 						value={source?.id ?? null}
+						labelledBy="iban-source-label"
 						onChange={(account) => {
 							setSource(account)
 							touch()
 						}}
-						invalid={errors.source !== undefined}
 					/>
-					{error(errors.source)}
-				</div>
-			</section>
+					{errors.source ? <FieldError>{errors.source}</FieldError> : null}
+				</StepSection>
 
-			<section aria-labelledby="iban-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="iban-to" className="text-base font-semibold">
-					{t("transfer.to")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-number">{t("transfer.iban.number")}</Label>
-					<div className="flex items-center gap-2">
-						<span dir="ltr" className="font-medium text-muted-foreground">
-							IR
-						</span>
+				<StepSection id="iban-to" step={2} title={t("transfer.to")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="iban-number">{t("transfer.iban.number")}</Label>
+						<div className="flex items-center gap-2">
+							<span dir="ltr" className="font-medium text-muted-foreground">
+								IR
+							</span>
+							<Input
+								id="iban-number"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={24}
+								className="h-11 text-base"
+								value={iban}
+								aria-invalid={errors.iban !== undefined}
+								aria-describedby={errors.iban !== undefined ? "iban-number-error" : undefined}
+								onChange={(event) => {
+									setIban(digits(event.target.value.replace(/^\s*IR/i, "")))
+									lookup.reset()
+									touch()
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter") {
+										event.preventDefault()
+										check()
+									}
+								}}
+							/>
+							<Button type="button" variant="outline" className="h-11" disabled={lookup.isPending || iban === ""} onClick={check}>
+								{lookup.isPending ? <Loader2 aria-hidden="true" className="animate-spin" /> : <Search aria-hidden="true" />}
+								{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
+							</Button>
+						</div>
+						{holder && !holder.withoutInquiry ? <HolderCard label={t("transfer.holderLabel")} name={holder.name} /> : null}
+						{holder?.withoutInquiry ? <p className="text-sm text-muted-foreground">{holder.note || t("transfer.iban.withoutInquiry")}</p> : null}
+						{lookup.isError ? <FieldError>{lookup.error.message || t("transfer.lookupFailed")}</FieldError> : null}
+						{errors.iban ? <FieldError id="iban-number-error">{errors.iban}</FieldError> : null}
+					</div>
+					{holder?.withoutInquiry ? (
+						<div className="grid gap-4 sm:grid-cols-2">
+							<div className="flex flex-col gap-2">
+								<Label htmlFor="iban-first-name">{t("transfer.iban.firstName")}</Label>
+								<Input id="iban-first-name" value={firstName} onChange={(event) => setFirstName(event.target.value)} aria-invalid={errors.name !== undefined} />
+							</div>
+							<div className="flex flex-col gap-2">
+								<Label htmlFor="iban-last-name">{t("transfer.iban.lastName")}</Label>
+								<Input id="iban-last-name" value={lastName} onChange={(event) => setLastName(event.target.value)} aria-invalid={errors.name !== undefined} />
+							</div>
+							{errors.name ? (
+								<div className="sm:col-span-2">
+									<FieldError>{errors.name}</FieldError>
+								</div>
+							) : null}
+						</div>
+					) : null}
+				</StepSection>
+
+				<StepSection id="iban-details" step={3} title={t("transfer.details")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="iban-amount">{t("transfer.amount")}</Label>
 						<Input
-							id="iban-number"
+							id="iban-amount"
 							dir="ltr"
 							inputMode="numeric"
 							autoComplete="off"
-							maxLength={24}
-							value={iban}
-							aria-invalid={errors.iban !== undefined}
+							maxLength={15}
+							className="h-14 text-xl font-semibold md:text-xl"
+							value={amount}
+							aria-invalid={errors.amount !== undefined}
+							aria-describedby={errors.amount !== undefined ? "iban-amount-error" : undefined}
 							onChange={(event) => {
-								setIban(digits(event.target.value.replace(/^\s*IR/i, "")))
-								lookup.reset()
+								setAmount(digits(event.target.value).replace(/^0+/, ""))
 								touch()
-							}}
-							onKeyDown={(event) => {
-								if (event.key === "Enter") {
-									event.preventDefault()
-									check()
-								}
 							}}
 						/>
-						<Button type="button" variant="outline" disabled={lookup.isPending || iban === ""} onClick={check}>
-							{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
-						</Button>
-					</div>
-					{holder && !holder.withoutInquiry ? (
-						<p role="status" className="text-sm font-medium text-success">
-							{t("transfer.holder", {name: holder.name})}
-						</p>
-					) : null}
-					{holder?.withoutInquiry ? <p className="text-sm text-muted-foreground">{holder.note || t("transfer.iban.withoutInquiry")}</p> : null}
-					{lookup.isError ? error(lookup.error.message || t("transfer.lookupFailed")) : null}
-					{error(errors.iban)}
-				</div>
-				{holder?.withoutInquiry ? (
-					<div className="grid gap-4 sm:grid-cols-2">
-						<div className="flex flex-col gap-2">
-							<Label htmlFor="iban-first-name">{t("transfer.iban.firstName")}</Label>
-							<Input id="iban-first-name" value={firstName} onChange={(event) => setFirstName(event.target.value)} aria-invalid={errors.name !== undefined} />
-						</div>
-						<div className="flex flex-col gap-2">
-							<Label htmlFor="iban-last-name">{t("transfer.iban.lastName")}</Label>
-							<Input id="iban-last-name" value={lastName} onChange={(event) => setLastName(event.target.value)} aria-invalid={errors.name !== undefined} />
-						</div>
-						<div className="sm:col-span-2">{error(errors.name)}</div>
-					</div>
-				) : null}
-			</section>
-
-			<section aria-labelledby="iban-details" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="iban-details" className="text-base font-semibold">
-					{t("transfer.details")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-amount">{t("transfer.amount")}</Label>
-					<Input
-						id="iban-amount"
-						dir="ltr"
-						inputMode="numeric"
-						autoComplete="off"
-						maxLength={15}
-						className="max-w-72"
-						value={amount}
-						aria-invalid={errors.amount !== undefined}
-						onChange={(event) => {
-							setAmount(digits(event.target.value).replace(/^0+/, ""))
-							touch()
-						}}
-					/>
-					{amount !== "" ? <p className="text-sm text-muted-foreground">{money(amountValue)}</p> : null}
-					{limits.data && (limits.data.min !== null || limits.data.max !== null) ? (
-						<p className="text-xs text-muted-foreground">
-							{[
-								limits.data.min !== null ? t("transfer.iban.minNote", {amount: money(limits.data.min)}) : null,
-								limits.data.max !== null ? t("transfer.iban.maxNote", {amount: money(limits.data.max)}) : null,
-							]
-								.filter(Boolean)
-								.join(" · ")}
-						</p>
-					) : null}
-					{error(errors.amount)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-payment-id">
-						{t("transfer.iban.paymentId")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
-					</Label>
-					<Input id="iban-payment-id" dir="ltr" inputMode="numeric" maxLength={30} className="max-w-72" value={paymentId} onChange={(event) => setPaymentId(digits(event.target.value))} />
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-reason">{t("transfer.reason")}</Label>
-					{reasons.isPending ? (
-						<Skeleton className="h-9 w-full" />
-					) : reasons.isError ? (
-						error(t("transfer.reasonsError"))
-					) : (
-						<Select
-							value={reasonCode}
-							onValueChange={(value) => {
-								setReasonCode(value)
+						<QuickAmounts
+							amounts={QUICK_AMOUNTS}
+							value={amountValue}
+							onPick={(quick) => {
+								setAmount(String(quick))
 								touch()
 							}}
-						>
-							<SelectTrigger id="iban-reason" className="w-full" aria-invalid={errors.reason !== undefined}>
-								<SelectValue placeholder={t("transfer.chooseReason")} />
-							</SelectTrigger>
-							<SelectContent>
-								{reasons.data.map((candidate) => (
-									<SelectItem key={candidate.code} value={candidate.code}>
-										{candidate.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					)}
-					{error(errors.reason)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="iban-description">
-						{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
-					</Label>
-					<Input id="iban-description" value={description} onChange={(event) => setDescription(event.target.value)} />
-				</div>
-			</section>
-
-			<div>
-				<Button type="button" onClick={review}>
-					{t("transfer.review")}
-				</Button>
-			</div>
+						/>
+						{amount !== "" ? <p className="text-sm text-muted-foreground">{money(amountValue)}</p> : null}
+						{limits.data && (limits.data.min !== null || limits.data.max !== null) ? (
+							<p className="text-xs text-muted-foreground">
+								{[
+									limits.data.min !== null ? t("transfer.iban.minNote", {amount: money(limits.data.min)}) : null,
+									limits.data.max !== null ? t("transfer.iban.maxNote", {amount: money(limits.data.max)}) : null,
+								]
+									.filter(Boolean)
+									.join(" · ")}
+							</p>
+						) : null}
+						{errors.amount ? <FieldError id="iban-amount-error">{errors.amount}</FieldError> : null}
+					</div>
+					<div className="grid gap-4 sm:grid-cols-2">
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="iban-reason">{t("transfer.reason")}</Label>
+							{reasons.isPending ? (
+								<Skeleton className="h-9 w-full" />
+							) : reasons.isError ? (
+								<FieldError>{t("transfer.reasonsError")}</FieldError>
+							) : (
+								<Select
+									value={reasonCode}
+									onValueChange={(value) => {
+										setReasonCode(value)
+										touch()
+									}}
+								>
+									<SelectTrigger id="iban-reason" className="w-full" aria-invalid={errors.reason !== undefined}>
+										<SelectValue placeholder={t("transfer.chooseReason")} />
+									</SelectTrigger>
+									<SelectContent>
+										{reasons.data.map((candidate) => (
+											<SelectItem key={candidate.code} value={candidate.code}>
+												{candidate.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							)}
+							{errors.reason ? <FieldError>{errors.reason}</FieldError> : null}
+						</div>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="iban-payment-id">
+								{t("transfer.iban.paymentId")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
+							</Label>
+							<Input id="iban-payment-id" dir="ltr" inputMode="numeric" maxLength={30} value={paymentId} onChange={(event) => setPaymentId(digits(event.target.value))} />
+						</div>
+					</div>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="iban-description">
+							{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
+						</Label>
+						<Input id="iban-description" value={description} onChange={(event) => setDescription(event.target.value)} />
+					</div>
+				</StepSection>
+			</TransferFormLayout>
 
 			{confirming ? (
 				<ConfirmDialog
@@ -351,6 +369,6 @@ export default function IbanTransferPage() {
 					/>
 				</ConfirmDialog>
 			) : null}
-		</div>
+		</>
 	)
 }

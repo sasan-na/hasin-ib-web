@@ -1,4 +1,5 @@
 import {useMutation, useQuery} from "@tanstack/react-query"
+import {Loader2, Search} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 
@@ -11,11 +12,12 @@ import {Skeleton} from "@/components/ui/skeleton"
 import type {SourceAccount} from "@/features/transaction/api/transaction"
 import {AccountPassword, isPasswordComplete, usePasswordRequirement} from "@/features/transaction/components/account-password"
 import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {SourceAccountSelect} from "@/features/transaction/components/source-account-select"
 import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
 import {registerStandingOrder} from "@/features/transfer/api/standing-order"
 import {getAccountOwner} from "@/features/transfer/api/transfer"
 import {frequenciesOptions, reasonCodesOptions} from "@/features/transfer/api/transfer.queries"
+import {SourceAccountCards} from "@/features/transfer/components/source-account-cards"
+import {FieldError, HolderCard, QUICK_AMOUNTS, QuickAmounts, StepSection, TransferFormLayout, TransferSummary} from "@/features/transfer/components/transfer-form"
 import {formatAmount} from "@/lib/format"
 import {jalaliToIso, parseJalali} from "@/lib/jalali"
 import {normalizeDigits} from "@/lib/normalize-digits"
@@ -114,221 +116,232 @@ export default function RegisterStandingOrderPage() {
 		setConfirming(true)
 	}
 
-	const error = (message?: string) =>
-		message ? (
-			<p role="alert" className="text-sm text-destructive">
-				{message}
-			</p>
-		) : null
-
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("transfer.standing.registerTitle")}</h1>
-
-			<section aria-labelledby="so-from" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="so-from" className="text-base font-semibold">
-					{t("transfer.from")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-source">{t("transfer.sourceAccount")}</Label>
-					<SourceAccountSelect
-						id="so-source"
+		<>
+			<TransferFormLayout
+				title={t("transfer.standing.registerTitle")}
+				aside={
+					<TransferSummary
+						id="so-summary"
+						title={t("transfer.summary")}
+						amount={amountValue > 0 ? money(amountValue) : null}
+						rows={[
+							{label: t("transfer.sourceAccount"), value: source ? source.name || source.type : null},
+							{label: t("transfer.holderLabel"), value: owner ? owner.name || owner.number : null},
+							{label: t("transfer.standing.frequency"), value: frequency && Number(every) > 0 ? t("transfer.standing.every", {count: Number(every), unit: frequency.title}) : null},
+							{label: t("transfer.reason"), value: reason?.name ?? null},
+						]}
+						reviewLabel={t("transfer.standing.review")}
+						onReview={review}
+					/>
+				}
+			>
+				<StepSection id="so-from" step={1} title={t("transfer.from")}>
+					<p id="so-source-label" className="sr-only">
+						{t("transfer.sourceAccount")}
+					</p>
+					<SourceAccountCards
 						serviceName={SERVICE}
 						value={source?.id ?? null}
+						labelledBy="so-source-label"
 						onChange={(account) => {
 							setSource(account)
 							touch()
 						}}
-						invalid={errors.source !== undefined}
 					/>
-					{error(errors.source)}
-				</div>
-			</section>
+					{errors.source ? <FieldError>{errors.source}</FieldError> : null}
+				</StepSection>
 
-			<section aria-labelledby="so-to" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="so-to" className="text-base font-semibold">
-					{t("transfer.to")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-destination">{t("transfer.destinationAccount")}</Label>
-					<div className="flex items-center gap-2">
+				<StepSection id="so-to" step={2} title={t("transfer.to")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="so-destination">{t("transfer.destinationAccount")}</Label>
+						<div className="flex items-center gap-2">
+							<Input
+								id="so-destination"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={15}
+								className="h-11 text-base"
+								value={destination}
+								aria-invalid={errors.destination !== undefined}
+								aria-describedby={errors.destination !== undefined ? "so-destination-error" : undefined}
+								onChange={(event) => {
+									setDestination(digits(event.target.value))
+									lookup.reset()
+									touch()
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter") {
+										event.preventDefault()
+										check()
+									}
+								}}
+							/>
+							<Button type="button" variant="outline" className="h-11" disabled={lookup.isPending || destination === ""} onClick={check}>
+								{lookup.isPending ? <Loader2 aria-hidden="true" className="animate-spin" /> : <Search aria-hidden="true" />}
+								{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
+							</Button>
+						</div>
+						{owner ? <HolderCard label={t("transfer.holderLabel")} name={owner.name || owner.number} /> : null}
+						{lookup.isError ? <FieldError>{lookup.error.message || t("transfer.lookupFailed")}</FieldError> : null}
+						{errors.destination ? <FieldError id="so-destination-error">{errors.destination}</FieldError> : null}
+					</div>
+				</StepSection>
+
+				<StepSection id="so-details" step={3} title={t("transfer.details")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="so-amount">{t("transfer.amount")}</Label>
 						<Input
-							id="so-destination"
+							id="so-amount"
 							dir="ltr"
 							inputMode="numeric"
 							autoComplete="off"
 							maxLength={15}
-							value={destination}
-							aria-invalid={errors.destination !== undefined}
+							className="h-14 text-xl font-semibold md:text-xl"
+							value={amount}
+							aria-invalid={errors.amount !== undefined}
+							aria-describedby={errors.amount !== undefined ? "so-amount-error" : undefined}
 							onChange={(event) => {
-								setDestination(digits(event.target.value))
-								lookup.reset()
+								setAmount(digits(event.target.value).replace(/^0+/, ""))
 								touch()
 							}}
-							onKeyDown={(event) => {
-								if (event.key === "Enter") {
-									event.preventDefault()
-									check()
-								}
+						/>
+						<QuickAmounts
+							amounts={QUICK_AMOUNTS}
+							value={amountValue}
+							onPick={(quick) => {
+								setAmount(String(quick))
+								touch()
 							}}
 						/>
-						<Button type="button" variant="outline" disabled={lookup.isPending || destination === ""} onClick={check}>
-							{lookup.isPending ? t("transfer.checking") : t("transfer.check")}
-						</Button>
+						{amount !== "" ? <p className="text-sm text-muted-foreground">{money(amountValue)}</p> : null}
+						{errors.amount ? <FieldError id="so-amount-error">{errors.amount}</FieldError> : null}
 					</div>
-					{owner ? (
-						<p role="status" className="text-sm font-medium text-success">
-							{t("transfer.holder", {name: owner.name || owner.number})}
-						</p>
-					) : null}
-					{lookup.isError ? error(lookup.error.message || t("transfer.lookupFailed")) : null}
-					{error(errors.destination)}
-				</div>
-			</section>
+					<div className="grid gap-4 sm:grid-cols-2">
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="so-reason">{t("transfer.reason")}</Label>
+							{reasons.isPending ? (
+								<Skeleton className="h-9 w-full" />
+							) : reasons.isError ? (
+								<FieldError>{t("transfer.reasonsError")}</FieldError>
+							) : (
+								<Select
+									value={reasonCode}
+									onValueChange={(value) => {
+										setReasonCode(value)
+										touch()
+									}}
+								>
+									<SelectTrigger id="so-reason" className="w-full" aria-invalid={errors.reason !== undefined}>
+										<SelectValue placeholder={t("transfer.chooseReason")} />
+									</SelectTrigger>
+									<SelectContent>
+										{reasons.data.map((candidate) => (
+											<SelectItem key={candidate.code} value={candidate.code}>
+												{candidate.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							)}
+							{errors.reason ? <FieldError>{errors.reason}</FieldError> : null}
+						</div>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="so-description">
+								{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
+							</Label>
+							<Input id="so-description" value={description} onChange={(event) => setDescription(event.target.value)} />
+						</div>
+					</div>
+				</StepSection>
 
-			<section aria-labelledby="so-details" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-				<h2 id="so-details" className="text-base font-semibold">
-					{t("transfer.details")}
-				</h2>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-amount">{t("transfer.amount")}</Label>
-					<Input
-						id="so-amount"
-						dir="ltr"
-						inputMode="numeric"
-						autoComplete="off"
-						maxLength={15}
-						className="max-w-72"
-						value={amount}
-						aria-invalid={errors.amount !== undefined}
-						onChange={(event) => {
-							setAmount(digits(event.target.value).replace(/^0+/, ""))
-							touch()
-						}}
-					/>
-					{amount !== "" ? <p className="text-sm text-muted-foreground">{money(amountValue)}</p> : null}
-					{error(errors.amount)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-start">{t("transfer.standing.startDate")}</Label>
-					<Input
-						id="so-start"
-						dir="ltr"
-						inputMode="numeric"
-						autoComplete="off"
-						placeholder="1405/01/01"
-						className="max-w-48"
-						value={startDate}
-						aria-invalid={errors.date !== undefined}
-						onChange={(event) => {
-							setStartDate(event.target.value)
-							touch()
-						}}
-					/>
-					<p className="text-xs text-muted-foreground">{t("transfer.standing.startDateHint")}</p>
-					{error(errors.date)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-every">{t("transfer.standing.repeatEvery")}</Label>
-					<div className="flex items-center gap-2">
+				<StepSection id="so-schedule" step={4} title={t("transfer.standing.schedule")}>
+					<div className="flex flex-col gap-2">
+						<Label htmlFor="so-start">{t("transfer.standing.startDate")}</Label>
 						<Input
-							id="so-every"
+							id="so-start"
 							dir="ltr"
 							inputMode="numeric"
-							className="w-24"
-							maxLength={3}
-							value={every}
-							aria-invalid={errors.frequency !== undefined}
+							autoComplete="off"
+							placeholder="1405/01/01"
+							className="max-w-48"
+							value={startDate}
+							aria-invalid={errors.date !== undefined}
+							aria-describedby={errors.date !== undefined ? "so-start-error" : undefined}
 							onChange={(event) => {
-								setEvery(digits(event.target.value))
+								setStartDate(event.target.value)
 								touch()
 							}}
 						/>
-						{frequencies.isPending ? (
-							<Skeleton className="h-9 w-40" />
-						) : frequencies.isError ? (
-							error(t("transfer.standing.frequenciesError"))
-						) : (
-							<Select
-								value={frequencyType}
-								onValueChange={(value) => {
-									setFrequencyType(value)
+						<p className="text-xs text-muted-foreground">{t("transfer.standing.startDateHint")}</p>
+						{errors.date ? <FieldError id="so-start-error">{errors.date}</FieldError> : null}
+					</div>
+					<div className="grid gap-4 sm:grid-cols-2">
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="so-every">{t("transfer.standing.repeatEvery")}</Label>
+							<div className="flex items-center gap-2">
+								<Input
+									id="so-every"
+									dir="ltr"
+									inputMode="numeric"
+									className="w-24"
+									maxLength={3}
+									value={every}
+									aria-invalid={errors.frequency !== undefined}
+									onChange={(event) => {
+										setEvery(digits(event.target.value))
+										touch()
+									}}
+								/>
+								{frequencies.isPending ? (
+									<Skeleton className="h-9 w-40" />
+								) : frequencies.isError ? (
+									<FieldError>{t("transfer.standing.frequenciesError")}</FieldError>
+								) : (
+									<Select
+										value={frequencyType}
+										onValueChange={(value) => {
+											setFrequencyType(value)
+											touch()
+										}}
+									>
+										<SelectTrigger className="w-44" aria-label={t("transfer.standing.frequency")}>
+											<SelectValue placeholder={t("transfer.standing.chooseFrequency")} />
+										</SelectTrigger>
+										<SelectContent>
+											{frequencies.data.map((candidate) => (
+												<SelectItem key={candidate.value} value={String(candidate.value)}>
+													{candidate.title}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								)}
+							</div>
+							{errors.frequency ? <FieldError>{errors.frequency}</FieldError> : null}
+						</div>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="so-repeat">{t("transfer.standing.repeatCount")}</Label>
+							<Input
+								id="so-repeat"
+								dir="ltr"
+								inputMode="numeric"
+								className="w-24"
+								maxLength={3}
+								value={repeat}
+								aria-invalid={errors.repeat !== undefined}
+								aria-describedby={errors.repeat !== undefined ? "so-repeat-error" : undefined}
+								onChange={(event) => {
+									setRepeat(digits(event.target.value))
 									touch()
 								}}
-							>
-								<SelectTrigger className="w-44" aria-label={t("transfer.standing.frequency")}>
-									<SelectValue placeholder={t("transfer.standing.chooseFrequency")} />
-								</SelectTrigger>
-								<SelectContent>
-									{frequencies.data.map((candidate) => (
-										<SelectItem key={candidate.value} value={String(candidate.value)}>
-											{candidate.title}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						)}
+							/>
+							{errors.repeat ? <FieldError id="so-repeat-error">{errors.repeat}</FieldError> : null}
+						</div>
 					</div>
-					{error(errors.frequency)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-repeat">{t("transfer.standing.repeatCount")}</Label>
-					<Input
-						id="so-repeat"
-						dir="ltr"
-						inputMode="numeric"
-						className="w-24"
-						maxLength={3}
-						value={repeat}
-						aria-invalid={errors.repeat !== undefined}
-						onChange={(event) => {
-							setRepeat(digits(event.target.value))
-							touch()
-						}}
-					/>
-					{error(errors.repeat)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-reason">{t("transfer.reason")}</Label>
-					{reasons.isPending ? (
-						<Skeleton className="h-9 w-full" />
-					) : reasons.isError ? (
-						error(t("transfer.reasonsError"))
-					) : (
-						<Select
-							value={reasonCode}
-							onValueChange={(value) => {
-								setReasonCode(value)
-								touch()
-							}}
-						>
-							<SelectTrigger id="so-reason" className="w-full" aria-invalid={errors.reason !== undefined}>
-								<SelectValue placeholder={t("transfer.chooseReason")} />
-							</SelectTrigger>
-							<SelectContent>
-								{reasons.data.map((candidate) => (
-									<SelectItem key={candidate.code} value={candidate.code}>
-										{candidate.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					)}
-					{error(errors.reason)}
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="so-description">
-						{t("transfer.description")} <span className="font-normal text-muted-foreground">({t("transfer.optional")})</span>
-					</Label>
-					<Input id="so-description" value={description} onChange={(event) => setDescription(event.target.value)} />
-				</div>
-			</section>
-
-			<div>
-				<Button type="button" onClick={review}>
-					{t("transfer.standing.review")}
-				</Button>
-			</div>
+				</StepSection>
+			</TransferFormLayout>
 
 			{confirming ? (
 				<ConfirmDialog
@@ -369,6 +382,6 @@ export default function RegisterStandingOrderPage() {
 					/>
 				</ConfirmDialog>
 			) : null}
-		</div>
+		</>
 	)
 }
