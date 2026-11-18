@@ -67,7 +67,7 @@ function AddTile({to, title, hint}: {to: string; title: string; hint: string}) {
 		<li className="w-72 shrink-0 snap-start">
 			<Link
 				to={to}
-				className="flex h-full min-h-36 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-primary/60 bg-primary/5 p-4 text-center text-primary outline-offset-2 hover:bg-primary/10"
+				className="flex h-full min-h-36 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-primary/60 bg-primary/5 p-4 text-center text-brand outline-offset-2 hover:bg-primary/10"
 			>
 				<span className="flex items-center gap-1 font-semibold">
 					<Plus aria-hidden="true" className="size-4" />

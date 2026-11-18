@@ -60,7 +60,7 @@ function ServiceCard({item, destination, section}: ServiceCardProps) {
 				<div className="flex flex-col gap-2 px-5 pb-5">
 					<div>
 						<Button type="button" variant="outline" size="sm" disabled={favorite.isPending} onClick={() => favorite.mutate()}>
-							<FavoriteIcon aria-hidden="true" className={item.isFavorite ? undefined : "text-primary"} />
+							<FavoriteIcon aria-hidden="true" className={item.isFavorite ? undefined : "text-brand"} />
 							{item.isFavorite ? t("landing.removeFavorite") : t("landing.addFavorite")}
 						</Button>
 					</div>

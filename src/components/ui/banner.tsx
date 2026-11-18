@@ -12,7 +12,7 @@ const bannerVariants = cva("relative flex w-full items-center justify-between ga
             destructive: "rounded border-destructive/50 bg-destructive/15 text-destructive dark:text-destructive [&>svg]:text-destructive",
             success: "rounded border-green-500/50 text-green-700 dark:text-green-400 [&>svg]:text-green-500",
             warning: "rounded border-yellow-500/50 bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 [&>svg]:text-yellow-500",
-            primary: "rounded bg-sidebar text-primary",
+            primary: "rounded bg-sidebar text-brand",
         },
     },
     defaultVariants: {

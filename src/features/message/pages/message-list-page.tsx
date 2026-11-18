@@ -85,7 +85,7 @@ export default function MessageListPage() {
 								to={`${routeMap.messageDetail.path}?id=${String(item.id)}${item.isOld ? "&old=1" : ""}`}
 								className="flex min-w-0 flex-1 items-start gap-3 p-4 hover:bg-accent/50"
 							>
-								{item.isUnread ? <Mail aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" /> : <MailOpen aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-muted-foreground" />}
+								{item.isUnread ? <Mail aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-brand" /> : <MailOpen aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-muted-foreground" />}
 								<div className="flex min-w-0 flex-col gap-1">
 									<span className={`truncate text-sm ${item.isUnread ? "font-bold" : "font-medium"}`}>{item.subject || t("message.noSubject")}</span>
 									<span className="text-xs text-muted-foreground">

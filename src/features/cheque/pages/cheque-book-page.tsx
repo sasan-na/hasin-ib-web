@@ -148,7 +148,7 @@ export default function ChequeBookPage() {
 					<Checkbox id="cb-terms" checked={accepted} disabled={!openedTerms} onCheckedChange={(on) => setAccepted(on === true)} />
 					<Label htmlFor="cb-terms" className="font-normal leading-6">
 						{t("cheque.book.accept")}{" "}
-						<a href={TERMS_URL} target="_blank" rel="noreferrer" className="font-medium text-primary underline" onClick={() => setOpenedTerms(true)}>
+						<a href={TERMS_URL} target="_blank" rel="noreferrer" className="font-medium text-brand underline" onClick={() => setOpenedTerms(true)}>
 							{t("cheque.book.terms")}
 						</a>
 					</Label>

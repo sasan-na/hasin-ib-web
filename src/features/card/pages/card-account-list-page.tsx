@@ -76,7 +76,7 @@ export default function CardAccountListPage() {
 											<CopyButton value={account.number} label={t("card.accounts.copyAccount")} />
 										</span>
 										{account.isDefault ? (
-											<span className="flex items-center gap-1 text-sm font-medium text-primary">
+											<span className="flex items-center gap-1 text-sm font-medium text-brand">
 												<Star aria-hidden="true" className="size-4" />
 												{t("card.accounts.default")}
 											</span>
