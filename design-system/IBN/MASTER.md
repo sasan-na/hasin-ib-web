@@ -2,7 +2,7 @@
 
 Source of truth for the visual rules of the IBN web client. Tokens live in `src/index.css`; this file records the rules that go with them. Page-specific overrides go in `design-system/IBN/pages/<page>.md` and win over this file.
 
-Written from the existing tokens and the ui-ux-pro-max checks. It deliberately does not use the skill's generated gold/purple palette or IBM Plex Sans.
+Written from the tokens and the ui-ux-pro-max checks. It deliberately does not use the skill's generated gold/purple palette or IBM Plex Sans.
 
 ## Direction
 
@@ -18,17 +18,24 @@ Minimal, Swiss-style banking UI: clean, spacious, high contrast, functional. Bor
 
 ## Color (semantic tokens only, no raw hex in components)
 
-| Token | Light | Dark | Use |
-| --- | --- | --- | --- |
-| background | #eef3fa | #151826 | page |
-| card | #ffffff | #1c2033 | surfaces |
-| foreground | #1f2333 | #e8ecf4 | text |
-| muted-foreground | #5b6075 | #9aa1b8 | secondary text (5.1:1+ in both themes) |
-| primary | #ec6b06 | #ec6b06 | brand fill; text on it is `primary-foreground` |
-| brand-text | #b84f00 | n/a | brand colour as text on light (5:1) |
-| destructive / success / warning / info | see index.css | see index.css | status text, all above 4.5:1 on cards |
-| input | #7a8196 | #6a7396 | control borders, at least 3:1 on the card |
-| ring | #007bc3 | #4db0e8 | focus ring |
+The theme is the Lovable transfer redesign: a calm blue, soft tinted surfaces, large radii (`--radius` 0.875rem) and a blue gradient for hero panels. Light values are Lovable's own, in oklch; the dark theme is derived from the same hues. Tokens live in `src/index.css`.
+
+| Token | Use |
+| --- | --- |
+| background / card | page and surfaces (card is white in light) |
+| foreground, muted-foreground | text and secondary text, 5:1+ in both themes |
+| primary, primary-foreground | brand blue fill and its label (white on blue in light) |
+| primary-soft | tinted fill for selected cards, step badges, selected chips |
+| success, success-soft | status text and its tinted surface (owner found, done) |
+| destructive, warning, warning-soft, warning-foreground, info | status colours |
+| accent | hover tint (a soft teal in light) |
+| input | control borders, at least 3:1 |
+| ring | focus ring |
+| `bg-brand-gradient` | the blue gradient for hero panels such as the transfer summary |
+| `shadow-card` | the soft card shadow |
+| brand-text (`text-brand`) | the brand colour as text |
+
+Deliberate departures from Lovable's values, for contrast: success is a shade darker (L 0.52) so it passes as text, and the input border is darker (L 0.62 light, 0.53 dark) so controls keep 3:1. Fonts stay Dana and Inter, not Vazirmatn.
 
 Rules: body text 4.5:1 minimum; control borders and meaningful icons 3:1; decorative dividers (`border`) may be lighter. Check dark mode separately, never assume light values carry over. Colour is never the only carrier of meaning (pair it with text or an icon).
 
