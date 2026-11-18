@@ -43,12 +43,13 @@ export default function PichakChainPage() {
 						maxLength={SAYYAD_LENGTH}
 						value={sayyadId}
 						aria-invalid={sayyadId !== "" && sayyadId.length !== SAYYAD_LENGTH}
+						aria-describedby={sayyadId !== "" && sayyadId.length !== SAYYAD_LENGTH ? "pc-sayyad-error" : undefined}
 						onChange={(event) => {
 							setSayyadId(normalizeDigits(event.target.value).replace(/\D/g, ""))
 							chain.reset()
 						}}
 					/>
-					{sayyadId !== "" && sayyadId.length !== SAYYAD_LENGTH ? <p className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
+					{sayyadId !== "" && sayyadId.length !== SAYYAD_LENGTH ? <p id="pc-sayyad-error" role="alert" className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
 				</div>
 
 				<div className="flex flex-col gap-2">

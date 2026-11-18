@@ -108,14 +108,14 @@ export default function PayBillPage() {
 					<>
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="bill-id">{t("bill.billId")}</Label>
-							<Input id="bill-id" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={13} value={billId} aria-invalid={billId !== "" && !billOk} onChange={(event) => setBillId(digits(event.target.value))} />
-							{billId !== "" && !billOk ? <p className="text-xs text-destructive">{t("bill.error.billId")}</p> : null}
+							<Input id="bill-id" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={13} value={billId} aria-invalid={billId !== "" && !billOk} aria-describedby={billId !== "" && !billOk ? "bill-id-error" : undefined} onChange={(event) => setBillId(digits(event.target.value))} />
+							{billId !== "" && !billOk ? <p id="bill-id-error" role="alert" className="text-xs text-destructive">{t("bill.error.billId")}</p> : null}
 							{kind ? <p className="text-xs text-muted-foreground">{t(`bill.kind.${kind}`)}</p> : null}
 						</div>
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="pay-id">{t("bill.payId")}</Label>
-							<Input id="pay-id" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={13} value={payId} aria-invalid={payId !== "" && !payOk} onChange={(event) => setPayId(digits(event.target.value))} />
-							{payId !== "" && !payOk ? <p className="text-xs text-destructive">{t("bill.error.payId")}</p> : null}
+							<Input id="pay-id" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={13} value={payId} aria-invalid={payId !== "" && !payOk} aria-describedby={payId !== "" && !payOk ? "pay-id-error" : undefined} onChange={(event) => setPayId(digits(event.target.value))} />
+							{payId !== "" && !payOk ? <p id="pay-id-error" role="alert" className="text-xs text-destructive">{t("bill.error.payId")}</p> : null}
 							{payOk ? <p className="text-sm font-medium">{t("bill.amountIs", {amount: `${formatAmount(amountOfPayId(payId), i18n.language)} ${t("bill.rial")}`})}</p> : null}
 						</div>
 					</>
@@ -154,8 +154,8 @@ export default function PayBillPage() {
 				) : (
 					<div className="flex flex-col gap-2">
 						<Label htmlFor="bill-mobile">{t("bill.mobile")}</Label>
-						<Input id="bill-mobile" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={11} value={mobile} aria-invalid={mobile !== "" && !mobileOk} onChange={(event) => setMobile(digits(event.target.value))} />
-						{mobile !== "" && !mobileOk ? <p className="text-xs text-destructive">{t("bill.error.mobile")}</p> : null}
+						<Input id="bill-mobile" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={11} value={mobile} aria-invalid={mobile !== "" && !mobileOk} aria-describedby={mobile !== "" && !mobileOk ? "bill-mobile-error" : undefined} onChange={(event) => setMobile(digits(event.target.value))} />
+						{mobile !== "" && !mobileOk ? <p id="bill-mobile-error" role="alert" className="text-xs text-destructive">{t("bill.error.mobile")}</p> : null}
 						<p className="text-xs text-muted-foreground">{t("bill.mobileHint")}</p>
 					</div>
 				)}

@@ -166,14 +166,14 @@ function InvoiceForm({existing, periods, fields}: {existing: PeriodicInvoice | n
 
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="pi-email">{t("report.periodic.email")}</Label>
-				<Input id="pi-email" dir="ltr" type="email" maxLength={100} value={email} aria-invalid={email !== "" && !emailOk} onChange={(event) => setEmail(event.target.value)} />
-				{email !== "" && !emailOk ? <p className="text-xs text-destructive">{t("report.periodic.error.email")}</p> : null}
+				<Input id="pi-email" dir="ltr" type="email" maxLength={100} value={email} aria-invalid={email !== "" && !emailOk} aria-describedby={email !== "" && !emailOk ? "pi-email-error" : undefined} onChange={(event) => setEmail(event.target.value)} />
+				{email !== "" && !emailOk ? <p id="pi-email-error" role="alert" className="text-xs text-destructive">{t("report.periodic.error.email")}</p> : null}
 			</div>
 
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="pi-date">{persian ? t("report.periodic.firstDatePersian") : t("report.periodic.firstDate")}</Label>
-				<Input id="pi-date" dir="ltr" inputMode="numeric" autoComplete="off" value={firstDate} aria-invalid={dateProblem !== null} onChange={(event) => setFirstDate(normalizeDigits(event.target.value))} />
-				{dateProblem ? <p className="text-xs text-destructive">{dateProblem}</p> : null}
+				<Input id="pi-date" dir="ltr" inputMode="numeric" autoComplete="off" value={firstDate} aria-invalid={dateProblem !== null} aria-describedby={dateProblem ? "pi-date-error" : undefined} onChange={(event) => setFirstDate(normalizeDigits(event.target.value))} />
+				{dateProblem ? <p id="pi-date-error" role="alert" className="text-xs text-destructive">{dateProblem}</p> : null}
 			</div>
 
 			<fieldset className="flex flex-col gap-3">
@@ -188,7 +188,7 @@ function InvoiceForm({existing, periods, fields}: {existing: PeriodicInvoice | n
 						</div>
 					))}
 				</div>
-				{chosen.size === 0 ? <p className="text-xs text-destructive">{t("report.periodic.error.fields")}</p> : null}
+				{chosen.size === 0 ? <p role="alert" className="text-xs text-destructive">{t("report.periodic.error.fields")}</p> : null}
 			</fieldset>
 
 			{error ? (

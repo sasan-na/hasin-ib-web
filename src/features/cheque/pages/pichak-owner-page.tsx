@@ -40,12 +40,13 @@ export default function PichakOwnerPage() {
 						maxLength={SAYYAD_LENGTH}
 						value={sayyadId}
 						aria-invalid={sayyadId !== "" && !valid}
+						aria-describedby={sayyadId !== "" && !valid ? "po-sayyad-error" : undefined}
 						onChange={(event) => {
 							setSayyadId(normalizeDigits(event.target.value).replace(/\D/g, ""))
 							owner.reset()
 						}}
 					/>
-					{sayyadId !== "" && !valid ? <p className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
+					{sayyadId !== "" && !valid ? <p id="po-sayyad-error" role="alert" className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
 				</div>
 				<div>
 					<Button type="submit" disabled={!valid || owner.isPending}>

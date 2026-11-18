@@ -51,13 +51,14 @@ export default function PichakInquiryPage() {
 						maxLength={SAYYAD_LENGTH}
 						value={sayyadId}
 						aria-invalid={sayyadId !== "" && !valid}
+						aria-describedby={sayyadId !== "" && !valid ? "pi-sayyad-error" : undefined}
 						onChange={(event) => {
 							setSayyadId(normalizeDigits(event.target.value).replace(/\D/g, ""))
 							inquiry.reset()
 							transferStatus.reset()
 						}}
 					/>
-					{sayyadId !== "" && !valid ? <p className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
+					{sayyadId !== "" && !valid ? <p id="pi-sayyad-error" role="alert" className="text-xs text-destructive">{t("cheque.pichak.sayyadLength", {count: SAYYAD_LENGTH})}</p> : null}
 				</div>
 
 				<div className="flex gap-2" role="group" aria-label={t("cheque.pichak.role")}>
