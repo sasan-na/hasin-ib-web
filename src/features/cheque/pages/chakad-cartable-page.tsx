@@ -25,6 +25,10 @@ const operationTarget = (key: string, sayyadId: string): string | null => {
 			return guarantee("request")
 		case "StopGuarantorSigning":
 			return guarantee("stop")
+		case "ChakadTransfer":
+			return cashing("transfer")
+		case "ChakadOdatTransfer":
+			return cashing("return")
 		case "LockChequeForCashing":
 			return cashing("lock")
 		case "UnlockChequeForCashing":
@@ -38,7 +42,6 @@ const operationTarget = (key: string, sayyadId: string): string | null => {
 		case "HolderInquiry":
 		case "ChakadTransferInquiry":
 		case "ConfirmCheque":
-		case "ChakadTransfer":
 			return routeMap.pichakInquiry.path
 		default:
 			return null

@@ -2,6 +2,7 @@ import {z} from "@/lib/zod"
 
 import {apiClient} from "@/lib/api/client"
 import {camelKeys} from "@/lib/api/camel"
+import type {Recipient} from "@/features/cheque/api/pichak-register"
 import {toTransactionResult, type TransactionResult} from "@/features/transaction/api/transaction"
 
 /**
@@ -136,4 +137,26 @@ export const clearCheque = (cheque: HeldCheque, holderIban: string, description:
 	apiClient<unknown>("/Chakad/ChequeClearing", {
 		method: "POST",
 		body: JSON.stringify({sayyadId: cheque.sayyadId, cashingAmount: cheque.amount, holderIban: `IR${holderIban}`, description}),
+	}).then(toTransactionResult)
+
+const person = (item: Recipient) => ({name: item.name, idType: item.idType, idCode: item.idCode})
+
+/**
+ * Passes the cheque on to other people (the holder endorses it). A real transaction: send once per confirmation, never retry
+ * automatically.
+ */
+export const transferDigitalCheque = (cheque: HeldCheque, description: string, iban: string, receivers: Recipient[]): Promise<TransactionResult> =>
+	apiClient<unknown>("/Chakad/ChakadTransfer", {
+		method: "POST",
+		body: JSON.stringify({sayyadId: cheque.sayyadId, description, toIban: iban === "" ? "" : `IR${iban}`, acceptTransfer: true, receivers: receivers.map(person)}),
+	}).then(toTransactionResult)
+
+/**
+ * Gives the cheque back to the person it came from (the registry calls it "odat"): the same call as a transfer, with the
+ * give-back flag and no new receivers. A real transaction: send once per confirmation, never retry automatically.
+ */
+export const returnDigitalCheque = (cheque: HeldCheque): Promise<TransactionResult> =>
+	apiClient<unknown>("/Chakad/ChakadTransfer", {
+		method: "POST",
+		body: JSON.stringify({sayyadId: cheque.sayyadId, description: cheque.description, acceptTransfer: true, giveBack: 1}),
 	}).then(toTransactionResult)

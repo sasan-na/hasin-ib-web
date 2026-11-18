@@ -1779,17 +1779,21 @@
             "uncertain": "We could not confirm whether the guarantors were named. Check the cheque's guarantee status before trying again."
         },
         "cashing": {
-            "title": "Cash a digital cheque",
-            "hint": "As the holder of a digital cheque: lock it so it can be cashed, remove that lock, or cash it inside the bank.",
+            "title": "Digital cheque you hold",
+            "hint": "As the holder of a digital cheque: lock it for cashing, remove the lock, cash it inside the bank, pass it on, or give it back.",
             "modes": {
                 "lock": "Lock for cashing",
                 "unlock": "Remove the lock",
-                "clear": "Cash inside the bank"
+                "clear": "Cash inside the bank",
+                "transfer": "Pass it on",
+                "return": "Give it back"
             },
             "modeHint": {
                 "lock": "Lock the cheque so no one else can cash or pass it on while you collect it.",
                 "unlock": "Remove the cashing lock from a cheque you locked.",
-                "clear": "Cash the cheque inside the bank: its amount is paid into the account you name."
+                "clear": "Cash the cheque inside the bank: its amount is paid into the account you name.",
+                "transfer": "Pass the cheque on to other people.",
+                "return": "Give the cheque back to the person it came from."
             },
             "bounceQuestion": "Is this cheque being cashed after it bounced?",
             "bounced": "Yes, it bounced",
@@ -1818,8 +1822,19 @@
                     "title": "Cash the cheque",
                     "question": "The cheque's amount is paid into this account and the cheque is cashed. This cannot be undone.",
                     "button": "Cash cheque"
+                },
+                "transfer": {
+                    "title": "Pass the cheque on",
+                    "question": "The cheque is passed to the people named here and you no longer hold it.",
+                    "button": "Pass on"
+                },
+                "return": {
+                    "title": "Give the cheque back",
+                    "question": "The cheque goes back to the person it came from and you no longer hold it.",
+                    "button": "Give back"
                 }
-            }
+            },
+            "transferTo": "Pass the cheque to"
         }
     },
     "dashboard": {
