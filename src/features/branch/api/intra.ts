@@ -97,3 +97,45 @@ export const intraTransfer = (request: IntraTransferRequest): Promise<Transactio
 			document: request.document,
 		}),
 	}).then(toTransactionResult)
+
+export interface IntraBatchItem {
+	/** An account number for a transfer inside the bank, an IBAN (24 digits, without IR) for another bank. */
+	destination: string
+	destinationFirstName: string
+	destinationLastName: string
+	/** In Rials. */
+	amount: number
+	paymentId: string
+	description: string
+	reasonCode: string
+}
+
+export interface IntraBatchRequest {
+	kind: IntraTransferKind
+	sourceAccountNumber: string
+	sourcePassword: string | null
+	sourcePasswordType: PasswordType
+	items: IntraBatchItem[]
+	/** A note for the whole batch. */
+	description: string
+	/** The signed PDF as base64 (no "data:" prefix). */
+	document: string
+}
+
+/**
+ * Several transfers at once through the branch, with one signed PDF for the batch. A real transaction that moves money: send
+ * once per confirmation, never retry automatically.
+ */
+export const intraBatchTransfer = (request: IntraBatchRequest): Promise<TransactionResult> =>
+	apiClient<unknown>("/TransferMoney/Batch/DoIntraTransfer", {
+		method: "POST",
+		body: JSON.stringify({
+			sourceAccountInfo: {accountNumber: request.sourceAccountNumber, ...(request.sourcePassword ? {accountPin: request.sourcePassword} : {}), passwordType: request.sourcePasswordType},
+			transferType: TRANSFER_TYPE[request.kind],
+			items: request.items,
+			description: request.description,
+			documentDescription: request.description,
+			isRepetitive: false,
+			document: request.document,
+		}),
+	}).then(toTransactionResult)

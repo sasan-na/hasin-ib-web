@@ -2579,6 +2579,28 @@
                 "reason": "Choose a reason.",
                 "lookup": "The destination could not be found."
             }
+        },
+        "batch": {
+            "title": "Batch transfer through the branch",
+            "hint": "Pay several people at once through the branch. List who is paid and how much, then sign one PDF for the whole batch and upload it.",
+            "note": "A note for the whole batch",
+            "rows": "Who is paid",
+            "row": "Transfer {{number}}",
+            "remove": "Remove transfer {{number}}",
+            "add": "Add a transfer",
+            "total": "Total: {{amount}}",
+            "totalLabel": "Total",
+            "count": "Number of transfers",
+            "confirmTitle": "Confirm the batch",
+            "confirmQuestion": "{{count}} transfers are paid from your account and the signed document goes to the bank. This cannot be undone.",
+            "again": "Make another batch",
+            "failed": "The batch was not made. Please check the details and try again.",
+            "uncertain": "We could not confirm whether the batch was made. Check your account statement before trying again.",
+            "error": {
+                "notFound": "Find the holder for this destination first.",
+                "duplicate": "This destination and amount appear twice.",
+                "fixRows": "Fix the transfers marked above."
+            }
         }
     },
     "security": {

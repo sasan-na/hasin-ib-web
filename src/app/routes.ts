@@ -91,6 +91,7 @@ export const routeMap = {
 	"settings": {breadcrumb: "settings.title", path: "/settings"},
 	"search": {breadcrumb: "search.title", path: "/search"},
 	"branch": {breadcrumb: "navigation.branch", path: "/branch"},
+	"branchBatchTransfer": {breadcrumb: "branch.batch.title", path: "/branch/batch-transfer"},
 	"branchTransfer": {breadcrumb: "branch.transfer.title", path: "/branch/transfer"},
 	"branchDocuments": {breadcrumb: "branch.documents.title", path: "/branch/documents"},
 	"branchFacility": {breadcrumb: "branch.facility.title", path: "/branch/facility-contract"},
