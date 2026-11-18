@@ -23,8 +23,8 @@ import {isValidIban} from "@/features/transfer/lib/numbers"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
-// The bank's name for the in-branch batch transfer: which accounts may do it, the limit and the SMS code.
-const SERVICE = "IntraBatchTransfer"
+// The bank's names for the service on an account, one per kind of transfer: which accounts may do it, the limit and the SMS code.
+const SERVICES: Record<IntraTransferKind, string> = {internal: "IntraBatchTransferMoney", satna: "IntraSatnaBatchTransferMoney", paya: "IntraPayaBatchTransferMoney"}
 const KINDS: IntraTransferKind[] = ["internal", "satna", "paya"]
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
@@ -52,6 +52,7 @@ export default function BranchBatchTransferPage() {
 	const language = i18n.language
 	const reasons = useQuery(reasonCodesOptions(language))
 	const [kind, setKind] = useState<IntraTransferKind>("internal")
+	const service = SERVICES[kind]
 	const [source, setSource] = useState<SourceAccount | null>(null)
 	const [rows, setRows] = useState<Row[]>(() => [newRow(1)])
 	const [reasonCode, setReasonCode] = useState("")
@@ -64,7 +65,7 @@ export default function BranchBatchTransferPage() {
 	const iban = kind !== "internal"
 	const total = rows.reduce((sum, row) => sum + (row.amount === "" ? 0 : Number(row.amount)), 0)
 	const reason = reasons.data?.find((item) => item.code === reasonCode)
-	const requirement = usePasswordRequirement({accountId: confirming ? (source?.id ?? null) : null, limitServiceName: SERVICE, amount: total})
+	const requirement = usePasswordRequirement({accountId: confirming ? (source?.id ?? null) : null, limitServiceName: service, amount: total})
 	const money = (number: number): string => `${formatAmount(number, language)} ${t("transfer.rial")}`
 
 	const patch = (key: number, change: Partial<Row>): void => setRows((current) => current.map((row) => (row.key === key ? {...row, ...change} : row)))
@@ -87,6 +88,7 @@ export default function BranchBatchTransferPage() {
 
 	const changeKind = (next: IntraTransferKind): void => {
 		setKind(next)
+		setSource(null)
 		setRows([newRow(1)])
 		setProblem("")
 	}
@@ -152,7 +154,7 @@ export default function BranchBatchTransferPage() {
 				</div>
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bb-source">{t("branch.transfer.source")}</Label>
-					<SourceAccountSelect id="bb-source" serviceName={SERVICE} value={source?.id ?? null} onChange={setSource} />
+					<SourceAccountSelect id="bb-source" serviceName={service} value={source?.id ?? null} onChange={setSource} />
 				</div>
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bb-reason">{t("branch.transfer.reason")}</Label>
@@ -276,7 +278,7 @@ export default function BranchBatchTransferPage() {
 					error={sending.refusal}
 					onConfirm={sending.submit}
 				>
-					<AccountPassword requirement={requirement} accountNumber={source.number} codeServiceName={SERVICE} amount={total} value={password} onChange={setPassword} disabled={sending.pending} />
+					<AccountPassword requirement={requirement} accountNumber={source.number} codeServiceName={service} amount={total} value={password} onChange={setPassword} disabled={sending.pending} />
 				</ConfirmDialog>
 			) : null}
 		</div>

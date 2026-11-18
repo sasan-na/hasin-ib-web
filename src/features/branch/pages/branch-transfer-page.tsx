@@ -22,8 +22,8 @@ import {bankCodeOf, isValidIban, MASKAN_BANK_CODE} from "@/features/transfer/lib
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
 
-// The bank's name for the in-branch transfer: which accounts may do it, the limit and the SMS code.
-const SERVICE = "IntraTransfer"
+// The bank's names for the service on an account, one per kind of transfer: which accounts may do it, the limit and the SMS code.
+const SERVICES: Record<IntraTransferKind, string> = {internal: "IntraInternalTransferMoney", satna: "IntraSatnaTransferMoney", paya: "IntraPayaTransferMoney"}
 const KINDS: IntraTransferKind[] = ["internal", "satna", "paya"]
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
@@ -33,6 +33,7 @@ export default function BranchTransferPage() {
 	const language = i18n.language
 	const reasons = useQuery(reasonCodesOptions(language))
 	const [kind, setKind] = useState<IntraTransferKind>("internal")
+	const service = SERVICES[kind]
 	const [source, setSource] = useState<SourceAccount | null>(null)
 	const [destination, setDestination] = useState("")
 	const [owner, setOwner] = useState<AccountOwner | null>(null)
@@ -51,7 +52,7 @@ export default function BranchTransferPage() {
 
 	const value = amount === "" ? 0 : Number(amount)
 	const reason = reasons.data?.find((item) => item.code === reasonCode)
-	const requirement = usePasswordRequirement({accountId: confirming ? (source?.id ?? null) : null, limitServiceName: SERVICE, amount: value})
+	const requirement = usePasswordRequirement({accountId: confirming ? (source?.id ?? null) : null, limitServiceName: service, amount: value})
 	const money = (number: number): string => `${formatAmount(number, language)} ${t("transfer.rial")}`
 	const iban = kind !== "internal"
 	const holderName = holder ? (holder.withoutInquiry ? `${firstName.trim()} ${lastName.trim()}`.trim() : holder.name) : (owner?.name ?? "")
@@ -103,6 +104,7 @@ export default function BranchTransferPage() {
 
 	const changeKind = (next: IntraTransferKind): void => {
 		setKind(next)
+		setSource(null)
 		setDestination("")
 		setOwner(null)
 		setHolder(null)
@@ -142,7 +144,7 @@ export default function BranchTransferPage() {
 				</div>
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bt-source">{t("branch.transfer.source")}</Label>
-					<SourceAccountSelect id="bt-source" serviceName={SERVICE} value={source?.id ?? null} onChange={setSource} />
+					<SourceAccountSelect id="bt-source" serviceName={service} value={source?.id ?? null} onChange={setSource} />
 				</div>
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="bt-destination">{iban ? t("branch.transfer.destinationIban") : t("branch.transfer.destinationAccount")}</Label>
@@ -265,7 +267,7 @@ export default function BranchTransferPage() {
 					error={sending.refusal}
 					onConfirm={sending.submit}
 				>
-					<AccountPassword requirement={requirement} accountNumber={source.number} codeServiceName={SERVICE} amount={value} value={password} onChange={setPassword} disabled={sending.pending} />
+					<AccountPassword requirement={requirement} accountNumber={source.number} codeServiceName={service} amount={value} value={password} onChange={setPassword} disabled={sending.pending} />
 				</ConfirmDialog>
 			) : null}
 		</div>

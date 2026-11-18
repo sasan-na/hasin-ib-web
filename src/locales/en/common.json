@@ -1907,7 +1907,7 @@
             "open": "Approval rules",
             "title": "Approval rules",
             "back": "Back to approvals",
-            "hint": "The rules that say who must approve which transactions on your accounts. Creating and editing rules is not available here yet.",
+            "hint": "The rules that say who must approve which transactions on your accounts. Create one, change one, or delete one.",
             "error": "The rules could not be loaded.",
             "empty": "There are no approval rules.",
             "needsReview": "Needs review",
@@ -1926,7 +1926,7 @@
         "users": {
             "open": "People",
             "title": "People on your accounts",
-            "hint": "Who acts on your accounts. Adding and editing people is not available here yet.",
+            "hint": "Who acts on your accounts. Add a person, change what they can do, or disable them.",
             "search": "Search by name",
             "error": "The list could not be loaded.",
             "empty": "There is nobody to show.",

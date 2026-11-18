@@ -112,24 +112,24 @@ export function BreadcrumbResponsive({items}: BreadcrumbResponsiveProps) {
                     </>
                 ) : null}
                 {items.slice(startIndex).map((item, index) => (
-                    <BreadcrumbItem key={index}>
-                        {item.href ? (
-                            <>
+                    // The separator is a list item of its own, so it sits beside the item, never inside it.
+                    <React.Fragment key={index}>
+                        <BreadcrumbItem>
+                            {item.href ? (
                                 <BreadcrumbLink
                                     asChild
                                     className="max-w-20 truncate md:max-w-none"
                                 >
                                     <Link to={item.href}>{item.label}</Link>
                                 </BreadcrumbLink>
-
-                                {index < items.length - 2 && <BreadcrumbSeparator/>}
-                            </>
-                        ) : (
-                            <BreadcrumbPage className="max-w-20 truncate md:max-w-none">
-                                {item.label}
-                            </BreadcrumbPage>
-                        )}
-                    </BreadcrumbItem>
+                            ) : (
+                                <BreadcrumbPage className="max-w-20 truncate md:max-w-none">
+                                    {item.label}
+                                </BreadcrumbPage>
+                            )}
+                        </BreadcrumbItem>
+                        {item.href && index < items.length - 2 && <BreadcrumbSeparator/>}
+                    </React.Fragment>
                 ))}
             </BreadcrumbList>
         </Breadcrumb>
