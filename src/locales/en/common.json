@@ -1696,6 +1696,9 @@
         },
         "chain": {
             "title": "Cheque transfers chain",
+            "summary": "Inquiry summary",
+            "sayyadStep": "The cheque",
+            "typeStep": "Cheque type",
             "intro": "See everyone a cheque has passed through, from the person who wrote it to those it was passed on to.",
             "chooseType": "Choose the cheque type",
             "empty": "The registry has no chain for this cheque.",
@@ -1714,6 +1717,8 @@
         },
         "owner": {
             "title": "Drawer's standing",
+            "summary": "Inquiry summary",
+            "sayyadStep": "A cheque of the drawer",
             "intro": "Find out how much of a cheque drawer's money is tied up in cheques, and how their cheques have fared, from the Sayyad id of one of their cheques.",
             "empty": "The registry has no record for this drawer."
         },
