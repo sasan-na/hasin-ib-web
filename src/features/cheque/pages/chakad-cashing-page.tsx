@@ -1,39 +1,66 @@
-import {useMutation} from "@tanstack/react-query"
-import {useState} from "react"
-import {useTranslation} from "react-i18next"
-import {Link, useSearchParams} from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link, useSearchParams } from "react-router-dom"
 
-import {routeMap} from "@/app/routes"
-import {Alert, AlertDescription} from "@/components/ui/alert"
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Textarea} from "@/components/ui/textarea"
-import {clearCheque, getHeldCheque, lockForCashing, returnDigitalCheque, transferDigitalCheque, unlockForCashing, type HeldCheque} from "@/features/cheque/api/chakad-cashing"
-import {checkRecipients, newRecipientRow, RecipientsEditor, toRecipients, type RecipientRow} from "@/features/cheque/components/recipients-editor"
-import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
-import {isValidIban} from "@/features/transfer/lib/numbers"
-import {formatAmount} from "@/lib/format"
-import {normalizeDigits} from "@/lib/normalize-digits"
+import { routeMap } from "@/app/routes"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import {
+	FlowLayout,
+	FlowSummary,
+	StepSection,
+} from "@/components/flow/flow-form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import {
+	clearCheque,
+	getHeldCheque,
+	lockForCashing,
+	returnDigitalCheque,
+	transferDigitalCheque,
+	unlockForCashing,
+	type HeldCheque,
+} from "@/features/cheque/api/chakad-cashing"
+import {
+	checkRecipients,
+	newRecipientRow,
+	RecipientsEditor,
+	toRecipients,
+	type RecipientRow,
+} from "@/features/cheque/components/recipients-editor"
+import { ConfirmDialog } from "@/features/transaction/components/confirm-dialog"
+import { useSubmitTransaction } from "@/features/transaction/hooks/use-submit-transaction"
+import { isValidIban } from "@/features/transfer/lib/numbers"
+import { formatAmount } from "@/lib/format"
+import { normalizeDigits } from "@/lib/normalize-digits"
 
 type Mode = "lock" | "unlock" | "clear" | "transfer" | "return"
 const MODES: Mode[] = ["lock", "unlock", "clear", "transfer", "return"]
 const SAYYAD_LENGTH = 16
 
-const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
+const digits = (value: string): string =>
+	normalizeDigits(value).replace(/\D/g, "")
 /** "14050101" as "1405/01/01"; anything else as it came. */
-const dueText = (value: string): string => (/^\d{8}$/.test(value) ? `${value.slice(0, 4)}/${value.slice(4, 6)}/${value.slice(6)}` : value)
+const dueText = (value: string): string =>
+	/^\d{8}$/.test(value)
+		? `${value.slice(0, 4)}/${value.slice(4, 6)}/${value.slice(6)}`
+		: value
 
 /** What the holder of a digital cheque does to get paid: lock it for cashing, remove the lock, or cash it inside the bank. */
 export default function ChakadCashingPage() {
-	const {t, i18n} = useTranslation()
+	const { t, i18n } = useTranslation()
 	const language = i18n.language
 	// The cartable opens this page with a cheque and what to do already chosen.
 	const [params] = useSearchParams()
 	const wanted = params.get("mode")
-	const [mode, setMode] = useState<Mode>(MODES.find((item) => item === wanted) ?? "lock")
-	const [sayyadId, setSayyadId] = useState((params.get("sayyad") ?? "").replace(/\D/g, "").slice(0, SAYYAD_LENGTH))
+	const [mode, setMode] = useState<Mode>(
+		MODES.find((item) => item === wanted) ?? "lock",
+	)
+	const [sayyadId, setSayyadId] = useState(
+		(params.get("sayyad") ?? "").replace(/\D/g, "").slice(0, SAYYAD_LENGTH),
+	)
 	const [cheque, setCheque] = useState<HeldCheque | null>(null)
 	const [problem, setProblem] = useState("")
 	const [bounced, setBounced] = useState<"1" | "0" | "">("")
@@ -42,7 +69,8 @@ export default function ChakadCashingPage() {
 	const [rows, setRows] = useState<RecipientRow[]>(() => [newRecipientRow(1)])
 	const [confirming, setConfirming] = useState(false)
 
-	const money = (value: number): string => `${formatAmount(value, language)} ${t("cheque.rial")}`
+	const money = (value: number): string =>
+		`${formatAmount(value, language)} ${t("cheque.rial")}`
 
 	const lookUp = useMutation({
 		mutationFn: () => getHeldCheque(sayyadId),
@@ -61,11 +89,20 @@ export default function ChakadCashingPage() {
 			if (!cheque) throw new Error("no cheque")
 			if (mode === "lock") return lockForCashing(cheque, bounced === "1", iban)
 			if (mode === "unlock") return unlockForCashing(cheque)
-			if (mode === "transfer") return transferDigitalCheque(cheque, description.trim(), iban, toRecipients(rows))
+			if (mode === "transfer")
+				return transferDigitalCheque(
+					cheque,
+					description.trim(),
+					iban,
+					toRecipients(rows),
+				)
 			if (mode === "return") return returnDigitalCheque(cheque)
 			return clearCheque(cheque, iban, description.trim())
 		},
-		again: {to: routeMap.chequeList.path, label: t("cheque.block.backToList")},
+		again: {
+			to: routeMap.chequeList.path,
+			label: t("cheque.block.backToList"),
+		},
 		failedText: t("cheque.cashing.failed"),
 		uncertainText: t("cheque.cashing.uncertain"),
 	})
@@ -81,16 +118,30 @@ export default function ChakadCashingPage() {
 
 	const review = (): void => {
 		if (!cheque) return
-		if (mode === "lock" && cheque.locked) return setProblem(t("cheque.cashing.error.alreadyLocked"))
-		if (mode === "unlock" && !cheque.locked) return setProblem(t("cheque.cashing.error.notLocked"))
-		if (mode === "lock" && bounced === "") return setProblem(t("cheque.cashing.error.bounce"))
-		if (mode === "clear" && !isValidIban(iban)) return setProblem(t("cheque.cashing.error.iban"))
-		if ((mode === "lock" || mode === "transfer") && iban !== "" && !isValidIban(iban)) return setProblem(t("cheque.cashing.error.iban"))
+		if (mode === "lock" && cheque.locked)
+			return setProblem(t("cheque.cashing.error.alreadyLocked"))
+		if (mode === "unlock" && !cheque.locked)
+			return setProblem(t("cheque.cashing.error.notLocked"))
+		if (mode === "lock" && bounced === "")
+			return setProblem(t("cheque.cashing.error.bounce"))
+		if (mode === "clear" && !isValidIban(iban))
+			return setProblem(t("cheque.cashing.error.iban"))
+		if (
+			(mode === "lock" || mode === "transfer") &&
+			iban !== "" &&
+			!isValidIban(iban)
+		)
+			return setProblem(t("cheque.cashing.error.iban"))
 		if (mode === "transfer") {
-			if (description.trim() === "") return setProblem(t("cheque.register.error.description"))
-			const checked = checkRecipients(rows, {notChecked: t("cheque.register.error.notChecked"), duplicate: t("cheque.register.error.duplicate")})
+			if (description.trim() === "")
+				return setProblem(t("cheque.register.error.description"))
+			const checked = checkRecipients(rows, {
+				notChecked: t("cheque.register.error.notChecked"),
+				duplicate: t("cheque.register.error.duplicate"),
+			})
 			setRows(checked.rows)
-			if (!checked.ok) return setProblem(t("cheque.register.error.fixRecipients"))
+			if (!checked.ok)
+				return setProblem(t("cheque.register.error.fixRecipients"))
 		}
 		setProblem("")
 		sending.reset()
@@ -101,127 +152,282 @@ export default function ChakadCashingPage() {
 		value === "" ? null : (
 			<div key={label} className="flex flex-col">
 				<dt className="text-muted-foreground">{label}</dt>
-				<dd dir={ltr ? "ltr" : undefined} className="font-medium wrap-break-word">
+				<dd
+					dir={ltr ? "ltr" : undefined}
+					className="font-medium wrap-break-word"
+				>
 					{value}
 				</dd>
 			</div>
 		)
 
+	const find = (): void => {
+		if (sayyadId.length !== SAYYAD_LENGTH)
+			return setProblem(
+				t("cheque.guarantee.error.sayyad", { length: SAYYAD_LENGTH }),
+			)
+		setProblem("")
+		setCheque(null)
+		lookUp.mutate()
+	}
+	const needsDetails =
+		mode === "lock" || mode === "transfer" || mode === "clear"
+
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("cheque.cashing.title")}</h1>
-			<p className="text-sm text-muted-foreground">{t("cheque.cashing.hint")}</p>
-
-			<div className="flex flex-wrap gap-2" role="tablist" aria-label={t("cheque.cashing.title")}>
-				{MODES.map((item) => (
-					<Button key={item} type="button" role="tab" aria-selected={mode === item} variant={mode === item ? "default" : "outline"} size="sm" onClick={() => reset(item)}>
-						{t(`cheque.cashing.modes.${item}`)}
-					</Button>
-				))}
-			</div>
-			<p className="text-sm text-muted-foreground">{t(`cheque.cashing.modeHint.${mode}`)}</p>
-
-			<form
-				className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card"
-				onSubmit={(event) => {
-					event.preventDefault()
-					if (sayyadId.length !== SAYYAD_LENGTH) return setProblem(t("cheque.guarantee.error.sayyad", {length: SAYYAD_LENGTH}))
-					setProblem("")
-					setCheque(null)
-					lookUp.mutate()
-				}}
+		<div>
+			<FlowLayout
+				title={t("cheque.cashing.title")}
+				aside={
+					<FlowSummary
+						id="cc-summary"
+						title={t("cheque.cashing.summary")}
+						amount={cheque ? money(cheque.amount) : null}
+						rows={[
+							{
+								label: t("cheque.cashing.actionStep"),
+								value: t(`cheque.cashing.modes.${mode}`),
+							},
+							{
+								label: t("cheque.sayyadId"),
+								value: sayyadId.length === SAYYAD_LENGTH ? sayyadId : null,
+							},
+						]}
+						reviewLabel={
+							cheque
+								? t("cheque.register.review")
+								: lookUp.isPending
+									? t("cheque.guarantee.looking")
+									: t("cheque.guarantee.lookUp")
+						}
+						onReview={() => {
+							if (lookUp.isPending) return
+							if (cheque) review()
+							else find()
+						}}
+					/>
+				}
 			>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="cc-sayyad">{t("cheque.sayyadId")}</Label>
-					<Input id="cc-sayyad" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={SAYYAD_LENGTH} className="max-w-72" value={sayyadId} onChange={(event) => setSayyadId(digits(event.target.value))} />
-				</div>
-				<div>
-					<Button type="submit" disabled={lookUp.isPending}>
-						{lookUp.isPending ? t("cheque.guarantee.looking") : t("cheque.guarantee.lookUp")}
-					</Button>
-				</div>
-			</form>
+				<p className="text-muted-foreground text-sm">
+					{t("cheque.cashing.hint")}
+				</p>
 
-			{problem ? (
-				<Alert variant="destructive">
-					<AlertDescription>{problem}</AlertDescription>
-				</Alert>
-			) : null}
+				<StepSection
+					id="cc-action"
+					step={1}
+					title={t("cheque.cashing.actionStep")}
+				>
+					<div
+						className="flex flex-wrap gap-2"
+						role="tablist"
+						aria-label={t("cheque.cashing.title")}
+					>
+						{MODES.map((item) => (
+							<Button
+								key={item}
+								type="button"
+								role="tab"
+								aria-selected={mode === item}
+								variant={mode === item ? "default" : "outline"}
+								onClick={() => reset(item)}
+							>
+								{t(`cheque.cashing.modes.${item}`)}
+							</Button>
+						))}
+					</div>
+					<p className="text-muted-foreground text-sm">
+						{t(`cheque.cashing.modeHint.${mode}`)}
+					</p>
+				</StepSection>
 
-			{cheque ? (
-				<section className="flex flex-col gap-4">
-					<dl className="grid gap-2 rounded-2xl border bg-card p-5 shadow-card text-sm sm:grid-cols-2">
-						{row(t("cheque.sayyadId"), cheque.sayyadId, true)}
-						{row(t("cheque.serial"), `${cheque.series} / ${cheque.serial}`, true)}
-						{row(t("cheque.register.dueDate"), dueText(cheque.dueDate), true)}
-						{row(t("cheque.pichak.amount"), money(cheque.amount))}
-						{row(t("cheque.guarantee.status"), cheque.status)}
-						{row(t("cheque.guarantee.blocked"), cheque.blocked)}
-						{row(t("cheque.guarantee.locked"), cheque.lockText)}
-						{row(t("cheque.pichak.description"), cheque.description)}
-					</dl>
+				<StepSection
+					id="cc-cheque"
+					step={2}
+					title={t("cheque.cashing.chequeStep")}
+				>
+					<form
+						className="flex flex-col gap-4"
+						onSubmit={(event) => {
+							event.preventDefault()
+							find()
+						}}
+					>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="cc-sayyad">{t("cheque.sayyadId")}</Label>
+							<Input
+								id="cc-sayyad"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={SAYYAD_LENGTH}
+								className="h-11 max-w-72 text-base"
+								value={sayyadId}
+								onChange={(event) => setSayyadId(digits(event.target.value))}
+							/>
+						</div>
+						<div>
+							<Button
+								type="submit"
+								variant="outline"
+								disabled={lookUp.isPending}
+							>
+								{lookUp.isPending
+									? t("cheque.guarantee.looking")
+									: t("cheque.guarantee.lookUp")}
+							</Button>
+						</div>
+					</form>
 
-					{mode === "lock" ? (
-						<fieldset className="flex flex-col gap-2 rounded-2xl border bg-card p-5 shadow-card">
-							<legend className="px-1 text-sm font-medium">{t("cheque.cashing.bounceQuestion")}</legend>
-							{(["1", "0"] as const).map((value) => (
-								<label key={value} className="flex items-center gap-2 text-sm">
-									<input type="radio" name="cc-bounce" className="accent-primary" checked={bounced === value} onChange={() => setBounced(value)} />
-									{value === "1" ? t("cheque.cashing.bounced") : t("cheque.cashing.notBounced")}
-								</label>
-							))}
-						</fieldset>
+					{problem ? (
+						<Alert variant="destructive">
+							<AlertDescription>{problem}</AlertDescription>
+						</Alert>
 					) : null}
 
-					{mode === "transfer" ? (
-						<div className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-card">
-							<RecipientsEditor sayyadId={cheque.sayyadId} rows={rows} setRows={setRows} title={t("cheque.cashing.transferTo")} />
+					{cheque ? (
+						<dl className="grid gap-2 rounded-xl border p-4 text-sm sm:grid-cols-2">
+							{row(t("cheque.sayyadId"), cheque.sayyadId, true)}
+							{row(
+								t("cheque.serial"),
+								`${cheque.series} / ${cheque.serial}`,
+								true,
+							)}
+							{row(t("cheque.register.dueDate"), dueText(cheque.dueDate), true)}
+							{row(t("cheque.pichak.amount"), money(cheque.amount))}
+							{row(t("cheque.guarantee.status"), cheque.status)}
+							{row(t("cheque.guarantee.blocked"), cheque.blocked)}
+							{row(t("cheque.guarantee.locked"), cheque.lockText)}
+							{row(t("cheque.pichak.description"), cheque.description)}
+						</dl>
+					) : null}
+					{cheque ? (
+						<div>
+							<Button asChild variant="outline">
+								<Link to={routeMap.chakadCartable.path}>
+									{t("cheque.cartable.title")}
+								</Link>
+							</Button>
+						</div>
+					) : null}
+				</StepSection>
+
+				{cheque && needsDetails ? (
+					<StepSection
+						id="cc-details"
+						step={3}
+						title={t("cheque.cashing.detailsStep")}
+					>
+						{mode === "lock" ? (
+							<fieldset className="flex flex-col gap-2">
+								<legend className="pb-1 text-sm font-medium">
+									{t("cheque.cashing.bounceQuestion")}
+								</legend>
+								{(["1", "0"] as const).map((value) => (
+									<label
+										key={value}
+										className="flex items-center gap-2 text-sm"
+									>
+										<input
+											type="radio"
+											name="cc-bounce"
+											className="accent-primary"
+											checked={bounced === value}
+											onChange={() => setBounced(value)}
+										/>
+										{value === "1"
+											? t("cheque.cashing.bounced")
+											: t("cheque.cashing.notBounced")}
+									</label>
+								))}
+							</fieldset>
+						) : null}
+
+						{mode === "transfer" ? (
+							<>
+								<RecipientsEditor
+									sayyadId={cheque.sayyadId}
+									rows={rows}
+									setRows={setRows}
+									title={t("cheque.cashing.transferTo")}
+								/>
+								<div className="flex flex-col gap-2">
+									<Label htmlFor="cc-transfer-iban">
+										{t("cheque.register.iban")}{" "}
+										<span className="text-muted-foreground font-normal">
+											({t("cheque.register.optional")})
+										</span>
+									</Label>
+									<div className="flex items-center gap-1" dir="ltr">
+										<span className="text-muted-foreground text-sm">IR</span>
+										<Input
+											id="cc-transfer-iban"
+											dir="ltr"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={24}
+											value={iban}
+											onChange={(event) => setIban(digits(event.target.value))}
+										/>
+									</div>
+								</div>
+								<div className="flex flex-col gap-2">
+									<Label htmlFor="cc-transfer-description">
+										{t("cheque.pichak.description")}
+									</Label>
+									<Textarea
+										id="cc-transfer-description"
+										rows={2}
+										maxLength={250}
+										value={description}
+										onChange={(event) => setDescription(event.target.value)}
+									/>
+								</div>
+							</>
+						) : null}
+
+						{mode === "lock" || mode === "clear" ? (
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="cc-transfer-iban">
-									{t("cheque.register.iban")} <span className="font-normal text-muted-foreground">({t("cheque.register.optional")})</span>
+								<Label htmlFor="cc-iban">
+									{t("cheque.cashing.iban")}{" "}
+									{mode === "lock" ? (
+										<span className="text-muted-foreground font-normal">
+											({t("cheque.register.optional")})
+										</span>
+									) : null}
 								</Label>
 								<div className="flex items-center gap-1" dir="ltr">
-									<span className="text-sm text-muted-foreground">IR</span>
-									<Input id="cc-transfer-iban" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={24} value={iban} onChange={(event) => setIban(digits(event.target.value))} />
+									<span className="text-muted-foreground text-sm">IR</span>
+									<Input
+										id="cc-iban"
+										dir="ltr"
+										inputMode="numeric"
+										autoComplete="off"
+										maxLength={24}
+										value={iban}
+										onChange={(event) => setIban(digits(event.target.value))}
+									/>
 								</div>
+								{mode === "clear" ? (
+									<>
+										<Label htmlFor="cc-description">
+											{t("cheque.pichak.description")}{" "}
+											<span className="text-muted-foreground font-normal">
+												({t("cheque.register.optional")})
+											</span>
+										</Label>
+										<Textarea
+											id="cc-description"
+											rows={2}
+											maxLength={250}
+											value={description}
+											onChange={(event) => setDescription(event.target.value)}
+										/>
+									</>
+								) : null}
 							</div>
-							<div className="flex flex-col gap-2">
-								<Label htmlFor="cc-transfer-description">{t("cheque.pichak.description")}</Label>
-								<Textarea id="cc-transfer-description" rows={2} maxLength={250} value={description} onChange={(event) => setDescription(event.target.value)} />
-							</div>
-						</div>
-					) : null}
-
-					{mode === "lock" || mode === "clear" ? (
-						<div className="flex flex-col gap-2 rounded-2xl border bg-card p-5 shadow-card">
-							<Label htmlFor="cc-iban">
-								{t("cheque.cashing.iban")} {mode === "lock" ? <span className="font-normal text-muted-foreground">({t("cheque.register.optional")})</span> : null}
-							</Label>
-							<div className="flex items-center gap-1" dir="ltr">
-								<span className="text-sm text-muted-foreground">IR</span>
-								<Input id="cc-iban" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={24} value={iban} onChange={(event) => setIban(digits(event.target.value))} />
-							</div>
-							{mode === "clear" ? (
-								<>
-									<Label htmlFor="cc-description">
-										{t("cheque.pichak.description")} <span className="font-normal text-muted-foreground">({t("cheque.register.optional")})</span>
-									</Label>
-									<Textarea id="cc-description" rows={2} maxLength={250} value={description} onChange={(event) => setDescription(event.target.value)} />
-								</>
-							) : null}
-						</div>
-					) : null}
-
-					<div className="flex gap-2">
-						<Button type="button" onClick={review}>
-							{t("cheque.register.review")}
-						</Button>
-						<Button asChild variant="outline">
-							<Link to={routeMap.chakadCartable.path}>{t("cheque.cartable.title")}</Link>
-						</Button>
-					</div>
-				</section>
-			) : null}
+						) : null}
+					</StepSection>
+				) : null}
+			</FlowLayout>
 
 			{confirming && cheque ? (
 				<ConfirmDialog
@@ -232,10 +438,29 @@ export default function ChakadCashingPage() {
 					title={t(`cheque.cashing.confirm.${mode}.title`)}
 					description={t(`cheque.cashing.confirm.${mode}.question`)}
 					summary={[
-						{label: t("cheque.sayyadId"), value: <span dir="ltr">{cheque.sayyadId}</span>},
-						{label: t("cheque.pichak.amount"), amount: true, value: money(cheque.amount)},
-						...(iban !== "" ? [{label: t("cheque.cashing.iban"), value: <span dir="ltr">{`IR${iban}`}</span>}] : []),
-						...(mode === "transfer" ? rows.map((row, index) => ({label: t("cheque.register.recipient", {number: index + 1}), value: `${row.name} (${row.idCode})`})) : []),
+						{
+							label: t("cheque.sayyadId"),
+							value: <span dir="ltr">{cheque.sayyadId}</span>,
+						},
+						{
+							label: t("cheque.pichak.amount"),
+							amount: true,
+							value: money(cheque.amount),
+						},
+						...(iban !== ""
+							? [
+									{
+										label: t("cheque.cashing.iban"),
+										value: <span dir="ltr">{`IR${iban}`}</span>,
+									},
+								]
+							: []),
+						...(mode === "transfer"
+							? rows.map((row, index) => ({
+									label: t("cheque.register.recipient", { number: index + 1 }),
+									value: `${row.name} (${row.idCode})`,
+								}))
+							: []),
 					]}
 					confirmLabel={t(`cheque.cashing.confirm.${mode}.button`)}
 					pendingLabel={t("cheque.guarantee.sending")}

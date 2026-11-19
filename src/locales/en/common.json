@@ -1840,6 +1840,10 @@
         },
         "cashing": {
             "title": "Digital cheque you hold",
+            "summary": "Request summary",
+            "actionStep": "What to do",
+            "chequeStep": "The cheque",
+            "detailsStep": "Details",
             "hint": "As the holder of a digital cheque: lock it for cashing, remove the lock, cash it inside the bank, pass it on, or give it back.",
             "modes": {
                 "lock": "Lock for cashing",
