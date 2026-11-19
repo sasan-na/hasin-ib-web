@@ -2157,6 +2157,7 @@
         },
         "editUser": {
             "title": "Edit a person",
+            "summary": "Changes summary",
             "hint": "Change what this person can do on your accounts:",
             "loadError": "This person could not be opened.",
             "signIn": "Sign-in password",
