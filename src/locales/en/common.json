@@ -1327,6 +1327,8 @@
     "contact": {
         "title": "Contacts",
         "newTitle": "New contact",
+        "personStep": "Contact details",
+        "destinationsStep": "Accounts, cards and IBANs",
         "editTitle": "Edit contact",
         "search": "Search by name, phone, email or number",
         "error": "The contacts could not be loaded. Try again in a moment.",
