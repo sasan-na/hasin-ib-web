@@ -1838,6 +1838,7 @@
         "guarantors": {
             "action": "Guarantors",
             "title": "Name the guarantors",
+            "summary": "Guarantors summary",
             "hint": "Name the people who guarantee this cheque. You approve the list in your Hamoon app.",
             "confirmTitle": "Name the guarantors",
             "confirmQuestion": "A request is sent to your Hamoon app. Approve it there, then come back and send.",

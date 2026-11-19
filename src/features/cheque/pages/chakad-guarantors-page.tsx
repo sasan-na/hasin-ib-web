@@ -1,19 +1,35 @@
-import {useMutation} from "@tanstack/react-query"
-import {useState} from "react"
-import {useTranslation} from "react-i18next"
-import {Link, useNavigate, useSearchParams} from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
-import {routeMap} from "@/app/routes"
-import {Button} from "@/components/ui/button"
-import {determineGuarantors, requestDeterminationApproval, type DeterminationAttempt} from "@/features/cheque/api/chakad-guarantee"
-import {checkRecipients, newRecipientRow, RecipientsEditor, toRecipients, type RecipientRow} from "@/features/cheque/components/recipients-editor"
-import {getMyNationalCode} from "@/features/profile/api/profile"
-import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import type {TransactionResultState} from "@/features/transaction/pages/transaction-result-page"
+import { routeMap } from "@/app/routes"
+import {
+	FieldError,
+	FlowLayout,
+	FlowSummary,
+	StepSection,
+} from "@/components/flow/flow-form"
+import { Button } from "@/components/ui/button"
+import {
+	determineGuarantors,
+	requestDeterminationApproval,
+	type DeterminationAttempt,
+} from "@/features/cheque/api/chakad-guarantee"
+import {
+	checkRecipients,
+	newRecipientRow,
+	RecipientsEditor,
+	toRecipients,
+	type RecipientRow,
+} from "@/features/cheque/components/recipients-editor"
+import { getMyNationalCode } from "@/features/profile/api/profile"
+import { ConfirmDialog } from "@/features/transaction/components/confirm-dialog"
+import type { TransactionResultState } from "@/features/transaction/pages/transaction-result-page"
 
 /** Name the guarantors of a digital cheque you issued; you approve the list in the Hamoon app. */
 export default function ChakadGuarantorsPage() {
-	const {t} = useTranslation()
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const [params] = useSearchParams()
 	const sayyadId = params.get("sayyad") ?? ""
@@ -27,12 +43,18 @@ export default function ChakadGuarantorsPage() {
 	const [blocked, setBlocked] = useState(false)
 
 	const ask = useMutation({
-		mutationFn: async () => requestDeterminationApproval(sayyadId, toRecipients(rows), await getMyNationalCode()),
+		mutationFn: async () =>
+			requestDeterminationApproval(
+				sayyadId,
+				toRecipients(rows),
+				await getMyNationalCode(),
+			),
 		onSuccess: (started) => {
 			setRefusal(null)
 			setAttempt(started)
 		},
-		onError: (error: Error) => setRefusal(error.message || t("cheque.issue.signFailed")),
+		onError: (error: Error) =>
+			setRefusal(error.message || t("cheque.issue.signFailed")),
 	})
 
 	const send = useMutation({
@@ -41,11 +63,19 @@ export default function ChakadGuarantorsPage() {
 			return determineGuarantors(sayyadId, toRecipients(rows), attempt)
 		},
 		onSuccess: (outcome) => {
-			if (outcome.state === "waiting") return setRefusal(t("cheque.guarantors.waiting"))
-			const {result} = outcome
-			if (!result.ok && result.transactionId === null) return setRefusal(result.message || t("cheque.guarantors.failed"))
-			const state: TransactionResultState = {result, again: {to: routeMap.chequeList.path, label: t("cheque.block.backToList")}}
-			void navigate(routeMap.transactionResult.path, {state, replace: true})
+			if (outcome.state === "waiting")
+				return setRefusal(t("cheque.guarantors.waiting"))
+			const { result } = outcome
+			if (!result.ok && result.transactionId === null)
+				return setRefusal(result.message || t("cheque.guarantors.failed"))
+			const state: TransactionResultState = {
+				result,
+				again: {
+					to: routeMap.chequeList.path,
+					label: t("cheque.block.backToList"),
+				},
+			}
+			void navigate(routeMap.transactionResult.path, { state, replace: true })
 		},
 		onError: () => {
 			setRefusal(t("cheque.guarantors.uncertain"))
@@ -54,7 +84,10 @@ export default function ChakadGuarantorsPage() {
 	})
 
 	const review = (): void => {
-		const checked = checkRecipients(rows, {notChecked: t("cheque.register.error.notChecked"), duplicate: t("cheque.register.error.duplicate")})
+		const checked = checkRecipients(rows, {
+			notChecked: t("cheque.register.error.notChecked"),
+			duplicate: t("cheque.register.error.duplicate"),
+		})
 		setRows(checked.rows)
 		if (!checked.ok) return setProblem(t("cheque.register.error.fixRecipients"))
 		setProblem("")
@@ -68,7 +101,10 @@ export default function ChakadGuarantorsPage() {
 		return (
 			<div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
 				<h1 className="text-2xl font-bold">{t("cheque.guarantors.title")}</h1>
-				<p role="alert" className="rounded-2xl bg-card p-5 shadow-card text-sm text-destructive">
+				<p
+					role="alert"
+					className="bg-card shadow-card text-destructive rounded-2xl p-5 text-sm"
+				>
 					{t("cheque.register.noCheque")}
 				</p>
 				<Button asChild variant="outline" className="self-start">
@@ -79,32 +115,56 @@ export default function ChakadGuarantorsPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-			<h1 className="text-2xl font-bold">{t("cheque.guarantors.title")}</h1>
-			<p className="text-sm text-muted-foreground">{t("cheque.guarantors.hint")}</p>
-			<p className="text-sm">
-				{t("cheque.sayyadId")}: <span dir="ltr">{sayyadId}</span>
-			</p>
-
+		<div>
 			<form
-				className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-card"
 				onSubmit={(event) => {
 					event.preventDefault()
 					review()
 				}}
 			>
-				<RecipientsEditor sayyadId={sayyadId} rows={rows} setRows={setRows} title={t("cheque.issue.guarantors")} />
-				{problem ? (
-					<p role="alert" className="text-sm text-destructive">
-						{problem}
+				<FlowLayout
+					title={t("cheque.guarantors.title")}
+					aside={
+						<FlowSummary
+							id="cg-summary"
+							title={t("cheque.guarantors.summary")}
+							amount={null}
+							rows={[
+								{ label: t("cheque.sayyadId"), value: sayyadId || null },
+								{
+									label: t("cheque.issue.guarantors"),
+									value: String(rows.length),
+								},
+							]}
+							reviewLabel={t("cheque.register.review")}
+							onReview={review}
+						/>
+					}
+				>
+					<p className="text-muted-foreground text-sm">
+						{t("cheque.guarantors.hint")}
 					</p>
-				) : null}
-				<div className="flex justify-end gap-2">
-					<Button asChild variant="outline">
-						<Link to={routeMap.chequeList.path}>{t("cheque.register.cancel")}</Link>
-					</Button>
-					<Button type="submit">{t("cheque.register.review")}</Button>
-				</div>
+					<StepSection
+						id="cg-people"
+						step={1}
+						title={t("cheque.issue.guarantors")}
+					>
+						<RecipientsEditor
+							sayyadId={sayyadId}
+							rows={rows}
+							setRows={setRows}
+							title={t("cheque.issue.guarantors")}
+						/>
+						{problem ? <FieldError>{problem}</FieldError> : null}
+						<div>
+							<Button asChild variant="outline">
+								<Link to={routeMap.chequeList.path}>
+									{t("cheque.register.cancel")}
+								</Link>
+							</Button>
+						</div>
+					</StepSection>
+				</FlowLayout>
 			</form>
 
 			{confirming ? (
@@ -116,12 +176,24 @@ export default function ChakadGuarantorsPage() {
 						setConfirming(false)
 					}}
 					title={t("cheque.guarantors.confirmTitle")}
-					description={attempt ? t("cheque.issue.approveQuestion") : t("cheque.guarantors.confirmQuestion")}
+					description={
+						attempt
+							? t("cheque.issue.approveQuestion")
+							: t("cheque.guarantors.confirmQuestion")
+					}
 					summary={[
-						{label: t("cheque.sayyadId"), value: <span dir="ltr">{sayyadId}</span>},
-						...rows.map((row, index) => ({label: t("cheque.issue.guarantor", {number: index + 1}), value: `${row.name} (${row.idCode})`})),
+						{
+							label: t("cheque.sayyadId"),
+							value: <span dir="ltr">{sayyadId}</span>,
+						},
+						...rows.map((row, index) => ({
+							label: t("cheque.issue.guarantor", { number: index + 1 }),
+							value: `${row.name} (${row.idCode})`,
+						})),
 					]}
-					confirmLabel={attempt ? t("cheque.guarantors.send") : t("cheque.issue.sign")}
+					confirmLabel={
+						attempt ? t("cheque.guarantors.send") : t("cheque.issue.sign")
+					}
 					pendingLabel={t("cheque.guarantee.sending")}
 					canConfirm={!blocked}
 					pending={ask.isPending || send.isPending}
@@ -133,7 +205,7 @@ export default function ChakadGuarantorsPage() {
 					}}
 				>
 					{attempt ? (
-						<p role="status" className="rounded-md border bg-muted p-3 text-sm">
+						<p role="status" className="bg-muted rounded-md border p-3 text-sm">
 							{t("cheque.issue.hamoonSent")}
 						</p>
 					) : null}
