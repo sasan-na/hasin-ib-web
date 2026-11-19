@@ -269,6 +269,9 @@
         "credit": {
             "title": "Facility credit calculation",
             "hint": "Choose the start and end dates, then press Calculate to see the facility this account qualifies for.",
+            "summary": "Calculation summary",
+            "typeStep": "Loan type",
+            "datesStep": "Period",
             "profitRate": "Profit / fee rate",
             "chooseProfit": "Choose a rate",
             "profitLabel": "{{rate}}% (yearly)",
