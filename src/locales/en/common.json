@@ -2047,6 +2047,7 @@
             "open": "Add a person",
             "title": "Add a person to your accounts",
             "back": "Back to people",
+            "summary": "User summary",
             "hint": "Give someone access to some of your accounts, each in a role you defined.",
             "who": "Who",
             "existing": "This person already uses the bank",
