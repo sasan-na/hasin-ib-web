@@ -1,37 +1,68 @@
-import {useMutation, useQuery} from "@tanstack/react-query"
-import {useState} from "react"
-import {useTranslation} from "react-i18next"
-import {Link} from "react-router-dom"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
-import {routeMap} from "@/app/routes"
-import {Alert, AlertDescription} from "@/components/ui/alert"
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {Skeleton} from "@/components/ui/skeleton"
-import {PasswordInput} from "@/features/auth/components/password-input"
-import {cardCredentialInfoOptions, cardsOptions} from "@/features/card/api/card.queries"
-import {CardCredentialsFields, EMPTY_CREDENTIALS, toCredentials, type CredentialsForm} from "@/features/card/components/card-credentials"
-import {getEtcOwner, getEtcPrice, getMyNationalCode, getProvinces, LEGAL, NATURAL, purchaseEtc, type EtcOwner} from "@/features/etc/api/etc-purchase"
-import {isNationalCode} from "@/features/etc/lib/national-code"
-import {ConfirmDialog} from "@/features/transaction/components/confirm-dialog"
-import {useSubmitTransaction} from "@/features/transaction/hooks/use-submit-transaction"
-import {formatAmount, formatCardNumber} from "@/lib/format"
-import {normalizeDigits} from "@/lib/normalize-digits"
+import { routeMap } from "@/app/routes"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { StepSection } from "@/components/flow/flow-form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { PasswordInput } from "@/features/auth/components/password-input"
+import {
+	cardCredentialInfoOptions,
+	cardsOptions,
+} from "@/features/card/api/card.queries"
+import {
+	CardCredentialsFields,
+	EMPTY_CREDENTIALS,
+	toCredentials,
+	type CredentialsForm,
+} from "@/features/card/components/card-credentials"
+import {
+	getEtcOwner,
+	getEtcPrice,
+	getMyNationalCode,
+	getProvinces,
+	LEGAL,
+	NATURAL,
+	purchaseEtc,
+	type EtcOwner,
+} from "@/features/etc/api/etc-purchase"
+import { isNationalCode } from "@/features/etc/lib/national-code"
+import { ConfirmDialog } from "@/features/transaction/components/confirm-dialog"
+import { useSubmitTransaction } from "@/features/transaction/hooks/use-submit-transaction"
+import { formatAmount, formatCardNumber } from "@/lib/format"
+import { normalizeDigits } from "@/lib/normalize-digits"
 
 // The bank's name for the text message that proves buying a tag from a card.
 const CODE_SERVICE = "ETCPurchase"
-const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
-const isTehranName = (name: string): boolean => name === "تهران" || name.toLowerCase() === "tehran"
+const digits = (value: string): string =>
+	normalizeDigits(value).replace(/\D/g, "")
+const isTehranName = (name: string): boolean =>
+	name === "تهران" || name.toLowerCase() === "tehran"
 
 type Step = "owner" | "details" | "pay"
 
 /** Buy a toll tag in three steps: who it is for, where to post it and under which website account, then pay from a card. */
 export default function EtcPurchasePage() {
-	const {t, i18n} = useTranslation()
+	const { t, i18n } = useTranslation()
 	const language = i18n.language
-	const provinces = useQuery({queryKey: ["etc", "provinces"], queryFn: getProvinces, staleTime: 60 * 60_000, retry: false})
+	const provinces = useQuery({
+		queryKey: ["etc", "provinces"],
+		queryFn: getProvinces,
+		staleTime: 60 * 60_000,
+		retry: false,
+	})
 	const cards = useQuery(cardsOptions(language))
 	const [step, setStep] = useState<Step>("owner")
 	const [legal, setLegal] = useState(false)
@@ -54,22 +85,42 @@ export default function EtcPurchasePage() {
 	const [confirming, setConfirming] = useState(false)
 
 	const hasUser = owner?.hasUser === true
-	const province = provinces.data?.find((item) => String(item.code) === provinceCode)
+	const province = provinces.data?.find(
+		(item) => String(item.code) === provinceCode,
+	)
 	const city = province?.cities.find((item) => String(item.code) === cityCode)
 	const isTehran = province ? isTehranName(province.name) : false
-	const price = useQuery({queryKey: ["etc", "price"], queryFn: getEtcPrice, enabled: step === "pay", staleTime: 0, retry: false})
-	const total = price.data ? price.data.tag + (isTehran ? price.data.tehranPost : price.data.post) : 0
-	const money = (value: number): string => `${formatAmount(value, language)} ${t("etc.rial")}`
+	const price = useQuery({
+		queryKey: ["etc", "price"],
+		queryFn: getEtcPrice,
+		enabled: step === "pay",
+		staleTime: 0,
+		retry: false,
+	})
+	const total = price.data
+		? price.data.tag + (isTehran ? price.data.tehranPost : price.data.post)
+		: 0
+	const money = (value: number): string =>
+		`${formatAmount(value, language)} ${t("etc.rial")}`
 
 	const card = cards.data?.find((candidate) => String(candidate.id) === cardId)
-	const info = useQuery({...cardCredentialInfoOptions(card?.id ?? 0, language), enabled: card !== undefined})
+	const info = useQuery({
+		...cardCredentialInfoOptions(card?.id ?? 0, language),
+		enabled: card !== undefined,
+	})
 	const credentials = card ? toCredentials(card.number, form, info.data) : null
 
 	const lookUp = useMutation({
 		mutationFn: () => getEtcOwner(code),
 		onSuccess: (found) => {
 			setOwner(found)
-			setCustomerType(found && found.customerType > 0 ? found.customerType : legal ? LEGAL : NATURAL)
+			setCustomerType(
+				found && found.customerType > 0
+					? found.customerType
+					: legal
+						? LEGAL
+						: NATURAL,
+			)
 			setPickUsername(found?.hasUser === true && found.usernames.length > 0)
 			setUsername("")
 			setPassword("")
@@ -78,20 +129,31 @@ export default function EtcPurchasePage() {
 			setMobile(found?.mobile ?? "")
 			setPostalCode(found?.postalCode ?? "")
 			setAddress(found?.address ?? "")
-			const knownProvince = provinces.data?.find((item) => item.code === found?.provinceCode)
+			const knownProvince = provinces.data?.find(
+				(item) => item.code === found?.provinceCode,
+			)
 			setProvinceCode(knownProvince ? String(knownProvince.code) : "")
-			setCityCode(knownProvince?.cities.some((item) => item.code === found?.cityCode) ? String(found?.cityCode) : "")
+			setCityCode(
+				knownProvince?.cities.some((item) => item.code === found?.cityCode)
+					? String(found?.cityCode)
+					: "",
+			)
 			setProblem("")
 			setStep("details")
 		},
 		onError: () => setProblem(t("etc.purchase.error.lookup")),
 	})
 
-	const myCode = useMutation({mutationFn: getMyNationalCode, onSuccess: (mine) => setCode(digits(mine)), onError: () => setProblem(t("etc.purchase.error.mine"))})
+	const myCode = useMutation({
+		mutationFn: getMyNationalCode,
+		onSuccess: (mine) => setCode(digits(mine)),
+		onError: () => setProblem(t("etc.purchase.error.mine")),
+	})
 
 	const sending = useSubmitTransaction({
 		run: () => {
-			if (!credentials || !province || !city || total <= 0) throw new Error("form incomplete")
+			if (!credentials || !province || !city || total <= 0)
+				throw new Error("form incomplete")
 			return purchaseEtc({
 				credentials,
 				customerType,
@@ -111,31 +173,43 @@ export default function EtcPurchasePage() {
 				password,
 			})
 		},
-		again: {to: routeMap.etcPurchase.path, label: t("etc.purchase.again")},
+		again: { to: routeMap.etcPurchase.path, label: t("etc.purchase.again") },
 		failedText: t("etc.purchase.failed"),
 		uncertainText: t("etc.purchase.uncertain"),
 	})
 
 	const checkOwner = (): void => {
-		if (legal ? !/^\d{6,15}$/.test(code) : !isNationalCode(code)) return setProblem(legal ? t("etc.purchase.error.business") : t("etc.purchase.error.national"))
+		if (legal ? !/^\d{6,15}$/.test(code) : !isNationalCode(code))
+			return setProblem(
+				legal
+					? t("etc.purchase.error.business")
+					: t("etc.purchase.error.national"),
+			)
 		setProblem("")
 		lookUp.mutate()
 	}
 
 	const checkDetails = (): void => {
-		if (username.trim() === "") return setProblem(t("etc.purchase.error.username"))
-		if (!pickUsername && password.length < 8) return setProblem(t("etc.purchase.error.password"))
-		if (firstName.trim() === "" || lastName.trim() === "") return setProblem(t("etc.purchase.error.name"))
-		if (!/^09\d{9}$/.test(mobile)) return setProblem(t("etc.purchase.error.mobile"))
+		if (username.trim() === "")
+			return setProblem(t("etc.purchase.error.username"))
+		if (!pickUsername && password.length < 8)
+			return setProblem(t("etc.purchase.error.password"))
+		if (firstName.trim() === "" || lastName.trim() === "")
+			return setProblem(t("etc.purchase.error.name"))
+		if (!/^09\d{9}$/.test(mobile))
+			return setProblem(t("etc.purchase.error.mobile"))
 		if (!province || !city) return setProblem(t("etc.purchase.error.place"))
-		if (!/^\d{10}$/.test(postalCode)) return setProblem(t("etc.purchase.error.postal"))
-		if (address.trim() === "") return setProblem(t("etc.purchase.error.address"))
+		if (!/^\d{10}$/.test(postalCode))
+			return setProblem(t("etc.purchase.error.postal"))
+		if (address.trim() === "")
+			return setProblem(t("etc.purchase.error.address"))
 		setProblem("")
 		setStep("pay")
 	}
 
 	const review = (): void => {
-		if (price.isError || total <= 0) return setProblem(t("etc.purchase.error.price"))
+		if (price.isError || total <= 0)
+			return setProblem(t("etc.purchase.error.price"))
 		if (!card || !credentials) return setProblem(t("topup.error.card"))
 		setProblem("")
 		sending.reset()
@@ -150,21 +224,31 @@ export default function EtcPurchasePage() {
 	)
 
 	return (
-		<div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("etc.purchase.title")}</h1>
 				<Button asChild variant="outline" size="sm">
 					<Link to={routeMap.etcList.path}>{t("etc.purchase.back")}</Link>
 				</Button>
 			</div>
-			<p className="text-sm text-muted-foreground">{t("etc.purchase.hint")}</p>
-			<p className="text-xs font-medium text-muted-foreground">{t(`etc.purchase.step.${step}`)}</p>
+			<p className="text-muted-foreground text-sm">{t("etc.purchase.hint")}</p>
 
 			{step === "owner" ? (
-				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
-					<div className="flex gap-4" role="radiogroup" aria-label={t("etc.purchase.kind")}>
+				<StepSection
+					id="ep-step-owner"
+					step={1}
+					title={t("etc.purchase.stepTitle.owner")}
+				>
+					<div
+						className="flex gap-4"
+						role="radiogroup"
+						aria-label={t("etc.purchase.kind")}
+					>
 						{[false, true].map((isLegal) => (
-							<label key={String(isLegal)} className="flex items-center gap-2 text-sm">
+							<label
+								key={String(isLegal)}
+								className="flex items-center gap-2 text-sm"
+							>
 								<input
 									type="radio"
 									name="etc-kind"
@@ -176,18 +260,38 @@ export default function EtcPurchasePage() {
 										setProblem("")
 									}}
 								/>
-								{isLegal ? t("etc.purchase.legal") : t("etc.purchase.individual")}
+								{isLegal
+									? t("etc.purchase.legal")
+									: t("etc.purchase.individual")}
 							</label>
 						))}
 					</div>
 					{field(
 						"ep-code",
-						legal ? t("etc.purchase.businessCode") : t("etc.purchase.nationalCode"),
+						legal
+							? t("etc.purchase.businessCode")
+							: t("etc.purchase.nationalCode"),
 						<>
-							<Input id="ep-code" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={legal ? 15 : 10} className="max-w-60" value={code} onChange={(event) => setCode(digits(event.target.value))} />
+							<Input
+								id="ep-code"
+								dir="ltr"
+								inputMode="numeric"
+								autoComplete="off"
+								maxLength={legal ? 15 : 10}
+								className="max-w-60"
+								value={code}
+								onChange={(event) => setCode(digits(event.target.value))}
+							/>
 							{legal ? null : (
 								<div>
-									<Button type="button" variant="link" size="sm" className="h-auto p-0" disabled={myCode.isPending} onClick={() => myCode.mutate()}>
+									<Button
+										type="button"
+										variant="link"
+										size="sm"
+										className="h-auto p-0"
+										disabled={myCode.isPending}
+										onClick={() => myCode.mutate()}
+									>
 										{t("etc.purchase.useMine")}
 									</Button>
 								</div>
@@ -195,16 +299,30 @@ export default function EtcPurchasePage() {
 						</>,
 					)}
 					<div>
-						<Button type="button" disabled={lookUp.isPending || provinces.isPending} onClick={checkOwner}>
-							{lookUp.isPending ? t("etc.purchase.checking") : t("etc.purchase.next")}
+						<Button
+							type="button"
+							disabled={lookUp.isPending || provinces.isPending}
+							onClick={checkOwner}
+						>
+							{lookUp.isPending
+								? t("etc.purchase.checking")
+								: t("etc.purchase.next")}
 						</Button>
 					</div>
-				</section>
+				</StepSection>
 			) : null}
 
 			{step === "details" ? (
-				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
-					{hasUser ? <p className="text-sm text-muted-foreground">{t("etc.purchase.hasUser")}</p> : null}
+				<StepSection
+					id="ep-step-details"
+					step={2}
+					title={t("etc.purchase.stepTitle.details")}
+				>
+					{hasUser ? (
+						<p className="text-muted-foreground text-sm">
+							{t("etc.purchase.hasUser")}
+						</p>
+					) : null}
 					{pickUsername ? (
 						<>
 							{field(
@@ -212,7 +330,9 @@ export default function EtcPurchasePage() {
 								t("etc.purchase.username"),
 								<Select value={username} onValueChange={setUsername}>
 									<SelectTrigger id="ep-user-pick" className="w-full">
-										<SelectValue placeholder={t("etc.purchase.chooseUsername")} />
+										<SelectValue
+											placeholder={t("etc.purchase.chooseUsername")}
+										/>
 									</SelectTrigger>
 									<SelectContent>
 										{(owner?.usernames ?? []).map((name) => (
@@ -240,10 +360,26 @@ export default function EtcPurchasePage() {
 						</>
 					) : (
 						<>
-							{field("ep-user", t("etc.purchase.username"), <Input id="ep-user" dir="ltr" autoComplete="off" value={username} onChange={(event) => setUsername(event.target.value)} />)}
+							{field(
+								"ep-user",
+								t("etc.purchase.username"),
+								<Input
+									id="ep-user"
+									dir="ltr"
+									autoComplete="off"
+									value={username}
+									onChange={(event) => setUsername(event.target.value)}
+								/>,
+							)}
 							{hasUser && (owner?.usernames.length ?? 0) > 0 ? (
 								<div>
-									<Button type="button" variant="link" size="sm" className="h-auto p-0" onClick={() => setPickUsername(true)}>
+									<Button
+										type="button"
+										variant="link"
+										size="sm"
+										className="h-auto p-0"
+										onClick={() => setPickUsername(true)}
+									>
 										{t("etc.purchase.pickUser")}
 									</Button>
 								</div>
@@ -252,17 +388,57 @@ export default function EtcPurchasePage() {
 								"ep-pass",
 								t("etc.purchase.password"),
 								<>
-									<PasswordInput id="ep-pass" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} />
-									<p className="text-xs text-muted-foreground">{t("etc.purchase.passwordHelp")}</p>
+									<PasswordInput
+										id="ep-pass"
+										autoComplete="new-password"
+										value={password}
+										onChange={(event) => setPassword(event.target.value)}
+									/>
+									<p className="text-muted-foreground text-xs">
+										{t("etc.purchase.passwordHelp")}
+									</p>
 								</>,
 							)}
 						</>
 					)}
 					<div className="grid gap-4 sm:grid-cols-2">
-						{field("ep-first", t("etc.purchase.firstName"), <Input id="ep-first" maxLength={50} disabled={hasUser} value={firstName} onChange={(event) => setFirstName(event.target.value)} />)}
-						{field("ep-last", t("etc.purchase.lastName"), <Input id="ep-last" maxLength={50} disabled={hasUser} value={lastName} onChange={(event) => setLastName(event.target.value)} />)}
+						{field(
+							"ep-first",
+							t("etc.purchase.firstName"),
+							<Input
+								id="ep-first"
+								maxLength={50}
+								disabled={hasUser}
+								value={firstName}
+								onChange={(event) => setFirstName(event.target.value)}
+							/>,
+						)}
+						{field(
+							"ep-last",
+							t("etc.purchase.lastName"),
+							<Input
+								id="ep-last"
+								maxLength={50}
+								disabled={hasUser}
+								value={lastName}
+								onChange={(event) => setLastName(event.target.value)}
+							/>,
+						)}
 					</div>
-					{field("ep-mobile", t("etc.purchase.mobile"), <Input id="ep-mobile" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={11} className="max-w-60" value={mobile} onChange={(event) => setMobile(digits(event.target.value))} />)}
+					{field(
+						"ep-mobile",
+						t("etc.purchase.mobile"),
+						<Input
+							id="ep-mobile"
+							dir="ltr"
+							inputMode="numeric"
+							autoComplete="off"
+							maxLength={11}
+							className="max-w-60"
+							value={mobile}
+							onChange={(event) => setMobile(digits(event.target.value))}
+						/>,
+					)}
 					<div className="grid gap-4 sm:grid-cols-2">
 						{field(
 							"ep-province",
@@ -270,7 +446,7 @@ export default function EtcPurchasePage() {
 							provinces.isPending ? (
 								<Skeleton className="h-9 w-full" />
 							) : provinces.isError ? (
-								<p role="alert" className="text-sm text-destructive">
+								<p role="alert" className="text-destructive text-sm">
 									{t("etc.purchase.error.provinces")}
 								</p>
 							) : (
@@ -282,7 +458,9 @@ export default function EtcPurchasePage() {
 									}}
 								>
 									<SelectTrigger id="ep-province" className="w-full">
-										<SelectValue placeholder={t("etc.purchase.chooseProvince")} />
+										<SelectValue
+											placeholder={t("etc.purchase.chooseProvince")}
+										/>
 									</SelectTrigger>
 									<SelectContent>
 										{provinces.data.map((item) => (
@@ -297,7 +475,11 @@ export default function EtcPurchasePage() {
 						{field(
 							"ep-city",
 							t("etc.purchase.city"),
-							<Select value={cityCode} onValueChange={setCityCode} disabled={!province}>
+							<Select
+								value={cityCode}
+								onValueChange={setCityCode}
+								disabled={!province}
+							>
 								<SelectTrigger id="ep-city" className="w-full">
 									<SelectValue placeholder={t("etc.purchase.chooseCity")} />
 								</SelectTrigger>
@@ -311,8 +493,32 @@ export default function EtcPurchasePage() {
 							</Select>,
 						)}
 					</div>
-					{field("ep-postal", t("etc.purchase.postalCode"), <Input id="ep-postal" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={10} className="max-w-60" value={postalCode} onChange={(event) => setPostalCode(digits(event.target.value))} />)}
-					{field("ep-address", t("etc.purchase.address"), <textarea id="ep-address" rows={4} maxLength={300} className="rounded-md border bg-transparent px-3 py-2 text-sm" value={address} onChange={(event) => setAddress(event.target.value)} />)}
+					{field(
+						"ep-postal",
+						t("etc.purchase.postalCode"),
+						<Input
+							id="ep-postal"
+							dir="ltr"
+							inputMode="numeric"
+							autoComplete="off"
+							maxLength={10}
+							className="max-w-60"
+							value={postalCode}
+							onChange={(event) => setPostalCode(digits(event.target.value))}
+						/>,
+					)}
+					{field(
+						"ep-address",
+						t("etc.purchase.address"),
+						<textarea
+							id="ep-address"
+							rows={4}
+							maxLength={300}
+							className="rounded-md border bg-transparent px-3 py-2 text-sm"
+							value={address}
+							onChange={(event) => setAddress(event.target.value)}
+						/>,
+					)}
 					<div className="flex gap-2">
 						<Button type="button" onClick={checkDetails}>
 							{t("etc.purchase.next")}
@@ -328,25 +534,37 @@ export default function EtcPurchasePage() {
 							{t("etc.purchase.previous")}
 						</Button>
 					</div>
-				</section>
+				</StepSection>
 			) : null}
 
 			{step === "pay" ? (
-				<section className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-card">
+				<StepSection
+					id="ep-step-pay"
+					step={3}
+					title={t("etc.purchase.stepTitle.pay")}
+				>
 					<dl className="grid gap-2 text-sm">
 						<div className="flex justify-between gap-3">
-							<dt className="text-muted-foreground">{t("etc.purchase.count")}</dt>
+							<dt className="text-muted-foreground">
+								{t("etc.purchase.count")}
+							</dt>
 							<dd>{formatAmount(1, language)}</dd>
 						</div>
 						{price.data ? (
 							<>
 								<div className="flex justify-between gap-3">
-									<dt className="text-muted-foreground">{t("etc.purchase.tagPrice")}</dt>
+									<dt className="text-muted-foreground">
+										{t("etc.purchase.tagPrice")}
+									</dt>
 									<dd>{money(price.data.tag)}</dd>
 								</div>
 								<div className="flex justify-between gap-3">
-									<dt className="text-muted-foreground">{t("etc.purchase.postPrice")}</dt>
-									<dd>{money(isTehran ? price.data.tehranPost : price.data.post)}</dd>
+									<dt className="text-muted-foreground">
+										{t("etc.purchase.postPrice")}
+									</dt>
+									<dd>
+										{money(isTehran ? price.data.tehranPost : price.data.post)}
+									</dd>
 								</div>
 								<div className="flex justify-between gap-3 font-semibold">
 									<dt>{t("etc.purchase.total")}</dt>
@@ -367,7 +585,7 @@ export default function EtcPurchasePage() {
 						cards.isPending ? (
 							<Skeleton className="h-9 w-full" />
 						) : cards.isError ? (
-							<p role="alert" className="text-sm text-destructive">
+							<p role="alert" className="text-destructive text-sm">
 								{t("topup.cardsError")}
 							</p>
 						) : (
@@ -384,14 +602,25 @@ export default function EtcPurchasePage() {
 								<SelectContent>
 									{cards.data.map((candidate) => (
 										<SelectItem key={candidate.id} value={String(candidate.id)}>
-											<span>{candidate.name || candidate.type}</span> <span dir="ltr">{formatCardNumber(candidate.number)}</span>
+											<span>{candidate.name || candidate.type}</span>{" "}
+											<span dir="ltr">
+												{formatCardNumber(candidate.number)}
+											</span>
 										</SelectItem>
 									))}
 								</SelectContent>
 							</Select>
 						),
 					)}
-					{card ? <CardCredentialsFields cardId={card.id} cardNumber={card.number} codeServiceName={CODE_SERVICE} value={form} onChange={setForm} /> : null}
+					{card ? (
+						<CardCredentialsFields
+							cardId={card.id}
+							cardNumber={card.number}
+							codeServiceName={CODE_SERVICE}
+							value={form}
+							onChange={setForm}
+						/>
+					) : null}
 					<div className="flex gap-2">
 						<Button type="button" onClick={review}>
 							{t("etc.purchase.review")}
@@ -407,7 +636,7 @@ export default function EtcPurchasePage() {
 							{t("etc.purchase.previous")}
 						</Button>
 					</div>
-				</section>
+				</StepSection>
 			) : null}
 
 			{problem ? (
@@ -425,12 +654,33 @@ export default function EtcPurchasePage() {
 					title={t("etc.purchase.confirmTitle")}
 					description={t("etc.purchase.confirmQuestion")}
 					summary={[
-						{label: legal ? t("etc.purchase.businessCode") : t("etc.purchase.nationalCode"), value: <span dir="ltr">{code}</span>},
-						{label: t("etc.purchase.owner"), value: `${firstName.trim()} ${lastName.trim()}`},
-						{label: t("etc.purchase.username"), value: <span dir="ltr">{username.trim()}</span>},
-						{label: t("etc.purchase.sendTo"), value: `${province.name}، ${city.name}`},
-						{label: t("topup.card"), value: <span dir="ltr">{formatCardNumber(card.number)}</span>},
-						{label: t("etc.purchase.total"), amount: true, value: money(total)},
+						{
+							label: legal
+								? t("etc.purchase.businessCode")
+								: t("etc.purchase.nationalCode"),
+							value: <span dir="ltr">{code}</span>,
+						},
+						{
+							label: t("etc.purchase.owner"),
+							value: `${firstName.trim()} ${lastName.trim()}`,
+						},
+						{
+							label: t("etc.purchase.username"),
+							value: <span dir="ltr">{username.trim()}</span>,
+						},
+						{
+							label: t("etc.purchase.sendTo"),
+							value: `${province.name}، ${city.name}`,
+						},
+						{
+							label: t("topup.card"),
+							value: <span dir="ltr">{formatCardNumber(card.number)}</span>,
+						},
+						{
+							label: t("etc.purchase.total"),
+							amount: true,
+							value: money(total),
+						},
 					]}
 					confirmLabel={t("topup.pay")}
 					pendingLabel={t("topup.sending")}
