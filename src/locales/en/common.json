@@ -547,6 +547,9 @@
         "replica": {
             "title": "Renew or replace a card",
             "backToCards": "Back to cards",
+            "summary": "Request summary",
+            "requestStep": "Request type",
+            "deliveryStep": "Branch and contact",
             "note1": "If you renew the card, your current card stops working and you collect the new one at the branch you choose.",
             "note2": "When you ask for a replacement, choosing \"lost\" as the reason gives the new card a different number.",
             "requestType": "Request type",
