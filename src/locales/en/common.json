@@ -1545,6 +1545,9 @@
         "pichak": {
             "title": "Cheque inquiry",
             "action": "Inquiry",
+            "summary": "Inquiry summary",
+            "sayyadStep": "The cheque",
+            "roleStep": "Inquire as",
             "intro": "Look a cheque up in the central cheque registry by its 16-digit Sayyad id.",
             "role": "Who is asking",
             "asHolder": "I hold this cheque",
