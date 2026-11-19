@@ -6,6 +6,13 @@ import { Link } from "react-router-dom"
 
 import { routeMap } from "@/app/routes"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import {
+	AMOUNT_INPUT_CLASS,
+	FieldError,
+	FlowLayout,
+	FlowSummary,
+	StepSection,
+} from "@/components/flow/flow-form"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -22,6 +29,7 @@ import { calculateInterest } from "@/features/loan/api/interest"
 import { interestOptionsOptions } from "@/features/loan/api/loan.queries"
 import { formatAmount } from "@/lib/format"
 import { normalizeDigits } from "@/lib/normalize-digits"
+import { cn } from "@/lib/utils"
 
 const digits = (value: string): string =>
 	normalizeDigits(value).replace(/\D/g, "").replace(/^0+/, "")
@@ -83,7 +91,7 @@ export default function LoanInterestPage() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-bold">{t("loan.interest.title")}</h1>
 				<Button asChild variant="outline" size="sm">
@@ -100,149 +108,203 @@ export default function LoanInterestPage() {
 			) : options.isError ? (
 				<p
 					role="alert"
-					className="bg-card text-destructive rounded-lg border p-5 text-sm"
+					className="bg-card text-destructive shadow-card rounded-2xl border p-5 text-sm"
 				>
 					{options.error.message || t("loan.interest.loadError")}
 				</p>
 			) : (
 				<form
-					className="bg-card flex flex-col gap-4 rounded-lg border p-5"
 					noValidate
 					onSubmit={(event) => {
 						event.preventDefault()
 						submit()
 					}}
 				>
-					<fieldset className="flex flex-col gap-2">
-						<legend className="text-sm font-medium">
-							{t("loan.interest.offers")}
-						</legend>
-						{options.data.offers.length === 0 ? (
-							<p className="text-muted-foreground text-sm">
-								{t("loan.interest.noOffers")}
-							</p>
-						) : null}
-						{options.data.offers.map((item, index) => (
-							<label
-								key={index}
-								className="has-[:checked]:border-primary flex cursor-pointer flex-wrap items-center gap-3 rounded-md border p-3 text-sm"
-							>
-								<input
-									type="radio"
-									name="offer"
-									checked={offerIndex === index}
-									onChange={() => {
-										setOfferIndex(index)
-										setKindId("")
-										setError("")
-									}}
-								/>
-								<span className="font-medium">{item.title}</span>
-								<span className="text-muted-foreground">
-									{t("loan.interest.maxAmount")}: {money(item.maxAmount)} ·{" "}
-									{t("loan.interest.rate")}: {formatAmount(item.rate, language)}
-									%{item.stepped ? ` · ${t("loan.interest.stepped")}` : ""}
-								</span>
-							</label>
-						))}
-					</fieldset>
-
-					<div className="grid gap-4 sm:grid-cols-3">
-						<div className="flex flex-col gap-2">
-							<Label htmlFor="interest-amount">
-								{t("loan.interest.amount")}
-							</Label>
-							<Input
-								id="interest-amount"
-								dir="ltr"
-								inputMode="numeric"
-								autoComplete="off"
-								maxLength={12}
-								value={amount}
-								disabled={!offer}
-								onChange={(event) => setAmount(digits(event.target.value))}
-							/>
-						</div>
-						<div className="flex flex-col gap-2">
-							<Label htmlFor="interest-count">
-								{t("loan.interest.installments")}
-							</Label>
-							<Input
-								id="interest-count"
-								dir="ltr"
-								inputMode="numeric"
-								autoComplete="off"
-								maxLength={3}
-								value={installments}
-								disabled={!offer}
-								onChange={(event) =>
-									setInstallments(digits(event.target.value))
+					<FlowLayout
+						aside={
+							<FlowSummary
+								id="interest-summary"
+								title={t("loan.interest.summary")}
+								amount={Number(amount) > 0 ? money(Number(amount)) : null}
+								rows={[
+									{
+										label: t("loan.interest.offers"),
+										value: offer ? offer.title : null,
+									},
+									{
+										label: t("loan.interest.installments"),
+										value:
+											Number(installments) > 0
+												? formatAmount(Number(installments), language)
+												: null,
+									},
+									{
+										label: t("loan.interest.kind"),
+										value:
+											kinds.find((kind) => String(kind.id) === chosenKind)
+												?.name ?? null,
+									},
+								]}
+								reviewLabel={
+									calculation.isPending
+										? t("loan.interest.calculating")
+										: t("loan.interest.calculate")
 								}
+								onReview={() => {
+									if (!calculation.isPending) submit()
+								}}
 							/>
-						</div>
-						<div className="flex flex-col gap-2">
-							<Label htmlFor="interest-kind">{t("loan.interest.kind")}</Label>
-							<Select
-								value={chosenKind}
-								onValueChange={setKindId}
-								disabled={!offer}
+						}
+					>
+						<StepSection
+							id="interest-offers-step"
+							step={1}
+							title={t("loan.interest.offers")}
+						>
+							{options.data.offers.length === 0 ? (
+								<p className="text-muted-foreground text-sm">
+									{t("loan.interest.noOffers")}
+								</p>
+							) : null}
+							<div
+								role="radiogroup"
+								aria-label={t("loan.interest.offers")}
+								className="grid gap-3 sm:grid-cols-2"
 							>
-								<SelectTrigger id="interest-kind" className="w-full">
-									<SelectValue placeholder={t("loan.interest.chooseKind")} />
-								</SelectTrigger>
-								<SelectContent>
-									{kinds.map((kind) => (
-										<SelectItem key={kind.id} value={String(kind.id)}>
-											{kind.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</div>
-					</div>
-					{amount ? (
-						<p className="text-muted-foreground text-sm">
-							{money(Number(amount))}
-						</p>
-					) : null}
+								{options.data.offers.map((item, index) => (
+									<label
+										key={index}
+										className={cn(
+											"bg-card flex min-h-11 cursor-pointer flex-col gap-1 rounded-xl border p-4 text-sm transition-colors",
+											offerIndex === index
+												? "border-primary bg-primary-soft ring-primary/20 ring-2"
+												: "hover:border-foreground/40",
+										)}
+									>
+										<span className="flex items-center gap-3">
+											<input
+												type="radio"
+												name="offer"
+												checked={offerIndex === index}
+												onChange={() => {
+													setOfferIndex(index)
+													setKindId("")
+													setError("")
+												}}
+											/>
+											<span className="font-medium">{item.title}</span>
+										</span>
+										<span className="text-muted-foreground">
+											{t("loan.interest.maxAmount")}: {money(item.maxAmount)} ·{" "}
+											{t("loan.interest.rate")}:{" "}
+											{formatAmount(item.rate, language)}%
+											{item.stepped ? ` · ${t("loan.interest.stepped")}` : ""}
+										</span>
+									</label>
+								))}
+							</div>
+						</StepSection>
 
-					<div className="flex flex-wrap gap-6">
-						<div className="flex items-center gap-2">
-							<Checkbox
-								id="interest-life"
-								checked={lifeInsurance}
-								disabled={!offer}
-								onCheckedChange={(checked) =>
-									setLifeInsurance(checked === true)
-								}
-							/>
-							<Label htmlFor="interest-life">
-								{t("loan.interest.lifeInsurance")}
-							</Label>
-						</div>
-						<div className="flex items-center gap-2">
-							<Checkbox
-								id="interest-mehr"
-								checked={mehr}
-								disabled={!offer}
-								onCheckedChange={(checked) => setMehr(checked === true)}
-							/>
-							<Label htmlFor="interest-mehr">{t("loan.interest.mehr")}</Label>
-						</div>
-					</div>
+						<StepSection
+							id="interest-details-step"
+							step={2}
+							title={t("loan.interest.detailsStep")}
+						>
+							<div className="grid gap-4 sm:grid-cols-3">
+								<div className="flex flex-col gap-2">
+									<Label htmlFor="interest-amount">
+										{t("loan.interest.amount")}
+									</Label>
+									<Input
+										id="interest-amount"
+										dir="ltr"
+										inputMode="numeric"
+										autoComplete="off"
+										maxLength={12}
+										className={AMOUNT_INPUT_CLASS}
+										value={amount}
+										disabled={!offer}
+										onChange={(event) => setAmount(digits(event.target.value))}
+									/>
+								</div>
+								<div className="flex flex-col gap-2">
+									<Label htmlFor="interest-count">
+										{t("loan.interest.installments")}
+									</Label>
+									<Input
+										id="interest-count"
+										dir="ltr"
+										inputMode="numeric"
+										autoComplete="off"
+										maxLength={3}
+										className="h-11 text-base"
+										value={installments}
+										disabled={!offer}
+										onChange={(event) =>
+											setInstallments(digits(event.target.value))
+										}
+									/>
+								</div>
+								<div className="flex flex-col gap-2">
+									<Label htmlFor="interest-kind">
+										{t("loan.interest.kind")}
+									</Label>
+									<Select
+										value={chosenKind}
+										onValueChange={setKindId}
+										disabled={!offer}
+									>
+										<SelectTrigger id="interest-kind" className="h-11 w-full">
+											<SelectValue
+												placeholder={t("loan.interest.chooseKind")}
+											/>
+										</SelectTrigger>
+										<SelectContent>
+											{kinds.map((kind) => (
+												<SelectItem key={kind.id} value={String(kind.id)}>
+													{kind.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
+							</div>
+							{amount ? (
+								<p className="text-muted-foreground text-sm">
+									{money(Number(amount))}
+								</p>
+							) : null}
 
-					{error ? (
-						<p role="alert" className="text-destructive text-sm">
-							{error}
-						</p>
-					) : null}
-					<div>
-						<Button type="submit" disabled={calculation.isPending}>
-							{calculation.isPending
-								? t("loan.interest.calculating")
-								: t("loan.interest.calculate")}
-						</Button>
-					</div>
+							<div className="flex flex-wrap gap-6">
+								<div className="flex items-center gap-2">
+									<Checkbox
+										id="interest-life"
+										checked={lifeInsurance}
+										disabled={!offer}
+										onCheckedChange={(checked) =>
+											setLifeInsurance(checked === true)
+										}
+									/>
+									<Label htmlFor="interest-life">
+										{t("loan.interest.lifeInsurance")}
+									</Label>
+								</div>
+								<div className="flex items-center gap-2">
+									<Checkbox
+										id="interest-mehr"
+										checked={mehr}
+										disabled={!offer}
+										onCheckedChange={(checked) => setMehr(checked === true)}
+									/>
+									<Label htmlFor="interest-mehr">
+										{t("loan.interest.mehr")}
+									</Label>
+								</div>
+							</div>
+
+							{error ? <FieldError>{error}</FieldError> : null}
+						</StepSection>
+					</FlowLayout>
 				</form>
 			)}
 
@@ -257,7 +319,7 @@ export default function LoanInterestPage() {
 			{result ? (
 				<section
 					aria-labelledby="interest-result"
-					className="bg-card flex flex-col gap-4 rounded-lg border p-5"
+					className="bg-card shadow-card flex flex-col gap-4 rounded-2xl border p-6"
 				>
 					<h2 id="interest-result" className="text-base font-semibold">
 						{t("loan.interest.result")}

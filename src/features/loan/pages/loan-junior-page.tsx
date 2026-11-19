@@ -6,6 +6,12 @@ import { Link } from "react-router-dom"
 
 import { routeMap } from "@/app/routes"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import {
+	FieldError,
+	FlowLayout,
+	FlowSummary,
+	StepSection,
+} from "@/components/flow/flow-form"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import {
@@ -118,7 +124,7 @@ export default function LoanJuniorPage() {
 			<p className="text-muted-foreground text-sm">{t("loan.junior.hint")}</p>
 
 			<section
-				className="bg-card flex flex-col gap-4 rounded-lg border p-5"
+				className="bg-card shadow-card flex flex-col gap-4 rounded-2xl border p-6"
 				aria-labelledby="junior-table"
 			>
 				<div className="flex flex-wrap items-end justify-between gap-3">
@@ -195,69 +201,94 @@ export default function LoanJuniorPage() {
 			</section>
 
 			<form
-				className="bg-card flex flex-col gap-4 rounded-lg border p-5"
 				noValidate
 				onSubmit={(event) => {
 					event.preventDefault()
 					submit()
 				}}
 			>
-				<h2 className="text-base font-semibold">
-					{t("loan.junior.approximate")}
-				</h2>
-				<div className="grid gap-4 sm:grid-cols-2">
-					<div className="flex flex-col gap-2">
-						<Label htmlFor="junior-city">{t("loan.junior.cityType")}</Label>
-						{cities.isPending ? (
-							<Skeleton className="h-9 w-full" />
-						) : (
-							<Select value={cityValue} onValueChange={setCityId}>
-								<SelectTrigger id="junior-city" className="w-full">
-									<SelectValue placeholder={t("loan.junior.chooseCity")} />
-								</SelectTrigger>
-								<SelectContent>
-									{(cities.data ?? []).map((city) => (
-										<SelectItem key={city.id} value={String(city.id)}>
-											{city.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						)}
-					</div>
-					<div className="flex flex-col gap-2">
-						<Label htmlFor="junior-wait">{t("loan.junior.waitTime")}</Label>
-						<Select value={waitYears} onValueChange={setWaitYears}>
-							<SelectTrigger id="junior-wait" className="w-full">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{WAIT_YEARS.map((item) => (
-									<SelectItem key={item} value={String(item)}>
-										{t("loan.junior.years", {
-											value: formatAmount(item, i18n.language),
-										})}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</div>
-				</div>
-				{error ? (
-					<p role="alert" className="text-destructive text-sm">
-						{error}
-					</p>
-				) : null}
-				<div>
-					<Button
-						type="submit"
-						disabled={calculation.isPending || cities.isPending}
+				<FlowLayout
+					aside={
+						<FlowSummary
+							id="junior-summary"
+							title={t("loan.junior.summary")}
+							amount={null}
+							rows={[
+								{
+									label: t("loan.junior.openYear"),
+									value: formatAmount(year, i18n.language).replace(/[,٬]/g, ""),
+								},
+								{
+									label: t("loan.junior.cityType"),
+									value:
+										(cities.data ?? []).find(
+											(city) => String(city.id) === cityValue,
+										)?.name ?? null,
+								},
+								{
+									label: t("loan.junior.waitTime"),
+									value: t("loan.junior.years", {
+										value: formatAmount(Number(waitYears), i18n.language),
+									}),
+								},
+							]}
+							reviewLabel={
+								calculation.isPending
+									? t("loan.interest.calculating")
+									: t("loan.interest.calculate")
+							}
+							onReview={() => {
+								if (!calculation.isPending && !cities.isPending) submit()
+							}}
+						/>
+					}
+				>
+					<StepSection
+						id="junior-approx"
+						step={1}
+						title={t("loan.junior.approximate")}
 					>
-						{calculation.isPending
-							? t("loan.interest.calculating")
-							: t("loan.interest.calculate")}
-					</Button>
-				</div>
+						<div className="grid gap-4 sm:grid-cols-2">
+							<div className="flex flex-col gap-2">
+								<Label htmlFor="junior-city">{t("loan.junior.cityType")}</Label>
+								{cities.isPending ? (
+									<Skeleton className="h-9 w-full" />
+								) : (
+									<Select value={cityValue} onValueChange={setCityId}>
+										<SelectTrigger id="junior-city" className="h-11 w-full">
+											<SelectValue placeholder={t("loan.junior.chooseCity")} />
+										</SelectTrigger>
+										<SelectContent>
+											{(cities.data ?? []).map((city) => (
+												<SelectItem key={city.id} value={String(city.id)}>
+													{city.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								)}
+							</div>
+							<div className="flex flex-col gap-2">
+								<Label htmlFor="junior-wait">{t("loan.junior.waitTime")}</Label>
+								<Select value={waitYears} onValueChange={setWaitYears}>
+									<SelectTrigger id="junior-wait" className="h-11 w-full">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{WAIT_YEARS.map((item) => (
+											<SelectItem key={item} value={String(item)}>
+												{t("loan.junior.years", {
+													value: formatAmount(item, i18n.language),
+												})}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+						</div>
+						{error ? <FieldError>{error}</FieldError> : null}
+					</StepSection>
+				</FlowLayout>
 			</form>
 
 			{calculation.isError ? (
@@ -271,7 +302,7 @@ export default function LoanJuniorPage() {
 			{result ? (
 				<section
 					aria-labelledby="junior-result"
-					className="bg-card flex flex-col gap-4 rounded-lg border p-5"
+					className="bg-card shadow-card flex flex-col gap-4 rounded-2xl border p-6"
 				>
 					<h2 id="junior-result" className="text-base font-semibold">
 						{t("loan.interest.result")}
