@@ -2109,6 +2109,8 @@
             "open": "New rule",
             "title": "New approval rule",
             "back": "Back to rules",
+            "summary": "Rule summary",
+            "basicsStep": "Name and account",
             "hint": "Choose an account and the transactions the rule covers, who may start one, and the levels of people who approve it. The people who sign for the account always approve last.",
             "name": "Name of the rule",
             "account": "Account",
