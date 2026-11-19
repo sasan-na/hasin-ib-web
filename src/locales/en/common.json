@@ -1771,6 +1771,9 @@
         },
         "guarantee": {
             "title": "Guarantee",
+            "summary": "Request summary",
+            "actionStep": "What to do",
+            "chequeStep": "The cheque",
             "hint": "Sign as a guarantor, see where a cheque's guarantee stands, ask for a guarantee or stop it.",
             "modes": {
                 "sign": "Sign as guarantor",
