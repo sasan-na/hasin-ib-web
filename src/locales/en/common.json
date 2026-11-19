@@ -2254,6 +2254,9 @@
         "activate": {
             "action": "Activate",
             "title": "Activate a toll tag",
+            "summary": "Activation summary",
+            "tagStep": "Toll tag and car",
+            "plateStep": "Plate",
             "hint": "Register a tag for a car so it can be used: its serial, the kind of car and the plate.",
             "carType": "Kind of car",
             "chooseType": "Choose a kind",
