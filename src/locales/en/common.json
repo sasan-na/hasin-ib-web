@@ -965,6 +965,8 @@
     "report": {
         "statement": {
             "title": "Account statement",
+            "accountStep": "Account",
+            "rangeStep": "Period and entries",
             "account": "Account",
             "chooseAccount": "Choose an account",
             "accountsError": "Your accounts could not be loaded. Try again in a moment.",

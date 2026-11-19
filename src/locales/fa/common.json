@@ -965,6 +965,8 @@
     "report": {
         "statement": {
             "title": "صورت‌حساب",
+            "accountStep": "حساب",
+            "rangeStep": "بازه و نوع گردش",
             "account": "حساب",
             "chooseAccount": "حساب را انتخاب کنید",
             "accountsError": "بارگذاری حساب‌ها انجام نشد. چند لحظه بعد دوباره تلاش کنید.",
