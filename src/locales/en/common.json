@@ -17,6 +17,12 @@
         "generic": "Something went wrong. Try again in a moment."
     },
     "success": "Success",
+    "header": {
+        "systemStatus": "All systems operational",
+        "notifications": "Notifications",
+        "help": "Help & Support",
+        "noNotifications": "You have no unread messages."
+    },
     "navigation": {
         "home": "Home",
         "groupBanking": "My banking",

@@ -17,6 +17,12 @@
         "generic": "مشکلی پیش آمد. چند لحظه بعد دوباره تلاش کنید."
     },
     "success": "موفق",
+    "header": {
+        "systemStatus": "همه سامانه‌ها پایدار هستند",
+        "notifications": "اعلان‌ها",
+        "help": "راهنما و پشتیبانی",
+        "noNotifications": "پیام خوانده‌نشده‌ای ندارید."
+    },
     "navigation": {
         "home": "خانه",
         "groupBanking": "بانکداری من",

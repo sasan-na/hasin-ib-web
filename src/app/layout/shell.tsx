@@ -1,6 +1,11 @@
 import React from "react";
-import {Outlet, useLocation} from "react-router-dom";
+import {Bell, CircleHelp} from "lucide-react";
+import {useQuery} from "@tanstack/react-query";
+import {toast} from "sonner";
+import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {AppSidebar} from "@/app/layout/nav/app-sidebar"
+import {Button} from "@/components/ui/button"
+import {messagesOptions} from "@/features/message/api/message.queries"
 import {Separator} from "@/components/ui/separator"
 import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar"
 import {findRouteByPath} from "@/lib/utils.ts";
@@ -26,6 +31,13 @@ const RouteFrame = ({children}: {children?: React.ReactNode}) => (
 export function AuthShell({children}: { children?: React.ReactNode }): React.ReactElement {
     const {pathname} = useLocation();
     const {t} = useTranslation();
+    const navigate = useNavigate();
+    const messages = useQuery(messagesOptions());
+    const unread = (messages.data ?? []).reduce((sum, item) => sum + (item.isUnread ? Math.max(1, item.unreadCount) : 0), 0);
+    const openNotifications = () => {
+        if (unread > 0) navigate(routeMap.messageList.path);
+        else toast.info(t("header.noNotifications"));
+    };
     const breadcrumbs: string[] = pathname.split("/");
 
     const breadcrumbItems = React.useMemo((): BreadcrumbItem[] => {
@@ -51,22 +63,46 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
             <SidebarProvider>
                 <AppSidebar/>
                 <SidebarInset>
+                    <header
+                        className="sticky top-0 z-30 flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b bg-background/85 px-4 backdrop-blur-md sm:px-6">
+                        <div className="flex min-w-0 items-center gap-2">
+                            <SidebarTrigger className="-ms-1.5 rounded-xl"/>
+                            <NavLink to={routeMap.home.path}
+                                     className="flex items-center gap-2 fill-primary md:hidden">
+                                <Logo size={20} className="fill-inherit"/>
+                                <span className="text-sm font-semibold">{t("appName")}</span>
+                            </NavLink>
+                            <div className="hidden min-w-0 items-center gap-2 md:flex">
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                    <span className="size-2 rounded-full bg-emerald-500 motion-safe:animate-pulse" aria-hidden="true"/>
+                                    <span>{t("header.systemStatus")}</span>
+                                </div>
+                                <Separator orientation="vertical" className="mx-1 h-4"/>
+                                <BreadcrumbResponsive items={breadcrumbItems}/>
+                            </div>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-1">
+                            <HeaderSearch/>
+                            <Button variant="ghost" size="icon" asChild
+                                    className="size-9 rounded-xl text-muted-foreground hover:text-foreground">
+                                <NavLink to={routeMap.other.path} aria-label={t("header.help")} title={t("header.help")}>
+                                    <CircleHelp className="size-4"/>
+                                </NavLink>
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={openNotifications}
+                                    aria-label={t("header.notifications")} title={t("header.notifications")}
+                                    className="relative size-9 rounded-xl text-muted-foreground hover:text-foreground">
+                                <Bell className="size-4"/>
+                                {unread > 0 ? <span
+                                    className="absolute top-1.5 end-1.5 size-2 rounded-full bg-destructive ring-2 ring-background"/> : null}
+                            </Button>
+                            <ThemeSwitcher/>
+                            <LanguageSwitcher/>
+                        </div>
+                    </header>
                     <div className={"flex flex-col"}>
                         {/* Main entry for content */}
-                        <div className={"w-full self-center px-5 md:container"}>
-                            <header
-                                className="relative z-50 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                                <div className="flex items-center">
-                                    <SidebarTrigger className="-ms-1.5"/>
-                                    <Separator orientation="vertical" className="me-2 h-4"/>
-                                    <BreadcrumbResponsive items={breadcrumbItems}/>
-                                </div>
-                                <div className="ms-auto flex items-center gap-1">
-                                    <HeaderSearch/>
-                                    <ThemeSwitcher/>
-                                    <LanguageSwitcher/>
-                                </div>
-                            </header>
+                        <div className={"w-full self-center px-5 pb-6 md:container"}>
                             <RouteFrame>{children}</RouteFrame>
                         </div>
                         {/* - */}
