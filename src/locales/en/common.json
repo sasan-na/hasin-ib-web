@@ -19,6 +19,9 @@
     "success": "Success",
     "navigation": {
         "home": "Home",
+        "groupBanking": "My banking",
+        "groupServices": "Money services",
+        "groupMore": "More",
         "general": "General",
         "accounts": "Accounts",
         "cards": "Cards",
@@ -40,6 +43,18 @@
     },
     "home": {
         "welcome": "Welcome, {{username}}!",
+        "hero": {
+            "overview": "Overview of your money",
+            "total": "Total balance",
+            "show": "Show amounts",
+            "hide": "Hide amounts",
+            "refresh": "Refresh balances",
+            "none": "No balance to show yet",
+            "basedOn_one": "Sum of {{count}} account",
+            "basedOn_other": "Sum of {{count}} accounts",
+            "bills": "Pay bills",
+            "statement": "Statement"
+        },
         "adminMessage": "Message from the bank",
         "recentTransactions": {
             "title": "Recent events",

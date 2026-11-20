@@ -14,6 +14,7 @@ import {getCardBalance} from "@/features/card/api/card"
 import {cardsOptions} from "@/features/card/api/card.queries"
 import {formatAmount, formatCardNumber} from "@/lib/format"
 import {cn} from "@/lib/utils"
+import {MASK, usePrivacyStore} from "@/store/privacy"
 
 interface TileProps {
 	name: string
@@ -32,6 +33,7 @@ function Tile({name, number, display, balance, fetchBalance, tone}: TileProps) {
 	const {t, i18n} = useTranslation()
 	const reveal = useMutation({mutationFn: async () => (fetchBalance ? fetchBalance() : null)})
 	const shown = reveal.data ?? balance
+	const hidden = usePrivacyStore((s) => s.hidden)
 
 	return (
 		<li className={cn("flex w-72 shrink-0 snap-start flex-col justify-between gap-6 rounded-xl p-4 text-white", tone)}>
@@ -54,7 +56,7 @@ function Tile({name, number, display, balance, fetchBalance, tone}: TileProps) {
 						{t("home.wallet.balance")}
 					</button>
 					<span className="text-base font-bold tabular-nums">
-						{shown === null ? (reveal.isError ? t("home.wallet.balanceFailed") : "—") : `${formatAmount(shown, i18n.language)} ${t("home.wallet.rial")}`}
+						{hidden ? MASK : shown === null ? (reveal.isError ? t("home.wallet.balanceFailed") : "—") : `${formatAmount(shown, i18n.language)} ${t("home.wallet.rial")}`}
 					</span>
 				</div>
 			) : null}

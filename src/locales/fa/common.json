@@ -19,6 +19,9 @@
     "success": "موفق",
     "navigation": {
         "home": "خانه",
+        "groupBanking": "بانکداری من",
+        "groupServices": "خدمات مالی",
+        "groupMore": "بیشتر",
         "general": "عمومی",
         "accounts": "حساب‌ها",
         "cards": "کارت",
@@ -40,6 +43,18 @@
     },
     "home": {
         "welcome": "{{username}} عزیز، خوش آمدید!",
+        "hero": {
+            "overview": "نمای یکپارچه دارایی",
+            "total": "مجموع موجودی شما",
+            "show": "نمایش مبالغ",
+            "hide": "پنهان کردن مبالغ",
+            "refresh": "به‌روزرسانی موجودی‌ها",
+            "none": "هنوز موجودی‌ای برای نمایش نیست",
+            "basedOn_one": "مجموع {{count}} حساب",
+            "basedOn_other": "مجموع {{count}} حساب",
+            "bills": "پرداخت قبض",
+            "statement": "صورت‌حساب"
+        },
         "adminMessage": "پیام بانک",
         "recentTransactions": {
             "title": "آخرین رویدادها",
