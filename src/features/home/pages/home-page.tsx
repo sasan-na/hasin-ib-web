@@ -81,7 +81,7 @@ export default function Home() {
 
 			<BalanceHero />
 
-			<div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+			<div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
 				<Wallet />
 				<QuickTransfer />
 			</div>

@@ -92,7 +92,7 @@ export function Wallet() {
 	const active = tab === "accounts" ? accounts : cards
 
 	return (
-		<section aria-labelledby="wallet-title" className="flex min-w-0 flex-col gap-4 rounded-lg bg-card p-5">
+		<section aria-labelledby="wallet-title" className="flex h-full min-w-0 flex-col gap-4 rounded-lg bg-card p-5">
 			<div className="flex flex-wrap items-center justify-between gap-2">
 				<h2 id="wallet-title" className="text-base font-semibold">
 					{t("home.wallet.title")}

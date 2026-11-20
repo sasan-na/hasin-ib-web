@@ -28,7 +28,7 @@ export function BalanceHero() {
 	const total = known.reduce((sum, account) => sum + (account.balances.available ?? 0), 0)
 
 	return (
-		<section aria-labelledby="hero-title" className="relative isolate overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground shadow-card sm:p-8">
+		<section aria-labelledby="hero-title" className="relative isolate overflow-hidden rounded-3xl bg-linear-to-br from-primary to-primary/80 p-5 text-primary-foreground shadow-card sm:p-8 lg:p-10">
 			<div aria-hidden="true" className="absolute -top-24 -end-20 -z-10 size-72 rounded-full border border-primary-foreground/10" />
 			<div aria-hidden="true" className="absolute -bottom-32 end-16 -z-10 size-80 rounded-full bg-primary-foreground/5" />
 
@@ -76,7 +76,7 @@ export function BalanceHero() {
 				) : known.length === 0 ? (
 					<p className="text-lg font-semibold">{t("home.hero.none")}</p>
 				) : (
-					<p className="text-3xl font-extrabold tracking-tight tabular-nums sm:text-4xl">
+					<p className="text-2xl font-extrabold tracking-tight tabular-nums sm:text-4xl lg:text-5xl">
 						{hidden ? MASK : formatAmount(total, i18n.language)}
 						<span className="ms-3 text-sm font-normal text-primary-foreground/70">{t("home.wallet.rial")}</span>
 					</p>
@@ -84,7 +84,7 @@ export function BalanceHero() {
 				{known.length > 0 ? <p className="mt-2 text-xs text-primary-foreground/70">{t("home.hero.basedOn", {count: known.length})}</p> : null}
 			</div>
 
-			<div className="mt-8 flex flex-wrap gap-2.5">
+			<div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8">
 				<Button asChild size="lg" className="h-11 rounded-xl bg-primary-foreground px-5 text-primary shadow-none hover:bg-primary-foreground/90">
 					<Link to={routeMap.transfer.path}>
 						<ArrowLeftRight />
