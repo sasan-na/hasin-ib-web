@@ -13,10 +13,10 @@ export function NavUser() {
 	const signOut = useSignOut()
 
 	return (
-		<div className="flex items-center gap-2 p-2">
+		<div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:p-0">
 			<Link to={routeMap.profile.path} className="flex min-w-0 flex-1 items-center gap-2 rounded-md p-1 hover:bg-muted" aria-label={t("profile.title")}>
 				<UserRound aria-hidden="true" className="size-4 shrink-0" />
-				<span className="min-w-0 flex-1 truncate text-sm font-medium" dir="ltr">
+				<span className="min-w-0 flex-1 truncate text-sm font-medium group-data-[collapsible=icon]:hidden" dir="ltr">
 					{username}
 				</span>
 			</Link>

@@ -14,7 +14,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {pathname} = useLocation()
     const {t, i18n} = useTranslation()
 
-    const navMain = [
+    const all = [
         {
             title: t("navigation.home"),
             url: routeMap.home.path,
@@ -95,12 +95,20 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         },
     ]
 
+    // Everyday banking first, then the money services, then the rest.
+    const at = (urls: string[]) => all.filter((item) => urls.includes(item.url))
+    const banking = at([routeMap.home.path, routeMap.account.path, routeMap.card.path, routeMap.transfer.path])
+    const services = at([routeMap.cheque.path, routeMap.digitalCheque.path, routeMap.loan.path, routeMap.payment.path, routeMap.branch.path])
+    const more = at([routeMap.report.path, routeMap.dashboardHome.path, routeMap.security.path, routeMap.other.path])
+
     return (
-        <Sidebar side={i18n.dir() === "rtl" ? "right" : "left"} variant={"sidebar"} collapsible="offcanvas" {...props}>
+        <Sidebar side={i18n.dir() === "rtl" ? "right" : "left"} variant={"sidebar"} collapsible="icon" {...props}>
             <SidebarLogo/>
             <Separator orientation="horizontal"/>
             <SidebarContent>
-                <NavMain items={navMain}/>
+                <NavMain label={t("navigation.groupBanking")} items={banking}/>
+                <NavMain label={t("navigation.groupServices")} items={services}/>
+                <NavMain label={t("navigation.groupMore")} items={more}/>
             </SidebarContent>
             <Separator orientation="horizontal"/>
             <SidebarFooter>

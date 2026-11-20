@@ -6,12 +6,12 @@ export default function SidebarLogo() {
     const {t} = useTranslation()
     return (
         <div
-            className={`flex h-16 items-center px-4`}>
+            className={`flex h-16 items-center px-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0`}>
             <NavLink to={"/"}
                      className={`flex w-full items-center gap-2 fill-primary text-black transition-opacity hover:opacity-75 dark:text-white`}>
                 <Logo size={22}
                       className={"fill-inherit transition-colors"}/>
-                <h1 className={"text-base font-semibold"}> {t("appName")} </h1>
+                <h1 className={"truncate text-base font-semibold group-data-[collapsible=icon]:hidden"}> {t("appName")} </h1>
             </NavLink>
         </div>
     )

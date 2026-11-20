@@ -16,7 +16,9 @@ import {NavLink} from "react-router-dom";
 
 export function NavMain({
                             items,
+                            label,
                         }: {
+    label?: string
     items: {
         title: string
         url: string
@@ -32,7 +34,7 @@ export function NavMain({
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>{t("navigation.general")}</SidebarGroupLabel>
+            <SidebarGroupLabel>{label ?? t("navigation.general")}</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => {
                     if (item?.items && item.items.length > 0) {
