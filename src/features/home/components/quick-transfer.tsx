@@ -25,7 +25,7 @@ export function QuickTransfer() {
 	const [amount, setAmount] = useState("")
 
 	return (
-		<section aria-labelledby="quick-transfer-title" className="flex flex-col gap-4 rounded-lg bg-card p-5">
+		<section aria-labelledby="quick-transfer-title" className="flex h-full flex-col gap-4 rounded-lg bg-card p-5">
 			<h2 id="quick-transfer-title" className="text-base font-semibold">
 				{t("home.quickTransfer.title")}
 			</h2>
