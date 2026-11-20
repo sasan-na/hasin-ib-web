@@ -55,6 +55,23 @@
             "bills": "Pay bills",
             "statement": "Statement"
         },
+        "monthly": {
+            "title": "This month's cash flow",
+            "saved": "{{percent}}% saved",
+            "error": "The monthly report could not be loaded. Try again in a moment.",
+            "none": "No account to report on.",
+            "remaining": "Left after withdrawals",
+            "deposits": "Deposits",
+            "withdrawals": "Withdrawals",
+            "more": "Full monthly report"
+        },
+        "upcoming": {
+            "title": "Upcoming payments",
+            "hint": "Loan installments, nearest due date first",
+            "error": "The loans could not be loaded. Try again in a moment.",
+            "none": "No installment is coming up.",
+            "pay": "Pay"
+        },
         "adminMessage": "Message from the bank",
         "recentTransactions": {
             "title": "Recent events",

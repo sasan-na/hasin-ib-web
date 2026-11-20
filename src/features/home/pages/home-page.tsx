@@ -6,8 +6,10 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {BalanceHero} from "@/features/home/components/balance-hero"
 import {FavoriteServices} from "@/features/home/components/favorite-services"
+import {MonthlySnapshot} from "@/features/home/components/monthly-snapshot"
 import {QuickTransfer} from "@/features/home/components/quick-transfer"
 import {Wallet} from "@/features/home/components/wallet"
+import {UpcomingPayments} from "@/features/home/components/upcoming-payments"
 import {HomeWidget} from "@/features/home/components/home-widget"
 import {RecentTransactions} from "@/features/home/components/recent-transactions"
 import {Skeleton} from "@/components/ui/skeleton"
@@ -82,6 +84,11 @@ export default function Home() {
 			<div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
 				<Wallet />
 				<QuickTransfer />
+			</div>
+
+			<div className="grid items-start gap-6 md:grid-cols-2">
+				<MonthlySnapshot />
+				<UpcomingPayments />
 			</div>
 
 			<FavoriteServices />
