@@ -104,7 +104,6 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar side={i18n.dir() === "rtl" ? "right" : "left"} variant={"sidebar"} collapsible="icon" {...props}>
             <SidebarLogo/>
-            <Separator orientation="horizontal"/>
             <SidebarContent>
                 <NavMain label={t("navigation.groupBanking")} items={banking}/>
                 <NavMain label={t("navigation.groupServices")} items={services}/>

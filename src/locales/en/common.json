@@ -1,6 +1,6 @@
 {
     "skipToMain": "Skip to main content",
-    "appName": "IBN",
+    "appName": "Hasin",
     "button": {
         "submit": "Submit",
         "cancel": "Cancel",
@@ -78,6 +78,7 @@
             "statement": "Statement"
         },
         "monthly": {
+            "week": "Week {{number}}",
             "title": "This month's cash flow",
             "saved": "{{percent}}% saved",
             "error": "The monthly report could not be loaded. Try again in a moment.",
@@ -119,6 +120,8 @@
             "empty": "Star a service on the Accounts, Cards or Transfers pages and it will show up here."
         },
         "wallet": {
+            "bankAccount": "Bank account",
+            "bankCard": "Bank card",
             "subtitle": "The accounts and cards linked to your profile",
             "title": "My money",
             "accounts": "Accounts",
