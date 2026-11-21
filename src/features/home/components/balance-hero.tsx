@@ -28,12 +28,23 @@ export function BalanceHero() {
 	const total = known.reduce((sum, account) => sum + (account.balances.available ?? 0), 0)
 
 	return (
-		<section aria-labelledby="hero-title" className="relative isolate min-h-[330px] overflow-hidden rounded-[2rem] bg-linear-to-br from-primary to-primary/80 p-6 text-primary-foreground shadow-card sm:p-8">
-			<div aria-hidden="true" className="absolute -top-24 -end-20 -z-10 size-72 rounded-full border border-primary-foreground/10" />
-			<svg aria-hidden="true" viewBox="0 0 420 120" preserveAspectRatio="none" className="absolute -bottom-1 start-0 -z-10 h-36 w-[55%] min-w-72 opacity-40 rtl:-scale-x-100">
+		<section
+			aria-labelledby="hero-title"
+			className="relative isolate h-full min-h-[330px] overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,oklch(0.36_0.1_250),oklch(0.48_0.11_225))] p-6 text-primary-foreground shadow-card sm:p-8"
+		>
+			{/* The decoration sits on the physical left in both languages, as in the design. */}
+			<div aria-hidden="true" className="absolute -left-20 -top-24 -z-10 size-72 rounded-full border border-primary-foreground/10" />
+			<div aria-hidden="true" className="absolute -bottom-32 left-16 -z-10 size-80 rounded-full bg-primary-foreground/5" />
+			<svg aria-hidden="true" viewBox="0 0 420 120" preserveAspectRatio="none" className="absolute -bottom-1 -left-2 -z-10 h-36 w-[55%] min-w-72 opacity-40">
+				<defs>
+					<linearGradient id="hero-chart-fill" x1="0" y1="0" x2="0" y2="1">
+						<stop offset="0%" style={{stopColor: "var(--primary-foreground)"}} stopOpacity="0.2" />
+						<stop offset="100%" style={{stopColor: "var(--primary-foreground)"}} stopOpacity="0" />
+					</linearGradient>
+				</defs>
+				<path d="M0 98 C40 90 52 70 88 78 S142 94 172 63 S226 74 258 48 S315 58 346 30 S392 27 420 10 L420 120 L0 120 Z" fill="url(#hero-chart-fill)" />
 				<path d="M0 98 C40 90 52 70 88 78 S142 94 172 63 S226 74 258 48 S315 58 346 30 S392 27 420 10" fill="none" className="stroke-primary-foreground" strokeWidth="3" strokeLinecap="round" />
 			</svg>
-			<div aria-hidden="true" className="absolute -bottom-32 end-16 -z-10 size-80 rounded-full bg-primary-foreground/5" />
 
 			<div className="flex items-start justify-between gap-4">
 				<div>

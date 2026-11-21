@@ -189,7 +189,7 @@
 	--warning-soft-foreground: oklch(0.42 0.10 85);
 	--info: #006fb0;
 	--border: oklch(0.91 0.012 245);
-	--input: oklch(0.62 0.03 250);
+	--input: oklch(0.89 0.015 245);
 	--ring: oklch(0.55 0.11 245);
 	--gradient-brand: linear-gradient(135deg, oklch(0.36 0.1 250), oklch(0.48 0.11 225));
 	--card-shadow: 0 1px 2px oklch(0.3 0.05 250 / 0.04), 0 8px 24px -12px oklch(0.3 0.05 250 / 0.12);
