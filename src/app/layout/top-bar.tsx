@@ -5,9 +5,7 @@ import {useTranslation} from "react-i18next"
 import {Link, NavLink, useNavigate} from "react-router-dom"
 
 import {routeMap} from "@/app/routes"
-import {LanguageSwitcher} from "@/components/language-switcher"
 import {Logo} from "@/components/logo"
-import {ThemeSwitcher} from "@/components/theme-switcher"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Button} from "@/components/ui/button"
 import {CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command"
@@ -60,7 +58,8 @@ export function TopBar() {
 
 	const unreadMessages = (messages.data ?? []).filter((message) => message.isUnread)
 	const unread = unreadMessages.reduce((sum, message) => sum + Math.max(1, message.unreadCount), 0)
-	const name = profile.data?.fullName?.trim() || profile.data?.username || sessionUsername || ""
+	const username = profile.data?.username || sessionUsername || ""
+	const name = profile.data?.fullName?.trim() || username
 
 	useEffect(() => {
 		const onKey = (event: KeyboardEvent) => {
@@ -109,12 +108,6 @@ export function TopBar() {
 						<Search className="size-5" />
 					</Button>
 
-					<Button variant="ghost" size="icon" asChild className={`${ICON_BUTTON} hidden sm:inline-flex`}>
-						<NavLink to={routeMap.other.path} aria-label={t("header.help")} title={t("header.help")}>
-							<CircleHelp className="size-5" />
-						</NavLink>
-					</Button>
-
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="ghost" size="icon" aria-label={unread > 0 ? t("header.notificationsUnread", {count: unread}) : t("header.notifications")} className={`${ICON_BUTTON} relative`}>
@@ -158,9 +151,6 @@ export function TopBar() {
 						</PopoverContent>
 					</Popover>
 
-					<ThemeSwitcher className={`${ICON_BUTTON} hidden sm:inline-flex`} />
-					<LanguageSwitcher className="hidden sm:inline-flex" />
-
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button
@@ -172,43 +162,60 @@ export function TopBar() {
 									{profile.data?.image ? <AvatarImage src={profile.data.image} alt="" /> : null}
 									<AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
 								</Avatar>
-								<span className="hidden max-w-32 truncate text-sm font-semibold lg:block" dir="auto">
-									{name}
+								<span className="hidden min-w-0 text-start sm:block">
+									<span className="block max-w-40 truncate text-sm font-semibold leading-4" dir="auto">
+										{name}
+									</span>
+									{username !== "" && username !== name ? (
+										<span className="mt-0.5 block max-w-40 truncate text-[11px] text-muted-foreground" dir="ltr">
+											{username}
+										</span>
+									) : null}
 								</span>
 							</button>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="w-56">
+						<DropdownMenuContent align="end" className="w-60 rounded-2xl p-1.5">
 							<DropdownMenuLabel className="font-normal">
 								<p className="truncate text-sm font-semibold" dir="auto">
 									{name}
 								</p>
+								{username !== "" && username !== name ? (
+									<p className="truncate text-xs text-muted-foreground" dir="ltr">
+										{username}
+									</p>
+								) : null}
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem asChild>
+							<DropdownMenuItem asChild className="h-10 rounded-lg">
 								<Link to={routeMap.profile.path}>
 									<UserRound />
-									{t("profile.title")}
+									{t("header.profileSecurity")}
 								</Link>
 							</DropdownMenuItem>
-							<DropdownMenuItem asChild>
+							<DropdownMenuItem asChild className="h-10 rounded-lg">
 								<Link to={routeMap.settings.path}>
 									<Settings />
 									{t("settings.title")}
 								</Link>
 							</DropdownMenuItem>
-							{/* On a phone the theme and language buttons leave the bar, so they live here. */}
-							<DropdownMenuItem className="sm:hidden" onSelect={() => setTheme(dark ? "light" : "dark")}>
-								{dark ? <Sun /> : <Moon />}
-								{t(dark ? "theme.light" : "theme.dark")}
-							</DropdownMenuItem>
-							<DropdownMenuItem className="sm:hidden" lang={otherLanguage} onSelect={() => void i18n.changeLanguage(otherLanguage)}>
+							<DropdownMenuItem className="h-10 rounded-lg" lang={otherLanguage} onSelect={() => void i18n.changeLanguage(otherLanguage)}>
 								<Languages />
-								{LANGUAGE_NATIVE_NAMES[otherLanguage]}
+								{t("header.language", {name: LANGUAGE_NATIVE_NAMES[i18n.resolvedLanguage as SupportedLanguage] ?? ""})}
+							</DropdownMenuItem>
+							<DropdownMenuItem className="h-10 rounded-lg" onSelect={() => setTheme(dark ? "light" : "dark")}>
+								{dark ? <Sun /> : <Moon />}
+								{t(dark ? "header.lightMode" : "header.darkMode")}
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild className="h-10 rounded-lg">
+								<Link to={routeMap.other.path}>
+									<CircleHelp />
+									{t("header.help")}
+								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem onSelect={() => void signOut()} className="text-destructive focus:text-destructive">
+							<DropdownMenuItem onSelect={() => void signOut()} className="h-10 rounded-lg text-destructive focus:text-destructive">
 								<LogOut className="rtl:-scale-x-100" />
-								{t("auth.signOut")}
+								{t("header.secureSignOut")}
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

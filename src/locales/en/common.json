@@ -18,6 +18,11 @@
     },
     "success": "Success",
     "header": {
+        "profileSecurity": "Profile and security",
+        "language": "Language: {{name}}",
+        "lightMode": "Light mode",
+        "darkMode": "Dark mode",
+        "secureSignOut": "Sign out securely",
         "search": "Search",
         "searchPlaceholder": "Search pages, or type a word to search accounts…",
         "searchFor": "Search",
@@ -100,10 +105,17 @@
             "dateTime": "Date and time",
             "status": "Status"
         },
+        "frequent": {
+            "account": {"title": "Account to account", "hint": "Instant transfer"},
+            "card": {"title": "Card to card", "hint": "By card number"},
+            "paya": {"title": "Paya and Satna", "hint": "Between banks"},
+            "bill": {"title": "Pay bills", "hint": "Bills and top-ups"},
+            "statement": {"title": "Statement", "hint": "Report and receipt"}
+        },
         "favorites": {
-            "subtitle": "Your starred services, one tap away",
+            "subtitle": "One tap to where you are going",
             "allTransfers": "All transfers",
-            "title": "Most used services",
+            "title": "Frequent tasks",
             "empty": "Star a service on the Accounts, Cards or Transfers pages and it will show up here."
         },
         "wallet": {

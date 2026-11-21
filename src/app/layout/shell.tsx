@@ -53,8 +53,8 @@ export function AuthShell({children}: { children?: React.ReactNode }): React.Rea
                     <TopBar/>
                     <div className={"flex flex-col"}>
                         {/* Main entry for content */}
-                        <div className={"w-full self-center px-5 pb-6 md:container"}>
-                            <div className="py-3"><BreadcrumbResponsive items={breadcrumbItems}/></div>
+                        <div className={"mx-auto w-full max-w-[1560px] px-4 py-6 sm:px-6 sm:py-7 lg:px-8"}>
+                            {pathname !== routeMap.home.path ? <div className="mb-4"><BreadcrumbResponsive items={breadcrumbItems}/></div> : null}
                             <RouteFrame>{children}</RouteFrame>
                         </div>
                         {/* - */}
