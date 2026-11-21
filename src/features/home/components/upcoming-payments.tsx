@@ -23,7 +23,7 @@ export function UpcomingPayments() {
 		.slice(0, SHOWN)
 
 	return (
-		<section aria-labelledby="upcoming-title" className="flex min-w-0 flex-col gap-4 rounded-lg bg-card p-5">
+		<section aria-labelledby="upcoming-title" className="flex h-full min-w-0 flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
 			<div>
 				<h2 id="upcoming-title" className="flex items-center gap-2 text-base font-semibold">
 					<CalendarClock aria-hidden="true" className="size-4 text-primary" />

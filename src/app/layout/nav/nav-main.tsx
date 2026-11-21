@@ -71,7 +71,7 @@ export function NavMain({
                     } else {
                         return (
                             <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild isActive={item.isActive} tooltip={item.title}>
+                                <SidebarMenuButton asChild size="lg" isActive={item.isActive} tooltip={item.title} className="h-11 rounded-xl px-3 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold group-data-[collapsible=icon]:!size-11 group-data-[collapsible=icon]:!p-3">
                                     <NavLink to={item.url}>
                                         {item.icon && <item.icon/>}
                                         <span>{item.title}</span>

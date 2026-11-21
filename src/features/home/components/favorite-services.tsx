@@ -1,7 +1,9 @@
 import {useQueries} from "@tanstack/react-query"
+import {ArrowRight} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router-dom"
 
+import {routeMap} from "@/app/routes"
 import {Skeleton} from "@/components/ui/skeleton"
 import {accountDestinations} from "@/features/account/lib/destinations"
 import {cardDestinations} from "@/features/card/lib/destinations"
@@ -31,10 +33,19 @@ export function FavoriteServices() {
 	)
 
 	return (
-		<section aria-labelledby="favorite-services-title" className="flex flex-col gap-4 rounded-lg bg-card p-5">
-			<h2 id="favorite-services-title" className="text-base font-semibold">
-				{t("home.favorites.title")}
-			</h2>
+		<section aria-labelledby="favorite-services-title" className="flex flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
+			<div className="flex items-start justify-between gap-3">
+				<div>
+					<h2 id="favorite-services-title" className="text-base font-semibold">
+						{t("home.favorites.title")}
+					</h2>
+					<p className="mt-1 text-xs text-muted-foreground">{t("home.favorites.subtitle")}</p>
+				</div>
+				<Link to={routeMap.transfer.path} className="flex shrink-0 items-center gap-1 text-sm font-medium text-brand hover:underline">
+					{t("home.favorites.allTransfers")}
+					<ArrowRight aria-hidden="true" className="size-4 rtl:-scale-x-100" />
+				</Link>
+			</div>
 			{pending ? (
 				<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-hidden="true">
 					<Skeleton className="h-24 w-full" />
@@ -48,7 +59,7 @@ export function FavoriteServices() {
 						const Icon = destination.icon
 						return (
 							<li key={item.id}>
-								<Link to={destination.to} className="flex h-full flex-col gap-2 rounded-lg bg-muted/60 p-4 outline-offset-2 hover:bg-muted">
+								<Link to={destination.to} className="group flex h-full flex-col gap-2 rounded-2xl border bg-card p-4 outline-offset-2 transition-all hover:-translate-y-0.5 hover:border-primary/30">
 									<span aria-hidden="true" className={cn("flex size-9 items-center justify-center rounded-full", destination.badge)}>
 										<Icon className="size-5" />
 									</span>

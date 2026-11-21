@@ -41,6 +41,8 @@ export default function Home() {
 	// A user who arranged the page sees their own rows; everyone else (or while it loads or fails) sees the standard one.
 	const rows = arrangement.data && !arrangement.data.useDefault ? arrangement.data.rows.filter((row) => row.columns.some((column) => column.widget !== "")) : []
 
+	const today = new Intl.DateTimeFormat(i18n.language === "en" ? "en" : `${i18n.language}-u-ca-persian`, {weekday: "long", day: "numeric", month: "long", year: "numeric"}).format(new Date())
+
 	// A main user has a full name; a sub-user only a username. The bidi isolation marks keep a Latin
 	// username from reordering the surrounding Persian sentence.
 	const fullName = profile.data?.fullName?.trim() || null
@@ -48,7 +50,7 @@ export default function Home() {
 	const image = profile.data?.image || undefined
 
 	return (
-		<div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+		<div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
 			<header className="flex items-center gap-4">
 				<Avatar size="lg" className="size-14">
 					{image ? <AvatarImage src={image} alt="" /> : null}
@@ -57,9 +59,12 @@ export default function Home() {
 				{profile.isPending ? (
 					<Skeleton className="h-8 w-56" />
 				) : (
-					<h1 className="text-2xl font-bold wrap-break-word">
-						{t("home.welcome", {username: `⁨${name}⁩`})}
-					</h1>
+					<div className="min-w-0">
+						<h1 className="text-3xl font-extrabold tracking-tight wrap-break-word sm:text-4xl">
+							{t("home.welcome", {username: `⁨${name}⁩`})}
+						</h1>
+						<p className="mt-1 text-sm text-muted-foreground">{t("home.subtitle", {date: today})}</p>
+					</div>
 				)}
 			</header>
 
@@ -79,34 +84,54 @@ export default function Home() {
 				</Alert>
 			) : null}
 
-			<BalanceHero />
-
-			<div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-				<Wallet />
-				<QuickTransfer />
+			<div className="grid items-stretch gap-6 xl:grid-cols-12">
+				<div className="min-w-0 xl:col-span-8">
+					<BalanceHero />
+				</div>
+				<div className="min-w-0 xl:col-span-4">
+					<MonthlySnapshot />
+				</div>
 			</div>
 
-			<div className="grid items-start gap-6 md:grid-cols-2">
-				<MonthlySnapshot />
-				<UpcomingPayments />
+			<div className="grid items-stretch gap-6 xl:grid-cols-12">
+				<div className="min-w-0 xl:col-span-8">
+					<Wallet />
+				</div>
+				<div className="min-w-0 xl:col-span-4">
+					<QuickTransfer />
+				</div>
 			</div>
 
 			<FavoriteServices />
 
 			{rows.length === 0 ? (
-				<RecentTransactions />
-			) : (
-				rows.map((row) => (
-					<div key={row.index} className="grid items-start gap-6 md:grid-cols-12">
-						{row.columns.map((column) =>
-							column.widget === "" ? null : (
-								<div key={column.index} className={`${SPAN[column.width] ?? "md:col-span-12"} min-w-0`}>
-									<HomeWidget widget={column.widget} />
-								</div>
-							),
-						)}
+				<div className="grid items-start gap-6 xl:grid-cols-12">
+					<div className="min-w-0 xl:col-span-8">
+						<RecentTransactions />
 					</div>
-				))
+					<div className="min-w-0 xl:col-span-4">
+						<UpcomingPayments />
+					</div>
+				</div>
+			) : (
+				<>
+					{rows.map((row) => (
+						<div key={row.index} className="grid items-start gap-6 md:grid-cols-12">
+							{row.columns.map((column) =>
+								column.widget === "" ? null : (
+									<div key={column.index} className={`${SPAN[column.width] ?? "md:col-span-12"} min-w-0`}>
+										<HomeWidget widget={column.widget} />
+									</div>
+								),
+							)}
+						</div>
+					))}
+					<div className="grid gap-6 xl:grid-cols-12">
+						<div className="min-w-0 xl:col-span-4">
+							<UpcomingPayments />
+						</div>
+					</div>
+				</>
 			)}
 		</div>
 	)

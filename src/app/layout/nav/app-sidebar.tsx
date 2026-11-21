@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next"
 import {NavMain} from "@/app/layout/nav/nav-main"
 import SidebarLogo from "@/app/layout/nav/nav-logo.tsx"
 import {NavUser} from "@/app/layout/nav/nav-user"
-import {Sidebar, SidebarContent, SidebarFooter, SidebarRail} from "@/components/ui/sidebar"
+import {Sidebar, SidebarContent, SidebarFooter} from "@/components/ui/sidebar"
 import {Separator} from "@/components/ui/separator.tsx"
 import {routeMap} from "@/app/routes"
 
@@ -114,7 +114,6 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             <SidebarFooter>
                 <NavUser/>
             </SidebarFooter>
-            <SidebarRail/>
         </Sidebar>
     )
 }

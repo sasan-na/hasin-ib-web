@@ -58,7 +58,7 @@ export function MonthlySnapshot() {
 	const monthName = new Intl.DateTimeFormat(persian ? `${i18n.language}-u-ca-persian` : i18n.language, {month: "long", year: "numeric"}).format(new Date())
 
 	return (
-		<section aria-labelledby="monthly-title" className="flex min-w-0 flex-col gap-5 rounded-lg bg-card p-5">
+		<section aria-labelledby="monthly-title" className="flex h-full min-w-0 flex-col gap-5 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
 			<div className="flex items-start justify-between gap-3">
 				<div>
 					<h2 id="monthly-title" className="flex items-center gap-2 text-base font-semibold">

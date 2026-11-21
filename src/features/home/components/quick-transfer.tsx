@@ -1,3 +1,4 @@
+import {ArrowRight, ShieldCheck} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "react-i18next"
 import {useNavigate} from "react-router-dom"
@@ -10,6 +11,8 @@ import {SourceAccountSelect} from "@/features/transaction/components/source-acco
 import type {TransferPrefill} from "@/features/transfer/lib/prefill"
 import {formatAmount} from "@/lib/format"
 import {normalizeDigits} from "@/lib/normalize-digits"
+
+const QUICK_AMOUNTS = [100_000_000, 500_000_000, 1_000_000_000]
 
 const digits = (value: string): string => normalizeDigits(value).replace(/\D/g, "")
 
@@ -25,10 +28,13 @@ export function QuickTransfer() {
 	const [amount, setAmount] = useState("")
 
 	return (
-		<section aria-labelledby="quick-transfer-title" className="flex h-full flex-col gap-4 rounded-lg bg-card p-5">
-			<h2 id="quick-transfer-title" className="text-base font-semibold">
-				{t("home.quickTransfer.title")}
-			</h2>
+		<section aria-labelledby="quick-transfer-title" className="flex h-full flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
+			<div>
+				<h2 id="quick-transfer-title" className="text-base font-semibold">
+					{t("home.quickTransfer.title")}
+				</h2>
+				<p className="mt-1 text-xs text-muted-foreground">{t("home.quickTransfer.subtitle")}</p>
+			</div>
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="quick-source">{t("transfer.sourceAccount")}</Label>
 				<SourceAccountSelect id="quick-source" serviceName="AccountTransferMoney" value={sourceId} onChange={(account) => setSourceId(account?.id ?? null)} />
@@ -48,6 +54,18 @@ export function QuickTransfer() {
 					value={amount}
 					onChange={(event) => setAmount(digits(event.target.value).replace(/^0+/, ""))}
 				/>
+				<div className="grid grid-cols-3 gap-2">
+					{QUICK_AMOUNTS.map((value) => (
+						<button
+							key={value}
+							type="button"
+							onClick={() => setAmount(String(value))}
+							className="rounded-lg border px-2 py-1.5 text-xs tabular-nums text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+						>
+							{formatAmount(value, i18n.language)}
+						</button>
+					))}
+				</div>
 				{amount !== "" ? <p className="text-sm text-muted-foreground">{`${formatAmount(Number(amount), i18n.language)} ${t("transfer.rial")}`}</p> : null}
 			</div>
 			<Button
@@ -58,7 +76,12 @@ export function QuickTransfer() {
 				}}
 			>
 				{t("home.quickTransfer.continue")}
+				<ArrowRight className="rtl:-scale-x-100" />
 			</Button>
+			<p className="flex items-start gap-2 text-xs leading-5 text-muted-foreground">
+				<ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-success" />
+				{t("home.quickTransfer.safe")}
+			</p>
 		</section>
 	)
 }

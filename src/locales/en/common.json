@@ -18,13 +18,24 @@
     },
     "success": "Success",
     "header": {
-        "systemStatus": "All systems operational",
+        "search": "Search",
+        "searchPlaceholder": "Search pages, or type a word to search accounts…",
+        "searchFor": "Search",
+        "searchPhrase": "Search for “{{phrase}}”",
+        "pages": "Pages",
+        "noResults": "Nothing found.",
+        "notificationsUnread_one": "Notifications ({{count}} unread)",
+        "notificationsUnread_other": "Notifications ({{count}} unread)",
+        "notificationsError": "The messages could not be loaded.",
+        "allMessages": "All messages",
+        "profileMenu": "Account menu",
         "notifications": "Notifications",
         "help": "Help & Support",
         "noNotifications": "You have no unread messages."
     },
     "navigation": {
         "home": "Home",
+        "tagline": "Personal banking",
         "groupBanking": "My banking",
         "groupServices": "Money services",
         "groupMore": "More",
@@ -78,8 +89,10 @@
             "none": "No installment is coming up.",
             "pay": "Pay"
         },
+        "subtitle": "{{date}} · Your financial summary for today",
         "adminMessage": "Message from the bank",
         "recentTransactions": {
+            "subtitle": "The latest events on your accounts",
             "title": "Recent events",
             "empty": "No transactions yet.",
             "error": "The recent events could not be loaded. Try again in a moment.",
@@ -88,10 +101,13 @@
             "status": "Status"
         },
         "favorites": {
+            "subtitle": "Your starred services, one tap away",
+            "allTransfers": "All transfers",
             "title": "Most used services",
             "empty": "Star a service on the Accounts, Cards or Transfers pages and it will show up here."
         },
         "wallet": {
+            "subtitle": "The accounts and cards linked to your profile",
             "title": "My money",
             "accounts": "Accounts",
             "cards": "Cards",
@@ -106,6 +122,8 @@
             "allCardsHint": "Manage your cards"
         },
         "quickTransfer": {
+            "subtitle": "Account to account, without retyping",
+            "safe": "Nothing is sent from here; you confirm on the next page.",
             "title": "Quick transfer",
             "continue": "Continue"
         },

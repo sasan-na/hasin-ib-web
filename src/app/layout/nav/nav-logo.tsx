@@ -11,7 +11,7 @@ export default function SidebarLogo() {
                      className={`flex w-full items-center gap-2 fill-primary text-black transition-opacity hover:opacity-75 dark:text-white`}>
                 <Logo size={22}
                       className={"fill-inherit transition-colors"}/>
-                <h1 className={"truncate text-base font-semibold group-data-[collapsible=icon]:hidden"}> {t("appName")} </h1>
+                <span className={"min-w-0 group-data-[collapsible=icon]:hidden"}><h1 className={"truncate text-lg font-extrabold leading-5"}> {t("appName")} </h1><span className={"block truncate text-[11px] font-normal text-muted-foreground"}>{t("navigation.tagline")}</span></span>
             </NavLink>
         </div>
     )
