@@ -198,8 +198,8 @@ export function Wallet() {
 	)
 
 	return (
-		<section aria-labelledby="wallet-title" className="flex h-full min-w-0 flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+		<section aria-labelledby="wallet-title" className="flex h-full min-w-0 flex-col overflow-hidden rounded-[2rem] border bg-card shadow-card">
+			<div className="flex flex-wrap items-center justify-between gap-4 p-5 sm:px-6">
 				<div>
 					<h2 id="wallet-title" className="flex items-center gap-2 text-base font-semibold">
 						<WalletCards aria-hidden="true" className="size-4 text-primary" />
@@ -214,17 +214,19 @@ export function Wallet() {
 					</TabsList>
 				</Tabs>
 			</div>
-			{active.isPending ? (
-				<Skeleton className="h-40 w-full" />
-			) : active.isError ? (
-				<p role="alert" className="text-sm text-destructive">
-					{t("home.wallet.error")}
-				</p>
-			) : slides ? (
-				<TileSlider>{tiles}</TileSlider>
-			) : (
-				<ul className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">{tiles}</ul>
-			)}
+			<div className="flex-1 border-t p-5 sm:p-6">
+				{active.isPending ? (
+					<Skeleton className="h-40 w-full" />
+				) : active.isError ? (
+					<p role="alert" className="text-sm text-destructive">
+						{t("home.wallet.error")}
+					</p>
+				) : slides ? (
+					<TileSlider>{tiles}</TileSlider>
+				) : (
+					<ul className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">{tiles}</ul>
+				)}
+			</div>
 		</section>
 	)
 }

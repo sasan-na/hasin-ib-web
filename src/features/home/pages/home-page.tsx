@@ -3,7 +3,6 @@ import {Megaphone} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {BalanceHero} from "@/features/home/components/balance-hero"
 import {FavoriteServices} from "@/features/home/components/favorite-services"
 import {MonthlySnapshot} from "@/features/home/components/monthly-snapshot"
@@ -47,29 +46,22 @@ export default function Home() {
 	// username from reordering the surrounding Persian sentence.
 	const fullName = profile.data?.fullName?.trim() || null
 	const name = fullName ?? profile.data?.username ?? sessionUsername ?? ""
-	const image = profile.data?.image || undefined
 
 	return (
-		<div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-			<header className="flex items-center gap-4">
-				<Avatar size="lg" className="size-14">
-					{image ? <AvatarImage src={image} alt="" /> : null}
-					<AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
-				</Avatar>
+		<div className="flex w-full flex-col">
+			<header className="mb-6">
 				{profile.isPending ? (
-					<Skeleton className="h-8 w-56" />
+					<Skeleton className="h-9 w-56" />
 				) : (
-					<div className="min-w-0">
-						<h1 className="text-3xl font-extrabold tracking-tight wrap-break-word sm:text-4xl">
-							{t("home.welcome", {username: `⁨${name}⁩`})}
-						</h1>
+					<>
+						<h1 className="text-2xl font-bold tracking-tight wrap-break-word md:text-3xl">{t("home.welcome", {username: `⁨${name}⁩`})}</h1>
 						<p className="mt-1 text-sm text-muted-foreground">{t("home.subtitle", {date: today})}</p>
-					</div>
+					</>
 				)}
 			</header>
 
 			{adminMessage.data ? (
-				<Alert>
+				<Alert className="mb-6">
 					<Megaphone />
 					<AlertTitle>{t("home.adminMessage")}</AlertTitle>
 					<AlertDescription>
@@ -84,7 +76,7 @@ export default function Home() {
 				</Alert>
 			) : null}
 
-			<div className="grid items-stretch gap-6 xl:grid-cols-12">
+			<div className="grid items-stretch gap-5 xl:grid-cols-12">
 				<div className="min-w-0 xl:col-span-8">
 					<BalanceHero />
 				</div>
@@ -93,7 +85,7 @@ export default function Home() {
 				</div>
 			</div>
 
-			<div className="grid items-stretch gap-6 xl:grid-cols-12">
+			<div className="mt-5 grid items-stretch gap-5 xl:grid-cols-12">
 				<div className="min-w-0 xl:col-span-8">
 					<Wallet />
 				</div>
@@ -102,10 +94,12 @@ export default function Home() {
 				</div>
 			</div>
 
-			<FavoriteServices />
+			<div className="mt-8">
+				<FavoriteServices />
+			</div>
 
 			{rows.length === 0 ? (
-				<div className="grid items-start gap-6 xl:grid-cols-12">
+				<div className="mt-8 grid items-start gap-5 xl:grid-cols-12">
 					<div className="min-w-0 xl:col-span-8">
 						<RecentTransactions />
 					</div>
@@ -116,7 +110,7 @@ export default function Home() {
 			) : (
 				<>
 					{rows.map((row) => (
-						<div key={row.index} className="grid items-start gap-6 md:grid-cols-12">
+						<div key={row.index} className="mt-8 grid items-start gap-5 md:grid-cols-12">
 							{row.columns.map((column) =>
 								column.widget === "" ? null : (
 									<div key={column.index} className={`${SPAN[column.width] ?? "md:col-span-12"} min-w-0`}>
@@ -126,7 +120,7 @@ export default function Home() {
 							)}
 						</div>
 					))}
-					<div className="grid gap-6 xl:grid-cols-12">
+					<div className="mt-8 grid gap-5 xl:grid-cols-12">
 						<div className="min-w-0 xl:col-span-4">
 							<UpcomingPayments />
 						</div>

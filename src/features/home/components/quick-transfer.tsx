@@ -30,10 +30,10 @@ export function QuickTransfer() {
 	return (
 		<section aria-labelledby="quick-transfer-title" className="flex h-full flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
 			<div>
-				<h2 id="quick-transfer-title" className="text-base font-semibold">
+				<h2 id="quick-transfer-title" className="text-lg font-semibold">
 					{t("home.quickTransfer.title")}
 				</h2>
-				<p className="mt-1 text-xs text-muted-foreground">{t("home.quickTransfer.subtitle")}</p>
+				<p className="mt-1 text-sm text-muted-foreground">{t("home.quickTransfer.subtitle")}</p>
 			</div>
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="quick-source">{t("transfer.sourceAccount")}</Label>
@@ -41,12 +41,13 @@ export function QuickTransfer() {
 			</div>
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="quick-destination">{t("transfer.destinationAccount")}</Label>
-				<Input id="quick-destination" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={15} value={destination} onChange={(event) => setDestination(digits(event.target.value))} />
+				<Input id="quick-destination" className="h-11" dir="ltr" inputMode="numeric" autoComplete="off" maxLength={15} value={destination} onChange={(event) => setDestination(digits(event.target.value))} />
 			</div>
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="quick-amount">{t("transfer.amount")}</Label>
 				<Input
 					id="quick-amount"
+					className="h-11"
 					dir="ltr"
 					inputMode="numeric"
 					autoComplete="off"
@@ -70,6 +71,7 @@ export function QuickTransfer() {
 			</div>
 			<Button
 				type="button"
+				className="h-11 w-full"
 				onClick={() => {
 					const state: TransferPrefill = {sourceId, destination, amount}
 					void navigate(routeMap.transferSmart.path, {state})

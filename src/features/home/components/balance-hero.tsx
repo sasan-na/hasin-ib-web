@@ -28,7 +28,7 @@ export function BalanceHero() {
 	const total = known.reduce((sum, account) => sum + (account.balances.available ?? 0), 0)
 
 	return (
-		<section aria-labelledby="hero-title" className="relative isolate flex min-h-[330px] flex-col justify-between overflow-hidden rounded-[2rem] bg-linear-to-br from-primary to-primary/80 p-5 text-primary-foreground shadow-card sm:p-8 lg:p-10">
+		<section aria-labelledby="hero-title" className="relative isolate min-h-[330px] overflow-hidden rounded-[2rem] bg-linear-to-br from-primary to-primary/80 p-6 text-primary-foreground shadow-card sm:p-8">
 			<div aria-hidden="true" className="absolute -top-24 -end-20 -z-10 size-72 rounded-full border border-primary-foreground/10" />
 			<svg aria-hidden="true" viewBox="0 0 420 120" preserveAspectRatio="none" className="absolute -bottom-1 start-0 -z-10 h-36 w-[55%] min-w-72 opacity-40 rtl:-scale-x-100">
 				<path d="M0 98 C40 90 52 70 88 78 S142 94 172 63 S226 74 258 48 S315 58 346 30 S392 27 420 10" fill="none" className="stroke-primary-foreground" strokeWidth="3" strokeLinecap="round" />
@@ -41,7 +41,7 @@ export function BalanceHero() {
 						<Sparkles aria-hidden="true" className="size-4" />
 						<span>{t("home.hero.overview")}</span>
 					</div>
-					<h2 id="hero-title" className="mt-4 text-sm font-medium text-primary-foreground/80">
+					<h2 id="hero-title" className="mt-5 text-sm font-medium text-primary-foreground/80">
 						{t("home.hero.total")}
 					</h2>
 				</div>
@@ -79,7 +79,7 @@ export function BalanceHero() {
 				) : known.length === 0 ? (
 					<p className="text-lg font-semibold">{t("home.hero.none")}</p>
 				) : (
-					<p className="text-3xl font-extrabold tracking-tight tabular-nums sm:text-5xl">
+					<p className="text-3xl font-extrabold tracking-tight tabular-nums sm:text-[2.6rem]">
 						{hidden ? MASK : formatAmount(total, i18n.language)}
 						<span className="ms-3 text-sm font-normal text-primary-foreground/70">{t("home.wallet.rial")}</span>
 					</p>
@@ -87,7 +87,7 @@ export function BalanceHero() {
 				{known.length > 0 ? <p className="mt-2 text-xs text-primary-foreground/70">{t("home.hero.basedOn", {count: known.length})}</p> : null}
 			</div>
 
-			<div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8">
+			<div className="mt-8 flex flex-wrap gap-2.5">
 				<Button asChild size="lg" className="h-11 rounded-xl bg-primary-foreground px-5 text-primary shadow-none hover:bg-primary-foreground/90">
 					<Link to={routeMap.transfer.path}>
 						<ArrowLeftRight />

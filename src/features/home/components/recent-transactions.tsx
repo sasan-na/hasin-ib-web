@@ -22,10 +22,10 @@ export function RecentTransactions() {
 	return (
 		<section aria-labelledby="recent-events-title" className="overflow-hidden rounded-[2rem] border bg-card shadow-card">
 			<div className="border-b px-5 py-4 sm:px-6">
-				<h2 id="recent-events-title" className="text-base font-semibold">
+				<h2 id="recent-events-title" className="text-lg font-semibold">
 					{t("home.recentTransactions.title")}
 				</h2>
-				<p className="mt-1 text-xs text-muted-foreground">{t("home.recentTransactions.subtitle")}</p>
+				<p className="mt-1 text-sm text-muted-foreground">{t("home.recentTransactions.subtitle")}</p>
 			</div>
 			{query.isPending ? (
 				<div className="flex flex-col gap-3 p-5" aria-hidden="true">
