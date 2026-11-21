@@ -58,56 +58,63 @@ export function MonthlySnapshot() {
 	const monthName = new Intl.DateTimeFormat(persian ? `${i18n.language}-u-ca-persian` : i18n.language, {month: "long", year: "numeric"}).format(new Date())
 
 	return (
-		<section aria-labelledby="monthly-title" className="flex h-full min-w-0 flex-col gap-5 rounded-[2rem] border bg-card p-6 shadow-card">
+		<section aria-labelledby="monthly-title" className="h-full min-w-0 rounded-[2rem] border bg-card p-6 shadow-card">
 			<div className="flex items-start justify-between gap-3">
 				<div>
 					<h2 id="monthly-title" className="flex items-center gap-2 text-base font-semibold">
 						<Activity aria-hidden="true" className="size-4 text-primary" />
-						{t("home.monthly.title")}
+						<Link to={routeMap.reportMonthly.path} title={t("home.monthly.more")} className="hover:underline">
+							{t("home.monthly.title")}
+						</Link>
 					</h2>
 					<p className="mt-1 text-xs text-muted-foreground">{account ? `${monthName} · ${account.name || account.number}` : monthName}</p>
 				</div>
 				{savedRatio !== null && savedRatio > 0 ? (
-					<span className="rounded-full bg-success-soft px-2.5 py-1 text-xs font-semibold text-success-soft-foreground">{t("home.monthly.saved", {percent: savedRatio})}</span>
+					<span className="rounded-full bg-success-soft px-2.5 py-1 text-xs font-semibold text-success">{t("home.monthly.saved", {percent: savedRatio})}</span>
 				) : null}
 			</div>
 
 			{accounts.isPending || (account !== undefined && report.isPending) ? (
-				<Skeleton className="h-52 w-full" />
+				<Skeleton className="mt-6 h-52 w-full" />
 			) : accounts.isError || report.isError ? (
-				<p role="alert" className="text-sm text-destructive">
+				<p role="alert" className="mt-6 text-sm text-destructive">
 					{t("home.monthly.error")}
 				</p>
 			) : data === undefined ? (
-				<p className="text-sm text-muted-foreground">{t("home.monthly.none")}</p>
+				<p className="mt-6 text-sm text-muted-foreground">{t("home.monthly.none")}</p>
 			) : (
 				<>
-					<div aria-live="polite">
+					<div aria-live="polite" className="mt-6">
 						<p className="text-xs text-muted-foreground">{t("home.monthly.remaining")}</p>
-						<p className="mt-1 text-2xl font-bold tabular-nums">
+						<p className="mt-1 text-[1.5rem] font-bold tabular-nums">
 							{money(remaining)}
 							<span className="ms-2 text-xs font-normal text-muted-foreground">{t("home.wallet.rial")}</span>
 						</p>
 					</div>
 
-					<div className="flex h-24 items-end gap-2 border-b" aria-hidden="true">
+					<div className="mt-6 flex h-24 items-end gap-2 border-b" aria-hidden="true">
 						{weeks.map((week, index) => (
 							<div key={index} className="flex h-full flex-1 items-end justify-center gap-1">
 								<span className="w-2.5 rounded-t-full bg-primary/80" style={{height: `${Math.max(2, (week.income / peak) * 100)}%`}} />
-								<span className="w-2.5 rounded-t-full bg-muted-foreground/40" style={{height: `${Math.max(2, (week.expense / peak) * 100)}%`}} />
+								<span className="w-2.5 rounded-t-full bg-accent-foreground/45" style={{height: `${Math.max(2, (week.expense / peak) * 100)}%`}} />
 							</div>
 						))}
 					</div>
 
-					<div className="grid grid-cols-2 gap-3">
-						<div className="rounded-xl bg-success-soft/70 p-3">
+					<div className="mt-2 flex justify-between text-[10px] text-muted-foreground" aria-hidden="true">
+						<span>{t("home.monthly.week", {number: 1})}</span>
+						<span>{t("home.monthly.week", {number: weeks.length})}</span>
+					</div>
+
+					<div className="mt-5 grid grid-cols-2 gap-3">
+						<div className="rounded-2xl bg-success-soft/70 p-3">
 							<p className="flex items-center gap-1.5 text-xs text-muted-foreground">
 								<ArrowDownLeft aria-hidden="true" className="size-3.5 text-success" />
 								{t("home.monthly.deposits")}
 							</p>
-							<p className="mt-2 truncate text-sm font-bold tabular-nums">{money(data.totalDeposit)}</p>
+							<p className="mt-2 truncate text-sm font-bold tabular-nums text-success">{money(data.totalDeposit)}</p>
 						</div>
-						<div className="rounded-xl bg-muted/70 p-3">
+						<div className="rounded-2xl bg-muted/70 p-3">
 							<p className="flex items-center gap-1.5 text-xs text-muted-foreground">
 								<ArrowUpLeft aria-hidden="true" className="size-3.5" />
 								{t("home.monthly.withdrawals")}
@@ -115,9 +122,6 @@ export function MonthlySnapshot() {
 							<p className="mt-2 truncate text-sm font-bold tabular-nums">{money(data.totalWithdrawal)}</p>
 						</div>
 					</div>
-					<Link to={routeMap.reportMonthly.path} className="text-xs font-semibold text-brand hover:underline">
-						{t("home.monthly.more")}
-					</Link>
 				</>
 			)}
 		</section>

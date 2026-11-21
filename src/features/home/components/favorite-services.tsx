@@ -45,7 +45,7 @@ export function FavoriteServices() {
 
 	return (
 		<section aria-labelledby="favorite-services-title" className="flex flex-col gap-4">
-			<div className="flex items-start justify-between gap-3">
+			<div className="flex items-center justify-between gap-3">
 				<div>
 					<h2 id="favorite-services-title" className="text-lg font-semibold">
 						{t("home.favorites.title")}

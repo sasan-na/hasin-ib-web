@@ -54,8 +54,8 @@ export default function Home() {
 					<Skeleton className="h-9 w-56" />
 				) : (
 					<>
-						<h1 className="text-2xl font-bold tracking-tight wrap-break-word md:text-3xl">{t("home.welcome", {username: `⁨${name}⁩`})}</h1>
-						<p className="mt-1 text-sm text-muted-foreground">{t("home.subtitle", {date: today})}</p>
+						<h1 className="text-[1.5rem] leading-9 font-bold tracking-tight wrap-break-word md:text-[1.875rem]">{t("home.welcome", {username: `⁨${name}⁩`})}</h1>
+						<p className="mt-1 text-sm leading-6 text-muted-foreground">{t("home.subtitle", {date: today})}</p>
 					</>
 				)}
 			</header>

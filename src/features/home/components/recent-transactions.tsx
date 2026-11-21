@@ -21,7 +21,7 @@ export function RecentTransactions() {
 
 	return (
 		<section aria-labelledby="recent-events-title" className="overflow-hidden rounded-[2rem] border bg-card shadow-card">
-			<div className="border-b px-5 py-4 sm:px-6">
+			<div className="border-b p-5 sm:px-6">
 				<h2 id="recent-events-title" className="text-lg font-semibold">
 					{t("home.recentTransactions.title")}
 				</h2>
@@ -50,13 +50,13 @@ export function RecentTransactions() {
 									<ArrowLeftRight className="size-5" />
 								</span>
 								<div className="flex min-w-0 flex-1 flex-col">
-									<span className="font-medium wrap-break-word">{transaction.type}</span>
+									<span className="truncate text-sm font-semibold">{transaction.type}</span>
 									{/* Dates read left-to-right in both languages, as in the legacy app. */}
-									<span dir="ltr" className="text-start text-sm text-muted-foreground">
+									<span dir="ltr" className="mt-1 text-start text-xs text-muted-foreground">
 										{transaction.date} {transaction.time}
 									</span>
 								</div>
-								<span className={cn("flex items-center gap-2 text-sm font-medium", style.text)}>
+								<span className={cn("flex items-center gap-2 text-xs font-medium", style.text)}>
 									<span aria-hidden="true" className={cn("size-2 rounded-full", style.dot)} />
 									{transaction.statusTitle}
 								</span>

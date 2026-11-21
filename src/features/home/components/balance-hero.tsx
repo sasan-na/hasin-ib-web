@@ -56,7 +56,7 @@ export function BalanceHero() {
 						{t("home.hero.total")}
 					</h2>
 				</div>
-				<div className="flex items-center gap-1">
+				<div className="flex items-center gap-2">
 					<Button
 						variant="ghost"
 						size="icon"
@@ -90,12 +90,12 @@ export function BalanceHero() {
 				) : known.length === 0 ? (
 					<p className="text-lg font-semibold">{t("home.hero.none")}</p>
 				) : (
-					<p className="text-3xl font-extrabold tracking-tight tabular-nums sm:text-[2.6rem]">
+					<p className="text-[1.875rem] font-extrabold tracking-tight tabular-nums sm:text-[2.6rem]">
 						{hidden ? MASK : formatAmount(total, i18n.language)}
 						<span className="ms-3 text-sm font-normal text-primary-foreground/70">{t("home.wallet.rial")}</span>
 					</p>
 				)}
-				{known.length > 0 ? <p className="mt-2 text-xs text-primary-foreground/70">{t("home.hero.basedOn", {count: known.length})}</p> : null}
+				{known.length > 0 ? <p className="mt-4 text-xs text-primary-foreground/65">{t("home.hero.basedOn", {count: known.length})}</p> : null}
 			</div>
 
 			<div className="mt-8 flex flex-wrap gap-2.5">

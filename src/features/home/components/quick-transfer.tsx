@@ -29,7 +29,7 @@ export function QuickTransfer() {
 
 	return (
 		<section aria-labelledby="quick-transfer-title" className="flex h-full flex-col gap-4 rounded-[2rem] border bg-card p-5 shadow-card sm:p-6">
-			<div>
+			<div className="mb-1">
 				<h2 id="quick-transfer-title" className="text-lg font-semibold">
 					{t("home.quickTransfer.title")}
 				</h2>

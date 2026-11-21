@@ -45,7 +45,10 @@ function Tile({name, kind, number, display, balance, fetchBalance, featured}: Ti
 					<span className={cn("grid size-10 shrink-0 place-items-center rounded-xl", featured ? "bg-card text-primary shadow-sm" : "bg-primary-soft text-primary")}>
 						<Icon aria-hidden="true" className="size-4" />
 					</span>
-					<h3 className="min-w-0 text-sm font-semibold wrap-break-word">{name}</h3>
+					<div className="min-w-0">
+						<h3 className="text-sm font-semibold wrap-break-word">{name}</h3>
+						<p className="mt-1 text-[11px] text-muted-foreground">{t(kind === "account" ? "home.wallet.bankAccount" : "home.wallet.bankCard")}</p>
+					</div>
 				</div>
 				<CopyButton value={number} label={t("home.wallet.copy")} />
 			</div>
@@ -133,7 +136,7 @@ function TileSlider({children}: {children: ReactNode}) {
 			<ul
 				ref={track}
 				onScroll={measure}
-				className="grid snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden auto-cols-[100%] grid-flow-col grid-rows-2 gap-3 overflow-x-auto pb-1 md:auto-cols-[calc(50%-0.375rem)] 2xl:auto-cols-[calc(33.333%-0.5rem)] [&>li]:snap-start"
+				className="relative grid snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden auto-cols-[100%] grid-flow-col grid-rows-2 gap-3 overflow-x-auto pb-1 md:auto-cols-[calc(50%-0.375rem)] 2xl:auto-cols-[calc(33.333%-0.5rem)] [&>li]:snap-start"
 			>
 				{children}
 			</ul>
@@ -208,9 +211,9 @@ export function Wallet() {
 					<p className="mt-1 text-xs text-muted-foreground">{t("home.wallet.subtitle")}</p>
 				</div>
 				<Tabs value={tab} onValueChange={(value) => setTab(value === "cards" ? "cards" : "accounts")}>
-					<TabsList>
-						<TabsTrigger value="accounts">{t("home.wallet.accounts")}</TabsTrigger>
-						<TabsTrigger value="cards">{t("home.wallet.cards")}</TabsTrigger>
+					<TabsList className="rounded-xl p-1 group-data-[orientation=horizontal]/tabs:h-auto">
+						<TabsTrigger value="accounts" className="h-9 flex-none rounded-lg border-0 px-4 text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">{t("home.wallet.accounts")}</TabsTrigger>
+						<TabsTrigger value="cards" className="h-9 flex-none rounded-lg border-0 px-4 text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">{t("home.wallet.cards")}</TabsTrigger>
 					</TabsList>
 				</Tabs>
 			</div>
